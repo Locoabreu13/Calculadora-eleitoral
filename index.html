@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Retotalização Eleitoral</title>
+  <meta name="description" content="Ferramenta técnico-jurídica para cálculo e retotalização de eleições proporcionais brasileiras (art. 109 CE, ADIs 7.228/7.263/7.325 STF)." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══ CABEÇALHO ════════════════════════════════════════════════════════ -->
+  <header>
+    <div>
+      <h1>Calculadora de Retotalização Eleitoral</h1>
+      <div class="subtitulo">Sistema Proporcional Brasileiro — art. 109 CE · ADIs 7.228/7.263/7.325 STF (13/03/2025)</div>
+    </div>
+  </header>
+
+  <!-- ═══ NAVEGAÇÃO ════════════════════════════════════════════════════════ -->
+  <nav role="navigation" aria-label="Seções da aplicação">
+    <button data-aba="entrada" class="ativo" aria-selected="true">Entrada de Dados</button>
+    <button data-aba="resultado" aria-selected="false">Resultado</button>
+    <button data-aba="auditoria" aria-selected="false">Auditoria D'Hondt</button>
+    <button data-aba="comparativo" aria-selected="false">Comparativo</button>
+    <button data-aba="docs" aria-selected="false">Como Funciona</button>
+  </nav>
+
+  <main>
+
+    <!-- ═══ ABA: ENTRADA ══════════════════════════════════════════════════ -->
+    <section id="aba-entrada" class="tab-content ativo" aria-label="Entrada de dados">
+
+      <!-- Presets -->
+      <div class="preset-bar">
+        <label for="select-preset">Casos de estudo:</label>
+        <select id="select-preset" aria-label="Carregar caso de estudo pré-definido">
+          <option value="">— Selecionar —</option>
+        </select>
+        <div id="preset-notas" class="alerta info" style="display:none; flex:1; margin:0;"></div>
+      </div>
+
+      <!-- Parâmetros gerais -->
+      <div class="card">
+        <h2>Parâmetros do Pleito</h2>
+        <div class="form-row">
+          <div class="form-group grow">
+            <label for="input-rotulo">Rótulo do pleito</label>
+            <input type="text" id="input-rotulo" placeholder="Ex: Deputado Federal — Ceará 2022" aria-label="Rótulo do pleito" />
+          </div>
+          <div class="form-group">
+            <label for="input-vagas">Número de vagas</label>
+            <input type="number" id="input-vagas" min="1" placeholder="Ex: 22" aria-label="Número de vagas" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Partidos -->
+      <div class="card">
+        <h2>Partidos e Federações</h2>
+        <p style="font-size:12px; color:var(--cor-texto-fraco); margin-bottom:12px;">
+          Informe votos nominais (soma dos votos em candidatos) e votos de legenda (voto no número do partido) separadamente.
+          Para federações, use a sigla consolidada (ex: "FE BRASIL") e liste os candidatos com seus partidos de origem.
+        </p>
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+          <div style="flex:0 0 100px; font-size:11px; font-weight:700; color:var(--cor-texto-fraco);">Sigla</div>
+          <div style="flex:1; font-size:11px; font-weight:700; color:var(--cor-texto-fraco);">Nome do Partido/Federação</div>
+          <div style="width:130px; font-size:11px; font-weight:700; color:var(--cor-texto-fraco);">Votos Nominais</div>
+          <div style="width:130px; font-size:11px; font-weight:700; color:var(--cor-texto-fraco);">Votos Legenda</div>
+          <div style="width:130px;"></div>
+        </div>
+        <div id="lista-partidos" role="list" aria-label="Lista de partidos"></div>
+        <div style="margin-top:10px;">
+          <button id="btn-adicionar-partido" class="btn btn-secundario" aria-label="Adicionar partido">
+            + Adicionar Partido / Federação
+          </button>
+        </div>
+      </div>
+
+      <!-- Cassações / Anulações -->
+      <div class="card">
+        <h2>Simulação de Cassação ou Anulação de Votos <span style="font-size:11px; font-weight:400; color:var(--cor-texto-fraco);">(opcional)</span></h2>
+        <p style="font-size:12px; color:var(--cor-texto-fraco); margin-bottom:12px;">
+          Cada linha representa uma operação de anulação. O cálculo original (sem cassação) é preservado para comparação.
+        </p>
+        <div id="lista-cassacoes"></div>
+        <button id="btn-adicionar-cassacao" class="btn btn-secundario btn-sm" style="margin-top:8px;">
+          + Adicionar Cassação / Anulação
+        </button>
+      </div>
+
+      <!-- Erros e avisos -->
+      <div id="erros-formulario" role="alert" aria-live="polite"></div>
+
+      <!-- Ações -->
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button id="btn-calcular" class="btn btn-primario">
+          ▶ Calcular Distribuição
+        </button>
+        <button id="btn-limpar" class="btn btn-secundario">
+          ✕ Limpar
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ═══ ABA: RESULTADO ════════════════════════════════════════════════ -->
+    <section id="aba-resultado" class="tab-content" aria-label="Resultado da distribuição">
+
+      <div class="card">
+        <h2>Parâmetros da Eleição</h2>
+        <div id="painel-parametros" class="params-grid"></div>
+      </div>
+
+      <div id="painel-alertas"></div>
+
+      <div class="card">
+        <h2>Distribuição de Cadeiras por Partido</h2>
+        <p style="font-size:12px; color:var(--cor-texto-fraco); margin-bottom:12px;">
+          F1 = vagas por Quociente Partidário · F2 = sobras com barreira 80/20 · F3 = sobras sem barreira (ADIs STF)
+        </p>
+        <div id="tabela-resultado"></div>
+      </div>
+
+      <!-- Exportações -->
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:4px;">
+        <button id="btn-exportar-csv" class="btn btn-secundario" disabled>⬇ Exportar CSV</button>
+        <button id="btn-exportar-pdf" class="btn btn-secundario" disabled>⬇ Exportar PDF</button>
+        <button id="btn-link" class="btn btn-secundario" disabled>🔗 Copiar Link</button>
+      </div>
+
+    </section>
+
+    <!-- ═══ ABA: AUDITORIA ════════════════════════════════════════════════ -->
+    <section id="aba-auditoria" class="tab-content" aria-label="Auditoria do algoritmo D'Hondt">
+
+      <div class="card">
+        <h2>Execução Passo a Passo — Algoritmo D'Hondt</h2>
+        <p style="font-size:12px; color:var(--cor-texto-fraco); margin-bottom:14px;">
+          Cada linha representa uma rodada de distribuição de sobra. Clique em uma rodada para expandir o detalhe das médias.
+          Linhas em itálico = partido excluído daquela rodada. Linha destacada = vencedor da rodada.
+        </p>
+        <div id="auditoria-container" class="auditoria-container"></div>
+      </div>
+
+    </section>
+
+    <!-- ═══ ABA: COMPARATIVO ══════════════════════════════════════════════ -->
+    <section id="aba-comparativo" class="tab-content" aria-label="Comparativo entre cenários">
+
+      <div id="secao-comparativo" style="display:none;">
+        <div class="card">
+          <h2>Comparativo: Cenário Original × Retotalizado</h2>
+          <div id="comparativo-container"></div>
+        </div>
+      </div>
+
+      <div id="secao-sem-comparativo">
+        <div class="alerta info">
+          <div class="alerta-titulo">ℹ Comparativo não disponível</div>
+          Execute um cálculo com cassação/anulação de votos para habilitar esta aba.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ═══ ABA: COMO FUNCIONA ════════════════════════════════════════════ -->
+    <section id="aba-docs" class="tab-content" aria-label="Documentação e glossário">
+      <div class="card docs-container">
+
+        <h2>O Sistema Proporcional Brasileiro</h2>
+        <p>
+          A distribuição de cadeiras em eleições proporcionais (Câmara dos Deputados, Câmaras Legislativas, Câmara
+          Distrital e Câmaras Municipais) obedece ao art. 109 do Código Eleitoral (Lei nº 4.737/1965), com a redação
+          dada pela Lei nº 14.211/2021, e à interpretação conforme fixada pelo STF nas
+          <strong>ADIs 7.228, 7.263 e 7.325</strong>, julgadas em 13/03/2025 (redator Min. Flávio Dino).
+        </p>
+
+        <h2>As Três Fases do Algoritmo</h2>
+
+        <h3>Fase 1 — Quociente Eleitoral e Quocientes Partidários (art. 109, I)</h3>
+        <p>
+          Calcula-se o <strong>Quociente Eleitoral (QE)</strong> dividindo o total de votos válidos pelo número de vagas,
+          descartando a fração (parte inteira):
+        </p>
+        <div class="formula">QE = ⌊ Votos Válidos ÷ Vagas ⌋</div>
+        <p>
+          Para cada partido ou federação, o <strong>Quociente Partidário (QP)</strong> é o número de vagas diretas obtidas:
+        </p>
+        <div class="formula">QP = ⌊ Votos do Partido ÷ QE ⌋</div>
+        <p>
+          "Votos válidos" = votos nominais + votos de legenda. A parte fracionária é sempre descartada (art. 106 CE).
+          Candidatos são convocados em ordem decrescente de votação para preencher as cadeiras de QP.
+        </p>
+
+        <h3>Fase 2 — Maiores Médias com Cláusula de Barreira (art. 109, II)</h3>
+        <p>
+          As vagas restantes (sobras = vagas − ΣQPs) são distribuídas pelo método D'Hondt, com <strong>dupla cláusula de barreira</strong>
+          introduzida pela Lei 14.211/2021 e confirmada como constitucional pelo STF:
+        </p>
+        <ul>
+          <li><strong>Trava partidária (80% QE):</strong> apenas partidos com votos ≥ 80% do QE participam.</li>
+          <li><strong>Trava individual (20% QE):</strong> o partido só captura a vaga se ainda tiver, na lista, um candidato não eleito com ≥ 20% do QE.</li>
+        </ul>
+        <p>Em cada rodada, calcula-se a média de cada partido qualificado:</p>
+        <div class="formula">Média = Votos do Partido ÷ (Cadeiras Atuais + 1)</div>
+        <p>O partido com maior média vence a rodada e o candidato elegível mais votado é convocado.</p>
+
+        <h3>Fase 3 — Maiores Médias sem Barreira (art. 109, III)</h3>
+        <p>
+          A Fase 3 é ativada quando ainda restam sobras e não há mais partidos aptos a recebê-las pela Fase 2 —
+          seja porque nenhum atingiu 80% do QE, seja porque todos os qualificados esgotaram candidatos com ≥ 20% do QE.
+        </p>
+        <p>
+          O STF, nas ADIs 7.228, 7.263 e 7.325, declarou <strong>inconstitucional a barreira de 80% do QE na Fase 3</strong>,
+          por violação ao princípio da proporcionalidade. Nessa fase, todos os partidos concorrem pelas maiores médias,
+          independentemente de desempenho. A eficácia da decisão é <em>ex tunc</em> (retroage às eleições de 2022).
+        </p>
+        <div class="alerta info" style="margin:12px 0;">
+          <div class="alerta-titulo">⚖ O que mudou com as ADIs</div>
+          Antes das ADIs, a Fase 3 também exigia barreira de 80% do QE (art. 13 da Resolução TSE 23.677/2021).
+          O STF declarou essa exigência inconstitucional <em>apenas na Fase 3</em>. Na Fase 2, a barreira dupla 80/20
+          foi mantida como constitucional. O efeito retroativo alcançou a eleição de 2022, obrigando a
+          revisão de mandatos — caso paradigmático: DF 2022 (Ato nº 209/2025 da Mesa da Câmara).
+        </div>
+
+        <h3>Art. 111 do CE — Declarado Inconstitucional</h3>
+        <p>
+          O art. 111 do CE previa que, se nenhum partido atingisse o QE, as vagas seriam preenchidas pelos candidatos
+          mais votados individualmente ("distritão residual"). As mesmas ADIs declararam essa norma inconstitucional.
+          Quando nenhum partido atinge o QE, a calculadora aplica sucessivamente as Fases 2 e 3, sem recorrer ao distritão.
+        </p>
+
+        <h2>Glossário</h2>
+        <div class="glossario-item">
+          <span class="termo">QE</span>
+          <span>Quociente Eleitoral: divisor básico de toda a distribuição, obtido dividindo os votos válidos pelo número de vagas (parte inteira).</span>
+        </div>
+        <div class="glossario-item">
+          <span class="termo">QP</span>
+          <span>Quociente Partidário: número de cadeiras diretas de cada partido, obtido dividindo seus votos válidos pelo QE (parte inteira).</span>
+        </div>
+        <div class="glossario-item">
+          <span class="termo">Sobras</span>
+          <span>Vagas não preenchidas pelos QPs (= vagas totais − ΣQPs), distribuídas pelas Fases 2 e 3.</span>
+        </div>
+        <div class="glossario-item">
+          <span class="termo">D'Hondt</span>
+          <span>Método de maiores médias: em cada rodada, divide-se os votos de cada partido pelo número de cadeiras já obtidas + 1; o maior quociente vence a vaga.</span>
+        </div>
+        <div class="glossario-item">
+          <span class="termo">Barreira 80%</span>
+          <span>Partido precisa de votos ≥ 80% do QE para participar da Fase 2 (constitucional — mantida pelo STF).</span>
+        </div>
+        <div class="glossario-item">
+          <span class="termo">Piso 20%</span>
+          <span>Candidato precisa de votos ≥ 20% do QE para ser convocado na Fase 2 (trava individual).</span>
+        </div>
+        <div class="glossario-item">
+          <span class="termo">Federação</span>
+          <span>Aliança de partidos que concorrem como unidade para fins de cálculo, mas mantêm rastreabilidade dos partidos componentes.</span>
+        </div>
+        <div class="glossario-item">
+          <span class="termo">Interpretação conforme</span>
+          <span>Técnica decisória do STF que mantém o texto legal mas delimita seu sentido constitucional: a barreira 80% é válida na Fase 2, mas inválida na Fase 3.</span>
+        </div>
+
+        <h2>Fontes Jurídicas</h2>
+        <ul>
+          <li>Código Eleitoral (Lei nº 4.737/1965), arts. 106, 107, 108, 109 e 111 — redação da Lei nº 14.211/2021</li>
+          <li>Lei das Eleições (Lei nº 9.504/1997), arts. 6º-A e 18-A</li>
+          <li>Resolução TSE nº 23.677/2021 (art. 13 declarado inconstitucional)</li>
+          <li>Resolução TSE nº 23.735/2024</li>
+          <li>STF, ADIs 7.228, 7.263 e 7.325 — julgamento de mérito e ED (13/03/2025)</li>
+          <li>Ato nº 209/2025 da Mesa da Câmara dos Deputados</li>
+        </ul>
+
+        <div class="alerta" style="margin-top:20px;">
+          <div class="alerta-titulo">⚠ Disclaimer</div>
+          Esta ferramenta é um instrumento de apoio técnico-jurídico para advogados eleitorais, assessores legislativos
+          e pesquisadores acadêmicos. <strong>Não substitui decisão da Justiça Eleitoral.</strong>
+          Os presets incluem dados aproximados para fins de demonstração e validação; os dados oficiais devem ser
+          obtidos diretamente dos sistemas do TSE/TREs.
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ RODAPÉ ════════════════════════════════════════════════════════════ -->
+  <footer>
+    Calculadora de Retotalização Eleitoral — Ferramenta técnico-jurídica de apoio.
+    Não substitui decisão da Justiça Eleitoral. · Art. 109 CE · ADIs 7.228/7.263/7.325 STF (13/03/2025)
+  </footer>
+
+</div><!-- #app -->
+
+<!-- Bibliotecas externas via CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Módulos da aplicação -->
+<script src="js/i18n.js?v=5"></script>
+<script src="js/engine.js?v=5"></script>
+<script src="js/presets.js?v=5"></script>
+<script src="js/export.js?v=5"></script>
+<script src="js/ui.js?v=7"></script>
+
+<script>
+  // Sincronizar visibilidade da aba comparativo
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('[data-aba="comparativo"]').addEventListener('click', () => {
+      const temComparativo = document.getElementById('secao-comparativo').style.display !== 'none';
+      document.getElementById('secao-sem-comparativo').style.display = temComparativo ? 'none' : 'block';
+    });
+
+    // Sincronizar visibilidade do comparativo quando resultado muda
+    const observer = new MutationObserver(() => {
+      const temComparativo = document.getElementById('secao-comparativo').style.display !== 'none';
+      document.getElementById('secao-sem-comparativo').style.display = temComparativo ? 'none' : 'block';
+    });
+    observer.observe(document.getElementById('secao-comparativo'), { attributes: true, attributeFilter: ['style'] });
+  });
+</script>
+
+</body>
+</html>

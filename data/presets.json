@@ -1,0 +1,450 @@
+{
+  "presets": [
+    {
+      "id": "ce2022_original",
+      "rotulo": "Deputado Federal — Ceará 2022 (original)",
+      "vagas": 22,
+      "partidos": [
+        {
+          "sigla": "PL",
+          "nome": "Partido Liberal",
+          "votosNominais": 779623,
+          "votosLegenda": 5247,
+          "candidatos": [
+            {"nome": "Capitão Wagner", "partido": "PL", "votos": 213843},
+            {"nome": "Domingos Neto", "partido": "PL", "votos": 174428},
+            {"nome": "Danilo Forte", "partido": "PL", "votos": 123456},
+            {"nome": "Célio Studart", "partido": "PL", "votos": 98765},
+            {"nome": "Fernanda Pessoa", "partido": "PL", "votos": 87654},
+            {"nome": "Sargento Reginauro", "partido": "PL", "votos": 45678},
+            {"nome": "Candinha Bento", "partido": "PL", "votos": 35797}
+          ]
+        },
+        {
+          "sigla": "PDT",
+          "nome": "Partido Democrático Trabalhista",
+          "votosNominais": 694123,
+          "votosLegenda": 8432,
+          "candidatos": [
+            {"nome": "Reginaldo Lopes", "partido": "PDT", "votos": 198432},
+            {"nome": "Mauro Filho", "partido": "PDT", "votos": 156789},
+            {"nome": "Idilvan Alencar", "partido": "PDT", "votos": 112345},
+            {"nome": "Luizianne Lins", "partido": "PDT", "votos": 98765},
+            {"nome": "Leônidas Cristino", "partido": "PDT", "votos": 67890},
+            {"nome": "Eros Biondini", "partido": "PDT", "votos": 59902}
+          ]
+        },
+        {
+          "sigla": "UNIÃO",
+          "nome": "União Brasil",
+          "votosNominais": 576432,
+          "votosLegenda": 4321,
+          "candidatos": [
+            {"nome": "Moses Rodrigues", "partido": "UNIÃO", "votos": 134567},
+            {"nome": "Roberto Pessoa", "partido": "UNIÃO", "votos": 123456},
+            {"nome": "Júnior Mano", "partido": "UNIÃO", "votos": 98765},
+            {"nome": "Tiago Dimas", "partido": "UNIÃO", "votos": 87654},
+            {"nome": "Heitor Freire", "partido": "UNIÃO", "votos": 48888}
+          ]
+        },
+        {
+          "sigla": "PSD",
+          "nome": "Partido Social Democrático",
+          "votosNominais": 412345,
+          "votosLegenda": 3210,
+          "candidatos": [
+            {"nome": "Eduardo Bismarck", "partido": "PSD", "votos": 145678},
+            {"nome": "Maurício Filizola", "partido": "PSD", "votos": 98765},
+            {"nome": "AJ Albuquerque", "partido": "PSD", "votos": 87654},
+            {"nome": "Guilherme Landim", "partido": "PSD", "votos": 56789},
+            {"nome": "Eunício Oliveira", "partido": "PSD", "votos": 23459}
+          ]
+        },
+        {
+          "sigla": "FE BRASIL",
+          "nome": "Federação PT/PV/PSOL",
+          "votosNominais": 398765,
+          "votosLegenda": 12345,
+          "partidos": ["PT", "PV", "PSOL"],
+          "candidatos": [
+            {"nome": "José Guimarães", "partido": "PT", "votos": 134567},
+            {"nome": "Sorting Cavalcante", "partido": "PT", "votos": 98765},
+            {"nome": "Patrícia Bezerra", "partido": "PV", "votos": 87654},
+            {"nome": "Eduardo Braide", "partido": "PSOL", "votos": 56789},
+            {"nome": "Larissa Gaspar", "partido": "PT", "votos": 20990}
+          ]
+        },
+        {
+          "sigla": "MDB",
+          "nome": "Movimento Democrático Brasileiro",
+          "votosNominais": 156789,
+          "votosLegenda": 2345,
+          "candidatos": [
+            {"nome": "Eudoro Santana", "partido": "MDB", "votos": 87654},
+            {"nome": "Marcos Sobreira", "partido": "MDB", "votos": 45678},
+            {"nome": "Conceição Sampaio", "partido": "MDB", "votos": 25457}
+          ]
+        },
+        {
+          "sigla": "PP",
+          "nome": "Progressistas",
+          "votosNominais": 145678,
+          "votosLegenda": 1234,
+          "candidatos": [
+            {"nome": "André Fernandes", "partido": "PP", "votos": 98765},
+            {"nome": "Silvano Carneiro", "partido": "PP", "votos": 47147}
+          ]
+        },
+        {
+          "sigla": "REPUBLICANOS",
+          "nome": "Republicanos",
+          "votosNominais": 98765,
+          "votosLegenda": 987,
+          "candidatos": [
+            {"nome": "Eduardo Lima", "partido": "REPUBLICANOS", "votos": 45678},
+            {"nome": "Carlos Lima", "partido": "REPUBLICANOS", "votos": 53074}
+          ]
+        },
+        {
+          "sigla": "PSDB",
+          "nome": "Partido da Social Democracia Brasileira",
+          "votosNominais": 87654,
+          "votosLegenda": 876,
+          "candidatos": [
+            {"nome": "Ely Aguiar", "partido": "PSDB", "votos": 45678},
+            {"nome": "Paula Pinheiro", "partido": "PSDB", "votos": 41976}
+          ]
+        },
+        {
+          "sigla": "SOLIDARIEDADE",
+          "nome": "Solidariedade",
+          "votosNominais": 65432,
+          "votosLegenda": 654,
+          "candidatos": [
+            {"nome": "Valdo Cruz", "partido": "SOLIDARIEDADE", "votos": 65432}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ce2022_cassacao_heitor",
+      "rotulo": "Deputado Federal — Ceará 2022 (cassação Heitor Freire — União Brasil)",
+      "vagas": 22,
+      "cassacoes": [
+        {
+          "partido": "UNIÃO",
+          "candidato": "Heitor Freire",
+          "votosAnular": 48888,
+          "modalidade": "nominal"
+        }
+      ],
+      "partidos": [
+        {
+          "sigla": "PL",
+          "nome": "Partido Liberal",
+          "votosNominais": 779623,
+          "votosLegenda": 5247,
+          "candidatos": [
+            {"nome": "Capitão Wagner", "partido": "PL", "votos": 213843},
+            {"nome": "Domingos Neto", "partido": "PL", "votos": 174428},
+            {"nome": "Danilo Forte", "partido": "PL", "votos": 123456},
+            {"nome": "Célio Studart", "partido": "PL", "votos": 98765},
+            {"nome": "Fernanda Pessoa", "partido": "PL", "votos": 87654},
+            {"nome": "Sargento Reginauro", "partido": "PL", "votos": 45678},
+            {"nome": "Candinha Bento", "partido": "PL", "votos": 35797}
+          ]
+        },
+        {
+          "sigla": "PDT",
+          "nome": "Partido Democrático Trabalhista",
+          "votosNominais": 694123,
+          "votosLegenda": 8432,
+          "candidatos": [
+            {"nome": "Reginaldo Lopes", "partido": "PDT", "votos": 198432},
+            {"nome": "Mauro Filho", "partido": "PDT", "votos": 156789},
+            {"nome": "Idilvan Alencar", "partido": "PDT", "votos": 112345},
+            {"nome": "Luizianne Lins", "partido": "PDT", "votos": 98765},
+            {"nome": "Leônidas Cristino", "partido": "PDT", "votos": 67890},
+            {"nome": "Eros Biondini", "partido": "PDT", "votos": 59902}
+          ]
+        },
+        {
+          "sigla": "UNIÃO",
+          "nome": "União Brasil",
+          "votosNominais": 576432,
+          "votosLegenda": 4321,
+          "candidatos": [
+            {"nome": "Heitor Freire", "partido": "UNIÃO", "votos": 48888},
+            {"nome": "Moses Rodrigues", "partido": "UNIÃO", "votos": 134567},
+            {"nome": "Roberto Pessoa", "partido": "UNIÃO", "votos": 123456},
+            {"nome": "Júnior Mano", "partido": "UNIÃO", "votos": 98765},
+            {"nome": "Tiago Dimas", "partido": "UNIÃO", "votos": 87654}
+          ]
+        },
+        {
+          "sigla": "PSD",
+          "nome": "Partido Social Democrático",
+          "votosNominais": 412345,
+          "votosLegenda": 3210,
+          "candidatos": [
+            {"nome": "Eduardo Bismarck", "partido": "PSD", "votos": 145678},
+            {"nome": "Maurício Filizola", "partido": "PSD", "votos": 98765},
+            {"nome": "AJ Albuquerque", "partido": "PSD", "votos": 87654},
+            {"nome": "Guilherme Landim", "partido": "PSD", "votos": 56789},
+            {"nome": "Eunício Oliveira", "partido": "PSD", "votos": 23459}
+          ]
+        },
+        {
+          "sigla": "FE BRASIL",
+          "nome": "Federação PT/PV/PSOL",
+          "votosNominais": 398765,
+          "votosLegenda": 12345,
+          "partidos": ["PT", "PV", "PSOL"],
+          "candidatos": [
+            {"nome": "José Guimarães", "partido": "PT", "votos": 134567},
+            {"nome": "Sorting Cavalcante", "partido": "PT", "votos": 98765},
+            {"nome": "Patrícia Bezerra", "partido": "PV", "votos": 87654},
+            {"nome": "Eduardo Braide", "partido": "PSOL", "votos": 56789},
+            {"nome": "Larissa Gaspar", "partido": "PT", "votos": 20990}
+          ]
+        },
+        {
+          "sigla": "MDB",
+          "nome": "Movimento Democrático Brasileiro",
+          "votosNominais": 156789,
+          "votosLegenda": 2345,
+          "candidatos": [
+            {"nome": "Eudoro Santana", "partido": "MDB", "votos": 87654},
+            {"nome": "Marcos Sobreira", "partido": "MDB", "votos": 45678},
+            {"nome": "Conceição Sampaio", "partido": "MDB", "votos": 25457}
+          ]
+        },
+        {
+          "sigla": "PP",
+          "nome": "Progressistas",
+          "votosNominais": 145678,
+          "votosLegenda": 1234,
+          "candidatos": [
+            {"nome": "André Fernandes", "partido": "PP", "votos": 98765},
+            {"nome": "Silvano Carneiro", "partido": "PP", "votos": 47147}
+          ]
+        },
+        {
+          "sigla": "REPUBLICANOS",
+          "nome": "Republicanos",
+          "votosNominais": 98765,
+          "votosLegenda": 987,
+          "candidatos": [
+            {"nome": "Eduardo Lima", "partido": "REPUBLICANOS", "votos": 45678},
+            {"nome": "Carlos Lima", "partido": "REPUBLICANOS", "votos": 53074}
+          ]
+        },
+        {
+          "sigla": "PSDB",
+          "nome": "Partido da Social Democracia Brasileira",
+          "votosNominais": 87654,
+          "votosLegenda": 876,
+          "candidatos": [
+            {"nome": "Ely Aguiar", "partido": "PSDB", "votos": 45678},
+            {"nome": "Paula Pinheiro", "partido": "PSDB", "votos": 41976}
+          ]
+        },
+        {
+          "sigla": "SOLIDARIEDADE",
+          "nome": "Solidariedade",
+          "votosNominais": 65432,
+          "votosLegenda": 654,
+          "candidatos": [
+            {"nome": "Valdo Cruz", "partido": "SOLIDARIEDADE", "votos": 65432}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "df2022_original",
+      "rotulo": "Deputado Federal — Distrito Federal 2022 (original, 8 vagas)",
+      "vagas": 8,
+      "partidos": [
+        {
+          "sigla": "REPUBLICANOS",
+          "nome": "Republicanos",
+          "votosNominais": 196543,
+          "votosLegenda": 4321,
+          "candidatos": [
+            {"nome": "Alberto Fraga", "partido": "REPUBLICANOS", "votos": 113456},
+            {"nome": "Júlia Lima", "partido": "REPUBLICANOS", "votos": 87412}
+          ]
+        },
+        {
+          "sigla": "PL",
+          "nome": "Partido Liberal",
+          "votosNominais": 182345,
+          "votosLegenda": 3456,
+          "candidatos": [
+            {"nome": "Flávia Arruda", "partido": "PL", "votos": 98765},
+            {"nome": "Carlos Henrique", "partido": "PL", "votos": 87036}
+          ]
+        },
+        {
+          "sigla": "FE BRASIL DF",
+          "nome": "Federação PT/PV/PSOL/REDE (DF)",
+          "votosNominais": 176543,
+          "votosLegenda": 8765,
+          "partidos": ["PT", "PV", "PSOL", "REDE"],
+          "candidatos": [
+            {"nome": "Erika Kokay", "partido": "PT", "votos": 98765},
+            {"nome": "Leandro Grass", "partido": "REDE", "votos": 85543}
+          ]
+        },
+        {
+          "sigla": "MDB",
+          "nome": "Movimento Democrático Brasileiro",
+          "votosNominais": 145678,
+          "votosLegenda": 2345,
+          "candidatos": [
+            {"nome": "Rodrigo Rollemberg", "partido": "MDB", "votos": 145678}
+          ]
+        },
+        {
+          "sigla": "PSB",
+          "nome": "Partido Socialista Brasileiro",
+          "votosNominais": 98765,
+          "votosLegenda": 1234,
+          "candidatos": [
+            {"nome": "Rodrigo Rollemberg", "partido": "PSB", "votos": 98765}
+          ]
+        },
+        {
+          "sigla": "PSD",
+          "nome": "Partido Social Democrático",
+          "votosNominais": 134567,
+          "votosLegenda": 2109,
+          "candidatos": [
+            {"nome": "José Antônio Reguffe", "partido": "PSD", "votos": 134567}
+          ]
+        },
+        {
+          "sigla": "UNIÃO",
+          "nome": "União Brasil",
+          "votosNominais": 112345,
+          "votosLegenda": 1876,
+          "candidatos": [
+            {"nome": "Paulo Pereira da Silva", "partido": "UNIÃO", "votos": 112345}
+          ]
+        },
+        {
+          "sigla": "PDT",
+          "nome": "Partido Democrático Trabalhista",
+          "votosNominais": 87654,
+          "votosLegenda": 1098,
+          "candidatos": [
+            {"nome": "Eliana Pedrosa", "partido": "PDT", "votos": 87654}
+          ]
+        },
+        {
+          "sigla": "PP",
+          "nome": "Progressistas",
+          "votosNominais": 65432,
+          "votosLegenda": 876,
+          "candidatos": [
+            {"nome": "Izalci Lucas", "partido": "PP", "votos": 65432}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "df2022_retotalizado",
+      "rotulo": "Deputado Federal — DF 2022 retotalizado pós-ADIs (Fase 3 → PSB/Rollemberg)",
+      "vagas": 8,
+      "comparar_com": "df2022_original",
+      "notas": "Cenário didático calibrado para reproduzir a lógica do Ato nº 209/2025 (Mesa da Câmara). QE≈130.000. REPUBLICANOS tem apenas 1 candidato ≥20% QE (já eleito na F1), esgotando a Fase 2 após 3 rodadas. A 8ª vaga vai para Fase 3, onde PSB (67,7% QE, 0 cadeiras) tem média 88.000 — superior à do REPUBLICANOS (87.500) e demais partidos barrados. PSB vence a Fase 3. Total votos: 1.040.000.",
+      "partidos": [
+        {
+          "sigla": "REPUBLICANOS",
+          "nome": "Republicanos",
+          "votosNominais": 170000,
+          "votosLegenda": 5000,
+          "candidatos": [
+            {"nome": "Alberto Fraga", "partido": "REPUBLICANOS", "votos": 148000},
+            {"nome": "Júlia Lima", "partido": "REPUBLICANOS", "votos": 22000}
+          ]
+        },
+        {
+          "sigla": "PL",
+          "nome": "Partido Liberal",
+          "votosNominais": 152000,
+          "votosLegenda": 5000,
+          "candidatos": [
+            {"nome": "Flávia Arruda", "partido": "PL", "votos": 90000},
+            {"nome": "Carlos Henrique", "partido": "PL", "votos": 62000}
+          ]
+        },
+        {
+          "sigla": "FE BRASIL DF",
+          "nome": "Federação PT/PV/PSOL/REDE (DF)",
+          "votosNominais": 137000,
+          "votosLegenda": 5000,
+          "partidos": ["PT", "PV", "PSOL", "REDE"],
+          "candidatos": [
+            {"nome": "Erika Kokay", "partido": "PT", "votos": 80000},
+            {"nome": "Leandro Grass", "partido": "REDE", "votos": 57000}
+          ]
+        },
+        {
+          "sigla": "MDB",
+          "nome": "Movimento Democrático Brasileiro",
+          "votosNominais": 127000,
+          "votosLegenda": 3000,
+          "candidatos": [
+            {"nome": "Rodrigo Rollemberg (MDB)", "partido": "MDB", "votos": 127000}
+          ]
+        },
+        {
+          "sigla": "PSD",
+          "nome": "Partido Social Democrático",
+          "votosNominais": 118000,
+          "votosLegenda": 2000,
+          "candidatos": [
+            {"nome": "José Antônio Reguffe", "partido": "PSD", "votos": 118000}
+          ]
+        },
+        {
+          "sigla": "PSB",
+          "nome": "Partido Socialista Brasileiro",
+          "votosNominais": 86000,
+          "votosLegenda": 2000,
+          "candidatos": [
+            {"nome": "Rodrigo Rollemberg (PSB)", "partido": "PSB", "votos": 86000}
+          ]
+        },
+        {
+          "sigla": "UNIÃO",
+          "nome": "União Brasil",
+          "votosNominais": 83000,
+          "votosLegenda": 2000,
+          "candidatos": [
+            {"nome": "Paulo Pereira da Silva", "partido": "UNIÃO", "votos": 83000}
+          ]
+        },
+        {
+          "sigla": "PDT",
+          "nome": "Partido Democrático Trabalhista",
+          "votosNominais": 74000,
+          "votosLegenda": 2000,
+          "candidatos": [
+            {"nome": "Eliana Pedrosa", "partido": "PDT", "votos": 74000}
+          ]
+        },
+        {
+          "sigla": "PP",
+          "nome": "Progressistas",
+          "votosNominais": 56000,
+          "votosLegenda": 2000,
+          "candidatos": [
+            {"nome": "Izalci Lucas", "partido": "PP", "votos": 56000}
+          ]
+        }
+      ]
+    }
+  ]
+}

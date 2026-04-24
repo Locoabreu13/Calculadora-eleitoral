@@ -1,0 +1,382 @@
+/* ============================================================
+   Calculadora de Retotalização Eleitoral — Estilos
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cor-primaria: #1a3a5c;
+  --cor-primaria-clara: #2a5a8c;
+  --cor-acento: #c8a84b;
+  --cor-fundo: #f4f6f9;
+  --cor-fundo-card: #ffffff;
+  --cor-borda: #d0d7e2;
+  --cor-texto: #1a2535;
+  --cor-texto-fraco: #5a6a7e;
+  --cor-eleito: #1a6b3a;
+  --cor-eleito-fundo: #e8f5ec;
+  --cor-barrado: #8b1a1a;
+  --cor-barrado-fundo: #fdecea;
+  --cor-alerta: #7a4f00;
+  --cor-alerta-fundo: #fff8e6;
+  --cor-fase3: #1a3d6b;
+  --cor-fase3-fundo: #e6f0fb;
+  --raio: 6px;
+  --sombra: 0 2px 8px rgba(0,0,0,.10);
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+#app { display: flex; flex-direction: column; min-height: 100vh; }
+
+header {
+  background: var(--cor-primaria);
+  color: #fff;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+header h1 { font-size: 17px; font-weight: 700; }
+header .subtitulo { font-size: 11px; opacity: .75; }
+
+nav {
+  background: var(--cor-primaria-clara);
+  display: flex;
+  gap: 2px;
+  padding: 0 20px;
+}
+nav button {
+  background: transparent;
+  color: rgba(255,255,255,.8);
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  border-bottom: 3px solid transparent;
+  transition: all .15s;
+}
+nav button:hover { color: #fff; background: rgba(255,255,255,.1); }
+nav button.ativo { color: #fff; border-bottom-color: var(--cor-acento); font-weight: 600; }
+
+main { flex: 1; padding: 20px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+/* ── Cards ───────────────────────────────────────────────── */
+.card {
+  background: var(--cor-fundo-card);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 16px;
+  box-shadow: var(--sombra);
+  margin-bottom: 16px;
+}
+.card h2 { font-size: 14px; font-weight: 700; color: var(--cor-primaria); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--cor-borda); }
+.card h3 { font-size: 13px; font-weight: 700; color: var(--cor-primaria); margin-bottom: 8px; }
+
+/* ── Formulário ──────────────────────────────────────────── */
+.form-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-group label { font-size: 12px; font-weight: 600; color: var(--cor-texto-fraco); }
+.form-group input, .form-group select, .form-group textarea {
+  border: 1px solid var(--cor-borda);
+  border-radius: 4px;
+  padding: 7px 10px;
+  font-size: 13px;
+  color: var(--cor-texto);
+  background: #fff;
+  transition: border-color .15s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: var(--cor-primaria-clara);
+  box-shadow: 0 0 0 2px rgba(42,90,140,.15);
+}
+.form-group input[type="number"] { width: 120px; }
+.form-group.grow { flex: 1; min-width: 200px; }
+
+/* ── Botões ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--raio);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-primario { background: var(--cor-primaria); color: #fff; }
+.btn-primario:hover { background: var(--cor-primaria-clara); }
+.btn-secundario { background: #fff; color: var(--cor-primaria); border: 1px solid var(--cor-borda); }
+.btn-secundario:hover { background: var(--cor-fundo); }
+.btn-perigo { background: #c0392b; color: #fff; }
+.btn-perigo:hover { background: #a93226; }
+.btn-acento { background: var(--cor-acento); color: #fff; }
+.btn-acento:hover { filter: brightness(1.1); }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-xs { padding: 3px 7px; font-size: 11px; }
+
+/* ── Tabelas ─────────────────────────────────────────────── */
+.tabela-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th {
+  background: var(--cor-primaria);
+  color: #fff;
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  white-space: nowrap;
+}
+th.center, td.center { text-align: center; }
+th.right, td.right { text-align: right; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--cor-borda); vertical-align: middle; }
+tr:hover td { background: #f8fafc; }
+tr.eleito td { background: var(--cor-eleito-fundo); }
+tr.eleito td:first-child { border-left: 3px solid var(--cor-eleito); }
+tr.barrado td { background: var(--cor-barrado-fundo); }
+tr.barrado td:first-child { border-left: 3px solid var(--cor-barrado); }
+tr.fase3 td { background: var(--cor-fase3-fundo); }
+tr.fase3 td:first-child { border-left: 3px solid var(--cor-fase3); }
+tr.qualificado td:first-child { border-left: 3px solid var(--cor-acento); }
+
+/* ── Badges de status ────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.badge-eleito { background: var(--cor-eleito-fundo); color: var(--cor-eleito); border: 1px solid #a8d9b4; }
+.badge-barrado { background: var(--cor-barrado-fundo); color: var(--cor-barrado); border: 1px solid #f0b8b4; }
+.badge-qualificado { background: #fff8e6; color: #7a4f00; border: 1px solid #f0d890; }
+.badge-fase3 { background: var(--cor-fase3-fundo); color: var(--cor-fase3); border: 1px solid #a8c8f0; }
+
+/* ── Parâmetros da eleição ────────────────────────────────── */
+.params-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.param-item {
+  background: var(--cor-fundo);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 10px 14px;
+}
+.param-item .label { font-size: 11px; font-weight: 600; color: var(--cor-texto-fraco); }
+.param-item .valor { font-size: 18px; font-weight: 700; color: var(--cor-primaria); margin-top: 2px; }
+.param-item .detalhe { font-size: 11px; color: var(--cor-texto-fraco); margin-top: 2px; }
+
+/* ── Alertas ─────────────────────────────────────────────── */
+.alerta {
+  background: var(--cor-alerta-fundo);
+  border: 1px solid #e8c840;
+  border-left: 4px solid var(--cor-acento);
+  border-radius: var(--raio);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+.alerta.critico {
+  background: var(--cor-barrado-fundo);
+  border-color: #e88080;
+  border-left-color: var(--cor-barrado);
+  color: var(--cor-barrado);
+}
+.alerta.info {
+  background: var(--cor-fase3-fundo);
+  border-color: #80aadd;
+  border-left-color: var(--cor-fase3);
+  color: var(--cor-fase3);
+}
+.alerta-titulo { font-weight: 700; margin-bottom: 4px; }
+
+/* ── Auditoria D'Hondt ───────────────────────────────────── */
+.auditoria-container { display: flex; flex-direction: column; gap: 10px; }
+.rodada-card {
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  overflow: hidden;
+}
+.rodada-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  background: #f8fafc;
+  border-bottom: 1px solid var(--cor-borda);
+  user-select: none;
+}
+.rodada-header:hover { background: #f0f4f8; }
+.rodada-header .fase-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: var(--cor-primaria);
+  color: #fff;
+}
+.rodada-header .fase-badge.fase3 { background: var(--cor-fase3); }
+.rodada-header .vencedor { font-weight: 700; color: var(--cor-primaria); }
+.rodada-header .media { color: var(--cor-texto-fraco); font-size: 12px; }
+.rodada-header .candidato { font-size: 12px; color: var(--cor-eleito); }
+.rodada-body { padding: 10px; display: none; }
+.rodada-body.aberto { display: block; }
+.rodada-body table th { background: #eef2f7; color: var(--cor-texto); }
+.row-vencedor td { background: var(--cor-eleito-fundo) !important; font-weight: 600; }
+.row-excluido td { color: var(--cor-texto-fraco); font-style: italic; }
+.rodada-fundamentacao { font-size: 11px; color: var(--cor-texto-fraco); margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--cor-borda); }
+
+/* ── Aba "Como funciona" ──────────────────────────────────── */
+.docs-container { max-width: 800px; }
+.docs-container h2 { font-size: 16px; color: var(--cor-primaria); margin: 24px 0 8px; border-bottom: 2px solid var(--cor-acento); padding-bottom: 4px; }
+.docs-container h3 { font-size: 14px; color: var(--cor-primaria-clara); margin: 16px 0 6px; }
+.docs-container p { margin-bottom: 10px; line-height: 1.65; }
+.docs-container ul { padding-left: 20px; margin-bottom: 10px; }
+.docs-container li { margin-bottom: 5px; }
+.docs-container .formula {
+  background: var(--cor-fundo);
+  border: 1px solid var(--cor-borda);
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  font-size: 13px;
+  margin: 10px 0;
+}
+.glossario-item { display: flex; gap: 12px; margin-bottom: 10px; }
+.glossario-item .termo { font-weight: 700; min-width: 80px; color: var(--cor-primaria); }
+
+/* ── Comparativo ─────────────────────────────────────────── */
+.comparativo-container { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.variacao-positiva { color: var(--cor-eleito); font-weight: 700; }
+.variacao-negativa { color: var(--cor-barrado); font-weight: 700; }
+
+/* ── Lista de partidos na entrada ────────────────────────── */
+.partido-card {
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 12px;
+  margin-bottom: 10px;
+  background: var(--cor-fundo);
+}
+.partido-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.partido-card-header strong { flex: 1; font-size: 14px; }
+.candidatos-lista { padding-left: 8px; }
+.candidato-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.candidato-row input { flex: 1; }
+.candidato-row input.votos { width: 120px; flex: 0 0 120px; }
+
+/* ── Variação no comparativo ──────────────────────────────── */
+.var-cell {
+  font-weight: 700;
+  text-align: center;
+}
+.var-pos { color: var(--cor-eleito); }
+.var-neg { color: var(--cor-barrado); }
+.var-zero { color: var(--cor-texto-fraco); }
+
+/* ── Responsivo ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  nav { overflow-x: auto; }
+  .comparativo-container { grid-template-columns: 1fr; }
+  .params-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-row { flex-direction: column; }
+  header h1 { font-size: 14px; }
+}
+
+/* ── Presets dropdown ────────────────────────────────────── */
+.preset-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  background: #eef2f7;
+  border-bottom: 1px solid var(--cor-borda);
+  margin-bottom: 16px;
+  border-radius: var(--raio) var(--raio) 0 0;
+}
+.preset-bar label { font-size: 12px; font-weight: 600; color: var(--cor-texto-fraco); }
+.preset-bar select { font-size: 13px; padding: 6px 10px; border-radius: 4px; border: 1px solid var(--cor-borda); }
+
+/* ── Cassação ────────────────────────────────────────────── */
+.cassacao-bloco {
+  border: 1px solid #e8c840;
+  border-radius: var(--raio);
+  padding: 12px;
+  background: var(--cor-alerta-fundo);
+  margin-top: 10px;
+}
+.cassacao-bloco h3 { color: var(--cor-alerta); margin-bottom: 10px; }
+
+/* ── Spinner ─────────────────────────────────────────────── */
+.spinner {
+  display: inline-block;
+  width: 18px; height: 18px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Tab content ─────────────────────────────────────────── */
+.tab-content { display: none; }
+.tab-content.ativo { display: block; }
+
+/* ── Fade-in ─────────────────────────────────────────────── */
+.fade-in { animation: fadeIn .2s ease-in; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* ── Fase banner ─────────────────────────────────────────── */
+.fase-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--raio);
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.fase-banner.fase3 { background: var(--cor-fase3-fundo); color: var(--cor-fase3); border: 1px solid #a8c8f0; }
+.fase-banner.normal { background: var(--cor-eleito-fundo); color: var(--cor-eleito); border: 1px solid #a8d9b4; }
+
+/* ── Footer ──────────────────────────────────────────────── */
+footer {
+  background: var(--cor-primaria);
+  color: rgba(255,255,255,.6);
+  text-align: center;
+  padding: 10px;
+  font-size: 11px;
+}
+footer a { color: rgba(255,255,255,.8); }
+
+/* ── Tooltip ─────────────────────────────────────────────── */
+[title] { cursor: help; }
