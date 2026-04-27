@@ -54,6 +54,18 @@
             <input type="number" id="input-vagas" min="1" placeholder="Ex: 22" aria-label="Número de vagas" />
           </div>
         </div>
+        <div class="form-row" style="margin-top:10px; align-items:flex-start;">
+          <label class="checkbox-label"
+                 title="O STF suprimiu a barreira partidária de 80% na F3, mas não se pronunciou expressamente sobre o piso individual de 20%. Marque para adotar interpretação conservadora. Resolução TSE 23.735/2024 é o parâmetro vigente."
+                 style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:var(--cor-texto);">
+            <input type="checkbox" id="togglePiso20F3" aria-describedby="togglePiso20F3-desc" />
+            Aplicar piso individual de 20% do QE na Fase 3
+            <span style="font-size:11px; color:var(--cor-texto-fraco); font-weight:400;">(interpretação conservadora)</span>
+          </label>
+          <p id="togglePiso20F3-desc" style="display:none;">
+            Se marcado, apenas candidatos com votos ≥ 20% do QE podem ser convocados na Fase 3.
+          </p>
+        </div>
       </div>
 
       <!-- Partidos -->
@@ -128,6 +140,10 @@
         <button id="btn-exportar-csv" class="btn btn-secundario" disabled>⬇ Exportar CSV</button>
         <button id="btn-exportar-pdf" class="btn btn-secundario" disabled>⬇ Exportar PDF</button>
         <button id="btn-link" class="btn btn-secundario" disabled>🔗 Copiar Link</button>
+        <button id="btn-apresentacao" class="btn btn-secundario" disabled
+                title="Exibe a tabela de resultado em modo tela cheia (Esc para sair)">
+          ▶ Apresentação
+        </button>
       </div>
 
     </section>
@@ -292,8 +308,24 @@
   <!-- ═══ RODAPÉ ════════════════════════════════════════════════════════════ -->
   <footer>
     Calculadora de Retotalização Eleitoral — Ferramenta técnico-jurídica de apoio.
-    Não substitui decisão da Justiça Eleitoral. · Art. 109 CE · ADIs 7.228/7.263/7.325 STF (13/03/2025)
+    Não substitui decisão da Justiça Eleitoral. ·
+    <span id="rodape-versao">v2.0 · art. 109 CE · ADIs 7.228/7.263/7.325 STF (13/03/2025)</span>
   </footer>
+
+  <!-- ═══ MODO APRESENTAÇÃO ══════════════════════════════════════════════ -->
+  <!-- Overlay fullscreen (CSS show/hide — sem Fullscreen API) -->
+  <div id="apres-overlay" role="dialog" aria-modal="true" aria-label="Modo Apresentação">
+    <div id="apres-conteudo">
+      <h2 id="apres-titulo"></h2>
+      <p  id="apres-subtitulo"></p>
+      <div id="apres-tabela"></div>
+    </div>
+  </div>
+
+  <!-- Botão de saída fixo (fora da overlay para evitar ambiguidade de fixed-in-fixed) -->
+  <button id="apres-sair" class="btn btn-acento" aria-label="Sair do modo apresentação">
+    ✕ Sair da Apresentação
+  </button>
 
 </div><!-- #app -->
 
@@ -303,10 +335,11 @@
 
 <!-- Módulos da aplicação -->
 <script src="js/i18n.js?v=5"></script>
-<script src="js/engine.js?v=5"></script>
+<script src="js/engine.js?v=7"></script>
 <script src="js/presets.js?v=5"></script>
-<script src="js/export.js?v=5"></script>
-<script src="js/ui.js?v=7"></script>
+<script src="js/export.js?v=8"></script>
+<script src="js/ui.js?v=12"></script>
+<script src="js/runner.js?v=1"></script>
 
 <script>
   // Sincronizar visibilidade da aba comparativo
