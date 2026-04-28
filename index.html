@@ -105,6 +105,93 @@
         </div>
       </div>
 
+      <!-- Importação TSE -->
+      <div class="sidebar-section import-section" id="import-section">
+
+        <div class="import-header">
+          <button id="btn-toggle-import" class="import-toggle-btn"
+                  aria-expanded="false" aria-controls="import-body"
+                  title="Importar dados diretamente do CSV oficial do TSE">
+            <span class="import-toggle-icon">⬇</span>
+            Importar dados do TSE
+          </button>
+          <a href="https://dadosabertos.tse.jus.br/dataset/resultados-2022"
+             target="_blank" rel="noopener noreferrer"
+             class="import-link-tse"
+             title="Acesse › Resultados 2022 › votacao_partido_munzona_2022_{UF}.zip">
+            ↗ Portal TSE
+          </a>
+        </div>
+
+        <div id="import-body" style="display:none;">
+
+          <!-- Passo 1: arquivo de votos por partido -->
+          <div class="import-step">
+            <label class="import-step-label" for="file-partido">
+              <span class="import-step-num">1</span>
+              Votos por partido <span class="import-step-req">*</span>
+            </label>
+            <div class="import-step-hint">votacao_partido_munzona_{ano}_{uf}.csv</div>
+            <input type="file" id="file-partido" accept=".csv"
+                   class="import-file-input"
+                   aria-label="Arquivo de votação por partido do TSE" />
+          </div>
+
+          <!-- Passo 2: arquivo de candidatos (opcional) -->
+          <div class="import-step">
+            <label class="import-step-label" for="file-candidato">
+              <span class="import-step-num">2</span>
+              Candidatos <span class="import-step-opt">(opcional)</span>
+            </label>
+            <div class="import-step-hint">votacao_candidato_munzona_{ano}_{uf}.csv</div>
+            <input type="file" id="file-candidato" accept=".csv"
+                   class="import-file-input"
+                   aria-label="Arquivo de votação por candidato do TSE (opcional)" />
+          </div>
+
+          <!-- Filtros -->
+          <div class="import-filters">
+            <div class="import-filter-field">
+              <label class="import-filter-label" for="filter-cargo">Cargo</label>
+              <select id="filter-cargo" class="import-filter-select"
+                      aria-label="Filtrar por cargo">
+                <option value="Deputado Federal">Deputado Federal</option>
+                <option value="Deputado Estadual">Deputado Estadual / Distrital</option>
+                <option value="Vereador">Vereador</option>
+              </select>
+            </div>
+            <div class="import-filter-field">
+              <label class="import-filter-label" for="filter-uf">UF</label>
+              <select id="filter-uf" class="import-filter-select"
+                      aria-label="Filtrar por estado">
+                <option value="">Todas as UFs</option>
+              </select>
+            </div>
+            <div class="import-filter-field" id="filter-municipio-wrap" style="display:none;">
+              <label class="import-filter-label" for="filter-municipio">Município</label>
+              <select id="filter-municipio" class="import-filter-select"
+                      aria-label="Filtrar por município">
+                <option value="">Todos</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Botão processar -->
+          <button id="btn-processar-csv" class="import-btn-processar">
+            ▶ Processar e preencher campos
+          </button>
+
+          <!-- Status / progresso -->
+          <div id="import-status" class="import-status" aria-live="polite"></div>
+
+        </div><!-- #import-body -->
+
+        <!-- Badge de confirmação (visível fora do painel colapsável) -->
+        <div id="import-badge" class="import-badge" style="display:none;"
+             aria-live="polite"></div>
+
+      </div><!-- .import-section -->
+
       <!-- Partidos -->
       <div class="sidebar-section">
         <div class="sidebar-label">Partidos e Federações</div>
@@ -432,7 +519,8 @@
 <script src="js/engine.js?v=7"></script>
 <script src="js/presets.js?v=5"></script>
 <script src="js/export.js?v=8"></script>
-<script src="js/ui.js?v=12"></script>
+<script src="js/ui.js?v=13"></script>
+<script src="js/import.js?v=1"></script>
 <script src="js/runner.js?v=1"></script>
 
 <!-- ═══ SCRIPTS INLINE ══════════════════════════════════════════════════════════ -->

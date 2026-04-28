@@ -5,6 +5,10 @@
 (function () {
 'use strict';
 
+// ─── Versão da aplicação ────────────────────────────────────────────────────────
+const APP_VERSION = '2.0';
+const APP_BUILD   = new Date().toISOString().split('T')[0]; // AAAA-MM-DD
+
 // ─── Estado global ──────────────────────────────────────────────────────────────
 
 const Estado = {
@@ -108,7 +112,11 @@ function adicionarPartidoUI(dados = null) {
     },
   }, 'Candidatos');
 
-  header.append(inputSigla, inputNome, inputNominais, inputLegenda, btnToggleCandidatos, btnRemover);
+  // Wraps individuais: input + mensagem de erro ficam em coluna flex
+  const wSigla    = el('div', { class: 'input-valida' }); wSigla.appendChild(inputSigla);
+  const wNominais = el('div', { class: 'input-valida' }); wNominais.appendChild(inputNominais);
+  const wLegenda  = el('div', { class: 'input-valida' }); wLegenda.appendChild(inputLegenda);
+  header.append(wSigla, inputNome, wNominais, wLegenda, btnToggleCandidatos, btnRemover);
   card.appendChild(header);
 
   // Lista de candidatos
@@ -145,6 +153,150 @@ function adicionarCandidatoUI(lista, dados = null, siglaPartido = '') {
   lista.appendChild(row);
 }
 
+// ─── Validação em tempo real ────────────────────────────────────────────────────
+
+/**
+ * Aplica estado visual (borda + mensagem de erro) a um campo.
+ * @param {HTMLInputElement} input
+ * @param {boolean|null} valid  — true=válido, false=inválido, null=sem estado (não tocado)
+ * @param {string} msg          — mensagem de erro (apenas quando invalid=false)
+ */
+function setFieldState(input, valid, msg) {
+  // Remover mensagem de erro anterior (dentro do mesmo wrapper/pai)
+  const anterior = input.parentNode.querySelector(':scope > .campo-erro');
+  if (anterior) anterior.remove();
+
+  input.classList.remove('invalido', 'valido');
+
+  if (valid === null) { atualizarBotaoCalcular(); return; }
+
+  if (valid) {
+    input.classList.add('valido');
+  } else {
+    input.classList.add('invalido');
+    const errEl = el('div', { class: 'campo-erro' }, `⚠ ${msg}`);
+    input.after(errEl); // inserido como irmão, dentro do wrapper .input-valida
+  }
+  atualizarBotaoCalcular();
+}
+
+/** Habilita/desabilita o botão Calcular conforme existência de erros no formulário. */
+function atualizarBotaoCalcular() {
+  const btn = $('btn-calcular');
+  if (!btn) return;
+  const temErros = document.querySelectorAll('input.invalido').length > 0;
+  btn.disabled = temErros;
+}
+
+// ── Validadores individuais ────────────────────────────────────────────────────
+
+function validarVagas(input, mark) {
+  const v = parseInt(input.value, 10);
+  const ok = !isNaN(v) && v >= 1 && v <= 513;
+  if (mark !== false) setFieldState(input, ok, 'Número de vagas deve ser entre 1 e 513');
+  return ok;
+}
+
+function validarVotos(input, mark) {
+  const raw = input.value.trim();
+  if (raw === '') { if (mark !== false) setFieldState(input, null, ''); return true; }
+  const v = Number(raw);
+  const ok = Number.isInteger(v) && v >= 0;
+  if (mark !== false) setFieldState(input, ok, 'Votos devem ser um número inteiro positivo ou zero');
+  return ok;
+}
+
+function validarSigla(input, mark) {
+  const s = input.value.trim();
+  const ok = s.length > 0 && s.length <= 20;
+  if (mark !== false) setFieldState(input, ok, 'Sigla obrigatória (máximo 20 caracteres)');
+  return ok;
+}
+
+function validarCassacaoVotos(input, mark) {
+  const row    = input.closest('.cassacao-row');
+  const sigla  = row?.querySelector('.cass-partido')?.value.trim() || '';
+  const votos  = parseInt(input.value, 10);
+
+  if (!sigla || !input.value.trim() || isNaN(votos)) {
+    if (mark !== false) setFieldState(input, null, '');
+    return true;
+  }
+
+  const card = [...document.querySelectorAll('.partido-card')].find(c =>
+    c.querySelector('.partido-sigla')?.value.trim() === sigla
+  );
+  if (!card) { if (mark !== false) setFieldState(input, null, ''); return true; }
+
+  const nom   = parseInt(card.querySelector('.partido-nominais').value, 10) || 0;
+  const leg   = parseInt(card.querySelector('.partido-legenda').value,  10) || 0;
+  const total = nom + leg;
+  const ok    = votos <= total;
+  if (mark !== false) setFieldState(input, ok,
+    `Votos a anular excedem o total de votos do partido (${fmt(total)} votos)`);
+  return ok;
+}
+
+/** Valida todos os campos relevantes e retorna true se o formulário está ok. */
+function validarTudo() {
+  let ok = true;
+
+  if (!validarVagas($('input-vagas'))) ok = false;
+
+  for (const card of document.querySelectorAll('.partido-card')) {
+    if (!validarSigla(card.querySelector('.partido-sigla')))       ok = false;
+    if (!validarVotos(card.querySelector('.partido-nominais')))    ok = false;
+    if (!validarVotos(card.querySelector('.partido-legenda')))     ok = false;
+  }
+
+  for (const row of document.querySelectorAll('.cassacao-row')) {
+    const inp = row.querySelector('.cass-votos');
+    if (inp && inp.value.trim()) {
+      if (!validarCassacaoVotos(inp)) ok = false;
+    }
+  }
+
+  atualizarBotaoCalcular();
+  return ok;
+}
+
+/** Registra listeners de validação on-blur (captura) e on-input para campos dinâmicos. */
+function inicializarValidacao() {
+  // Campo de vagas (estático)
+  const inputVagas = $('input-vagas');
+  inputVagas.addEventListener('blur',  () => validarVagas(inputVagas));
+  inputVagas.addEventListener('input', () => {
+    if (inputVagas.classList.contains('invalido')) validarVagas(inputVagas);
+  });
+
+  // Campos de partido — event delegation (blur requer capture=true)
+  $('lista-partidos').addEventListener('blur', e => {
+    const t = e.target;
+    if (t.matches('.partido-sigla'))    validarSigla(t);
+    if (t.matches('.partido-nominais')) validarVotos(t);
+    if (t.matches('.partido-legenda'))  validarVotos(t);
+  }, true);
+
+  $('lista-partidos').addEventListener('input', e => {
+    const t = e.target;
+    if (!t.classList.contains('invalido')) return;
+    if (t.matches('.partido-sigla'))    validarSigla(t);
+    if (t.matches('.partido-nominais')) validarVotos(t);
+    if (t.matches('.partido-legenda'))  validarVotos(t);
+  });
+
+  // Campos de cassação — event delegation
+  const listaCass = $('lista-cassacoes');
+  listaCass.addEventListener('blur', e => {
+    if (e.target.matches('.cass-votos')) validarCassacaoVotos(e.target);
+  }, true);
+
+  listaCass.addEventListener('input', e => {
+    const t = e.target;
+    if (t.classList.contains('invalido') && t.matches('.cass-votos')) validarCassacaoVotos(t);
+  });
+}
+
 // ─── Leitura do formulário ──────────────────────────────────────────────────────
 
 function lerFormulario() {
@@ -153,7 +305,7 @@ function lerFormulario() {
   const rotulo = $('input-rotulo').value.trim() || 'Pleito sem rótulo';
   const vagas = parseInt($('input-vagas').value, 10);
 
-  if (isNaN(vagas) || vagas < 1) erros.push('Número de vagas deve ser ≥ 1.');
+  if (isNaN(vagas) || vagas < 1 || vagas > 513) erros.push('Número de vagas deve ser entre 1 e 513.');
 
   const partidos = [];
   const siglasSeen = new Set();
@@ -193,6 +345,7 @@ function lerFormulario() {
   }
 
   if (partidos.length === 0) erros.push('Informe ao menos um partido.');
+  else if (partidos.length === 1) erros.push('AVISO: Recomendado pelo menos 2 partidos para cálculo significativo.');
 
   // Cassações
   const cassacoes = [];
@@ -206,7 +359,8 @@ function lerFormulario() {
     }
   }
 
-  const cenario = { rotulo, vagas, partidos, cassacoes };
+  const aplicarPiso20F3 = !!($('togglePiso20F3')?.checked);
+  const cenario = { rotulo, vagas, partidos, cassacoes, aplicarPiso20F3 };
   if (Estado.presetComparar) cenario._comparar_com = Estado.presetComparar;
   return { erros, cenario };
 }
@@ -214,6 +368,17 @@ function lerFormulario() {
 // ─── Cálculo e renderização ─────────────────────────────────────────────────────
 
 function executarCalculo() {
+  // Validação em tempo real: bloqueia se houver campos inválidos
+  if (!validarTudo()) {
+    const erroBox = $('erros-formulario');
+    erroBox.innerHTML = '';
+    erroBox.appendChild(el('div', { class: 'alerta critico' },
+      el('div', { class: 'alerta-titulo' }, '✕ Erro de validação'),
+      'Corrija os campos marcados em vermelho antes de calcular.'
+    ));
+    return;
+  }
+
   const { erros, cenario } = lerFormulario();
 
   const erroBox = $('erros-formulario');
@@ -270,6 +435,7 @@ function renderizarResultado(resultado, original) {
   $('btn-exportar-csv').disabled = false;
   $('btn-exportar-pdf').disabled = false;
   $('btn-link').disabled = false;
+  $('btn-apresentacao').disabled = false;
 }
 
 function renderizarParametros(r) {
@@ -318,6 +484,68 @@ function renderizarAlertas(r) {
   }
 }
 
+// ─── Tooltips das células de fase ──────────────────────────────────────────────
+
+/**
+ * Tooltip para a célula F1 (Quociente Partidário).
+ * Quando valor > 0: descreve a fórmula aplicada.
+ * Quando valor = 0: explica por que o partido não obteve vagas diretas.
+ */
+function tooltipF1(p, r) {
+  if (p.qp > 0) {
+    return `${p.qp} vaga(s) pelo Quociente Partidário — ` +
+      `floor(${fmt(p.votos)} ÷ ${fmt(r.qe)}) = ${p.qp} · art. 109, I, CE`;
+  }
+  return `Sem vagas em F1 — votos do partido (${fmt(p.votos)}) ` +
+    `inferiores ao Quociente Eleitoral (${fmt(r.qe)})`;
+}
+
+/**
+ * Tooltip para a célula F2 (Maiores Médias com barreira 80/20).
+ * Distingue: barrado pela barreira, sem sobras, sem candidatos 20%, ou não venceu.
+ */
+function tooltipF2(p, r) {
+  if (p.sobrasF2 > 0) {
+    return `${p.sobrasF2} vaga(s) por maiores médias D'Hondt com barreira ` +
+      `80% QE / piso 20% QE individual · art. 109, II, CE`;
+  }
+  // Barrado pela cláusula de 80% do QE
+  if (p.votos < r.barreira80) {
+    return `Excluído da Fase 2 — votos do partido (${fmt(p.votos)}) ` +
+      `abaixo da barreira de 80% do QE (${fmt(r.barreira80)})`;
+  }
+  // Fase 2 sequer executou (todas as vagas preenchidas em F1)
+  if (r.sobras === 0) {
+    return 'Fase 2 não executada — todas as vagas foram preenchidas ' +
+      'pelo Quociente Partidário na Fase 1';
+  }
+  // Qualificado mas sem candidatos com ≥ 20% QE disponíveis
+  if (p.candidatos20Disponiveis === 0) {
+    return `Partido atingiu a barreira de 80% QE mas não tinha candidatos ` +
+      `com votos ≥ 20% QE (${fmt(r.piso20)}) disponíveis para convocação`;
+  }
+  // Qualificado, participou, mas não venceu nenhuma rodada
+  return `Partido qualificado para a Fase 2 (≥ 80% QE) mas não ` +
+    `venceu nenhuma rodada de maiores médias D'Hondt`;
+}
+
+/**
+ * Tooltip para a célula F3 (Maiores Médias sem barreira — ADIs STF).
+ * Distingue: F3 não ativada vs. F3 ativada mas partido não venceu rodadas.
+ */
+function tooltipF3(p, r) {
+  if (p.sobrasF3 > 0) {
+    return `${p.sobrasF3} vaga(s) por maiores médias D'Hondt sem barreira ` +
+      `partidária · ADIs 7.228/7.263/7.325 STF (13/03/2025)`;
+  }
+  if (!r.fase3Ativada) {
+    return 'Fase 3 não ativada — todas as vagas foram distribuídas ' +
+      'nas Fases 1 e 2';
+  }
+  return 'Fase 3 ativada mas o partido não venceu nenhuma rodada ' +
+    "de maiores médias nesta fase (sem barreira partidária)";
+}
+
 function renderizarTabelaResultado(resultado, original) {
   const container = $('tabela-resultado');
 
@@ -346,13 +574,43 @@ function renderizarTabelaResultado(resultado, original) {
 
     const tr = el('tr', { class: statusClass, title: I18N.STATUS_TITLE[p.status] || '' });
 
-    tr.appendChild(el('td', {}, el('strong', {}, p.sigla)));
+    // ── Badge de zona de sensibilidade F2 ──────────────────
+    const limiar85 = resultado.qe * 0.85;
+    const limiar75 = resultado.qe * 0.75;
+    // delta = votos do partido - floor(80% QE)  [spec: votos - floor(0.8 × QE)]
+    const barreiraInt  = Math.floor(resultado.barreira80);
+    const deltaAbsSens = Math.abs(p.votos - barreiraInt);
+
+    let badgeZona;
+    if (p.votos >= limiar85) {
+      badgeZona = el('span', {
+        class: 'badge-zona zona-apta',
+        title: 'Partido acima de 85% do QE — confortavelmente apto para a Fase 2',
+      }, 'Apto F2');
+    } else if (p.votos >= limiar75) {
+      badgeZona = el('span', {
+        class: 'badge-zona zona-sensivel',
+        title: `Variação de ${fmt(deltaAbsSens)} votos altera elegibilidade para a Fase 2`,
+      }, '⚠ Zona sensível');
+    } else {
+      badgeZona = el('span', {
+        class: 'badge-zona zona-excluida',
+        title: 'Partido abaixo de 75% do QE — excluído da Fase 2',
+      }, 'Excluído F2');
+    }
+
+    const tdSigla = el('td', {});
+    tdSigla.appendChild(el('strong', {}, p.sigla));
+    tdSigla.appendChild(el('br', {}));
+    tdSigla.appendChild(badgeZona);
+    tr.appendChild(tdSigla);
+
     tr.appendChild(el('td', {}, p.nome));
     tr.appendChild(el('td', { class: 'right' }, fmt(p.votos)));
     tr.appendChild(el('td', { class: 'right' }, fmtPct(p.percentualQE)));
-    tr.appendChild(el('td', { class: 'right center' }, String(p.qp)));
-    tr.appendChild(el('td', { class: 'right center' }, String(p.sobrasF2)));
-    tr.appendChild(el('td', { class: 'right center' }, String(p.sobrasF3)));
+    tr.appendChild(el('td', { class: 'right center td-fase', title: tooltipF1(p, resultado) }, String(p.qp)));
+    tr.appendChild(el('td', { class: 'right center td-fase', title: tooltipF2(p, resultado) }, String(p.sobrasF2)));
+    tr.appendChild(el('td', { class: 'right center td-fase', title: tooltipF3(p, resultado) }, String(p.sobrasF3)));
     tr.appendChild(el('td', { class: 'right center' }, el('strong', {}, String(p.total))));
 
     if (original) {
@@ -493,6 +751,44 @@ function renderizarComparativo(original, retotalizado) {
   }
 }
 
+// ─── Modo Apresentação ─────────────────────────────────────────────────────────
+
+/** Listener de teclado — salvo fora para permitir removeEventListener */
+function _apresEscape(e) {
+  if (e.key === 'Escape') sairApresentacao();
+}
+
+function entrarApresentacao() {
+  if (!Estado.resultado) return;
+
+  const r = Estado.resultado;
+
+  // Preencher cabeçalho
+  $('apres-titulo').textContent = r.rotulo;
+  $('apres-subtitulo').textContent =
+    `${r.vagas} vagas  ·  QE ${fmt(r.qe)}  ·  ` +
+    `Barreira 80% ${fmt(r.barreira80)}  ·  ` +
+    (r.fase3Ativada ? '⚖ Fase 3 ativada' : 'Fase 3 não ativada');
+
+  // Clonar a tabela de resultado para a overlay
+  const src = $('tabela-resultado');
+  const dst = $('apres-tabela');
+  dst.innerHTML = '';
+  if (src) dst.appendChild(src.cloneNode(true));
+
+  // Ativar modo e reposicionar scroll
+  document.body.classList.add('modo-apresentacao');
+  $('apres-overlay').scrollTop = 0;
+
+  // Escape para sair
+  document.addEventListener('keydown', _apresEscape);
+}
+
+function sairApresentacao() {
+  document.body.classList.remove('modo-apresentacao');
+  document.removeEventListener('keydown', _apresEscape);
+}
+
 // ─── Cassações ──────────────────────────────────────────────────────────────────
 
 let contadorCassacao = 0;
@@ -511,7 +807,8 @@ function adicionarCassacaoUI() {
   }
   const btnRem = el('button', { class: 'btn btn-perigo btn-xs', onclick: () => row.remove() }, '✕');
 
-  row.append(selPartido, selCandidato, selVotos, selModal, btnRem);
+  const wVotos = el('div', { class: 'input-valida' }); wVotos.appendChild(selVotos);
+  row.append(selPartido, selCandidato, wVotos, selModal, btnRem);
   container.appendChild(row);
 }
 
@@ -607,6 +904,9 @@ async function init() {
   });
   $('btn-adicionar-cassacao').addEventListener('click', adicionarCassacaoUI);
 
+  $('btn-apresentacao').addEventListener('click', entrarApresentacao);
+  $('apres-sair').addEventListener('click', sairApresentacao);
+
   $('btn-exportar-csv').addEventListener('click', () => {
     if (!Estado.resultado) return;
     Export.downloadCSV(Export.exportarCSV(Estado.resultado), `retotalizacao.csv`);
@@ -636,6 +936,15 @@ async function init() {
   if (document.querySelectorAll('.partido-card').length === 0) {
     adicionarPartidoUI();
   }
+
+  // Validação em tempo real
+  inicializarValidacao();
+
+  // Versão no rodapé
+  const spanVersao = $('rodape-versao');
+  if (spanVersao) {
+    spanVersao.textContent = `v${APP_VERSION} · art. 109 CE · ADIs 7.228/7.263/7.325 · ${APP_BUILD}`;
+  }
 }
 
 function preencherFormularioDeCenario(cenario) {
@@ -659,5 +968,11 @@ function preencherFormularioDeCenario(cenario) {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+// ── Exports para módulo de importação TSE ───────────────────────────────────────
+window._UI = {
+  adicionarPartido: adicionarPartidoUI,
+  preencherCenario: preencherFormularioDeCenario,
+};
 
 })(); // fim da IIFE
