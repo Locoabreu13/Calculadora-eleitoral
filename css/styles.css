@@ -1365,3 +1365,47 @@ body.modo-apresentacao #apres-tabela .badge      { font-size: 11pt; padding: 3px
   #painel-parametros.params-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-right { display: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   OVERRIDE TEMA AZUL-MARINHO — appended
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --navy: #1B2B4B !important;
+  --navy-mid: #162240 !important;
+  --navy-light: #1E3258 !important;
+  --navy-border: #2A3F6A !important;
+  --gold: #2563EB !important;
+  --gold-light: #4A80FF !important;
+  --white: #EFF2F7 !important;
+  --slate: #F0EEE9 !important;
+  --slate-mid: #E8E4DC !important;
+  --slate-dark: #D8D4CC !important;
+  --text-main: #1B2B4B !important;
+  --text-muted: #6B80A0 !important;
+  --text-hint: #4A6A9A !important;
+  --f1-color: #2563EB !important;
+  --f2-color: #0F6E56 !important;
+  --f3-color: #F5A623 !important;
+}
+
+body, .app, .wrap {
+  background-color: #F0EEE9 !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+.topbar, .footer, .sidebar, .rail {
+  background-color: #1B2B4B !important;
+}
+
+.btn-calcular, .s-calc, #btn-calcular {
+  background: #2563EB !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.result-panel, .tcard, .audit-panel, .aud-card,
+.metric, .mc {
+  background: #ffffff !important;
+  border: 1px solid #E8E4DC !important;
+  border-radius: 12px !important;
+}
