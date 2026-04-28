@@ -29,6 +29,13 @@ const CARGO_MAP = {
   'VEREADOR':           'Vereador',
 };
 
+function encontrarNomeColuna(header, candidatos) {
+  for (const nome of candidatos) {
+    if (header.includes(nome)) return nome;
+  }
+  return candidatos[candidatos.length - 1];
+}
+
 function normalizarCargo(cargoCSV) {
   const upper = (cargoCSV || '').trim().toUpperCase();
   return CARGO_MAP[upper] || cargoCSV.trim();
@@ -161,9 +168,12 @@ async function parseCsvTSE(file, filtro) {
 
   const header = splitLinha(linhas[0]);
 
+  const campoNominais = encontrarNomeColuna(header, ['QT_VOTOS_NOMINAIS_VALIDOS','QT_VOTOS_NOMINAIS']);
+  const campoLegenda  = encontrarNomeColuna(header, ['QT_VOTOS_LEGENDA_VALIDOS','QT_VOTOS_LEGENDA']);
+
   const idx = extrairIndices(header, [
     'DS_CARGO', 'SG_UF', 'NM_MUNICIPIO',
-    'SG_PARTIDO', 'NM_PARTIDO', 'QT_VOTOS_NOMINAIS', 'QT_VOTOS_LEGENDA',
+    'SG_PARTIDO', 'NM_PARTIDO', campoNominais, campoLegenda,
   ]);
 
   const partidos           = {};
@@ -190,8 +200,8 @@ async function parseCsvTSE(file, filtro) {
 
     const sigla    = cols[idx['SG_PARTIDO']];
     const nome     = cols[idx['NM_PARTIDO']];
-    const nominais = parseInt(cols[idx['QT_VOTOS_NOMINAIS']], 10) || 0;
-    const legenda  = parseInt(cols[idx['QT_VOTOS_LEGENDA']], 10)  || 0;
+    const nominais = parseInt(cols[idx[campoNominais]], 10) || 0;
+    const legenda  = parseInt(cols[idx[campoLegenda]],  10) || 0;
 
     if (!partidos[sigla]) {
       partidos[sigla] = { sigla, nome, nominais: 0, legenda: 0 };
@@ -225,8 +235,9 @@ async function parseCsvCandidatosTSE(file, filtro) {
   const header = splitLinha(linhas[0]);
 
   // Colunas do arquivo de candidatos — DS_CARGO pode ter nome diferente em alguns anos
+  const campoNomCand = encontrarNomeColuna(header, ['QT_VOTOS_NOMINAIS_VALIDOS','QT_VOTOS_NOMINAIS']);
   const campos = ['DS_CARGO','SG_UF','NM_MUNICIPIO','NM_CANDIDATO','NR_CANDIDATO',
-                  'SG_PARTIDO','QT_VOTOS_NOMINAIS'];
+                  'SG_PARTIDO', campoNomCand];
   const idx = {};
   for (const campo of campos) {
     const i = header.indexOf(campo);
