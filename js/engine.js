@@ -98,6 +98,16 @@ function parteInteira(dividendo, divisor) {
 }
 
 /**
+ * Normaliza sigla/nome para comparação case-insensitive sem acento.
+ */
+function normalizarSigla(s) {
+  return (s || '').toUpperCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .trim();
+}
+
+/**
  * Aplica cassações ao cenário, ajustando votos dos partidos.
  * @param {Partido[]} partidos
  * @param {Cassacao[]} cassacoes
@@ -111,7 +121,8 @@ function aplicarCassacoes(partidos, cassacoes) {
   }));
 
   for (const cassacao of (cassacoes || [])) {
-    const partido = result.find(p => p.sigla === cassacao.partido);
+    const normCass = normalizarSigla(cassacao.partido);
+    const partido = result.find(p => normalizarSigla(p.sigla) === normCass);
     if (!partido) continue;
 
     const candidato = partido.candidatos
