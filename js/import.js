@@ -94,11 +94,7 @@ async function lerArquivo(file) {
 
   const buffer  = await file.arrayBuffer();
   const decoder = new TextDecoder('iso-8859-1');
-  // Correção 1: remover BOM (﻿) e caracteres invisíveis do início
-  let text = decoder.decode(buffer);
-  const BOM = '﻿';
-  if (text.startsWith(BOM)) text = text.slice(1);
-  text = text.trimStart();
+  const text    = decoder.decode(buffer);
   return { text, bytes: file.size };
 }
 
@@ -107,45 +103,29 @@ async function lerArquivo(file) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Busca coluna por lista de candidatos, case-insensitive e tolerante a espaços/BOM.
- * Retorna o índice do primeiro nome encontrado, ou -1 se nenhum existir.
- *
- * Usar findIndex + toUpperCase() garante robustez mesmo quando o TSE altera
- * maiúsculas/minúsculas ou há BOM (﻿) no primeiro campo do cabeçalho.
+ * Extrai índices de colunas do cabeçalho.
+ * Lança erro descritivo se coluna obrigatória não for encontrada.
  */
-function encontrarColuna(header, candidatos) {
-  for (const nome of candidatos) {
-    const idx = header.findIndex(
-      h => h.trim().toUpperCase() === nome.toUpperCase()
-    );
-    if (idx !== -1) return idx;
+function extrairIndices(header, campos) {
+  const idx = {};
+  for (const campo of campos) {
+    const i = header.indexOf(campo);
+    if (i === -1) {
+      throw new Error(
+        `Arquivo inválido: coluna "${campo}" não encontrada. ` +
+        `Confirme que é o arquivo de votação por partido do TSE.`
+      );
+    }
+    idx[campo] = i;
   }
-  return -1;
+  return idx;
 }
 
 /**
- * Monta mensagem de erro detalhada listando TODAS as colunas reais do arquivo.
- * Correção 4: sem truncamento, para diagnóstico completo.
+ * Faz split de uma linha CSV com separador ';', removendo aspas.
  */
-function erroColunasNaoEncontradas(header) {
-  return (
-    `Colunas não encontradas no arquivo.\n` +
-    `Colunas disponíveis (${header.length} no total):\n` +
-    header.join(' | ') + `\n\n` +
-    `Esperado para votos nominais: QT_VOTOS_NOMINAIS\n` +
-    `Esperado para sigla: SG_PARTIDO\n` +
-    `Esperado para cargo: DS_CARGO\n\n` +
-    `Confirme que o arquivo é: votacao_partido_munzona_AAAA_UF.csv`
-  );
-}
-
-/**
- * Faz split de uma linha CSV com separador detectado, removendo aspas duplas e simples.
- * Correção 3: strip de aspas simples além das duplas.
- */
-function splitLinha(linha, sep) {
-  sep = sep || ';';
-  return linha.split(sep).map(c => c.trim().replace(/['"]/g, '').trim());
+function splitLinha(linha) {
+  return linha.split(';').map(c => c.trim().replace(/^"|"$/g, ''));
 }
 
 /**
@@ -179,65 +159,12 @@ async function parseCsvTSE(file, filtro) {
   const linhas = text.split(/\r?\n/).filter(l => l.trim());
   if (linhas.length < 2) throw new Error('Arquivo vazio ou sem linhas de dados.');
 
-  // Correção 2: detectar separador automaticamente (';' ou ',')
-  const primeiraLinha = linhas[0];
-  const sep = primeiraLinha.includes(';') ? ';' : ',';
+  const header = splitLinha(linhas[0]);
 
-  // Correção 5: log completo antes de qualquer verificação
-  console.log('[TSE] Primeiros 200 chars do arquivo:', text.substring(0, 200));
-  console.log('[TSE] Separador detectado:', sep);
-
-  const header = splitLinha(primeiraLinha, sep);
-
-  console.log('[TSE] Total de colunas:', header.length);
-  console.log('[TSE] Todas as colunas:', header);
-  // Correção 6: exibir especificamente as colunas de índice alto onde ficam votos/sigla
-  console.log('[TSE] Colunas de índice 20-35:', header.slice(20, 35));
-
-  // ── Busca tolerante de colunas — nomes reais do TSE 2022 em primeiro lugar ──
-  const idxSigla      = encontrarColuna(header, ['SG_PARTIDO', 'SG_PART', 'SIGLA_PARTIDO']);
-  const idxUF         = encontrarColuna(header, ['SG_UF', 'SG_UF_CIRCUNSCRICAO', 'UF']);
-  const idxCargo      = encontrarColuna(header, ['DS_CARGO', 'NM_CARGO', 'CD_CARGO']);
-  const idxNominais   = encontrarColuna(header, [
-    'QT_VOTOS_NOMINAIS_VALIDOS',
-    'QT_VOTOS_NOMINAIS',
-    'QT_VOTOS_NOMINAL',
-    'QT_VOTOS'
+  const idx = extrairIndices(header, [
+    'DS_CARGO', 'SG_UF', 'NM_MUNICIPIO',
+    'SG_PARTIDO', 'NM_PARTIDO', 'QT_VOTOS_NOMINAIS', 'QT_VOTOS_LEGENDA',
   ]);
-  const idxLegenda    = encontrarColuna(header, [
-    'QT_VOTOS_LEGENDA_VALIDOS',
-    'QT_VOTOS_LEGENDA',
-    'QT_VOTOS_LEGEND',
-    'NR_VOTOS_LEGENDA'
-  ]);
-  const idxNomePart   = encontrarColuna(header, ['NM_PARTIDO', 'NM_PART', 'NOME_PARTIDO']);
-  const idxMunicipio  = encontrarColuna(header, ['NM_MUNICIPIO', 'NM_UE', 'DS_MUNICIPIO']);
-  const idxFederacao  = encontrarColuna(header, ['NM_FEDERACAO', 'SG_FEDERACAO', 'DS_COMPOSICAO_FEDERACAO']);
-
-  console.log('[TSE Import] Índices mapeados:', {
-    sigla:       idxSigla,
-    nomePartido: idxNomePart,
-    nominais:    idxNominais,
-    legenda:     idxLegenda,
-    cargo:       idxCargo,
-    uf:          idxUF,
-    municipio:   idxMunicipio,
-  });
-
-  // ── Validação: apenas sigla, UF, cargo e nominais são obrigatórios ──
-  if (idxSigla === -1 || idxUF === -1 || idxCargo === -1 || idxNominais === -1) {
-    throw new Error(erroColunasNaoEncontradas(header));
-  }
-
-  // ── Correção 4: legenda é opcional — aviso se ausente, mas não bloqueia ──
-  if (idxLegenda === -1) {
-    console.warn('[TSE Import] Coluna de legenda não encontrada — usando 0 para todos os partidos.');
-    setStatus(
-      '⚠ Votos de legenda não encontrados no arquivo. ' +
-      'Calculando apenas com votos nominais. Resultado pode divergir do oficial.',
-      'aviso'
-    );
-  }
 
   const partidos           = {};
   const ufsDisponiveis     = new Set();
@@ -246,33 +173,28 @@ async function parseCsvTSE(file, filtro) {
   let linhasIgnoradas      = 0;
 
   for (let i = 1; i < linhas.length; i++) {
-    const cols = splitLinha(linhas[i], sep);
-    if (cols.length < 4) { linhasIgnoradas++; continue; }
+    const cols = splitLinha(linhas[i]);
+    if (cols.length < header.length) { linhasIgnoradas++; continue; }
 
-    const cargo     = normalizarCargo(cols[idxCargo]);
-    const uf        = cols[idxUF];
-    const municipio = idxMunicipio >= 0 ? cols[idxMunicipio] : '';
+    const cargo     = normalizarCargo(cols[idx['DS_CARGO']]);
+    const uf        = cols[idx['SG_UF']];
+    const municipio = cols[idx['NM_MUNICIPIO']];
 
     ufsDisponiveis.add(uf);
-    if (filtro.uf && uf === filtro.uf && municipio) municipiosDisp.add(municipio);
+    if (filtro.uf && uf === filtro.uf) municipiosDisp.add(municipio);
 
     // Aplicar filtros
     if (filtro.cargo    && cargo    !== filtro.cargo)    continue;
     if (filtro.uf       && uf       !== filtro.uf)       continue;
-    if (filtro.municipio && municipio && municipio !== filtro.municipio) continue;
+    if (filtro.municipio && municipio !== filtro.municipio) continue;
 
-    const sigla     = cols[idxSigla];
-    const nome      = idxNomePart  >= 0 ? cols[idxNomePart]  : sigla;
-    const federacao = idxFederacao >= 0 ? cols[idxFederacao].trim() || null : null;
-    const nominais  = parseInt(cols[idxNominais], 10) || 0;
-    const legenda   = idxLegenda  >= 0 ? (parseInt(cols[idxLegenda],  10) || 0) : 0;
+    const sigla    = cols[idx['SG_PARTIDO']];
+    const nome     = cols[idx['NM_PARTIDO']];
+    const nominais = parseInt(cols[idx['QT_VOTOS_NOMINAIS']], 10) || 0;
+    const legenda  = parseInt(cols[idx['QT_VOTOS_LEGENDA']], 10)  || 0;
 
     if (!partidos[sigla]) {
-      partidos[sigla] = { sigla, nome, nominais: 0, legenda: 0, federacao: federacao || null };
-    }
-    // Atualizar nome da federação se ainda não definido
-    if (federacao && !partidos[sigla].federacao) {
-      partidos[sigla].federacao = federacao;
+      partidos[sigla] = { sigla, nome, nominais: 0, legenda: 0 };
     }
     partidos[sigla].nominais += nominais;
     partidos[sigla].legenda  += legenda;
@@ -300,50 +222,43 @@ async function parseCsvCandidatosTSE(file, filtro) {
   const linhas = text.split(/\r?\n/).filter(l => l.trim());
   if (linhas.length < 2) return {};
 
-  const sepCand  = linhas[0].includes(';') ? ';' : ',';
-  const header   = splitLinha(linhas[0], sepCand);
+  const header = splitLinha(linhas[0]);
 
-  // Busca tolerante (case-insensitive) para todas as colunas de candidatos
-  const idxCargo  = encontrarColuna(header, ['DS_CARGO', 'NM_CARGO', 'DS_CARGO_PLEITO']);
-  const idxUF     = encontrarColuna(header, ['SG_UF', 'SG_UF_CIRCUNSCRICAO', 'UF']);
-  const idxMun    = encontrarColuna(header, ['NM_MUNICIPIO', 'NM_UE', 'DS_MUNICIPIO']);
-  const idxSigla  = encontrarColuna(header, ['SG_PARTIDO', 'SG_PART', 'SIGLA_PARTIDO']);
-  const idxNome   = encontrarColuna(header, ['NM_CANDIDATO', 'NM_URNA_CANDIDATO', 'NM_CAND']);
-  const idxNumero = encontrarColuna(header, ['NR_CANDIDATO', 'NR_CAND']);
-  const idxVotos  = encontrarColuna(header, ['QT_VOTOS_NOMINAIS_VALIDOS', 'QT_VOTOS_NOMINAIS', 'QT_VOTOS_NOMINAL', 'QT_VOTOS']);
-
-  if (idxSigla === -1) {
-    throw new Error(
-      'Arquivo de candidatos inválido: coluna SG_PARTIDO não encontrada. ' +
-      'Verifique se é o arquivo de votação por candidato do TSE.'
-    );
+  // Colunas do arquivo de candidatos — DS_CARGO pode ter nome diferente em alguns anos
+  const campos = ['DS_CARGO','SG_UF','NM_MUNICIPIO','NM_CANDIDATO','NR_CANDIDATO',
+                  'SG_PARTIDO','QT_VOTOS_NOMINAIS'];
+  const idx = {};
+  for (const campo of campos) {
+    const i = header.indexOf(campo);
+    idx[campo] = i; // -1 se não encontrada — tratar abaixo
   }
-  if (idxNome === -1) {
+
+  if (idx['SG_PARTIDO'] === -1 || idx['NM_CANDIDATO'] === -1) {
     throw new Error(
-      'Arquivo de candidatos inválido: coluna NM_CANDIDATO (ou NM_URNA_CANDIDATO) não encontrada. ' +
+      'Arquivo de candidatos inválido: colunas NM_CANDIDATO ou SG_PARTIDO não encontradas. ' +
       'Verifique se é o arquivo de votação por candidato do TSE.'
     );
   }
 
-  const iNomeCand = idxNome;
   const candidatosPorPartido = {};
 
   for (let i = 1; i < linhas.length; i++) {
-    const cols = splitLinha(linhas[i], sepCand);
-    if (cols.length < 4) continue;
+    const cols = splitLinha(linhas[i]);
+    if (cols.length < header.length) continue;
 
     // Filtros
-    if (idxCargo >= 0 && filtro.cargo &&
-        normalizarCargo(cols[idxCargo]) !== filtro.cargo) continue;
-    if (idxUF >= 0 && filtro.uf &&
-        cols[idxUF] !== filtro.uf) continue;
-    if (idxMun >= 0 && filtro.municipio &&
-        cols[idxMun] !== filtro.municipio) continue;
+    if (idx['DS_CARGO'] >= 0 && filtro.cargo &&
+        normalizarCargo(cols[idx['DS_CARGO']]) !== filtro.cargo) continue;
+    if (idx['SG_UF'] >= 0 && filtro.uf &&
+        cols[idx['SG_UF']] !== filtro.uf) continue;
+    if (idx['NM_MUNICIPIO'] >= 0 && filtro.municipio &&
+        cols[idx['NM_MUNICIPIO']] !== filtro.municipio) continue;
 
-    const sigla  = cols[idxSigla];
-    const nome   = cols[iNomeCand] || '';
-    const numero = idxNumero >= 0 ? cols[idxNumero] : '';
-    const votos  = idxVotos >= 0 ? (parseInt(cols[idxVotos], 10) || 0) : 0;
+    const sigla  = cols[idx['SG_PARTIDO']];
+    const nome   = idx['NM_CANDIDATO'] >= 0 ? cols[idx['NM_CANDIDATO']] : '';
+    const numero = idx['NR_CANDIDATO'] >= 0 ? cols[idx['NR_CANDIDATO']] : '';
+    const votos  = idx['QT_VOTOS_NOMINAIS'] >= 0
+      ? (parseInt(cols[idx['QT_VOTOS_NOMINAIS']], 10) || 0) : 0;
 
     if (!nome) continue;
 
@@ -375,21 +290,20 @@ async function descobrirFiltros(file) {
     const linhas   = text.split(/\r?\n/).filter(l => l.trim());
     if (linhas.length < 2) return;
 
-    const sep    = linhas[0].includes(';') ? ';' : ',';
-    const header = splitLinha(linhas[0], sep);
-
-    const iUF    = encontrarColuna(header, ['SG_UF', 'SG_UF_CIRCUNSCRICAO', 'UF']);
-    const iCargo = encontrarColuna(header, ['DS_CARGO', 'NM_CARGO', 'DS_CARGO_PLEITO']);
+    const header = splitLinha(linhas[0]);
+    const iUF    = header.indexOf('SG_UF');
+    const iCargo = header.indexOf('DS_CARGO');
     if (iUF === -1) return;
 
     const ufs    = new Set();
     const cargos = new Set();
 
     for (let i = 1; i < linhas.length; i++) {
-      const cols = splitLinha(linhas[i], sep);
-      if (iUF < cols.length)    ufs.add(cols[iUF]);
-      if (iCargo >= 0 && iCargo < cols.length) {
-        cargos.add(normalizarCargo(cols[iCargo]));
+      const cols = linhas[i].split(';');
+      if (iUF < cols.length)    ufs.add(cols[iUF].trim().replace(/"/g, ''));
+      if (iCargo < cols.length) {
+        const norm = normalizarCargo(cols[iCargo].trim().replace(/"/g, ''));
+        cargos.add(norm);
       }
     }
 
@@ -476,7 +390,6 @@ function preencherCamposComDadosTSE(partidos, candidatos) {
       votosNominais: p.nominais,
       votosLegenda:  p.legenda,
       candidatos:    cands,
-      federacao:     p.federacao || null,   // propaga federação para o card
     });
   }
 }
@@ -645,8 +558,7 @@ function init() {
   const body      = $('import-body');
   if (btnToggle && body) {
     btnToggle.addEventListener('click', () => {
-      // Usa getComputedStyle para funcionar quer o display:none venha do CSS ou do atributo style
-      const aberto = window.getComputedStyle(body).display !== 'none';
+      const aberto = body.style.display !== 'none';
       body.style.display = aberto ? 'none' : 'block';
       btnToggle.setAttribute('aria-expanded', String(!aberto));
     });

@@ -445,6 +445,211 @@
           ]
         }
       ]
+    },
+    {
+      "id": "ap2022_federacoes",
+      "rotulo": "Deputado Federal — Amapá 2022 (8 vagas, com Federações)",
+      "vagas": 8,
+      "notas": "Cenário didático calibrado para ilustrar o agrupamento de federações. QE = 48.884. Nenhum partido/federação atinge 80% QE (39.107) → F3 ativa desde a rodada 1. Validação F3: Rodada 1 PP (39.086), Rodada 2 REPUBLICANOS (38.346), Rodada 3 FE BRASIL / PT+PCdoB+PV (36.416), Rodada 4 PSOL REDE / PSOL+REDE (36.225). Total votos ≈ 391.073.",
+      "partidos": [
+        {
+          "sigla": "PP",
+          "nome": "Progressistas",
+          "votosNominais": 38000,
+          "votosLegenda": 1086,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "André Abdon", "partido": "PP", "votos": 25000},
+            {"nome": "Cabo Gilberto Silva", "partido": "PP", "votos": 10000},
+            {"nome": "Juraci Neto", "partido": "PP", "votos": 3000}
+          ]
+        },
+        {
+          "sigla": "REPUBLICANOS",
+          "nome": "Republicanos",
+          "votosNominais": 37000,
+          "votosLegenda": 1346,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "Aline Paranhos", "partido": "REPUBLICANOS", "votos": 20000},
+            {"nome": "Silvia Pimentel", "partido": "REPUBLICANOS", "votos": 15000},
+            {"nome": "Marco Antônio", "partido": "REPUBLICANOS", "votos": 2000}
+          ]
+        },
+        {
+          "sigla": "PT",
+          "nome": "Partido dos Trabalhadores",
+          "votosNominais": 19000,
+          "votosLegenda": 1000,
+          "federacao": "FE BRASIL",
+          "candidatos": [
+            {"nome": "Marcivania Flexa", "partido": "PT", "votos": 18000},
+            {"nome": "Ivan Cruz", "partido": "PT", "votos": 2000}
+          ]
+        },
+        {
+          "sigla": "PC do B",
+          "nome": "Partido Comunista do Brasil",
+          "votosNominais": 9500,
+          "votosLegenda": 500,
+          "federacao": "FE BRASIL",
+          "candidatos": [
+            {"nome": "Zeca Pirão", "partido": "PC do B", "votos": 8000},
+            {"nome": "Helena Campos", "partido": "PC do B", "votos": 2000}
+          ]
+        },
+        {
+          "sigla": "PV",
+          "nome": "Partido Verde",
+          "votosNominais": 5916,
+          "votosLegenda": 500,
+          "federacao": "FE BRASIL",
+          "candidatos": [
+            {"nome": "Maria Gomes", "partido": "PV", "votos": 5000},
+            {"nome": "Carlos Verde", "partido": "PV", "votos": 1416}
+          ]
+        },
+        {
+          "sigla": "PSOL",
+          "nome": "Partido Socialismo e Liberdade",
+          "votosNominais": 23500,
+          "votosLegenda": 500,
+          "federacao": "PSOL REDE",
+          "candidatos": [
+            {"nome": "Paulo César Lemos", "partido": "PSOL", "votos": 20000},
+            {"nome": "Ana Luísa Silva", "partido": "PSOL", "votos": 4000}
+          ]
+        },
+        {
+          "sigla": "REDE",
+          "nome": "Rede Sustentabilidade",
+          "votosNominais": 11725,
+          "votosLegenda": 500,
+          "federacao": "PSOL REDE",
+          "candidatos": [
+            {"nome": "Sheila de Freitas", "partido": "REDE", "votos": 9000},
+            {"nome": "Renato Amazonas", "partido": "REDE", "votos": 3225}
+          ]
+        },
+        {
+          "sigla": "PL",
+          "nome": "Partido Liberal",
+          "votosNominais": 34000,
+          "votosLegenda": 1000,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "Camilo Gadelha", "partido": "PL", "votos": 22000},
+            {"nome": "Fátima Oliveira", "partido": "PL", "votos": 13000}
+          ]
+        },
+        {
+          "sigla": "UNIÃO",
+          "nome": "União Brasil",
+          "votosNominais": 32000,
+          "votosLegenda": 1000,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "Rodrigo Cunha AP", "partido": "UNIÃO", "votos": 20000},
+            {"nome": "Lúcia Freitas", "partido": "UNIÃO", "votos": 13000}
+          ]
+        },
+        {
+          "sigla": "PSD",
+          "nome": "Partido Social Democrático",
+          "votosNominais": 31000,
+          "votosLegenda": 1000,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "Davi Davino Filho", "partido": "PSD", "votos": 20000},
+            {"nome": "Paulo Serra", "partido": "PSD", "votos": 12000}
+          ]
+        },
+        {
+          "sigla": "MDB",
+          "nome": "Movimento Democrático Brasileiro",
+          "votosNominais": 29000,
+          "votosLegenda": 1000,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "Simone Tebet AP", "partido": "MDB", "votos": 18000},
+            {"nome": "José Neto", "partido": "MDB", "votos": 12000}
+          ]
+        },
+        {
+          "sigla": "PDT",
+          "nome": "Partido Democrático Trabalhista",
+          "votosNominais": 27000,
+          "votosLegenda": 1000,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "Janete Capiberibe", "partido": "PDT", "votos": 17000},
+            {"nome": "André Lima AP", "partido": "PDT", "votos": 11000}
+          ]
+        },
+        {
+          "sigla": "PTB",
+          "nome": "Partido Trabalhista Brasileiro",
+          "votosNominais": 24000,
+          "votosLegenda": 1000,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "Márcio Bahia", "partido": "PTB", "votos": 16000},
+            {"nome": "Sandra Lima", "partido": "PTB", "votos": 9000}
+          ]
+        },
+        {
+          "sigla": "PODE",
+          "nome": "Podemos",
+          "votosNominais": 22000,
+          "votosLegenda": 1000,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "Cristiane Brasil AP", "partido": "PODE", "votos": 14000},
+            {"nome": "Luís Pinheiro", "partido": "PODE", "votos": 9000}
+          ]
+        },
+        {
+          "sigla": "SOLIDARIEDADE",
+          "nome": "Solidariedade",
+          "votosNominais": 14000,
+          "votosLegenda": 1000,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "Raimundo Costa", "partido": "SOLIDARIEDADE", "votos": 9000},
+            {"nome": "Marta Santos", "partido": "SOLIDARIEDADE", "votos": 6000}
+          ]
+        },
+        {
+          "sigla": "AVANTE",
+          "nome": "Avante",
+          "votosNominais": 7500,
+          "votosLegenda": 500,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "João Vitor Costa", "partido": "AVANTE", "votos": 8000}
+          ]
+        },
+        {
+          "sigla": "PRD",
+          "nome": "Partido Renovação Democrática",
+          "votosNominais": 6500,
+          "votosLegenda": 500,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "Beatriz Nunes", "partido": "PRD", "votos": 7000}
+          ]
+        },
+        {
+          "sigla": "PATRIOTA",
+          "nome": "Patriota",
+          "votosNominais": 4500,
+          "votosLegenda": 500,
+          "federacao": null,
+          "candidatos": [
+            {"nome": "Eduardo Macapá", "partido": "PATRIOTA", "votos": 5000}
+          ]
+        }
+      ]
     }
   ]
 }

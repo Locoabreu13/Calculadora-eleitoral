@@ -119,6 +119,20 @@ function adicionarPartidoUI(dados = null) {
   header.append(wSigla, inputNome, wNominais, wLegenda, btnToggleCandidatos, btnRemover);
   card.appendChild(header);
 
+  // ── Linha de federação (MUDANÇA 3) ──────────────────────────────────────────
+  const inputFederacao = el('input', {
+    type: 'text',
+    placeholder: 'Federação (opcional)',
+    'aria-label': 'Nome da federação',
+    class: 'partido-federacao',
+    value: dados ? (dados.federacao || '') : '',
+    title: 'Se este partido integra uma federação, informe o mesmo nome para todos os membros. Eles serão agrupados automaticamente no cálculo.',
+  });
+  const fedRow = el('div', { class: 'partido-fed-row' });
+  fedRow.appendChild(el('span', { class: 'partido-fed-label' }, '⊕ Federação:'));
+  fedRow.appendChild(inputFederacao);
+  card.appendChild(fedRow);
+
   // Lista de candidatos
   const candWrapper = el('div', { class: 'candidatos-wrapper', style: 'display:none; margin-top:8px;' });
   const candLista = el('div', { class: 'candidatos-lista' });
@@ -341,7 +355,8 @@ function lerFormulario() {
       );
     }
 
-    partidos.push({ sigla, nome, votosNominais: nominais, votosLegenda: legenda, candidatos });
+    const federacao = card.querySelector('.partido-federacao')?.value.trim() || null;
+    partidos.push({ sigla, nome, votosNominais: nominais, votosLegenda: legenda, candidatos, federacao: federacao || null });
   }
 
   if (partidos.length === 0) erros.push('Informe ao menos um partido.');
@@ -546,6 +561,30 @@ function tooltipF3(p, r) {
     "de maiores médias nesta fase (sem barreira partidária)";
 }
 
+/** Formata sigla + membros de federação para exibição: "FE BRASIL (PT + PCdoB + PV)" */
+function formatarSiglaFed(p) {
+  if (p.membros && p.membros.length > 0) {
+    return `${p.sigla} (${p.membros.join(' + ')})`;
+  }
+  return p.sigla;
+}
+
+/** Calcula quantas vagas cada membro de uma federação recebeu, baseado nos eleitos. */
+function distribuicaoInterna(p) {
+  if (!p.membros || p.membros.length === 0) return null;
+  const mapa = Object.fromEntries(p.membros.map(m => [m, []]));
+  for (const c of (p.eleitos || [])) {
+    const chave = c.partido;
+    if (mapa[chave]) mapa[chave].push(c);
+    else {
+      // partido do candidato não reconhecido como membro — colocar em "outros"
+      mapa['?'] = mapa['?'] || [];
+      mapa['?'].push(c);
+    }
+  }
+  return mapa;
+}
+
 function renderizarTabelaResultado(resultado, original) {
   const container = $('tabela-resultado');
 
@@ -601,6 +640,10 @@ function renderizarTabelaResultado(resultado, original) {
 
     const tdSigla = el('td', {});
     tdSigla.appendChild(el('strong', {}, p.sigla));
+    // Badge de federação + membros
+    if (p.membros && p.membros.length > 0) {
+      tdSigla.appendChild(el('div', { class: 'fed-membros-label' }, p.membros.join(' · ')));
+    }
     tdSigla.appendChild(el('br', {}));
     tdSigla.appendChild(badgeZona);
     tr.appendChild(tdSigla);
@@ -629,18 +672,55 @@ function renderizarTabelaResultado(resultado, original) {
     }[p.status] || '';
     tr.appendChild(el('td', {}, el('span', { class: `badge ${badgeClass}` }, I18N.STATUS[p.status] || p.status)));
 
-    // Eleitos
+    // Eleitos — para federações, mostra partido membro entre parênteses
     const eletosCell = el('td', {});
     if (p.eleitos && p.eleitos.length > 0) {
       const ul = el('ul', { style: 'list-style:none; margin:0; padding:0; font-size:11px;' });
       for (const c of p.eleitos) {
-        ul.appendChild(el('li', {}, `${c.nome} (${fmt(c.votos)})`));
+        const partidoLabel = (p._isFederacao && c.partido && c.partido !== p.sigla)
+          ? ` [${c.partido}]` : '';
+        ul.appendChild(el('li', {}, `${c.nome}${partidoLabel} (${fmt(c.votos)})`));
       }
       eletosCell.appendChild(ul);
     }
     tr.appendChild(eletosCell);
-
     tbody.appendChild(tr);
+
+    // Sub-linha expansível de distribuição interna (MUDANÇA 5)
+    if (p._isFederacao && p.membros && p.membros.length > 0) {
+      const subRow  = el('tr', { class: 'fed-sub-row', style: 'display:none' });
+      const subCell = el('td', { colspan: String(ths.length), class: 'fed-distribuicao' });
+
+      const distMap = distribuicaoInterna(p);
+      const tituloDiv = el('div', { class: 'fed-dist-titulo' }, '📋 Distribuição interna da federação:');
+      subCell.appendChild(tituloDiv);
+
+      const distGrid = el('div', { class: 'fed-dist-grid' });
+      for (const [membro, eleitos] of Object.entries(distMap)) {
+        const item = el('div', { class: 'fed-dist-item' });
+        item.appendChild(el('strong', {}, `${membro} — ${eleitos.length} vaga${eleitos.length !== 1 ? 's' : ''}`));
+        if (eleitos.length > 0) {
+          const ul = el('ul', { class: 'fed-dist-lista' });
+          for (const c of eleitos) {
+            ul.appendChild(el('li', {}, `${c.nome} (${fmt(c.votos)})`));
+          }
+          item.appendChild(ul);
+        }
+        distGrid.appendChild(item);
+      }
+      subCell.appendChild(distGrid);
+      subRow.appendChild(subCell);
+      tbody.appendChild(subRow);
+
+      // Botão na célula de sigla para expandir/recolher
+      const btnExpand = el('button', { class: 'btn-fed-expand' }, '▼ Distribuição');
+      btnExpand.addEventListener('click', () => {
+        const aberto = subRow.style.display !== 'none';
+        subRow.style.display = aberto ? 'none' : '';
+        btnExpand.textContent = aberto ? '▼ Distribuição' : '▲ Distribuição';
+      });
+      tdSigla.appendChild(btnExpand);
+    }
   }
 
   container.innerHTML = '';
@@ -665,12 +745,20 @@ function renderizarAuditoria(resultado) {
       onclick: () => body.classList.toggle('aberto'),
     });
 
+    // Rótulo do vencedor: para federações, inclui membros (MUDANÇA 6)
+    const vencedorInfo = rodada.medias.find(m => m.sigla === rodada.vencedor);
+    const vencedorLabel = (vencedorInfo && vencedorInfo.membros && vencedorInfo.membros.length > 0)
+      ? `${rodada.vencedor} (${vencedorInfo.membros.join(' + ')})`
+      : rodada.vencedor;
+
     header.appendChild(el('span', { style: 'font-weight:700; color:var(--cor-texto-fraco); font-size:12px;' }, `#${rodada.rodada}`));
     header.appendChild(el('span', { class: `fase-badge ${faseCls}` }, `Fase ${rodada.fase}`));
-    header.appendChild(el('span', { class: 'vencedor' }, `Vencedor: ${rodada.vencedor}`));
+    header.appendChild(el('span', { class: 'vencedor' }, `Vencedor: ${vencedorLabel}`));
     header.appendChild(el('span', { class: 'media' }, `Média: ${fmtD(rodada.mediaVencedor, 2)}`));
     if (rodada.candidatoConvocado) {
-      header.appendChild(el('span', { class: 'candidato' }, `↪ ${rodada.candidatoConvocado.nome} (${fmt(rodada.candidatoConvocado.votos)})`));
+      const partLabel = (rodada.candidatoConvocado.partido && rodada.candidatoConvocado.partido !== rodada.vencedor)
+        ? ` [${rodada.candidatoConvocado.partido}]` : '';
+      header.appendChild(el('span', { class: 'candidato' }, `↪ ${rodada.candidatoConvocado.nome}${partLabel} (${fmt(rodada.candidatoConvocado.votos)})`));
     }
 
     const body = el('div', { class: 'rodada-body' });
@@ -691,7 +779,12 @@ function renderizarAuditoria(resultado) {
       const isVencedor = m.sigla === rodada.vencedor && m.participaDaRodada;
       const cls = isVencedor ? 'row-vencedor' : !m.participaDaRodada ? 'row-excluido' : '';
       const tr = el('tr', { class: cls });
-      tr.appendChild(el('td', {}, el('strong', {}, m.sigla)));
+      const siglaCell = el('td', {});
+      siglaCell.appendChild(el('strong', {}, m.sigla));
+      if (m.membros && m.membros.length > 0) {
+        siglaCell.appendChild(el('div', { class: 'fed-membros-label' }, m.membros.join(' · ')));
+      }
+      tr.appendChild(siglaCell);
       tr.appendChild(el('td', { class: 'right' }, fmt(m.votos)));
       tr.appendChild(el('td', { class: 'right' }, String(m.cadeirasMaisUm)));
       tr.appendChild(el('td', { class: 'right' }, fmtD(m.media, 2)));

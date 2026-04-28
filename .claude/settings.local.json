@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node tests/engine.test.js)",
+      "Bash(cmd /c \"node --version\")",
+      "PowerShell(node --version 2>&1)",
+      "PowerShell(if \\(-not $?\\) { \"Node n�o encontrado\" })",
+      "PowerShell(python --version 2>&1)",
+      "PowerShell(python3 --version 2>&1)",
+      "PowerShell(Get-Command npx, php, ruby, dotnet, pwsh 2>&1)",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(start chrome *)",
+      "Bash(where node *)",
+      "Bash(where nodejs *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git checkout *)"
+    ]
+  }
+}
