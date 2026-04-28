@@ -1409,3 +1409,111 @@ body, .app, .wrap {
   border: 1px solid #E8E4DC !important;
   border-radius: 12px !important;
 }
+
+/* ── TEMA JURÍDICO – override de variáveis ── */
+:root {
+  --navy:        #1B2B4B !important;
+  --navy-mid:    #162240 !important;
+  --navy-light:  #1E3258 !important;
+  --navy-border: #2A3F6A !important;
+  --gold:        #2563EB !important;
+  --gold-light:  #4A80FF !important;
+  --white:       #EFF2F7 !important;
+  --slate:       #F0EEE9 !important;
+  --slate-mid:   #E8E4DC !important;
+  --slate-dark:  #D8D4CC !important;
+  --text-main:   #1B2B4B !important;
+  --text-muted:  #6B80A0 !important;
+  --text-hint:   #4A6A9A !important;
+  --f1-color:    #2563EB !important;
+  --f2-color:    #0F6E56 !important;
+  --f3-color:    #F5A623 !important;
+}
+
+body { background-color: #F0EEE9 !important; }
+
+.topbar, footer, .footer {
+  background-color: #1B2B4B !important;
+}
+
+.sidebar {
+  background-color: #1B2B4B !important;
+}
+
+.sidebar .section-label,
+.sidebar .field-label,
+.sidebar label {
+  color: #6B80A0 !important;
+}
+
+.sidebar .field-input,
+.sidebar .field-input-num,
+.sidebar .field-select,
+.sidebar input,
+.sidebar select {
+  background-color: #152038 !important;
+  border-color: #2A3F6A !important;
+  color: #C8D8F0 !important;
+}
+
+.sidebar-section {
+  border-color: #1E3258 !important;
+}
+
+.btn-calcular {
+  background-color: #2563EB !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.btn-calcular:hover {
+  background-color: #1D55D4 !important;
+}
+
+.result-panel,
+.audit-panel,
+.comparativo-panel,
+[class*="result"],
+[class*="painel"] {
+  background-color: #ffffff !important;
+  border-color: #E8E4DC !important;
+  border-radius: 12px !important;
+}
+
+.qe-banner,
+[class*="qe-"],
+[class*="banner"] {
+  background-color: #ffffff !important;
+  border-color: #E8E4DC !important;
+}
+
+/* Métricas — acento colorido por indicador */
+[class*="qe"][class*="item"]:first-child,
+[data-metric="qe"] { border-top: 3px solid #2563EB !important; }
+
+[data-metric="votos"] { border-top: 3px solid #0F6E56 !important; }
+[data-metric="vagas"] { border-top: 3px solid #854F0B !important; }
+[data-metric="limiar"] { border-top: 3px solid #534AB7 !important; }
+
+/* Topbar: textos claros */
+.topbar *,
+.topbar .brand-name,
+.topbar .brand-sub,
+.topbar .tag-legal {
+  color: #C8D8F0 !important;
+}
+
+.topbar button,
+.topbar .btn-action {
+  border-color: #2A3F6A !important;
+  color: #8BA0C0 !important;
+  background: transparent !important;
+}
+
+/* Footer */
+.footer * { color: #4A6A9A !important; }
+
+/* Adiciona Inter como fonte principal */
+body, button, input, select, textarea {
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
