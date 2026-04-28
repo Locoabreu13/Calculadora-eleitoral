@@ -1410,6 +1410,9 @@ body, .app, .wrap {
   border-radius: 12px !important;
 }
 
+/* ── Import body: oculto por padrão (salvaguarda CSS) ── */
+#import-body { display: none; }
+
 /* ── TEMA JURÍDICO – override de variáveis ── */
 :root {
   --navy:        #1B2B4B !important;
