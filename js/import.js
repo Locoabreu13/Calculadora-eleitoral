@@ -268,8 +268,8 @@ async function parseCsvCandidatosTSE(file, filtro) {
     const sigla  = cols[idx['SG_PARTIDO']];
     const nome   = idx['NM_CANDIDATO'] >= 0 ? cols[idx['NM_CANDIDATO']] : '';
     const numero = idx['NR_CANDIDATO'] >= 0 ? cols[idx['NR_CANDIDATO']] : '';
-    const votos  = idx['QT_VOTOS_NOMINAIS'] >= 0
-      ? (parseInt(cols[idx['QT_VOTOS_NOMINAIS']], 10) || 0) : 0;
+    const votos  = idx[campoNomCand] >= 0
+      ? (parseInt(cols[idx[campoNomCand]], 10) || 0) : 0;
 
     if (!nome) continue;
 
