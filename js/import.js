@@ -162,7 +162,7 @@ async function parseCsvTSE(file, filtro) {
   const header = splitLinha(linhas[0]);
 
   const idx = extrairIndices(header, [
-    'NR_ANO_ELEICAO', 'DS_CARGO', 'SG_UF', 'NM_MUNICIPIO',
+    'DS_CARGO', 'SG_UF', 'NM_MUNICIPIO',
     'SG_PARTIDO', 'NM_PARTIDO', 'QT_VOTOS_NOMINAIS', 'QT_VOTOS_LEGENDA',
   ]);
 
