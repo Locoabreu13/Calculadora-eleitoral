@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora de Retotalização Eleitoral</title>
-  <meta name="description" content="Ferramenta técnico-jurídica para cálculo e retotalização de eleições proporcionais brasileiras (art. 109 CE, ADIs 7.228/7.263/7.325 STF)." />
+  <title>Sistema RetotalizaJE</title>
+  <meta name="description" content="Sistema técnico-jurídico de retotalização eleitoral proporcional — art. 109 CE, ADIs 7.228/7.263/7.325 STF." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display&family=Literata:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/styles.css?v=3" />
+  <link rel="stylesheet" href="css/styles.css?v=4" />
 </head>
 <body>
 <div id="app">
@@ -20,7 +20,7 @@
   <header class="topbar">
     <div class="topbar-left">
       <!-- Icon -->
-      <div class="topbar-icon" title="Calculadora de Retotalização Eleitoral">
+      <div class="topbar-icon" title="Sistema RetotalizaJE">
         <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect x="1" y="10" width="3" height="5" rx="1"/>
           <rect x="5.5" y="6" width="3" height="9" rx="1"/>
@@ -32,7 +32,7 @@
       <div>
         <h1 class="topbar-title" id="topbar-h1"
           title="Shift+Click para executar testes automáticos (TC-01…TC-05)">
-          Calculadora de Retotalização Eleitoral
+          Sistema RetotalizaJE
         </h1>
         <div class="topbar-sub">Sistema Proporcional Brasileiro · art. 109 CE</div>
       </div>
@@ -86,23 +86,6 @@
                  aria-label="Número de vagas" />
         </div>
 
-        <!-- Toggle Piso 20% F3 -->
-        <div class="sidebar-field" style="margin-top:4px;">
-          <label class="toggle-row"
-                 title="O STF suprimiu a barreira partidária de 80% na F3, mas não se pronunciou expressamente sobre o piso individual de 20%. Marque para adotar interpretação conservadora. Resolução TSE 23.735/2024 é o parâmetro vigente."
-                 for="togglePiso20F3">
-            <input type="checkbox" id="togglePiso20F3" class="toggle-native"
-                   aria-describedby="togglePiso20F3-desc" />
-            <span class="toggle-box"></span>
-            <span>
-              <span class="toggle-text-title">Piso 20% QE na Fase 3</span>
-              <span class="toggle-text-desc">Interpretação conservadora — apenas candidatos com votos ≥ 20% do QE podem ser convocados na F3</span>
-            </span>
-          </label>
-          <p id="togglePiso20F3-desc" style="display:none;">
-            Se marcado, apenas candidatos com votos ≥ 20% do QE podem ser convocados na Fase 3.
-          </p>
-        </div>
       </div>
 
       <!-- Importação TSE -->
@@ -293,6 +276,8 @@
             <button id="btn-link" class="btn-action" disabled>🔗 Link</button>
             <button id="btn-apresentacao" class="btn-action-primary" disabled
                     title="Exibe a tabela em tela cheia (Esc para sair)">▶ Apresentação</button>
+            <button id="btn-salvar-estudo" class="btn-action" disabled
+                    title="Exportar estudo completo (parâmetros + resultado) como JSON">💾 Salvar Estudo</button>
           </div>
         </div>
 
@@ -310,7 +295,7 @@
         <!-- Audit panel -->
         <section id="section-auditoria" class="audit-panel" aria-label="Auditoria do algoritmo D'Hondt">
           <div class="audit-panel-title">Execução passo a passo — Algoritmo D'Hondt</div>
-          <p style="font-family:'Literata',serif; font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.5;">
+          <p style="font-family:'Inter',sans-serif; font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.5;">
             Cada linha representa uma rodada de distribuição de sobra. Clique em uma rodada para expandir o detalhe das médias.
             Linhas em itálico = partido excluído naquela rodada. Linha destacada = vencedor.
           </p>
@@ -467,7 +452,7 @@
   <!-- ═══ FOOTER ════════════════════════════════════════════════════════════════ -->
   <footer class="footer">
     <span class="footer-legal" id="rodape-versao">
-      v2.0 · art. 109 CE · ADIs 7.228/7.263/7.325 STF (13/03/2025)
+      Sistema RetotalizaJE · v2.0 · art. 109 CE · ADIs 7.228/7.263/7.325 STF (13/03/2025)
     </span>
     <span class="footer-disclaimer">
       Ferramenta técnico-jurídica de apoio · Não substitui decisão da Justiça Eleitoral
@@ -644,6 +629,85 @@
 
     // runner.js handles Shift+Click on h1 directly via document.querySelector('h1')
   });
+
+  /* ── 5. Salvar Estudo ──────────────────────────────────────────── */
+  (function () {
+    var btnSalvar = document.getElementById('btn-salvar-estudo');
+    if (!btnSalvar) return;
+
+    // Enable button whenever results appear in painel-parametros
+    var paramEl = document.getElementById('painel-parametros');
+    if (paramEl) {
+      new MutationObserver(function () {
+        btnSalvar.disabled =
+          document.querySelectorAll('#painel-parametros .param-item').length === 0;
+      }).observe(paramEl, { childList: true, subtree: true });
+    }
+
+    btnSalvar.addEventListener('click', function () {
+      var rotulo = (document.getElementById('input-rotulo') || {}).value || 'Sem rótulo';
+      var vagas  = parseInt((document.getElementById('input-vagas') || {}).value, 10) || 0;
+
+      var partidos = [];
+      document.querySelectorAll('.partido-card').forEach(function (card) {
+        var sigla    = (card.querySelector('.partido-sigla')    || {}).value || '';
+        var nome     = (card.querySelector('.partido-nome')     || {}).value || sigla;
+        var nominais = parseInt((card.querySelector('.partido-nominais') || {}).value, 10) || 0;
+        var legenda  = parseInt((card.querySelector('.partido-legenda')  || {}).value, 10) || 0;
+        var candidatos = [];
+        card.querySelectorAll('.candidato-row').forEach(function (row) {
+          var inputs = row.querySelectorAll('input');
+          var nomeC  = (inputs[0] || {}).value || '';
+          var votos  = parseInt((inputs[1] || {}).value, 10) || 0;
+          if (nomeC) candidatos.push({ nome: nomeC, partido: sigla, votos: votos });
+        });
+        if (sigla) partidos.push({
+          sigla: sigla, nome: nome,
+          votosNominais: nominais, votosLegenda: legenda,
+          candidatos: candidatos
+        });
+      });
+
+      var cassacoes = [];
+      document.querySelectorAll('.cassacao-row').forEach(function (row) {
+        var partido     = (row.querySelector('.cass-partido')    || {}).value || '';
+        var candidato   = (row.querySelector('.cass-candidato')  || {}).value || '';
+        var votosAnular = parseInt((row.querySelector('.cass-votos')      || {}).value, 10) || 0;
+        var modalidade  = (row.querySelector('.cass-modalidade') || {}).value || 'nominal';
+        if (partido && votosAnular > 0) {
+          cassacoes.push({ partido: partido, candidato: candidato,
+                           votosAnular: votosAnular, modalidade: modalidade });
+        }
+      });
+
+      var cenario   = { rotulo: rotulo, vagas: vagas, partidos: partidos, cassacoes: cassacoes };
+      var resultado = null;
+      if (window.ElectoralEngine && partidos.length > 0 && vagas > 0) {
+        try { resultado = window.ElectoralEngine.calcular(cenario); }
+        catch (e) { console.warn('Salvar Estudo: erro ao calcular', e); }
+      }
+
+      var estudo = {
+        sistema:         'Sistema RetotalizaJE',
+        versao:          'v2.0',
+        dataExportacao:  new Date().toISOString(),
+        parametros:      cenario,
+        resultado:       resultado
+      };
+
+      var blob = new Blob([JSON.stringify(estudo, null, 2)], { type: 'application/json' });
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'retotalizaje-' +
+        rotulo.replace(/[^a-zA-Z0-9\-_]/g, '-').slice(0, 40) +
+        '-' + new Date().toISOString().slice(0, 10) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  })();
 
 })();
 </script>
