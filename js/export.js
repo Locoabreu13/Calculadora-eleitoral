@@ -113,27 +113,44 @@ function exportarPDF(resultado, original) {
   }
   const { jsPDF } = window.jspdf || { jsPDF: window.jsPDF };
 
-  // ── Instância e registro de fontes ──────────────────────────────────────────
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-
+  // ── Registro de fontes: UMA vez por sessão via evento 'initialized' ────────
+  // Problema: em jsPDF 2.5.1, chamar addFileToVFS + addFont em cada nova
+  // instância pode lançar exceção silenciosa na segunda chamada (estado interno
+  // do módulo TTFFont conflita com a re-processamento do mesmo arquivo .ttf).
+  // Solução: injetar o registro no evento 'initialized' do jsPDF uma única vez,
+  // de modo que TODA nova instância já receba Roboto automaticamente.
   const FONT = 'roboto';
   const MONO = 'roboto-mono';
+
+  if (!jsPDF.API.__robotoFontsRegistered) {
+    jsPDF.API.events.push(['initialized', function () {
+      try {
+        this.addFileToVFS('Roboto-Regular.ttf',     window.PDF_FONTS['Roboto-Regular']);
+        this.addFont    ('Roboto-Regular.ttf',       FONT, 'normal');
+        this.addFileToVFS('Roboto-Bold.ttf',        window.PDF_FONTS['Roboto-Bold']);
+        this.addFont    ('Roboto-Bold.ttf',          FONT, 'bold');
+        this.addFileToVFS('RobotoMono-Regular.ttf', window.PDF_FONTS['RobotoMono-Regular']);
+        this.addFont    ('RobotoMono-Regular.ttf',   MONO, 'normal');
+      } catch (e) {
+        console.warn('[PDF] Falha no registro de fontes Roboto:', e);
+      }
+    }]);
+    jsPDF.API.__robotoFontsRegistered = true;
+  }
+
+  // ── Instância (fontes já registradas pelo handler 'initialized') ────────────
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
   var fontOk = false;
   try {
-    doc.addFileToVFS('Roboto-Regular.ttf',     window.PDF_FONTS['Roboto-Regular']);
-    doc.addFont    ('Roboto-Regular.ttf',       FONT, 'normal');
-    doc.addFileToVFS('Roboto-Bold.ttf',        window.PDF_FONTS['Roboto-Bold']);
-    doc.addFont    ('Roboto-Bold.ttf',          FONT, 'bold');
-    doc.addFileToVFS('RobotoMono-Regular.ttf', window.PDF_FONTS['RobotoMono-Regular']);
-    doc.addFont    ('RobotoMono-Regular.ttf',   MONO, 'normal');
     doc.setFont(FONT, 'normal');
     fontOk = true;
   } catch (e) {
-    console.warn('PDF: falha ao registrar fontes Roboto, usando Courier.', e);
+    console.warn('[PDF] Fonte Roboto não disponível nesta instância, usando Courier:', e);
     doc.setFont('courier', 'normal');
   }
-  const F     = fontOk ? FONT : 'courier';
-  const FM    = fontOk ? MONO : 'courier';
+  const F  = fontOk ? FONT : 'courier';
+  const FM = fontOk ? MONO : 'courier';
 
   // ── Constantes de layout ────────────────────────────────────────────────────
   const PW = 210, PH = 297;
