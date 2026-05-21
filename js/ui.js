@@ -369,7 +369,7 @@ function lerFormulario() {
     const candidato = row.querySelector('.cass-candidato').value.trim();
     const votos = parseInt(row.querySelector('.cass-votos').value, 10) || 0;
     const modalidade = row.querySelector('.cass-modalidade').value;
-    if (partido && votos > 0) {
+    if (partido && (votos > 0 || modalidade === 'cassacao_drap')) {
       cassacoes.push({ partido, candidato: candidato || undefined, votosAnular: votos, modalidade });
     }
   }
@@ -902,6 +902,16 @@ function adicionarCassacaoUI() {
 
   const wVotos = el('div', { class: 'input-valida' }); wVotos.appendChild(selVotos);
   row.append(selPartido, selCandidato, wVotos, selModal, btnRem);
+
+  // Ocultar candidato e votos quando a modalidade for cassacao_drap
+  // (cassação de partido inteiro não tem candidato nem votos individuais)
+  function atualizarCamposCassacao() {
+    const isDrap = selModal.value === 'cassacao_drap';
+    selCandidato.style.display = isDrap ? 'none' : '';
+    wVotos.style.display       = isDrap ? 'none' : '';
+  }
+  selModal.addEventListener('change', atualizarCamposCassacao);
+
   container.appendChild(row);
 }
 
@@ -932,7 +942,9 @@ async function carregarPresetUI(id) {
     row.querySelector('.cass-partido').value = cass.partido || '';
     row.querySelector('.cass-candidato').value = cass.candidato || '';
     row.querySelector('.cass-votos').value = cass.votosAnular || '';
-    row.querySelector('.cass-modalidade').value = cass.modalidade || 'nominal';
+    const selMod = row.querySelector('.cass-modalidade');
+    selMod.value = cass.modalidade || 'nominal';
+    selMod.dispatchEvent(new Event('change')); // sincroniza visibilidade dos campos
   }
 
   Estado.presetComparar = preset.comparar_com || null;
@@ -1056,7 +1068,9 @@ function preencherFormularioDeCenario(cenario) {
     row.querySelector('.cass-partido').value = c.partido || '';
     row.querySelector('.cass-candidato').value = c.candidato || '';
     row.querySelector('.cass-votos').value = c.votosAnular || '';
-    row.querySelector('.cass-modalidade').value = c.modalidade || 'nominal';
+    const selMod = row.querySelector('.cass-modalidade');
+    selMod.value = c.modalidade || 'nominal';
+    selMod.dispatchEvent(new Event('change')); // sincroniza visibilidade dos campos
   }
 }
 

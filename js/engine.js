@@ -31,10 +31,11 @@
  * @property {string} partido - sigla
  * @property {string} [candidato] - nome do candidato cassado
  * @property {number} votosAnular - votos a anular
- * @property {'nominal_legenda'|'total'|'nominal'} modalidade
+ * @property {'nominal_legenda'|'total'|'nominal'|'cassacao_drap'} modalidade
  *   nominal_legenda: anula nominais e reatribui à legenda
  *   total: anula nominais + proporção de legenda
  *   nominal: anula apenas nominais sem reatribuição
+ *   cassacao_drap: remove o partido inteiro; QE recalculado sobre os demais
  *
  * @typedef {Object} RodadaAuditoria
  * @property {number} rodada
@@ -115,13 +116,21 @@ function normalizarSigla(s) {
  */
 function aplicarCassacoes(partidos, cassacoes) {
   // deep copy
-  const result = partidos.map(p => ({
+  let result = partidos.map(p => ({
     ...p,
     candidatos: p.candidatos ? p.candidatos.map(c => ({ ...c })) : [],
   }));
 
   for (const cassacao of (cassacoes || [])) {
     const normCass = normalizarSigla(cassacao.partido);
+
+    // Cassação de DRAP: remove o partido inteiro; o QE será recalculado
+    // automaticamente sobre o array resultante pelo fluxo normal de calcular().
+    if (cassacao.modalidade === 'cassacao_drap') {
+      result = result.filter(p => normalizarSigla(p.sigla) !== normCass);
+      continue;
+    }
+
     const partido = result.find(p => normalizarSigla(p.sigla) === normCass);
     if (!partido) continue;
 

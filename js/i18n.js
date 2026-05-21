@@ -37,6 +37,7 @@ const I18N = {
     'nominal_legenda': 'Anular nominais e reatribuir à legenda',
     'total': 'Anular nominais + proporção de legenda',
     'nominal': 'Anular apenas nominais (sem reatribuição)',
+    'cassacao_drap': 'Anular todos os votos do partido (cassação do DRAP)',
   },
 };
 
