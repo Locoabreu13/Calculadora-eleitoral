@@ -14,7 +14,46 @@
   <link rel="stylesheet" href="css/styles.css?v=4" />
 </head>
 <body>
-<div id="app">
+  <!-- TELA: Login -->
+  <div id="tela-auth" style="display:none">
+    <div class="auth-container">
+      <h1>Sistema RetotalizaJE</h1>
+      <p class="auth-subtitle">Art. 109 CE · ADIs 7.228/7.263/7.325 STF</p>
+      <div class="auth-tabs">
+        <button class="tab-btn active" onclick="alternarTab('login')">Entrar</button>
+        <button class="tab-btn" onclick="alternarTab('cadastro')">Criar conta</button>
+      </div>
+      <div id="form-login">
+        <input type="email" id="login-email" placeholder="E-mail" class="auth-input">
+        <input type="password" id="login-senha" placeholder="Senha" class="auth-input">
+        <button onclick="fazerLogin()" class="btn-primary">Entrar</button>
+        <p id="login-erro" class="auth-erro"></p>
+      </div>
+      <div id="form-cadastro" style="display:none">
+        <input type="email" id="cad-email" placeholder="E-mail" class="auth-input">
+        <input type="password" id="cad-senha" placeholder="Senha (mín. 6 caracteres)" class="auth-input">
+        <button onclick="fazerCadastro()" class="btn-primary">Criar conta</button>
+        <p id="cad-erro" class="auth-erro"></p>
+      </div>
+      <div class="auth-separator">ou</div>
+      <button onclick="fazerLoginGoogle()" class="btn-google">Entrar com Google</button>
+    </div>
+  </div>
+
+  <!-- TELA: Comprar créditos -->
+  <div id="tela-compra" style="display:none">
+    <div class="compra-container">
+      <div class="compra-header">
+        <span>Conectado como <strong class="usuario-email"></strong></span>
+        <button onclick="fazerLogout()" class="btn-logout">Sair</button>
+      </div>
+      <h2>Saldo insuficiente</h2>
+      <p>Adquira créditos para utilizar a calculadora.</p>
+      <div id="pacotes-container" class="pacotes-grid"></div>
+      <p class="compra-nota">Após pagamento aprovado, seus créditos são adicionados automaticamente.<br>Recarregue a página se não atualizar em 30 segundos.</p>
+    </div>
+  </div>
+<div id="tela-app" style="display:none">
 
   <!-- ═══ TOPBAR ═══════════════════════════════════════════════════════════════ -->
   <header class="topbar">
@@ -714,6 +753,41 @@
 
 })();
 </script>
+<script type="module">
+    import { cadastrarEmail, loginEmail, loginGoogle, logout } from "./js/auth.js";
+    import { iniciarPaywall } from "./js/paywall.js";
+    import { auth } from "./js/firebase-init.js";
 
+    iniciarPaywall();
+
+    window.fazerLogin = async () => {
+      const email = document.getElementById("login-email").value;
+      const senha = document.getElementById("login-senha").value;
+      try { await loginEmail(email, senha); }
+      catch(e) { document.getElementById("login-erro").textContent = traduzirErro(e.code); }
+    };
+    window.fazerCadastro = async () => {
+      const email = document.getElementById("cad-email").value;
+      const senha = document.getElementById("cad-senha").value;
+      try { await cadastrarEmail(email, senha); }
+      catch(e) { document.getElementById("cad-erro").textContent = traduzirErro(e.code); }
+    };
+    window.fazerLoginGoogle = async () => { try { await loginGoogle(); } catch(e) { console.error(e); } };
+    window.fazerLogout = () => logout();
+    window.alternarTab = (tab) => {
+      document.getElementById("form-login").style.display    = tab === "login"    ? "" : "none";
+      document.getElementById("form-cadastro").style.display = tab === "cadastro" ? "" : "none";
+      document.querySelectorAll(".tab-btn").forEach((b,i) =>
+        b.classList.toggle("active", (i===0)===(tab==="login")));
+    };
+    function traduzirErro(code) {
+      return ({ "auth/user-not-found":"Usuário não encontrado.",
+        "auth/wrong-password":"Senha incorreta.",
+        "auth/email-already-in-use":"E-mail já cadastrado.",
+        "auth/weak-password":"Senha muito fraca.",
+        "auth/invalid-email":"E-mail inválido." })[code] ?? "Erro inesperado.";
+    }
+  </script>
+  </div>
 </body>
 </html>
