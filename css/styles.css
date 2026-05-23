@@ -1692,3 +1692,179 @@ button:focus:not(:focus-visible) { outline: none; }
 
 /* ── CSS header comment update ───────────────────────────────── */
 /* Sistema RetotalizaJE — Design System v4 */
+/* ===== AUTH / PAYWALL ===== */
+
+.auth-container,
+.compra-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.12);
+}
+
+.auth-container h1 {
+  font-size: 1.4rem;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.auth-subtitle {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #f9fafb;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #374151;
+  transition: all .15s;
+}
+
+.tab-btn.active {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+
+.auth-input {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 11px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.btn-primary:hover { background: var(--navy-mid); }
+
+.auth-separator {
+  text-align: center;
+  color: #9ca3af;
+  margin: 16px 0;
+  font-size: 0.85rem;
+}
+
+.btn-google {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.btn-google:hover { background: #f9fafb; }
+
+.auth-erro {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  min-height: 16px;
+}
+
+.compra-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.pacotes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.pacote-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.pacote-card h3 {
+  font-size: 0.95rem;
+  color: var(--navy);
+  margin: 0 0 8px;
+}
+
+.pacote-creditos {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+.pacote-preco {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 4px 0 12px;
+}
+
+.btn-comprar {
+  display: block;
+  background: var(--navy);
+  color: #fff;
+  padding: 8px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.btn-comprar:hover { background: var(--navy-mid); }
+
+.compra-nota {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-logout:hover { background: #f9fafb; }
+
+@media (max-width: 480px) {
+  .pacotes-grid { grid-template-columns: 1fr; }
+  .auth
