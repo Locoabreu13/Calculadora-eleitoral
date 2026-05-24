@@ -6,9 +6,10 @@ const TELA_COMPRA = "tela-compra";
 const TELA_APP    = "tela-app";
 
 export const PACOTES = [
-  { id: "starter",    nome: "Starter",    creditos: 5,  preco: "R$ 15", url: "#" },
-  { id: "pro",        nome: "Pro",        creditos: 20, preco: "R$ 45", url: "#" },
-  { id: "escritorio", nome: "Escritório", creditos: 50, preco: "R$ 90", url: "#" },
+  { id: "avulso",        nome: "Avulso",        creditos: 1,  preco: "R$ 200",   detalhe: "R$ 200 por cálculo", url: "https://mpago.la/21BVAc7" },
+  { id: "escritorio",    nome: "Escritório",    creditos: 5,  preco: "R$ 750",   detalhe: "R$ 150 por cálculo", url: "https://mpago.la/2yu38tB" },
+  { id: "especializado", nome: "Especializado", creditos: 10, preco: "R$ 1.200", detalhe: "R$ 120 por cálculo", url: "https://mpago.la/1KBNzpa" },
+  { id: "tribunal",      nome: "Tribunal",      creditos: 25, preco: "R$ 2.500", detalhe: "R$ 100 por cálculo", url: "https://mpago.la/2kE1eh6" },
 ];
 
 function mostrar(id) {
@@ -26,13 +27,15 @@ function atualizarUI(user, creditos) {
 function renderizarPacotes(uid) {
   const container = document.getElementById("pacotes-container");
   if (!container) return;
-  container.innerHTML = PACOTES.map(p => `
-    <div class="pacote-card">
+  container.innerHTML = PACOTES.map((p, i) => `
+    <div class="pacote-card ${i === 2 ? 'pacote-destaque' : ''}">
+      ${i === 2 ? '<div class="pacote-badge">Mais escolhido</div>' : ''}
       <h3>${p.nome}</h3>
-      <p class="pacote-creditos">${p.creditos} créditos</p>
+      <p class="pacote-creditos">${p.creditos} ${p.creditos === 1 ? 'cálculo' : 'cálculos'}</p>
       <p class="pacote-preco">${p.preco}</p>
+      <p class="pacote-detalhe">${p.detalhe}</p>
       <a href="${p.url}?uid=${uid}" target="_blank" class="btn-comprar">
-        Comprar via Pix / Cartão
+        Adquirir via Pix / Cartão
       </a>
     </div>
   `).join("");
