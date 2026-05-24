@@ -169,7 +169,8 @@ async function parseCsvTSE(file, filtro) {
   const header = splitLinha(linhas[0]);
 
   const campoNominais = encontrarNomeColuna(header, ['QT_VOTOS_NOMINAIS_VALIDOS','QT_VOTOS_NOMINAIS']);
-  const campoLegenda  = encontrarNomeColuna(header, ['QT_VOTOS_LEGENDA_VALIDOS','QT_VOTOS_LEGENDA']);
+  const campoLegenda  = encontrarNomeColuna(header, ['QT_TOTAL_VOTOS_LEG_VALIDOS','QT_VOTOS_LEGENDA_VALIDOS','QT_VOTOS_LEGENDA']);
+
 
   const idx = extrairIndices(header, [
     'DS_CARGO', 'SG_UF', 'NM_MUNICIPIO',
