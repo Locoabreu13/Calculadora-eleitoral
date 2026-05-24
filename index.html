@@ -1,793 +1,671 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema RetotalizaJE</title>
-  <meta name="description" content="Sistema técnico-jurídico de retotalização eleitoral proporcional — art. 109 CE, ADIs 7.228/7.263/7.325 STF." />
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-  <link rel="stylesheet" href="css/styles.css?v=4" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RetotalizaJE — Sistema de Retotalização Eleitoral</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#08111F;--navy-2:#0D1E35;--navy-3:#112440;--accent:#F5A623;--accent-2:#E8951A;--teal:#00D4A4;--red:#FF4D4D;--blue:#3B82F6;--text:#E8EDF5;--text-muted:#6B84A3;--text-dim:#3A5070;--border:rgba(255,255,255,0.07);--border-bright:rgba(255,255,255,0.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;line-height:1.6}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent;transition:all .3s}
+nav.scrolled{background:rgba(8,17,31,.94);backdrop-filter:blur(20px);border-color:var(--border)}
+.nav-logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;letter-spacing:-.02em;text-decoration:none}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{color:var(--text-muted);font-size:14px;text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--accent);color:var(--navy);padding:10px 22px;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;font-family:'Syne',sans-serif;transition:all .2s}
+.nav-cta:hover{background:var(--accent-2);transform:translateY(-1px)}
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 48px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(245,166,35,.12),transparent),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(0,212,164,.07),transparent);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 70% at 50% 50%,black 20%,transparent 100%);pointer-events:none;opacity:.4}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.25);color:var(--accent);font-family:'DM Mono',monospace;font-size:11px;padding:6px 14px;border-radius:20px;margin-bottom:28px;letter-spacing:.05em}
+.hero-badge-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(40px,6vw,80px);font-weight:800;line-height:1.05;letter-spacing:-.03em;margin-bottom:20px;max-width:900px}
+.hero h1 .line2{color:var(--accent)}
+.hero-sub{font-size:clamp(15px,2vw,19px);color:var(--text-muted);max-width:600px;margin:0 auto 40px;line-height:1.7;font-weight:300}
+.hero-sub strong{color:var(--text);font-weight:400}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:64px}
+.btn-primary{background:var(--accent);color:var(--navy);padding:14px 32px;border-radius:8px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:var(--accent-2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(245,166,35,.3)}
+.btn-secondary{background:transparent;color:var(--text);padding:14px 32px;border-radius:8px;font-family:'Syne',sans-serif;font-size:15px;font-weight:500;text-decoration:none;border:1px solid var(--border-bright);transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-secondary:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.04)}
+.hero-stats{display:flex;gap:48px;justify-content:center;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-n{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;display:block}
+.stat-l{font-size:12px;color:var(--text-muted);margin-top:2px}
+/* SCROLL DEMO */
+.scroll-demo{padding:0 48px 120px;max-width:1200px;margin:0 auto}
+.scroll-demo-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.steps-nav{position:sticky;top:120px}
+.step-item{padding:20px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .3s}
+.step-item:last-child{border-bottom:none}
+.step-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);margin-bottom:6px;letter-spacing:.08em}
+.step-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:600;color:var(--text-muted);transition:color .3s;margin-bottom:4px}
+.step-desc{font-size:13px;color:var(--text-dim);line-height:1.6;max-height:0;overflow:hidden;transition:all .4s}
+.step-item.active .step-title{color:#fff}
+.step-item.active .step-num{color:var(--accent)}
+.step-item.active .step-desc{max-height:80px;color:var(--text-muted)}
+.step-bar{height:2px;background:var(--border);position:relative;margin-top:12px;border-radius:2px;overflow:hidden;display:none}
+.step-item.active .step-bar{display:block}
+.step-fill{height:100%;background:var(--accent);border-radius:2px;animation:fill 4s linear forwards}
+@keyframes fill{from{width:0}to{width:100%}}
+.content-wrap{position:relative;min-height:440px}
+.content-panel{opacity:0;transform:translateY(20px);transition:all .5s;position:absolute;pointer-events:none;width:100%}
+.content-panel.active{opacity:1;transform:translateY(0);position:relative;pointer-events:all}
+.panel-card{background:var(--navy-2);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.panel-topbar{background:var(--navy-3);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.panel-dots{display:flex;gap:5px}
+.panel-dots span{width:8px;height:8px;border-radius:50%;background:var(--border-bright)}
+.panel-title-bar{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim)}
+.panel-body{padding:16px}
+.import-zone{background:var(--navy-3);border:1.5px dashed var(--border-bright);border-radius:10px;padding:28px;text-align:center;margin-bottom:12px}
+.import-link{color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:4px;font-size:12px;margin-top:8px}
+.import-txt{font-size:13px;color:var(--text-muted)}
+.pty-row{background:var(--navy-3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.pty-sig{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:#fff}
+.pty-nm{font-size:10px;color:var(--text-muted)}
+.pty-v{font-size:10px;color:var(--text-dim)}
+.pty-check{color:var(--teal);font-size:11px}
+.cass-form{background:var(--navy-3);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.fg{display:flex;flex-direction:column;gap:3px}
+.fl{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em}
+.fv{background:var(--navy-2);border:1px solid var(--border-bright);border-radius:5px;padding:6px 10px;font-size:12px;color:#fff}
+.modal-types{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:4px}
+.mtype{font-size:10px;text-align:center;padding:5px 3px;border-radius:5px;border:1px solid var(--border);color:var(--text-muted)}
+.mtype.sel{background:rgba(245,166,35,.15);border-color:var(--accent);color:var(--accent)}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.mc{background:var(--navy-3);border:1px solid var(--border);border-radius:7px;padding:9px 10px}
+.mc-l{font-size:8px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.mc-v{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#fff}
+.mc-s{font-size:8px;color:var(--text-dim);margin-top:1px}
+.mc.hl .mc-v{color:var(--accent)}
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{padding:6px 8px;font-size:8px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border);text-align:left;font-weight:500;background:var(--navy-3)}
+.tbl td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.04)}
+.f1c{background:rgba(59,130,246,.06)}
+.f2c{background:rgba(0,212,164,.06)}
+.tag{font-size:8px;padding:2px 6px;border-radius:20px;display:inline-block;margin-top:1px}
+.tag-apto{background:rgba(0,212,164,.15);color:var(--teal)}
+.tag-excl{background:rgba(255,77,77,.15);color:#FCA5A5}
+.tag-el{background:rgba(0,212,164,.15);color:var(--teal)}
+.tag-bar{background:rgba(255,77,77,.15);color:#FCA5A5}
+.pname{font-weight:500;color:#fff;font-size:11px}
+.vp{color:var(--teal);font-weight:600}
+.vn{color:#FCA5A5;font-weight:600}
+.dh-round{background:var(--navy-3);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px}
+.dh-hd{display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.dh-n{background:var(--blue);color:#fff;font-size:8px;padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+.dh-ph{background:rgba(0,212,164,.15);color:var(--teal);font-size:8px;padding:2px 7px;border-radius:20px}
+.dh-win{font-size:11px;font-weight:500;color:#fff}
+.dh-med{font-size:10px;color:var(--text-muted)}
+.dh-tbl{width:100%;border-collapse:collapse;font-size:10px}
+.dh-tbl th{padding:3px 7px;font-size:7px;color:var(--text-dim);text-transform:uppercase;border-bottom:1px solid var(--border);text-align:left}
+.dh-tbl td{padding:4px 7px;border-bottom:1px solid rgba(255,255,255,.03)}
+.dh-tbl .w td{color:#fff;font-weight:500}
+.dh-tbl .ex td{color:var(--text-dim);font-style:italic}
+.ck{color:var(--teal)}.cx{color:#FCA5A5}
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.ccard{background:var(--navy-3);border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.ccard-hd{background:rgba(255,255,255,.03);padding:6px 10px;font-size:8px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
+.ccard-row{display:flex;justify-content:space-between;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.03);font-size:11px}
+.ccard-row:last-child{border-bottom:none}
+.mig-box{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:6px;padding:8px 10px;font-size:10px;color:#93C5FD;line-height:1.8}
+/* FEATURES */
+.section{padding:0 48px 120px;max-width:1200px;margin:0 auto}
+.section-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
+.section-h{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:16px}
+.section-sub{font-size:16px;color:var(--text-muted);max-width:520px;line-height:1.7;margin-bottom:48px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feat-card{background:var(--navy-2);border:1px solid var(--border);border-radius:14px;padding:26px;transition:all .3s;position:relative;overflow:hidden}
+.feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s}
+.feat-card:hover{border-color:var(--border-bright);transform:translateY(-3px)}
+.feat-card:hover::before{opacity:1}
+.feat-icon{width:42px;height:42px;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:16px}
+.feat-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:8px}
+.feat-body{font-size:13px;color:var(--text-muted);line-height:1.7}
+.feat-card.span2{grid-column:span 2}
+/* HOW */
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;position:relative}
+.how-steps::before{content:'';position:absolute;top:26px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,var(--border),var(--border-bright),var(--border));z-index:0}
+.how-step{background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:22px;position:relative;z-index:1;transition:all .3s}
+.how-step:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+.how-n{width:34px;height:34px;background:var(--navy-3);border:1px solid var(--border-bright);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);margin-bottom:14px}
+.how-t{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px}
+.how-d{font-size:12px;color:var(--text-muted);line-height:1.6}
+/* CASOS REAIS */
+.cases{padding:0 48px 120px;max-width:1200px;margin:0 auto}
+.cases-tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--navy-2);border:1px solid var(--border);border-radius:10px;padding:5px}
+.ctab{flex:1;padding:10px 16px;font-size:13px;color:var(--text-muted);cursor:pointer;border-radius:7px;transition:all .2s;font-family:'Syne',sans-serif;font-weight:500;text-align:center;border:none;background:transparent}
+.ctab.active{background:var(--navy-3);color:#fff;border:1px solid var(--border-bright)}
+.case-panel{display:none}
+.case-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.case-info{background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:24px}
+.case-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.case-tag-dot{width:5px;height:5px;background:var(--accent);border-radius:50%}
+.case-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px}
+.case-ref{font-size:12px;color:var(--text-muted);margin-bottom:16px;line-height:1.6}
+.case-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.cm{background:var(--navy-3);border:1px solid var(--border);border-radius:7px;padding:10px}
+.cm-l{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.cm-v{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff}
+.cm-v.acc{color:var(--accent)}
+.cm-v.tl{color:var(--teal)}
+.cm-v.rd{color:#FCA5A5}
+.case-desc{font-size:13px;color:var(--text-muted);line-height:1.7}
+.case-alert{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);border-radius:7px;padding:10px 12px;font-size:12px;color:var(--accent);margin-top:12px;line-height:1.6}
+.case-result{background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:24px}
+.case-result-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.phase-badge{font-size:9px;padding:2px 8px;border-radius:20px;font-family:'DM Mono',monospace}
+.ph-f1{background:rgba(59,130,246,.15);color:#93C5FD}
+.ph-f2{background:rgba(0,212,164,.15);color:var(--teal)}
+.ph-f3{background:rgba(245,166,35,.15);color:var(--accent)}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.result-row:last-child{border-bottom:none}
+.rp{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:#fff}
+.rn{font-family:'Syne',sans-serif;font-size:11px;color:var(--text-muted);max-width:160px}
+.rv{display:flex;align-items:center;gap:6px}
+.rv-n{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
+.rv-d{font-size:11px}
+.rv-d.pos{color:var(--teal)}
+.rv-d.neg{color:#FCA5A5}
+.rv-d.bar{color:#FCA5A5;background:rgba(255,77,77,.1);padding:1px 6px;border-radius:20px;font-size:9px}
+.f3-notice{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);border-radius:7px;padding:10px 12px;font-size:11px;color:var(--accent);margin-top:14px;line-height:1.6}
+/* PRICING */
+.pricing{padding:0 48px 120px;max-width:900px;margin:0 auto;text-align:center}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;text-align:left}
+.price-card{background:var(--navy-2);border:1px solid var(--border);border-radius:14px;padding:26px;transition:all .3s}
+.price-card.pop{border-color:var(--accent);position:relative}
+.price-card.pop::after{content:'Mais popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:var(--navy);font-size:10px;font-weight:700;font-family:'Syne',sans-serif;padding:3px 12px;border-radius:20px;white-space:nowrap}
+.price-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:8px}
+.price-cred{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:var(--accent);line-height:1}
+.price-cred span{font-size:13px;color:var(--text-muted);font-weight:400}
+.price-val{font-size:22px;font-weight:600;color:#fff;margin:12px 0 4px;font-family:'Syne',sans-serif}
+.price-sub{font-size:12px;color:var(--text-muted);margin-bottom:20px}
+.price-btn{display:block;text-align:center;padding:11px;border-radius:7px;font-family:'Syne',sans-serif;font-size:13px;font-weight:600;text-decoration:none;transition:all .2s}
+.price-card.pop .price-btn{background:var(--accent);color:var(--navy)}
+.price-card:not(.pop) .price-btn{background:transparent;border:1px solid var(--border-bright);color:var(--text-muted)}
+.price-card:not(.pop) .price-btn:hover{border-color:rgba(255,255,255,.3);color:#fff}
+.price-feat{margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.pf{font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:8px}
+.pf::before{content:'✓';color:var(--teal);font-size:11px;flex-shrink:0}
+/* FAQ */
+.faq{padding:0 48px 120px;max-width:800px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border);overflow:hidden}
+.faq-q{padding:20px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:'Syne',sans-serif;font-size:15px;font-weight:600;color:#fff;transition:color .2s;gap:16px}
+.faq-q:hover{color:var(--accent)}
+.faq-ico{font-size:20px;color:var(--text-dim);transition:transform .3s;flex-shrink:0}
+.faq-item.open .faq-ico{transform:rotate(45deg);color:var(--accent)}
+.faq-a{font-size:14px;color:var(--text-muted);line-height:1.75;max-height:0;overflow:hidden;transition:all .4s;padding-bottom:0}
+.faq-item.open .faq-a{max-height:300px;padding-bottom:20px}
+/* CTA */
+.cta-section{padding:0 48px 100px;max-width:900px;margin:0 auto;text-align:center}
+.cta-inner{background:linear-gradient(135deg,var(--navy-2) 0%,var(--navy-3) 100%);border:1px solid var(--border-bright);border-radius:20px;padding:64px 48px;position:relative;overflow:hidden}
+.cta-inner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 100%,rgba(245,166,35,.08),transparent);pointer-events:none}
+.cta-inner h2{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-bottom:14px}
+.cta-inner p{font-size:16px;color:var(--text-muted);margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto}
+.badge-stf{display:inline-flex;align-items:center;gap:6px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:#93C5FD;font-family:'DM Mono',monospace;font-size:10px;padding:4px 10px;border-radius:4px;margin-bottom:24px}
+footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff}
+.footer-logo span{color:var(--accent)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:12px;color:var(--text-muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:#fff}
+.footer-copy{font-size:11px;color:var(--text-dim)}
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+@media(max-width:900px){
+  nav{padding:14px 20px}.nav-links{display:none}
+  .hero{padding:90px 20px 60px}
+  .scroll-demo,.section,.cases,.pricing,.faq,.cta-section{padding-left:20px;padding-right:20px}
+  .scroll-demo-inner{grid-template-columns:1fr;gap:28px}
+  .steps-nav{position:static}
+  .feat-grid,.how-steps,.price-grid{grid-template-columns:1fr}
+  .feat-card.span2{grid-column:span 1}
+  .case-panel.active{grid-template-columns:1fr}
+  footer{padding:28px 20px;flex-direction:column;text-align:center}
+  .hero-stats{gap:28px}
+}
+</style>
 </head>
 <body>
-  <!-- TELA: Login -->
-  <div id="tela-auth" style="display:none">
-    <div class="auth-container">
-      <h1>Sistema RetotalizaJE</h1>
-      <p class="auth-subtitle">Art. 109 CE · ADIs 7.228/7.263/7.325 STF</p>
-      <div class="auth-tabs">
-        <button class="tab-btn active" onclick="alternarTab('login')">Entrar</button>
-        <button class="tab-btn" onclick="alternarTab('cadastro')">Criar conta</button>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">Retotaliza<span>JE</span></a>
+  <div class="nav-links">
+    <a href="#como-funciona">Como funciona</a>
+    <a href="#funcionalidades">Funcionalidades</a>
+    <a href="#casos">Casos reais</a>
+    <a href="#planos">Planos</a>
+  </div>
+  <a href="app.html" class="nav-cta">Acessar sistema →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    ADIs 7.228 · 7.263 · 7.325 · STF 13/03/2025
+  </div>
+  <h1 class="reveal">
+    Retotalização eleitoral<br>
+    <span class="line2">com rigor jurídico.</span>
+  </h1>
+  <p class="hero-sub reveal reveal-delay-1">
+    A única ferramenta que implementa <strong>fielmente o algoritmo do STF</strong> em três fases — do Art. 109 CE às ADIs do Min. Flávio Dino. Para advogados eleitorais, TREs e pesquisadores.
+  </p>
+  <div class="hero-actions reveal reveal-delay-2">
+    <a href="app.html" class="btn-primary">Usar o sistema →</a>
+    <a href="#como-funciona" class="btn-secondary">Ver como funciona</a>
+  </div>
+  <div class="hero-stats reveal reveal-delay-3">
+    <div class="stat"><span class="stat-n">3</span><div class="stat-l">Fases do algoritmo</div></div>
+    <div class="stat"><span class="stat-n">100%</span><div class="stat-l">Fiel às ADIs STF</div></div>
+    <div class="stat"><span class="stat-n">CSV</span><div class="stat-l">Importação direta TSE</div></div>
+    <div class="stat"><span class="stat-n">4</span><div class="stat-l">Modalidades de cassação</div></div>
+  </div>
+</section>
+
+<!-- SCROLL DEMO -->
+<div id="como-funciona" class="scroll-demo">
+  <div class="scroll-demo-inner">
+    <div class="steps-nav">
+      <div style="margin-bottom:32px" class="reveal">
+        <div class="section-label">Fluxo de uso</div>
+        <h2 style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:10px">Do arquivo do TSE ao resultado em minutos</h2>
+        <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Sem configuração manual. O sistema lê o CSV oficial e calcula automaticamente todas as fases.</p>
       </div>
-      <div id="form-login">
-        <input type="email" id="login-email" placeholder="E-mail" class="auth-input">
-        <input type="password" id="login-senha" placeholder="Senha" class="auth-input">
-        <button onclick="fazerLogin()" class="btn-primary">Entrar</button>
-        <p id="login-erro" class="auth-erro"></p>
+      <div class="step-item active" data-step="0">
+        <div class="step-num">01</div>
+        <div class="step-title">Importe os dados do TSE</div>
+        <div class="step-desc">Carregue o arquivo CSV oficial. O sistema detecta automaticamente as colunas de votos nominais e de legenda — inclusive variações pré e pós-2022.</div>
+        <div class="step-bar"><div class="step-fill"></div></div>
       </div>
-      <div id="form-cadastro" style="display:none">
-        <input type="email" id="cad-email" placeholder="E-mail" class="auth-input">
-        <input type="password" id="cad-senha" placeholder="Senha (mín. 6 caracteres)" class="auth-input">
-        <button onclick="fazerCadastro()" class="btn-primary">Criar conta</button>
-        <p id="cad-erro" class="auth-erro"></p>
+      <div class="step-item" data-step="1">
+        <div class="step-num">02</div>
+        <div class="step-title">Configure a cassação</div>
+        <div class="step-desc">Escolha entre 4 modalidades: nominal, legenda, total ou DRAP. O QE e a barreira são recalculados automaticamente.</div>
+        <div class="step-bar"><div class="step-fill"></div></div>
       </div>
-      <div class="auth-separator">ou</div>
-      <button onclick="fazerLoginGoogle()" class="btn-google">Entrar com Google</button>
+      <div class="step-item" data-step="2">
+        <div class="step-num">03</div>
+        <div class="step-title">Calcule com um clique</div>
+        <div class="step-desc">O algoritmo de três fases processa a distribuição: QP, D'Hondt com barreira 80% e D'Hondt sem barreira conforme as ADIs.</div>
+        <div class="step-bar"><div class="step-fill"></div></div>
+      </div>
+      <div class="step-item" data-step="3">
+        <div class="step-num">04</div>
+        <div class="step-title">Analise os resultados</div>
+        <div class="step-desc">Métricas, tabela por fase, passo a passo D'Hondt auditável e comparativo original × retotalizado. Exportável em CSV e PDF.</div>
+        <div class="step-bar"><div class="step-fill"></div></div>
+      </div>
+    </div>
+    <div class="steps-content">
+      <div class="content-wrap">
+        <!-- P0 Import -->
+        <div class="content-panel active">
+          <div class="panel-card">
+            <div class="panel-topbar"><div class="panel-dots"><span></span><span></span><span></span></div><div class="panel-title-bar">retotalizaje.com.br — Importar dados</div></div>
+            <div class="panel-body">
+              <div class="import-zone">
+                <div style="font-size:26px;margin-bottom:6px">📁</div>
+                <div class="import-txt">Arraste o arquivo CSV ou clique para selecionar</div>
+                <a href="#" class="import-link">↗ Baixar arquivo no Portal TSE</a>
+              </div>
+              <div class="pty-row"><span class="pty-sig">PL</span><span class="pty-nm">Partido Liberal</span><span class="pty-v">1.018.156 votos</span><span class="pty-check">✓</span></div>
+              <div class="pty-row"><span class="pty-sig">UNIÃO</span><span class="pty-nm">União Brasil</span><span class="pty-v">803.490 votos</span><span class="pty-check">✓</span></div>
+              <div class="pty-row"><span class="pty-sig">PT</span><span class="pty-nm">Part. dos Trabalhadores</span><span class="pty-v">798.320 votos</span><span class="pty-check">✓</span></div>
+              <div style="text-align:center;font-size:10px;color:var(--text-dim);padding:8px">+ 24 partidos carregados automaticamente</div>
+            </div>
+          </div>
+        </div>
+        <!-- P1 Cassation -->
+        <div class="content-panel">
+          <div class="panel-card">
+            <div class="panel-topbar"><div class="panel-dots"><span></span><span></span><span></span></div><div class="panel-title-bar">Cassação / Anulação — Dep. Federal CE 2022</div></div>
+            <div class="panel-body">
+              <div class="cass-form">
+                <div class="form-grid">
+                  <div class="fg"><div class="fl">Partido</div><div class="fv">UNIÃO</div></div>
+                  <div class="fg"><div class="fl">Candidato</div><div class="fv">Heitor Freire</div></div>
+                  <div class="fg"><div class="fl">Votos a anular</div><div class="fv">48.888</div></div>
+                  <div class="fg"><div class="fl">Modalidade</div>
+                    <div class="modal-types"><div class="mtype">Nominal</div><div class="mtype">Legenda</div><div class="mtype sel">Total</div><div class="mtype">DRAP</div></div>
+                  </div>
+                </div>
+              </div>
+              <div style="background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);border-radius:7px;padding:10px;font-size:11px;color:var(--accent);display:flex;gap:8px">
+                <span>⚡</span><span>Novo total: <strong>5.034.972</strong> votos · Novo QE: <strong>228.862</strong> (era 231.084) · Nova barreira 80%: <strong>183.089</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- P2 Metrics -->
+        <div class="content-panel">
+          <div class="panel-card">
+            <div class="panel-topbar"><div class="panel-dots"><span></span><span></span><span></span></div><div class="panel-title-bar">Métricas + Distribuição por fase</div></div>
+            <div class="panel-body">
+              <div class="metrics-grid">
+                <div class="mc"><div class="mc-l">Votos válidos</div><div class="mc-v">5.034.972</div><div class="mc-s">pós-cassação</div></div>
+                <div class="mc hl"><div class="mc-l">QE pós-cassação</div><div class="mc-v">228.862</div><div class="mc-s">era 231.084</div></div>
+                <div class="mc"><div class="mc-l">Barreira 80%</div><div class="mc-v">183.089</div><div class="mc-s">mín. Fase 2</div></div>
+                <div class="mc"><div class="mc-l">Vagas</div><div class="mc-v">22</div><div class="mc-s">Dep. Federal</div></div>
+              </div>
+              <table class="tbl">
+                <tr><th>Partido</th><th>Votos</th><th>% QE</th><th class="f1c">F1</th><th class="f2c">F2</th><th>Total</th><th>Var.</th><th>Status</th></tr>
+                <tr><td><div class="pname">PL</div><div class="tag tag-apto">Apto F2</div></td><td>1.018k</td><td>221%</td><td class="f1c"><b>5</b></td><td class="f2c"><b>1</b></td><td><b>6</b></td><td class="vp">+1</td><td><span class="tag tag-el">Eleito</span></td></tr>
+                <tr><td><div class="pname">UNIÃO</div><div class="tag tag-apto">Apto F2</div></td><td>803k</td><td>175%</td><td class="f1c"><b>3</b></td><td class="f2c"><b>0</b></td><td><b>3</b></td><td class="vn">−1</td><td><span class="tag tag-el">Eleito</span></td></tr>
+                <tr><td><div class="pname">Rep.</div><div class="tag tag-excl">Excluído F2</div></td><td>179k</td><td>78%</td><td class="f1c">0</td><td class="f2c">0</td><td><b>0</b></td><td>—</td><td><span class="tag tag-bar">Barrado</span></td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- P3 Dhondt -->
+        <div class="content-panel">
+          <div class="panel-card">
+            <div class="panel-topbar"><div class="panel-dots"><span></span><span></span><span></span></div><div class="panel-title-bar">D'Hondt + Comparativo de Cenários</div></div>
+            <div class="panel-body">
+              <div class="dh-round">
+                <div class="dh-hd"><span class="dh-n">#1</span><span class="dh-ph">Fase 2</span><span class="dh-win">Vencedor: PL</span><span class="dh-med">Média: 169.692</span></div>
+                <table class="dh-tbl">
+                  <tr><th>Partido</th><th>Votos</th><th>Cad.+1</th><th>Média</th><th>&gt;80% QE?</th><th>Participa?</th></tr>
+                  <tr class="w"><td>PL</td><td>1.018k</td><td>6</td><td><b>169.692</b></td><td class="ck">✓</td><td class="ck">✓</td></tr>
+                  <tr><td>UNIÃO</td><td>803k</td><td>4</td><td>160.720</td><td class="ck">✓</td><td class="ck">✓</td></tr>
+                  <tr class="ex"><td>Rep.</td><td>179k</td><td>1</td><td>179.371</td><td class="cx">✗</td><td class="cx">✗</td></tr>
+                </table>
+              </div>
+              <div class="comp-grid">
+                <div class="ccard"><div class="ccard-hd"><span>Original</span><span>Total</span></div>
+                  <div class="ccard-row"><span>PL</span><b>5</b></div>
+                  <div class="ccard-row"><span>UNIÃO</span><b>4</b></div>
+                  <div class="ccard-row"><span>Republicanos</span><b>1</b></div>
+                </div>
+                <div class="ccard"><div class="ccard-hd"><span>Retotalizado</span><span>Total</span></div>
+                  <div class="ccard-row"><span>PL</span><b style="color:var(--teal)">6 ↑</b></div>
+                  <div class="ccard-row"><span>UNIÃO</span><b style="color:#FCA5A5">3 ↓</b></div>
+                  <div class="ccard-row"><span>Republicanos</span><b style="color:#FCA5A5">0 ↓</b></div>
+                </div>
+              </div>
+              <div class="mig-box"><b>Migrações:</b> PL +1 (5→6) · UNIÃO −1 (4→3) · Republicanos barrado (1→0)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="funcionalidades" class="section">
+  <div class="section-label reveal">Funcionalidades</div>
+  <h2 class="section-h reveal">Tudo que um processo<br>de retotalização exige</h2>
+  <p class="section-sub reveal">Desenvolvido para advogados eleitorais, pesquisadores e tribunais que precisam de cálculos confiáveis e auditáveis.</p>
+  <div class="feat-grid">
+    <div class="feat-card reveal">
+      <div class="feat-icon">⚖️</div>
+      <div class="feat-title">Algoritmo em 3 fases (STF)</div>
+      <div class="feat-body">Fase 1 (QP), Fase 2 (D'Hondt com barreira 80% QE e piso 20% individual) e Fase 3 (D'Hondt sem barreira), conforme ADIs 7.228, 7.263 e 7.325.</div>
+    </div>
+    <div class="feat-card reveal reveal-delay-1">
+      <div class="feat-icon">📊</div>
+      <div class="feat-title">Importação direta do TSE</div>
+      <div class="feat-body">Lê o CSV oficial com encoding ISO-8859-1. Detecta automaticamente as colunas pré e pós-2022 (QT_VOTOS_NOMINAIS vs QT_VOTOS_NOMINAIS_VALIDOS).</div>
+    </div>
+    <div class="feat-card reveal reveal-delay-2">
+      <div class="feat-icon">🏛️</div>
+      <div class="feat-title">Federações partidárias</div>
+      <div class="feat-body">Agrupa federações antes do cálculo como exige a legislação. Configure via campo federação no cadastro de cada partido.</div>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🔍</div>
+      <div class="feat-title">4 modalidades de cassação</div>
+      <div class="feat-body">Nominal, legenda, total ou DRAP. O sistema recalcula o QE, a barreira e redistribui as vagas automaticamente.</div>
+    </div>
+    <div class="feat-card span2 reveal reveal-delay-1">
+      <div class="feat-icon">📋</div>
+      <div class="feat-title">Auditoria completa passo a passo</div>
+      <div class="feat-body">Cada rodada do D'Hondt é documentada: médias calculadas, candidatos elegíveis, barreira aplicada e vencedor. Exportável em CSV e PDF estruturado como parecer técnico.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="section" style="padding-top:0">
+  <div class="section-label reveal">Fundamento jurídico</div>
+  <h2 class="section-h reveal" style="margin-bottom:36px">Baseado nas fontes primárias</h2>
+  <div class="how-steps">
+    <div class="how-step reveal"><div class="how-n">1</div><div class="how-t">Art. 109 CE</div><div class="how-d">Lei 14.211/2021. Distribui vagas em três fases com barreira de 80% do QE na Fase 2.</div></div>
+    <div class="how-step reveal reveal-delay-1"><div class="how-n">2</div><div class="how-t">ADI 7.228</div><div class="how-d">STF declarou constitucional a barreira de 80% QE e o piso individual de 20% QE na Fase 2.</div></div>
+    <div class="how-step reveal reveal-delay-2"><div class="how-n">3</div><div class="how-t">ADIs 7.263 e 7.325</div><div class="how-d">Julgamento de 13/03/2025. Min. Flávio Dino: Fase 3 sem barreira é a interpretação constitucionalmente adequada.</div></div>
+    <div class="how-step reveal reveal-delay-3"><div class="how-n">4</div><div class="how-t">Art. 111 CE</div><div class="how-d">Regra do "distritão" declarada inconstitucional pelo STF. Não implementada no sistema.</div></div>
+  </div>
+</section>
+
+<!-- CASOS REAIS -->
+<section id="casos" class="cases">
+  <div class="section-label reveal">Casos reais validados</div>
+  <h2 class="section-h reveal">Resultados conferidos com<br>dados oficiais do TSE e TREs</h2>
+  <p class="section-sub reveal">Cada caso foi validado com os arquivos originais do TSE e as decisões publicadas pelos Tribunais Regionais Eleitorais.</p>
+
+  <div class="cases-tabs reveal">
+    <button class="ctab active" data-case="ce">Ceará 2022 — Cassação Heitor Freire</button>
+    <button class="ctab" data-case="df">Distrito Federal 2022 — Fase 3 PSB</button>
+    <button class="ctab" data-case="ap">Amapá 2022 — TRE-AP Res. 620/2025</button>
+  </div>
+
+  <!-- CE -->
+  <div class="case-panel active" id="case-ce">
+    <div class="case-info">
+      <div class="case-tag"><span class="case-tag-dot"></span>Dep. Federal · Ceará · 2022</div>
+      <div class="case-title">Cassação do Dep. Heitor Freire</div>
+      <div class="case-ref">Retotalização após cassação do mandato do Deputado Federal Heitor Freire (UNIÃO Brasil), com anulação de 48.888 votos na modalidade <strong>total</strong>.</div>
+      <div class="case-metrics">
+        <div class="cm"><div class="cm-l">Votos totais</div><div class="cm-v">5.083.860</div></div>
+        <div class="cm"><div class="cm-l">QE original</div><div class="cm-v">231.084</div></div>
+        <div class="cm"><div class="cm-l">QE pós-cassação</div><div class="cm-v acc">228.862</div></div>
+        <div class="cm"><div class="cm-l">Barreira 80% nova</div><div class="cm-v rd">183.089</div></div>
+      </div>
+      <div class="case-desc">Com a cassação, o QE recalculado fez a barreira de 80% cair abaixo dos votos dos Republicanos (179.371 votos), excluindo o partido da Fase 2. O sistema identificou corretamente a migração de vaga.</div>
+      <div class="case-alert">⚠️ Republicanos: 179.371 votos &lt; 183.089 (nova barreira 80% QE) → barrado na Fase 2, zero vagas.</div>
+    </div>
+    <div class="case-result">
+      <div class="case-result-title">Distribuição final — 22 vagas <span class="phase-badge ph-f1">F1</span><span class="phase-badge ph-f2">F2</span></div>
+      <div class="result-row"><span class="rp">PL</span><span class="rn">Partido Liberal</span><div class="rv"><span class="rv-n">6</span><span class="rv-d pos">+1</span></div></div>
+      <div class="result-row"><span class="rp">UNIÃO</span><span class="rn">União Brasil</span><div class="rv"><span class="rv-n">3</span><span class="rv-d neg">−1</span></div></div>
+      <div class="result-row"><span class="rp">PT</span><span class="rn">Part. dos Trabalhadores</span><div class="rv"><span class="rv-n">4</span><span class="rv-d" style="color:var(--text-dim)">—</span></div></div>
+      <div class="result-row"><span class="rp">PDT</span><span class="rn">Part. Democrático Trab.</span><div class="rv"><span class="rv-n">2</span><span class="rv-d" style="color:var(--text-dim)">—</span></div></div>
+      <div class="result-row"><span class="rp">MDB</span><span class="rn">Mov. Democrático Bras.</span><div class="rv"><span class="rv-n">2</span><span class="rv-d" style="color:var(--text-dim)">—</span></div></div>
+      <div class="result-row"><span class="rp">Rep.</span><span class="rn">Republicanos</span><div class="rv"><span class="rv-n" style="color:#FCA5A5">0</span><span class="rv-d bar">barrado</span></div></div>
     </div>
   </div>
 
-  <!-- TELA: Comprar créditos -->
-  <div id="tela-compra" style="display:none">
-    <div class="compra-container">
-      <div class="compra-header">
-        <span>Conectado como <strong class="usuario-email"></strong></span>
-        <button onclick="fazerLogout()" class="btn-logout">Sair</button>
+  <!-- DF -->
+  <div class="case-panel" id="case-df">
+    <div class="case-info">
+      <div class="case-tag"><span class="case-tag-dot"></span>Dep. Federal · Distrito Federal · 2022</div>
+      <div class="case-title">Retotalização pós-ADIs — Fase 3 ativada</div>
+      <div class="case-ref">Aplicação retroativa das ADIs 7.263 e 7.325 ao resultado original de 2022 no DF. A Fase 3 sem barreira redistribuiu vagas que não existiriam sob a regra anterior.</div>
+      <div class="case-metrics">
+        <div class="cm"><div class="cm-l">Vagas</div><div class="cm-v">8</div></div>
+        <div class="cm"><div class="cm-l">QE</div><div class="cm-v acc">259.752</div></div>
+        <div class="cm"><div class="cm-l">Barreira 80% QE</div><div class="cm-v">207.801</div></div>
+        <div class="cm"><div class="cm-l">Fase 3 ativada</div><div class="cm-v tl">Sim</div></div>
       </div>
-      <h2>Saldo insuficiente</h2>
-      <p>Adquira créditos para utilizar a calculadora.</p>
-      <div id="pacotes-container" class="pacotes-grid"></div>
-      <p class="compra-nota">Após pagamento aprovado, seus créditos são adicionados automaticamente.<br>Recarregue a página se não atualizar em 30 segundos.</p>
+      <div class="case-desc">Com o esgotamento de candidatos elegíveis na Fase 2, a Fase 3 foi ativada sem barreira de votos. O PSB/Rollemberg, que não atingia a barreira de 80% do QE, passou a concorrer nas sobras finais e obteve 1 vaga.</div>
+      <div class="case-alert">📌 Caso paradigma: demonstra o impacto direto da interpretação das ADIs na composição da Câmara Distrital.</div>
+    </div>
+    <div class="case-result">
+      <div class="case-result-title">Distribuição final — 8 vagas <span class="phase-badge ph-f1">F1</span><span class="phase-badge ph-f2">F2</span><span class="phase-badge ph-f3">F3</span></div>
+      <div class="result-row"><span class="rp">PL</span><span class="rn">Partido Liberal</span><div class="rv"><span class="rv-n">3</span><span class="rv-d" style="color:var(--text-dim)">—</span></div></div>
+      <div class="result-row"><span class="rp">UNIÃO</span><span class="rn">União Brasil</span><div class="rv"><span class="rv-n">2</span><span class="rv-d" style="color:var(--text-dim)">—</span></div></div>
+      <div class="result-row"><span class="rp">PT</span><span class="rn">Part. dos Trabalhadores</span><div class="rv"><span class="rv-n">1</span><span class="rv-d" style="color:var(--text-dim)">—</span></div></div>
+      <div class="result-row"><span class="rp">MDB</span><span class="rn">Mov. Democrático Bras.</span><div class="rv"><span class="rv-n">1</span><span class="rv-d" style="color:var(--text-dim)">—</span></div></div>
+      <div class="result-row"><span class="rp">PSB</span><span class="rn">Partido Socialista Bras.</span><div class="rv"><span class="rv-n">1</span><span class="rv-d pos">via F3</span></div></div>
+      <div class="f3-notice">⚡ Fase 3 ativada por esgotamento de candidatos elegíveis na F2 — vaga distribuída sem barreira de votos, conforme ADIs 7.263/7.325.</div>
     </div>
   </div>
-<div id="tela-app" style="display:none">
 
-  <!-- ═══ TOPBAR ═══════════════════════════════════════════════════════════════ -->
-  <header class="topbar">
-    <div class="topbar-left">
-      <!-- Icon -->
-      <div class="topbar-icon" title="Sistema RetotalizaJE">
-        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="1" y="10" width="3" height="5" rx="1"/>
-          <rect x="5.5" y="6" width="3" height="9" rx="1"/>
-          <rect x="10" y="2" width="3" height="13" rx="1"/>
-          <path d="M13.5 4.5 L15 3 L13.5 1.5" stroke="currentColor" stroke-width="1" fill="none"/>
-        </svg>
+  <!-- AP -->
+  <div class="case-panel" id="case-ap">
+    <div class="case-info">
+      <div class="case-tag"><span class="case-tag-dot"></span>Dep. Federal · Amapá · 2022</div>
+      <div class="case-title">TRE-AP Resolução 620/2025</div>
+      <div class="case-ref">Retotalização homologada pelo TRE-AP via Resolução 620/2025. Caso com 17 entidades, incluindo 3 federações partidárias agrupadas antes do cálculo.</div>
+      <div class="case-metrics">
+        <div class="cm"><div class="cm-l">Vagas</div><div class="cm-v">8</div></div>
+        <div class="cm"><div class="cm-l">QE</div><div class="cm-v acc">52.877</div></div>
+        <div class="cm"><div class="cm-l">Barreira F2</div><div class="cm-v">42.302</div></div>
+        <div class="cm"><div class="cm-l">Fase 3 ativada</div><div class="cm-v tl">Sim</div></div>
       </div>
-      <!-- Title block -->
-      <div>
-        <h1 class="topbar-title" id="topbar-h1"
-          title="Shift+Click para executar testes automáticos (TC-01…TC-05)">
-          Sistema RetotalizaJE
-        </h1>
-        <div class="topbar-sub">Sistema Proporcional Brasileiro · art. 109 CE</div>
-      </div>
-      <!-- Legal badge -->
-      <div class="topbar-adi-badge">ADIs 7.228/7.263/7.325 · STF 13/03/2025</div>
+      <div class="case-desc">4 vagas distribuídas na Fase 2 e 4 vagas na Fase 3 (ativada por esgotamento de candidatos elegíveis — Condição B). As 3 federações foram agrupadas antes do cálculo, como exige a legislação.</div>
+      <div class="case-alert">✅ Resultado validado com os dados oficiais do TSE e a Resolução 620/2025 do TRE-AP.</div>
     </div>
-
-    <div class="topbar-right">
-      <span class="topbar-version" id="topbar-version">v2.0</span>
-      <button class="topbar-docs-btn" id="btn-toggle-docs"
-              aria-expanded="false" aria-controls="docs-section"
-              title="Documentação e glossário jurídico">
-        ⚖ Como Funciona
-      </button>
-    </div>
-  </header>
-
-  <!-- ═══ APP BODY (sidebar + main) ════════════════════════════════════════════ -->
-  <div class="app-body">
-
-    <!-- ── SIDEBAR ──────────────────────────────────────────────────────────── -->
-    <aside class="sidebar" role="complementary" aria-label="Painel de entrada de dados">
-
-      <!-- Preset -->
-      <div class="sidebar-section">
-        <div class="sidebar-label">Casos de Estudo</div>
-        <div class="sidebar-field">
-          <select id="select-preset" class="field-select"
-                  aria-label="Carregar caso de estudo pré-definido">
-            <option value="">— Selecionar preset —</option>
-          </select>
-        </div>
-        <div id="preset-notas" class="alerta info sidebar-preset-nota" style="display:none;"></div>
-      </div>
-
-      <!-- Parâmetros gerais -->
-      <div class="sidebar-section">
-        <div class="sidebar-label">Parâmetros do Pleito</div>
-
-        <div class="sidebar-field">
-          <label for="input-rotulo" class="field-label">Rótulo</label>
-          <input type="text" id="input-rotulo" class="field-input"
-                 placeholder="Ex: Dep. Federal — Ceará 2022"
-                 aria-label="Rótulo do pleito" />
-        </div>
-
-        <div class="sidebar-field">
-          <label for="input-vagas" class="field-label">Vagas</label>
-          <input type="number" id="input-vagas" class="field-input-num"
-                 min="1" max="513" placeholder="22"
-                 aria-label="Número de vagas" />
-        </div>
-
-      </div>
-
-      <!-- Importação TSE -->
-      <div class="sidebar-section import-section" id="import-section">
-
-        <div class="import-header">
-          <button id="btn-toggle-import" class="import-toggle-btn"
-                  aria-expanded="false" aria-controls="import-body"
-                  title="Importar dados diretamente do CSV oficial do TSE">
-            <span class="import-toggle-icon">⬇</span>
-            Importar dados do TSE
-          </button>
-          <a href="https://dadosabertos.tse.jus.br/dataset/resultados-2022"
-             target="_blank" rel="noopener noreferrer"
-             class="import-link-tse"
-             title="Acesse › Resultados 2022 › votacao_partido_munzona_2022_{UF}.zip">
-            ↗ Portal TSE
-          </a>
-        </div>
-
-        <div id="import-body" style="display:none;">
-
-          <!-- Passo 1: arquivo de votos por partido -->
-          <div class="import-step">
-            <label class="import-step-label" for="file-partido">
-              <span class="import-step-num">1</span>
-              Votos por partido <span class="import-step-req">*</span>
-            </label>
-            <div class="import-step-hint">votacao_partido_munzona_{ano}_{uf}.csv</div>
-            <input type="file" id="file-partido" accept=".csv"
-                   class="import-file-input"
-                   aria-label="Arquivo de votação por partido do TSE" />
-          </div>
-
-          <!-- Passo 2: arquivo de candidatos (opcional) -->
-          <div class="import-step">
-            <label class="import-step-label" for="file-candidato">
-              <span class="import-step-num">2</span>
-              Candidatos <span class="import-step-opt">(opcional)</span>
-            </label>
-            <div class="import-step-hint">votacao_candidato_munzona_{ano}_{uf}.csv</div>
-            <input type="file" id="file-candidato" accept=".csv"
-                   class="import-file-input"
-                   aria-label="Arquivo de votação por candidato do TSE (opcional)" />
-          </div>
-
-          <!-- Filtros -->
-          <div class="import-filters">
-            <div class="import-filter-field">
-              <label class="import-filter-label" for="filter-cargo">Cargo</label>
-              <select id="filter-cargo" class="import-filter-select"
-                      aria-label="Filtrar por cargo">
-                <option value="Deputado Federal">Deputado Federal</option>
-                <option value="Deputado Estadual">Deputado Estadual / Distrital</option>
-                <option value="Vereador">Vereador</option>
-              </select>
-            </div>
-            <div class="import-filter-field">
-              <label class="import-filter-label" for="filter-uf">UF</label>
-              <select id="filter-uf" class="import-filter-select"
-                      aria-label="Filtrar por estado">
-                <option value="">Todas as UFs</option>
-              </select>
-            </div>
-            <div class="import-filter-field" id="filter-municipio-wrap" style="display:none;">
-              <label class="import-filter-label" for="filter-municipio">Município</label>
-              <select id="filter-municipio" class="import-filter-select"
-                      aria-label="Filtrar por município">
-                <option value="">Todos</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Botão processar -->
-          <button id="btn-processar-csv" class="import-btn-processar">
-            ▶ Processar e preencher campos
-          </button>
-
-          <!-- Status / progresso -->
-          <div id="import-status" class="import-status" aria-live="polite"></div>
-
-        </div><!-- #import-body -->
-
-        <!-- Badge de confirmação (visível fora do painel colapsável) -->
-        <div id="import-badge" class="import-badge" style="display:none;"
-             aria-live="polite"></div>
-
-      </div><!-- .import-section -->
-
-      <!-- Partidos -->
-      <div class="sidebar-section">
-        <div class="sidebar-label">Partidos e Federações</div>
-        <div id="lista-partidos" role="list" aria-label="Lista de partidos"></div>
-        <button id="btn-adicionar-partido" class="btn-sidebar-add"
-                aria-label="Adicionar partido ou federação">
-          + Partido / Federação
-        </button>
-      </div>
-
-      <!-- Cassações -->
-      <div class="sidebar-section">
-        <div class="sidebar-label">
-          Cassação / Anulação
-          <span class="sidebar-label-optional">(opcional)</span>
-        </div>
-        <div id="lista-cassacoes" role="list" aria-label="Lista de cassações"></div>
-        <button id="btn-adicionar-cassacao" class="btn-sidebar-add btn-sm"
-                aria-label="Adicionar cassação ou anulação de votos">
-          + Cassação / Anulação
-        </button>
-      </div>
-
-      <!-- Erros e avisos -->
-      <div id="erros-formulario" role="alert" aria-live="polite"></div>
-
-      <!-- Ações -->
-      <div class="sidebar-section sidebar-actions">
-        <button id="btn-calcular" class="btn-calcular">
-          ▶ Calcular Distribuição
-        </button>
-        <button id="btn-limpar" class="btn-sidebar-clear">
-          ✕ Limpar
-        </button>
-      </div>
-
-    </aside><!-- .sidebar -->
-
-    <!-- ── MAIN CONTENT ──────────────────────────────────────────────────────── -->
-    <main class="main-content" role="main" aria-label="Resultados da distribuição">
-
-      <!-- Empty state (shown by CSS :has() when no results exist) -->
-      <div class="empty-state" aria-hidden="true">
-        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8"  y="34" width="8"  height="14" rx="2" fill="currentColor"/>
-          <rect x="22" y="22" width="8"  height="26" rx="2" fill="currentColor"/>
-          <rect x="36" y="10" width="8"  height="38" rx="2" fill="currentColor"/>
-          <path d="M44 14 L50 8 M47 8 L50 8 L50 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <div class="empty-title">Nenhum cálculo realizado</div>
-        <div class="empty-sub">Preencha os dados no painel lateral e clique em Calcular para ver a distribuição de cadeiras.</div>
-      </div>
-
-      <!-- Result sections (shown by CSS :has() when results exist) -->
-      <div class="result-sections">
-
-        <!-- QE Banner -->
-        <div id="painel-parametros" class="params-grid" aria-label="Parâmetros da eleição"></div>
-
-        <!-- Alertas / banners -->
-        <div id="painel-alertas"></div>
-
-        <!-- Toolbar: phase nav + export buttons -->
-        <div class="result-toolbar">
-          <nav class="phase-nav" aria-label="Navegação por fase">
-            <button class="phase-tab active" data-phase="f1"
-                    title="Ir para a seção Fase 1 — Quociente Partidário"
-                    aria-label="Fase 1 — Quociente Partidário">
-              <span class="phase-dot phase-dot-f1"></span>
-              <span class="phase-tab-label">F1 QP</span>
-              <span class="phase-count-badge count-f1" id="badge-f1">—</span>
-            </button>
-            <button class="phase-tab" data-phase="f2"
-                    title="Ir para a seção Fase 2 — Maiores Médias c/ barreira"
-                    aria-label="Fase 2 — Maiores Médias com barreira 80/20">
-              <span class="phase-dot phase-dot-f2"></span>
-              <span class="phase-tab-label">F2 80/20</span>
-              <span class="phase-count-badge count-f2" id="badge-f2">—</span>
-            </button>
-            <button class="phase-tab" data-phase="f3"
-                    title="Ir para a seção Fase 3 — Maiores Médias s/ barreira (ADIs STF)"
-                    aria-label="Fase 3 — Maiores Médias sem barreira">
-              <span class="phase-dot phase-dot-f3"></span>
-              <span class="phase-tab-label">F3 ADIs</span>
-              <span class="phase-count-badge count-f3" id="badge-f3">—</span>
-            </button>
-            <button class="phase-tab" data-phase="audit"
-                    title="Ir para a seção de Auditoria D'Hondt"
-                    aria-label="Auditoria D'Hondt">
-              <span class="phase-dot phase-dot-audit"></span>
-              <span class="phase-tab-label">Auditoria</span>
-              <span class="phase-count-badge count-audit" id="badge-audit">—</span>
-            </button>
-          </nav>
-
-          <div class="export-actions">
-            <button id="btn-exportar-csv" class="btn-action" disabled>⬇ CSV</button>
-            <button id="btn-exportar-pdf" class="btn-action" disabled>⬇ PDF</button>
-            <button id="btn-link" class="btn-action" disabled>🔗 Link</button>
-            <button id="btn-apresentacao" class="btn-action-primary" disabled
-                    title="Exibe a tabela em tela cheia (Esc para sair)">▶ Apresentação</button>
-            <button id="btn-salvar-estudo" class="btn-action" disabled
-                    title="Exportar estudo completo (parâmetros + resultado) como JSON">💾 Salvar Estudo</button>
-          </div>
-        </div>
-
-        <!-- Result panel: tabela principal -->
-        <section id="section-resultado" class="result-panel" aria-label="Distribuição de cadeiras">
-          <div class="result-panel-header">
-            <span class="result-panel-title">Distribuição de Cadeiras por Partido</span>
-            <span class="result-panel-hint">F1 = QP · F2 = sobras c/ barreira 80/20 · F3 = sobras s/ barreira (ADIs STF)</span>
-          </div>
-          <div class="tabela-scroll">
-            <div id="tabela-resultado"></div>
-          </div>
-        </section>
-
-        <!-- Audit panel -->
-        <section id="section-auditoria" class="audit-panel" aria-label="Auditoria do algoritmo D'Hondt">
-          <div class="audit-panel-title">Execução passo a passo — Algoritmo D'Hondt</div>
-          <p style="font-family:'Inter',sans-serif; font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.5;">
-            Cada linha representa uma rodada de distribuição de sobra. Clique em uma rodada para expandir o detalhe das médias.
-            Linhas em itálico = partido excluído naquela rodada. Linha destacada = vencedor.
-          </p>
-          <div id="auditoria-container" class="auditoria-container" aria-live="polite"></div>
-        </section>
-
-        <!-- Compare panel -->
-        <div id="secao-comparativo" style="display:none;">
-          <section class="compare-panel" aria-label="Comparativo entre cenários">
-            <div class="compare-header">
-              <div class="compare-header-icon">⚖</div>
-              <span class="compare-header-title">Comparativo: Cenário Original × Retotalizado</span>
-              <span class="compare-header-sub">Após cassação / anulação de votos</span>
-            </div>
-            <div id="comparativo-container"></div>
-          </section>
-        </div>
-
-        <div id="secao-sem-comparativo">
-          <div class="alerta info">
-            <div class="alerta-titulo">ℹ Comparativo não disponível</div>
-            Execute um cálculo com cassação/anulação de votos para habilitar esta seção.
-          </div>
-        </div>
-
-      </div><!-- .result-sections -->
-
-      <!-- ── DOCS SECTION (toggled from topbar) ──────────────────────────────── -->
-      <div id="docs-section" class="docs-section" aria-label="Documentação e glossário">
-        <div class="docs-container">
-
-          <h2>O Sistema Proporcional Brasileiro</h2>
-          <p>
-            A distribuição de cadeiras em eleições proporcionais (Câmara dos Deputados, Câmaras Legislativas, Câmara
-            Distrital e Câmaras Municipais) obedece ao art. 109 do Código Eleitoral (Lei nº 4.737/1965), com a redação
-            dada pela Lei nº 14.211/2021, e à interpretação conforme fixada pelo STF nas
-            <strong>ADIs 7.228, 7.263 e 7.325</strong>, julgadas em 13/03/2025 (redator Min. Flávio Dino).
-          </p>
-
-          <h2>As Três Fases do Algoritmo</h2>
-
-          <h3>Fase 1 — Quociente Eleitoral e Quocientes Partidários (art. 109, I)</h3>
-          <p>
-            Calcula-se o <strong>Quociente Eleitoral (QE)</strong> dividindo o total de votos válidos pelo número de vagas,
-            descartando a fração (parte inteira):
-          </p>
-          <div class="formula">QE = ⌊ Votos Válidos ÷ Vagas ⌋</div>
-          <p>
-            Para cada partido ou federação, o <strong>Quociente Partidário (QP)</strong> é o número de vagas diretas obtidas:
-          </p>
-          <div class="formula">QP = ⌊ Votos do Partido ÷ QE ⌋</div>
-          <p>
-            "Votos válidos" = votos nominais + votos de legenda. A parte fracionária é sempre descartada (art. 106 CE).
-            Candidatos são convocados em ordem decrescente de votação para preencher as cadeiras de QP.
-          </p>
-
-          <h3>Fase 2 — Maiores Médias com Cláusula de Barreira (art. 109, II)</h3>
-          <p>
-            As vagas restantes (sobras = vagas − ΣQPs) são distribuídas pelo método D'Hondt, com <strong>dupla cláusula de barreira</strong>
-            introduzida pela Lei 14.211/2021 e confirmada como constitucional pelo STF:
-          </p>
-          <ul>
-            <li><strong>Trava partidária (80% QE):</strong> apenas partidos com votos ≥ 80% do QE participam.</li>
-            <li><strong>Trava individual (20% QE):</strong> o partido só captura a vaga se ainda tiver, na lista, um candidato não eleito com ≥ 20% do QE.</li>
-          </ul>
-          <p>Em cada rodada, calcula-se a média de cada partido qualificado:</p>
-          <div class="formula">Média = Votos do Partido ÷ (Cadeiras Atuais + 1)</div>
-          <p>O partido com maior média vence a rodada e o candidato elegível mais votado é convocado.</p>
-
-          <h3>Fase 3 — Maiores Médias sem Barreira (art. 109, III)</h3>
-          <p>
-            A Fase 3 é ativada quando ainda restam sobras e não há mais partidos aptos a recebê-las pela Fase 2 —
-            seja porque nenhum atingiu 80% do QE, seja porque todos os qualificados esgotaram candidatos com ≥ 20% do QE.
-          </p>
-          <p>
-            O STF, nas ADIs 7.228, 7.263 e 7.325, declarou <strong>inconstitucional a barreira de 80% do QE na Fase 3</strong>,
-            por violação ao princípio da proporcionalidade. Nessa fase, todos os partidos concorrem pelas maiores médias,
-            independentemente de desempenho. A eficácia da decisão é <em>ex tunc</em> (retroage às eleições de 2022).
-          </p>
-          <div class="alerta info" style="margin:12px 0;">
-            <div class="alerta-titulo">⚖ O que mudou com as ADIs</div>
-            Antes das ADIs, a Fase 3 também exigia barreira de 80% do QE (art. 13 da Resolução TSE 23.677/2021).
-            O STF declarou essa exigência inconstitucional <em>apenas na Fase 3</em>. Na Fase 2, a barreira dupla 80/20
-            foi mantida como constitucional. O efeito retroativo alcançou a eleição de 2022, obrigando a
-            revisão de mandatos — caso paradigmático: DF 2022 (Ato nº 209/2025 da Mesa da Câmara).
-          </div>
-
-          <h3>Art. 111 do CE — Declarado Inconstitucional</h3>
-          <p>
-            O art. 111 do CE previa que, se nenhum partido atingisse o QE, as vagas seriam preenchidas pelos candidatos
-            mais votados individualmente ("distritão residual"). As mesmas ADIs declararam essa norma inconstitucional.
-            Quando nenhum partido atinge o QE, a calculadora aplica sucessivamente as Fases 2 e 3, sem recorrer ao distritão.
-          </p>
-
-          <h2>Glossário</h2>
-          <div class="glossario-item">
-            <span class="termo">QE</span>
-            <span>Quociente Eleitoral: divisor básico de toda a distribuição, obtido dividindo os votos válidos pelo número de vagas (parte inteira).</span>
-          </div>
-          <div class="glossario-item">
-            <span class="termo">QP</span>
-            <span>Quociente Partidário: número de cadeiras diretas de cada partido, obtido dividindo seus votos válidos pelo QE (parte inteira).</span>
-          </div>
-          <div class="glossario-item">
-            <span class="termo">Sobras</span>
-            <span>Vagas não preenchidas pelos QPs (= vagas totais − ΣQPs), distribuídas pelas Fases 2 e 3.</span>
-          </div>
-          <div class="glossario-item">
-            <span class="termo">D'Hondt</span>
-            <span>Método de maiores médias: em cada rodada, divide-se os votos de cada partido pelo número de cadeiras já obtidas + 1; o maior quociente vence a vaga.</span>
-          </div>
-          <div class="glossario-item">
-            <span class="termo">Barreira 80%</span>
-            <span>Partido precisa de votos ≥ 80% do QE para participar da Fase 2 (constitucional — mantida pelo STF).</span>
-          </div>
-          <div class="glossario-item">
-            <span class="termo">Piso 20%</span>
-            <span>Candidato precisa de votos ≥ 20% do QE para ser convocado na Fase 2 (trava individual).</span>
-          </div>
-          <div class="glossario-item">
-            <span class="termo">Federação</span>
-            <span>Aliança de partidos que concorrem como unidade para fins de cálculo, mas mantêm rastreabilidade dos partidos componentes.</span>
-          </div>
-          <div class="glossario-item">
-            <span class="termo">Interpretação conforme</span>
-            <span>Técnica decisória do STF que mantém o texto legal mas delimita seu sentido constitucional: a barreira 80% é válida na Fase 2, mas inválida na Fase 3.</span>
-          </div>
-
-          <h2>Fontes Jurídicas</h2>
-          <ul>
-            <li>Código Eleitoral (Lei nº 4.737/1965), arts. 106, 107, 108, 109 e 111 — redação da Lei nº 14.211/2021</li>
-            <li>Lei das Eleições (Lei nº 9.504/1997), arts. 6º-A e 18-A</li>
-            <li>Resolução TSE nº 23.677/2021 (art. 13 declarado inconstitucional)</li>
-            <li>Resolução TSE nº 23.735/2024</li>
-            <li>STF, ADIs 7.228, 7.263 e 7.325 — julgamento de mérito e ED (13/03/2025)</li>
-            <li>Ato nº 209/2025 da Mesa da Câmara dos Deputados</li>
-          </ul>
-
-          <div class="alerta" style="margin-top:20px;">
-            <div class="alerta-titulo">⚠ Disclaimer</div>
-            Esta ferramenta é um instrumento de apoio técnico-jurídico para advogados eleitorais, assessores legislativos
-            e pesquisadores acadêmicos. <strong>Não substitui decisão da Justiça Eleitoral.</strong>
-            Os presets incluem dados aproximados para fins de demonstração e validação; os dados oficiais devem ser
-            obtidos diretamente dos sistemas do TSE/TREs.
-          </div>
-
-        </div><!-- .docs-container -->
-      </div><!-- #docs-section -->
-
-    </main><!-- .main-content -->
-
-  </div><!-- .app-body -->
-
-  <!-- ═══ FOOTER ════════════════════════════════════════════════════════════════ -->
-  <footer class="footer">
-    <span class="footer-legal" id="rodape-versao">
-      Sistema RetotalizaJE · v2.0 · art. 109 CE · ADIs 7.228/7.263/7.325 STF (13/03/2025)
-    </span>
-    <span class="footer-disclaimer">
-      Ferramenta técnico-jurídica de apoio · Não substitui decisão da Justiça Eleitoral
-    </span>
-  </footer>
-
-  <!-- ═══ MODO APRESENTAÇÃO ════════════════════════════════════════════════════ -->
-  <div id="apres-overlay" role="dialog" aria-modal="true" aria-label="Modo Apresentação">
-    <div id="apres-conteudo">
-      <h2 id="apres-titulo"></h2>
-      <p  id="apres-subtitulo"></p>
-      <div id="apres-tabela"></div>
+    <div class="case-result">
+      <div class="case-result-title">Distribuição final — 8 vagas <span class="phase-badge ph-f1">F1</span><span class="phase-badge ph-f2">F2</span><span class="phase-badge ph-f3">F3</span></div>
+      <div class="result-row"><span class="rp">PDT</span><span class="rn">Part. Democrático Trab.</span><div class="rv"><span class="rv-n">2</span><span class="rv-d" style="color:var(--text-dim)">F2</span></div></div>
+      <div class="result-row"><span class="rp">PL</span><span class="rn">Partido Liberal</span><div class="rv"><span class="rv-n">1</span><span class="rv-d" style="color:var(--text-dim)">F2</span></div></div>
+      <div class="result-row"><span class="rp">MDB</span><span class="rn">Mov. Democrático Bras.</span><div class="rv"><span class="rv-n">1</span><span class="rv-d" style="color:var(--text-dim)">F2</span></div></div>
+      <div class="result-row"><span class="rp">PP</span><span class="rn">Progressistas</span><div class="rv"><span class="rv-n">1</span><span class="rv-d pos">F3</span></div></div>
+      <div class="result-row"><span class="rp">Rep.</span><span class="rn">Republicanos</span><div class="rv"><span class="rv-n">1</span><span class="rv-d pos">F3</span></div></div>
+      <div class="result-row"><span class="rp">FE BR</span><span class="rn">FE Brasil</span><div class="rv"><span class="rv-n">1</span><span class="rv-d pos">F3</span></div></div>
+      <div class="result-row"><span class="rp">PSOL</span><span class="rn">PSOL / REDE (Federação)</span><div class="rv"><span class="rv-n">1</span><span class="rv-d pos">F3</span></div></div>
+      <div class="f3-notice">⚡ F3 ativada — Condição B: candidatos elegíveis esgotados na F2. 4 vagas distribuídas sem barreira de votos · 3 federações agrupadas corretamente.</div>
     </div>
   </div>
-  <button id="apres-sair" class="btn btn-acento" aria-label="Sair do modo apresentação">
-    ✕ Sair da Apresentação
-  </button>
+</section>
 
-  <!-- ═══ NAVEGAÇÃO OCULTA (compatibilidade JS ativarAba) ══════════════════════ -->
-  <!--
-    A função ativarAba() em ui.js faz:
-      document.querySelectorAll('nav button')...classList.toggle('ativo', b.dataset.aba === nome)
-      document.querySelectorAll('.tab-content')...classList.toggle('ativo', t.id === 'aba-' + nome)
-    Mantemos esses elementos para não alterar a lógica JS.
-  -->
-  <nav style="display:none;" aria-hidden="true" role="presentation">
-    <button data-aba="entrada"     class="ativo" aria-selected="true"  tabindex="-1">Entrada de Dados</button>
-    <button data-aba="resultado"   aria-selected="false" tabindex="-1">Resultado</button>
-    <button data-aba="auditoria"   aria-selected="false" tabindex="-1">Auditoria D'Hondt</button>
-    <button data-aba="comparativo" aria-selected="false" tabindex="-1">Comparativo</button>
-    <button data-aba="docs"        aria-selected="false" tabindex="-1">Como Funciona</button>
-  </nav>
+<!-- PRICING -->
+<section id="planos" class="pricing">
+  <div class="section-label reveal">Planos</div>
+  <h2 class="section-h reveal">Pague pelo que usar</h2>
+  <p style="font-size:16px;color:var(--text-muted);margin-top:12px" class="reveal">Sem assinatura. Sem prazo de validade. 1 cálculo = 1 crédito.</p>
+  <div class="price-grid">
+    <div class="price-card reveal">
+      <div class="price-name">Starter</div>
+      <div class="price-cred">5 <span>créditos</span></div>
+      <div class="price-val">R$ 15</div>
+      <div class="price-sub">R$ 3,00 por cálculo</div>
+      <a href="app.html" class="price-btn">Começar</a>
+      <div class="price-feat">
+        <div class="pf">Importação CSV do TSE</div>
+        <div class="pf">4 modalidades de cassação</div>
+        <div class="pf">Exportação CSV e PDF</div>
+      </div>
+    </div>
+    <div class="price-card pop reveal reveal-delay-1">
+      <div class="price-name">Pro</div>
+      <div class="price-cred">20 <span>créditos</span></div>
+      <div class="price-val">R$ 45</div>
+      <div class="price-sub">R$ 2,25 por cálculo</div>
+      <a href="app.html" class="price-btn">Escolher</a>
+      <div class="price-feat">
+        <div class="pf">Tudo do Starter</div>
+        <div class="pf">Federações partidárias</div>
+        <div class="pf">Auditoria passo a passo</div>
+        <div class="pf">Comparativo de cenários</div>
+      </div>
+    </div>
+    <div class="price-card reveal reveal-delay-2">
+      <div class="price-name">Escritório</div>
+      <div class="price-cred">50 <span>créditos</span></div>
+      <div class="price-val">R$ 90</div>
+      <div class="price-sub">R$ 1,80 por cálculo</div>
+      <a href="app.html" class="price-btn">Escolher</a>
+      <div class="price-feat">
+        <div class="pf">Tudo do Pro</div>
+        <div class="pf">Múltiplos casos salvos</div>
+        <div class="pf">PDF como parecer técnico</div>
+        <div class="pf">Presets de casos reais</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Stubs de aba (tab-content — sempre ocultos via CSS; evitam erros em ativarAba) -->
-  <div id="aba-entrada"     class="tab-content" aria-hidden="true"></div>
-  <div id="aba-resultado"   class="tab-content" aria-hidden="true"></div>
-  <div id="aba-auditoria"   class="tab-content" aria-hidden="true"></div>
-  <div id="aba-comparativo" class="tab-content" aria-hidden="true"></div>
-  <div id="aba-docs"        class="tab-content" aria-hidden="true"></div>
+<!-- FAQ -->
+<section class="faq">
+  <div class="section-label reveal">FAQ</div>
+  <h2 class="section-h reveal" style="margin-bottom:36px">Perguntas frequentes</h2>
+  <div class="faq-item">
+    <div class="faq-q">O sistema implementa corretamente as ADIs do STF? <span class="faq-ico">+</span></div>
+    <div class="faq-a">Sim. O algoritmo foi desenvolvido e validado com base nas ADIs 7.228, 7.263 e 7.325, julgadas em 13/03/2025 sob relatoria do Min. Flávio Dino. A Fase 3 opera sem barreira, conforme a interpretação expansiva fixada pelo STF. O Art. 111 CE (distritão) foi declarado inconstitucional e não está implementado.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Como obtenho o arquivo CSV do TSE? <span class="faq-ico">+</span></div>
+    <div class="faq-a">O próprio sistema tem um link direto para o Portal de Dados Abertos do TSE. Lá você encontra os arquivos de votação nominal por município e zona. O sistema suporta tanto as colunas pré-2022 quanto as novas colunas pós-2022 com sufixo _VALIDOS.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Quais são as 4 modalidades de cassação? <span class="faq-ico">+</span></div>
+    <div class="faq-a">Nominal (anula apenas os votos nominais do candidato), Legenda (anula os votos de legenda proporcionais ao candidato), Total (anula todos os votos atribuíveis — nominal + legenda) e DRAP (anulação conforme o Demonstrativo de Resultado e Apuração oficial do TRE).</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">O sistema funciona com federações partidárias? <span class="faq-ico">+</span></div>
+    <div class="faq-a">Sim. Ao cadastrar os partidos você indica a federação via campo federacao. O sistema agrupa os partidos da mesma federação antes de iniciar os cálculos, tratando-os como uma entidade única — como exige a legislação eleitoral vigente.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Os créditos têm prazo de validade? <span class="faq-ico">+</span></div>
+    <div class="faq-a">Não. Os créditos adquiridos não expiram. Você pode comprar um pacote e usar quando precisar, sem pressão de data ou renovação automática.</div>
+  </div>
+</section>
 
-</div><!-- #app -->
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <div class="badge-stf">⚖️ Art. 109 CE · ADIs 7.228/7.263/7.325 · STF 2025</div>
+    <h2>Pronto para calcular<br>com precisão jurídica?</h2>
+    <p>Crie sua conta e use o sistema que implementa fielmente o algoritmo do STF — validado com casos reais do TSE e TREs.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="app.html" class="btn-primary">Criar conta gratuita →</a>
+      <a href="app.html" class="btn-secondary">Já tenho conta</a>
+    </div>
+  </div>
+</section>
 
-<!-- ═══ BIBLIOTECAS EXTERNAS ════════════════════════════════════════════════════ -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="js/pdf-font.js?v=1" defer></script>
+<footer>
+  <div class="footer-logo">Retotaliza<span>JE</span></div>
+  <div class="footer-links">
+    <a href="#">Termos de uso</a>
+    <a href="#">Privacidade</a>
+    <a href="app.html">Acessar sistema</a>
+  </div>
+  <div class="footer-copy">© 2025 RetotalizaJE · Ferramenta técnico-jurídica de apoio · Não substitui decisão da Justiça Eleitoral</div>
+</footer>
 
-<!-- ═══ MÓDULOS DA APLICAÇÃO ════════════════════════════════════════════════════ -->
-<script src="js/i18n.js?v=6"></script>
-<script src="js/engine.js?v=8"></script>
-<script src="js/presets.js?v=5"></script>
-<script src="js/export.js?v=9"></script>
-<script src="js/ui.js?v=14"></script>
-<script src="js/import.js?v=2"></script>
-<script src="js/runner.js?v=1"></script>
-
-<!-- ═══ SCRIPTS INLINE ══════════════════════════════════════════════════════════ -->
 <script>
-(function () {
-  'use strict';
-
-  /* ── 1. Docs toggle ───────────────────────────────────────────────────────── */
-  const btnDocs    = document.getElementById('btn-toggle-docs');
-  const docsSection = document.getElementById('docs-section');
-
-  if (btnDocs && docsSection) {
-    btnDocs.addEventListener('click', function () {
-      const open = docsSection.style.display === 'block';
-      docsSection.style.display = open ? 'none' : 'block';
-      btnDocs.setAttribute('aria-expanded', String(!open));
-      if (!open) {
-        docsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  }
-
-  /* ── 2. Phase nav → scroll into view ────────────────────────────────────── */
-  const phaseTargets = {
-    f1:    'section-resultado',
-    f2:    'section-resultado',
-    f3:    'section-resultado',
-    audit: 'section-auditoria',
-  };
-
-  document.querySelectorAll('.phase-nav .phase-tab').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      // Update active state
-      document.querySelectorAll('.phase-nav .phase-tab').forEach(function (b) {
-        b.classList.remove('active');
-      });
-      btn.classList.add('active');
-
-      // Scroll to target section
-      var targetId = phaseTargets[btn.dataset.phase];
-      var target   = targetId && document.getElementById(targetId);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-
-  /* ── 3. MutationObserver — phase count badges ────────────────────────────── */
-  function updatePhaseBadges() {
-    var counts = { f1: 0, f2: 0, f3: 0 };
-
-    // Parse result table: F1 = col5, F2 = col6, F3 = col7
-    document.querySelectorAll('#tabela-resultado table tbody tr').forEach(function (tr) {
-      var cells = tr.querySelectorAll('td.td-fase');
-      cells.forEach(function (td) {
-        var idx = Array.prototype.indexOf.call(tr.children, td) + 1; // 1-based
-        var val = parseInt(td.textContent.trim(), 10);
-        if (!isNaN(val) && val > 0) {
-          if (idx === 5) counts.f1 += val;
-          else if (idx === 6) counts.f2 += val;
-          else if (idx === 7) counts.f3 += val;
-        }
-      });
-    });
-
-    // Count audit rounds
-    var auditRounds = document.querySelectorAll('#auditoria-container .rodada-card').length;
-
-    var b1 = document.getElementById('badge-f1');
-    var b2 = document.getElementById('badge-f2');
-    var b3 = document.getElementById('badge-f3');
-    var ba = document.getElementById('badge-audit');
-
-    if (b1) b1.textContent = counts.f1 > 0 ? counts.f1 : '—';
-    if (b2) b2.textContent = counts.f2 > 0 ? counts.f2 : '—';
-    if (b3) b3.textContent = counts.f3 > 0 ? counts.f3 : '—';
-    if (ba) ba.textContent = auditRounds > 0 ? auditRounds : '—';
-  }
-
-  // Watch for result table and audit container changes
-  var resultObs = new MutationObserver(updatePhaseBadges);
-  var observeWhenReady = function () {
-    var tabelaEl   = document.getElementById('tabela-resultado');
-    var auditoriaEl = document.getElementById('auditoria-container');
-    if (tabelaEl && auditoriaEl) {
-      resultObs.observe(tabelaEl,    { childList: true, subtree: true });
-      resultObs.observe(auditoriaEl, { childList: true, subtree: true });
-    } else {
-      // Retry until DOM is ready (should be immediate after DOMContentLoaded)
-      requestAnimationFrame(observeWhenReady);
-    }
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', observeWhenReady);
-  } else {
-    observeWhenReady();
-  }
-
-  /* ── 4. Comparativo sync ──────────────────────────────────────────────────── */
-  document.addEventListener('DOMContentLoaded', function () {
-    // Sync on aba-comparativo click (hidden nav button, kept for JS compat)
-    var btnComparativo = document.querySelector('[data-aba="comparativo"]');
-    if (btnComparativo) {
-      btnComparativo.addEventListener('click', function () {
-        var temComp = document.getElementById('secao-comparativo').style.display !== 'none';
-        document.getElementById('secao-sem-comparativo').style.display = temComp ? 'none' : 'block';
-      });
-    }
-
-    // Sync when #secao-comparativo visibility changes
-    var secaoComp = document.getElementById('secao-comparativo');
-    var secaoSem  = document.getElementById('secao-sem-comparativo');
-    if (secaoComp && secaoSem) {
-      var compObs = new MutationObserver(function () {
-        var temComp = secaoComp.style.display !== 'none';
-        secaoSem.style.display = temComp ? 'none' : 'block';
-      });
-      compObs.observe(secaoComp, { attributes: true, attributeFilter: ['style'] });
-    }
-
-    // runner.js handles Shift+Click on h1 directly via document.querySelector('h1')
-  });
-
-  /* ── 5. Salvar Estudo ──────────────────────────────────────────── */
-  (function () {
-    var btnSalvar = document.getElementById('btn-salvar-estudo');
-    if (!btnSalvar) return;
-
-    // Enable button whenever results appear in painel-parametros
-    var paramEl = document.getElementById('painel-parametros');
-    if (paramEl) {
-      new MutationObserver(function () {
-        btnSalvar.disabled =
-          document.querySelectorAll('#painel-parametros .param-item').length === 0;
-      }).observe(paramEl, { childList: true, subtree: true });
-    }
-
-    btnSalvar.addEventListener('click', function () {
-      var rotulo = (document.getElementById('input-rotulo') || {}).value || 'Sem rótulo';
-      var vagas  = parseInt((document.getElementById('input-vagas') || {}).value, 10) || 0;
-
-      var partidos = [];
-      document.querySelectorAll('.partido-card').forEach(function (card) {
-        var sigla    = (card.querySelector('.partido-sigla')    || {}).value || '';
-        var nome     = (card.querySelector('.partido-nome')     || {}).value || sigla;
-        var nominais = parseInt((card.querySelector('.partido-nominais') || {}).value, 10) || 0;
-        var legenda  = parseInt((card.querySelector('.partido-legenda')  || {}).value, 10) || 0;
-        var candidatos = [];
-        card.querySelectorAll('.candidato-row').forEach(function (row) {
-          var inputs = row.querySelectorAll('input');
-          var nomeC  = (inputs[0] || {}).value || '';
-          var votos  = parseInt((inputs[1] || {}).value, 10) || 0;
-          if (nomeC) candidatos.push({ nome: nomeC, partido: sigla, votos: votos });
-        });
-        if (sigla) partidos.push({
-          sigla: sigla, nome: nome,
-          votosNominais: nominais, votosLegenda: legenda,
-          candidatos: candidatos
-        });
-      });
-
-      var cassacoes = [];
-      document.querySelectorAll('.cassacao-row').forEach(function (row) {
-        var partido     = (row.querySelector('.cass-partido')    || {}).value || '';
-        var candidato   = (row.querySelector('.cass-candidato')  || {}).value || '';
-        var votosAnular = parseInt((row.querySelector('.cass-votos')      || {}).value, 10) || 0;
-        var modalidade  = (row.querySelector('.cass-modalidade') || {}).value || 'nominal';
-        if (partido && votosAnular > 0) {
-          cassacoes.push({ partido: partido, candidato: candidato,
-                           votosAnular: votosAnular, modalidade: modalidade });
-        }
-      });
-
-      var cenario   = { rotulo: rotulo, vagas: vagas, partidos: partidos, cassacoes: cassacoes };
-      var resultado = null;
-      if (window.ElectoralEngine && partidos.length > 0 && vagas > 0) {
-        try { resultado = window.ElectoralEngine.calcular(cenario); }
-        catch (e) { console.warn('Salvar Estudo: erro ao calcular', e); }
-      }
-
-      var estudo = {
-        sistema:         'Sistema RetotalizaJE',
-        versao:          'v2.0',
-        dataExportacao:  new Date().toISOString(),
-        parametros:      cenario,
-        resultado:       resultado
-      };
-
-      var blob = new Blob([JSON.stringify(estudo, null, 2)], { type: 'application/json' });
-      var url  = URL.createObjectURL(blob);
-      var a    = document.createElement('a');
-      a.href     = url;
-      a.download = 'retotalizaje-' +
-        rotulo.replace(/[^a-zA-Z0-9\-_]/g, '-').slice(0, 40) +
-        '-' + new Date().toISOString().slice(0, 10) + '.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    });
-  })();
-
-})();
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
+const reveals=document.querySelectorAll('.reveal');
+new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:.1}).observe&&reveals.forEach(r=>new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:.1}).observe(r));
+// steps
+const steps=document.querySelectorAll('.step-item'),panels=document.querySelectorAll('.content-panel');
+let cur=0,timer;
+function activate(i){steps.forEach(s=>s.classList.remove('active'));panels.forEach(p=>p.classList.remove('active'));steps[i].classList.add('active');panels[i].classList.add('active');cur=i}
+function startTimer(){clearInterval(timer);timer=setInterval(()=>activate((cur+1)%steps.length),4200)}
+steps.forEach((s,i)=>s.addEventListener('click',()=>{activate(i);startTimer()}));
+startTimer();
+// cases
+document.querySelectorAll('.ctab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.ctab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.case-panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('case-'+t.dataset.case).classList.add('active');
+  })
+});
+// faq
+document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>q.parentElement.classList.toggle('open')));
+// reveal
+const ro=new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:.1});
+reveals.forEach(r=>ro.observe(r));
 </script>
-<script type="module">
-    import { cadastrarEmail, loginEmail, loginGoogle, logout } from "./js/auth.js";
-    import { iniciarPaywall } from "./js/paywall.js";
-    import { auth } from "./js/firebase-init.js";
-
-    iniciarPaywall();
-
-    window.fazerLogin = async () => {
-      const email = document.getElementById("login-email").value;
-      const senha = document.getElementById("login-senha").value;
-      try { await loginEmail(email, senha); }
-      catch(e) { document.getElementById("login-erro").textContent = traduzirErro(e.code); }
-    };
-    window.fazerCadastro = async () => {
-      const email = document.getElementById("cad-email").value;
-      const senha = document.getElementById("cad-senha").value;
-      try { await cadastrarEmail(email, senha); }
-      catch(e) { document.getElementById("cad-erro").textContent = traduzirErro(e.code); }
-    };
-    window.fazerLoginGoogle = async () => { try { await loginGoogle(); } catch(e) { console.error(e); } };
-    window.fazerLogout = () => logout();
-    window.alternarTab = (tab) => {
-      document.getElementById("form-login").style.display    = tab === "login"    ? "" : "none";
-      document.getElementById("form-cadastro").style.display = tab === "cadastro" ? "" : "none";
-      document.querySelectorAll(".tab-btn").forEach((b,i) =>
-        b.classList.toggle("active", (i===0)===(tab==="login")));
-    };
-    function traduzirErro(code) {
-      return ({ "auth/user-not-found":"Usuário não encontrado.",
-        "auth/wrong-password":"Senha incorreta.",
-        "auth/email-already-in-use":"E-mail já cadastrado.",
-        "auth/weak-password":"Senha muito fraca.",
-        "auth/invalid-email":"E-mail inválido." })[code] ?? "Erro inesperado.";
-    }
-  </script>
-  </div>
 </body>
 </html>

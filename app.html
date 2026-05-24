@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema RetotalizaJE</title>
+  <meta name="description" content="Sistema técnico-jurídico de retotalização eleitoral proporcional — art. 109 CE, ADIs 7.228/7.263/7.325 STF." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css?v=4" />
+</head>
+<body>
+  <!-- TELA: Login -->
+  <div id="tela-auth" style="display:none">
+    <div class="auth-container">
+      <h1>Sistema RetotalizaJE</h1>
+      <p class="auth-subtitle">Art. 109 CE · ADIs 7.228/7.263/7.325 STF</p>
+      <div class="auth-tabs">
+        <button class="tab-btn active" onclick="alternarTab('login')">Entrar</button>
+        <button class="tab-btn" onclick="alternarTab('cadastro')">Criar conta</button>
+      </div>
+      <div id="form-login">
+        <input type="email" id="login-email" placeholder="E-mail" class="auth-input">
+        <input type="password" id="login-senha" placeholder="Senha" class="auth-input">
+        <button onclick="fazerLogin()" class="btn-primary">Entrar</button>
+        <p id="login-erro" class="auth-erro"></p>
+      </div>
+      <div id="form-cadastro" style="display:none">
+        <input type="email" id="cad-email" placeholder="E-mail" class="auth-input">
+        <input type="password" id="cad-senha" placeholder="Senha (mín. 6 caracteres)" class="auth-input">
+        <button onclick="fazerCadastro()" class="btn-primary">Criar conta</button>
+        <p id="cad-erro" class="auth-erro"></p>
+      </div>
+      <div class="auth-separator">ou</div>
+      <button onclick="fazerLoginGoogle()" class="btn-google">Entrar com Google</button>
+    </div>
+  </div>
+
+  <!-- TELA: Comprar créditos -->
+  <div id="tela-compra" style="display:none">
+    <div class="compra-container">
+      <div class="compra-header">
+        <span>Conectado como <strong class="usuario-email"></strong></span>
+        <button onclick="fazerLogout()" class="btn-logout">Sair</button>
+      </div>
+      <h2>Saldo insuficiente</h2>
+      <p>Adquira créditos para utilizar a calculadora.</p>
+      <div id="pacotes-container" class="pacotes-grid"></div>
+      <p class="compra-nota">Após pagamento aprovado, seus créditos são adicionados automaticamente.<br>Recarregue a página se não atualizar em 30 segundos.</p>
+    </div>
+  </div>
+<div id="tela-app" style="display:none">
+
+  <!-- ═══ TOPBAR ═══════════════════════════════════════════════════════════════ -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <!-- Icon -->
+      <div class="topbar-icon" title="Sistema RetotalizaJE">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="1" y="10" width="3" height="5" rx="1"/>
+          <rect x="5.5" y="6" width="3" height="9" rx="1"/>
+          <rect x="10" y="2" width="3" height="13" rx="1"/>
+          <path d="M13.5 4.5 L15 3 L13.5 1.5" stroke="currentColor" stroke-width="1" fill="none"/>
+        </svg>
+      </div>
+      <!-- Title block -->
+      <div>
+        <h1 class="topbar-title" id="topbar-h1"
+          title="Shift+Click para executar testes automáticos (TC-01…TC-05)">
+          Sistema RetotalizaJE
+        </h1>
+        <div class="topbar-sub">Sistema Proporcional Brasileiro · art. 109 CE</div>
+      </div>
+      <!-- Legal badge -->
+      <div class="topbar-adi-badge">ADIs 7.228/7.263/7.325 · STF 13/03/2025</div>
+    </div>
+
+    <div class="topbar-right">
+      <span class="topbar-version" id="topbar-version">v2.0</span>
+      <button class="topbar-docs-btn" id="btn-toggle-docs"
+              aria-expanded="false" aria-controls="docs-section"
+              title="Documentação e glossário jurídico">
+        ⚖ Como Funciona
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══ APP BODY (sidebar + main) ════════════════════════════════════════════ -->
+  <div class="app-body">
+
+    <!-- ── SIDEBAR ──────────────────────────────────────────────────────────── -->
+    <aside class="sidebar" role="complementary" aria-label="Painel de entrada de dados">
+
+      <!-- Preset -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">Casos de Estudo</div>
+        <div class="sidebar-field">
+          <select id="select-preset" class="field-select"
+                  aria-label="Carregar caso de estudo pré-definido">
+            <option value="">— Selecionar preset —</option>
+          </select>
+        </div>
+        <div id="preset-notas" class="alerta info sidebar-preset-nota" style="display:none;"></div>
+      </div>
+
+      <!-- Parâmetros gerais -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">Parâmetros do Pleito</div>
+
+        <div class="sidebar-field">
+          <label for="input-rotulo" class="field-label">Rótulo</label>
+          <input type="text" id="input-rotulo" class="field-input"
+                 placeholder="Ex: Dep. Federal — Ceará 2022"
+                 aria-label="Rótulo do pleito" />
+        </div>
+
+        <div class="sidebar-field">
+          <label for="input-vagas" class="field-label">Vagas</label>
+          <input type="number" id="input-vagas" class="field-input-num"
+                 min="1" max="513" placeholder="22"
+                 aria-label="Número de vagas" />
+        </div>
+
+      </div>
+
+      <!-- Importação TSE -->
+      <div class="sidebar-section import-section" id="import-section">
+
+        <div class="import-header">
+          <button id="btn-toggle-import" class="import-toggle-btn"
+                  aria-expanded="false" aria-controls="import-body"
+                  title="Importar dados diretamente do CSV oficial do TSE">
+            <span class="import-toggle-icon">⬇</span>
+            Importar dados do TSE
+          </button>
+          <a href="https://dadosabertos.tse.jus.br/dataset/resultados-2022"
+             target="_blank" rel="noopener noreferrer"
+             class="import-link-tse"
+             title="Acesse › Resultados 2022 › votacao_partido_munzona_2022_{UF}.zip">
+            ↗ Portal TSE
+          </a>
+        </div>
+
+        <div id="import-body" style="display:none;">
+
+          <!-- Passo 1: arquivo de votos por partido -->
+          <div class="import-step">
+            <label class="import-step-label" for="file-partido">
+              <span class="import-step-num">1</span>
+              Votos por partido <span class="import-step-req">*</span>
+            </label>
+            <div class="import-step-hint">votacao_partido_munzona_{ano}_{uf}.csv</div>
+            <input type="file" id="file-partido" accept=".csv"
+                   class="import-file-input"
+                   aria-label="Arquivo de votação por partido do TSE" />
+          </div>
+
+          <!-- Passo 2: arquivo de candidatos (opcional) -->
+          <div class="import-step">
+            <label class="import-step-label" for="file-candidato">
+              <span class="import-step-num">2</span>
+              Candidatos <span class="import-step-opt">(opcional)</span>
+            </label>
+            <div class="import-step-hint">votacao_candidato_munzona_{ano}_{uf}.csv</div>
+            <input type="file" id="file-candidato" accept=".csv"
+                   class="import-file-input"
+                   aria-label="Arquivo de votação por candidato do TSE (opcional)" />
+          </div>
+
+          <!-- Filtros -->
+          <div class="import-filters">
+            <div class="import-filter-field">
+              <label class="import-filter-label" for="filter-cargo">Cargo</label>
+              <select id="filter-cargo" class="import-filter-select"
+                      aria-label="Filtrar por cargo">
+                <option value="Deputado Federal">Deputado Federal</option>
+                <option value="Deputado Estadual">Deputado Estadual / Distrital</option>
+                <option value="Vereador">Vereador</option>
+              </select>
+            </div>
+            <div class="import-filter-field">
+              <label class="import-filter-label" for="filter-uf">UF</label>
+              <select id="filter-uf" class="import-filter-select"
+                      aria-label="Filtrar por estado">
+                <option value="">Todas as UFs</option>
+              </select>
+            </div>
+            <div class="import-filter-field" id="filter-municipio-wrap" style="display:none;">
+              <label class="import-filter-label" for="filter-municipio">Município</label>
+              <select id="filter-municipio" class="import-filter-select"
+                      aria-label="Filtrar por município">
+                <option value="">Todos</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Botão processar -->
+          <button id="btn-processar-csv" class="import-btn-processar">
+            ▶ Processar e preencher campos
+          </button>
+
+          <!-- Status / progresso -->
+          <div id="import-status" class="import-status" aria-live="polite"></div>
+
+        </div><!-- #import-body -->
+
+        <!-- Badge de confirmação (visível fora do painel colapsável) -->
+        <div id="import-badge" class="import-badge" style="display:none;"
+             aria-live="polite"></div>
+
+      </div><!-- .import-section -->
+
+      <!-- Partidos -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">Partidos e Federações</div>
+        <div id="lista-partidos" role="list" aria-label="Lista de partidos"></div>
+        <button id="btn-adicionar-partido" class="btn-sidebar-add"
+                aria-label="Adicionar partido ou federação">
+          + Partido / Federação
+        </button>
+      </div>
+
+      <!-- Cassações -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">
+          Cassação / Anulação
+          <span class="sidebar-label-optional">(opcional)</span>
+        </div>
+        <div id="lista-cassacoes" role="list" aria-label="Lista de cassações"></div>
+        <button id="btn-adicionar-cassacao" class="btn-sidebar-add btn-sm"
+                aria-label="Adicionar cassação ou anulação de votos">
+          + Cassação / Anulação
+        </button>
+      </div>
+
+      <!-- Erros e avisos -->
+      <div id="erros-formulario" role="alert" aria-live="polite"></div>
+
+      <!-- Ações -->
+      <div class="sidebar-section sidebar-actions">
+        <button id="btn-calcular" class="btn-calcular">
+          ▶ Calcular Distribuição
+        </button>
+        <button id="btn-limpar" class="btn-sidebar-clear">
+          ✕ Limpar
+        </button>
+      </div>
+
+    </aside><!-- .sidebar -->
+
+    <!-- ── MAIN CONTENT ──────────────────────────────────────────────────────── -->
+    <main class="main-content" role="main" aria-label="Resultados da distribuição">
+
+      <!-- Empty state (shown by CSS :has() when no results exist) -->
+      <div class="empty-state" aria-hidden="true">
+        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8"  y="34" width="8"  height="14" rx="2" fill="currentColor"/>
+          <rect x="22" y="22" width="8"  height="26" rx="2" fill="currentColor"/>
+          <rect x="36" y="10" width="8"  height="38" rx="2" fill="currentColor"/>
+          <path d="M44 14 L50 8 M47 8 L50 8 L50 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="empty-title">Nenhum cálculo realizado</div>
+        <div class="empty-sub">Preencha os dados no painel lateral e clique em Calcular para ver a distribuição de cadeiras.</div>
+      </div>
+
+      <!-- Result sections (shown by CSS :has() when results exist) -->
+      <div class="result-sections">
+
+        <!-- QE Banner -->
+        <div id="painel-parametros" class="params-grid" aria-label="Parâmetros da eleição"></div>
+
+        <!-- Alertas / banners -->
+        <div id="painel-alertas"></div>
+
+        <!-- Toolbar: phase nav + export buttons -->
+        <div class="result-toolbar">
+          <nav class="phase-nav" aria-label="Navegação por fase">
+            <button class="phase-tab active" data-phase="f1"
+                    title="Ir para a seção Fase 1 — Quociente Partidário"
+                    aria-label="Fase 1 — Quociente Partidário">
+              <span class="phase-dot phase-dot-f1"></span>
+              <span class="phase-tab-label">F1 QP</span>
+              <span class="phase-count-badge count-f1" id="badge-f1">—</span>
+            </button>
+            <button class="phase-tab" data-phase="f2"
+                    title="Ir para a seção Fase 2 — Maiores Médias c/ barreira"
+                    aria-label="Fase 2 — Maiores Médias com barreira 80/20">
+              <span class="phase-dot phase-dot-f2"></span>
+              <span class="phase-tab-label">F2 80/20</span>
+              <span class="phase-count-badge count-f2" id="badge-f2">—</span>
+            </button>
+            <button class="phase-tab" data-phase="f3"
+                    title="Ir para a seção Fase 3 — Maiores Médias s/ barreira (ADIs STF)"
+                    aria-label="Fase 3 — Maiores Médias sem barreira">
+              <span class="phase-dot phase-dot-f3"></span>
+              <span class="phase-tab-label">F3 ADIs</span>
+              <span class="phase-count-badge count-f3" id="badge-f3">—</span>
+            </button>
+            <button class="phase-tab" data-phase="audit"
+                    title="Ir para a seção de Auditoria D'Hondt"
+                    aria-label="Auditoria D'Hondt">
+              <span class="phase-dot phase-dot-audit"></span>
+              <span class="phase-tab-label">Auditoria</span>
+              <span class="phase-count-badge count-audit" id="badge-audit">—</span>
+            </button>
+          </nav>
+
+          <div class="export-actions">
+            <button id="btn-exportar-csv" class="btn-action" disabled>⬇ CSV</button>
+            <button id="btn-exportar-pdf" class="btn-action" disabled>⬇ PDF</button>
+            <button id="btn-link" class="btn-action" disabled>🔗 Link</button>
+            <button id="btn-apresentacao" class="btn-action-primary" disabled
+                    title="Exibe a tabela em tela cheia (Esc para sair)">▶ Apresentação</button>
+            <button id="btn-salvar-estudo" class="btn-action" disabled
+                    title="Exportar estudo completo (parâmetros + resultado) como JSON">💾 Salvar Estudo</button>
+          </div>
+        </div>
+
+        <!-- Result panel: tabela principal -->
+        <section id="section-resultado" class="result-panel" aria-label="Distribuição de cadeiras">
+          <div class="result-panel-header">
+            <span class="result-panel-title">Distribuição de Cadeiras por Partido</span>
+            <span class="result-panel-hint">F1 = QP · F2 = sobras c/ barreira 80/20 · F3 = sobras s/ barreira (ADIs STF)</span>
+          </div>
+          <div class="tabela-scroll">
+            <div id="tabela-resultado"></div>
+          </div>
+        </section>
+
+        <!-- Audit panel -->
+        <section id="section-auditoria" class="audit-panel" aria-label="Auditoria do algoritmo D'Hondt">
+          <div class="audit-panel-title">Execução passo a passo — Algoritmo D'Hondt</div>
+          <p style="font-family:'Inter',sans-serif; font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.5;">
+            Cada linha representa uma rodada de distribuição de sobra. Clique em uma rodada para expandir o detalhe das médias.
+            Linhas em itálico = partido excluído naquela rodada. Linha destacada = vencedor.
+          </p>
+          <div id="auditoria-container" class="auditoria-container" aria-live="polite"></div>
+        </section>
+
+        <!-- Compare panel -->
+        <div id="secao-comparativo" style="display:none;">
+          <section class="compare-panel" aria-label="Comparativo entre cenários">
+            <div class="compare-header">
+              <div class="compare-header-icon">⚖</div>
+              <span class="compare-header-title">Comparativo: Cenário Original × Retotalizado</span>
+              <span class="compare-header-sub">Após cassação / anulação de votos</span>
+            </div>
+            <div id="comparativo-container"></div>
+          </section>
+        </div>
+
+        <div id="secao-sem-comparativo">
+          <div class="alerta info">
+            <div class="alerta-titulo">ℹ Comparativo não disponível</div>
+            Execute um cálculo com cassação/anulação de votos para habilitar esta seção.
+          </div>
+        </div>
+
+      </div><!-- .result-sections -->
+
+      <!-- ── DOCS SECTION (toggled from topbar) ──────────────────────────────── -->
+      <div id="docs-section" class="docs-section" aria-label="Documentação e glossário">
+        <div class="docs-container">
+
+          <h2>O Sistema Proporcional Brasileiro</h2>
+          <p>
+            A distribuição de cadeiras em eleições proporcionais (Câmara dos Deputados, Câmaras Legislativas, Câmara
+            Distrital e Câmaras Municipais) obedece ao art. 109 do Código Eleitoral (Lei nº 4.737/1965), com a redação
+            dada pela Lei nº 14.211/2021, e à interpretação conforme fixada pelo STF nas
+            <strong>ADIs 7.228, 7.263 e 7.325</strong>, julgadas em 13/03/2025 (redator Min. Flávio Dino).
+          </p>
+
+          <h2>As Três Fases do Algoritmo</h2>
+
+          <h3>Fase 1 — Quociente Eleitoral e Quocientes Partidários (art. 109, I)</h3>
+          <p>
+            Calcula-se o <strong>Quociente Eleitoral (QE)</strong> dividindo o total de votos válidos pelo número de vagas,
+            descartando a fração (parte inteira):
+          </p>
+          <div class="formula">QE = ⌊ Votos Válidos ÷ Vagas ⌋</div>
+          <p>
+            Para cada partido ou federação, o <strong>Quociente Partidário (QP)</strong> é o número de vagas diretas obtidas:
+          </p>
+          <div class="formula">QP = ⌊ Votos do Partido ÷ QE ⌋</div>
+          <p>
+            "Votos válidos" = votos nominais + votos de legenda. A parte fracionária é sempre descartada (art. 106 CE).
+            Candidatos são convocados em ordem decrescente de votação para preencher as cadeiras de QP.
+          </p>
+
+          <h3>Fase 2 — Maiores Médias com Cláusula de Barreira (art. 109, II)</h3>
+          <p>
+            As vagas restantes (sobras = vagas − ΣQPs) são distribuídas pelo método D'Hondt, com <strong>dupla cláusula de barreira</strong>
+            introduzida pela Lei 14.211/2021 e confirmada como constitucional pelo STF:
+          </p>
+          <ul>
+            <li><strong>Trava partidária (80% QE):</strong> apenas partidos com votos ≥ 80% do QE participam.</li>
+            <li><strong>Trava individual (20% QE):</strong> o partido só captura a vaga se ainda tiver, na lista, um candidato não eleito com ≥ 20% do QE.</li>
+          </ul>
+          <p>Em cada rodada, calcula-se a média de cada partido qualificado:</p>
+          <div class="formula">Média = Votos do Partido ÷ (Cadeiras Atuais + 1)</div>
+          <p>O partido com maior média vence a rodada e o candidato elegível mais votado é convocado.</p>
+
+          <h3>Fase 3 — Maiores Médias sem Barreira (art. 109, III)</h3>
+          <p>
+            A Fase 3 é ativada quando ainda restam sobras e não há mais partidos aptos a recebê-las pela Fase 2 —
+            seja porque nenhum atingiu 80% do QE, seja porque todos os qualificados esgotaram candidatos com ≥ 20% do QE.
+          </p>
+          <p>
+            O STF, nas ADIs 7.228, 7.263 e 7.325, declarou <strong>inconstitucional a barreira de 80% do QE na Fase 3</strong>,
+            por violação ao princípio da proporcionalidade. Nessa fase, todos os partidos concorrem pelas maiores médias,
+            independentemente de desempenho. A eficácia da decisão é <em>ex tunc</em> (retroage às eleições de 2022).
+          </p>
+          <div class="alerta info" style="margin:12px 0;">
+            <div class="alerta-titulo">⚖ O que mudou com as ADIs</div>
+            Antes das ADIs, a Fase 3 também exigia barreira de 80% do QE (art. 13 da Resolução TSE 23.677/2021).
+            O STF declarou essa exigência inconstitucional <em>apenas na Fase 3</em>. Na Fase 2, a barreira dupla 80/20
+            foi mantida como constitucional. O efeito retroativo alcançou a eleição de 2022, obrigando a
+            revisão de mandatos — caso paradigmático: DF 2022 (Ato nº 209/2025 da Mesa da Câmara).
+          </div>
+
+          <h3>Art. 111 do CE — Declarado Inconstitucional</h3>
+          <p>
+            O art. 111 do CE previa que, se nenhum partido atingisse o QE, as vagas seriam preenchidas pelos candidatos
+            mais votados individualmente ("distritão residual"). As mesmas ADIs declararam essa norma inconstitucional.
+            Quando nenhum partido atinge o QE, a calculadora aplica sucessivamente as Fases 2 e 3, sem recorrer ao distritão.
+          </p>
+
+          <h2>Glossário</h2>
+          <div class="glossario-item">
+            <span class="termo">QE</span>
+            <span>Quociente Eleitoral: divisor básico de toda a distribuição, obtido dividindo os votos válidos pelo número de vagas (parte inteira).</span>
+          </div>
+          <div class="glossario-item">
+            <span class="termo">QP</span>
+            <span>Quociente Partidário: número de cadeiras diretas de cada partido, obtido dividindo seus votos válidos pelo QE (parte inteira).</span>
+          </div>
+          <div class="glossario-item">
+            <span class="termo">Sobras</span>
+            <span>Vagas não preenchidas pelos QPs (= vagas totais − ΣQPs), distribuídas pelas Fases 2 e 3.</span>
+          </div>
+          <div class="glossario-item">
+            <span class="termo">D'Hondt</span>
+            <span>Método de maiores médias: em cada rodada, divide-se os votos de cada partido pelo número de cadeiras já obtidas + 1; o maior quociente vence a vaga.</span>
+          </div>
+          <div class="glossario-item">
+            <span class="termo">Barreira 80%</span>
+            <span>Partido precisa de votos ≥ 80% do QE para participar da Fase 2 (constitucional — mantida pelo STF).</span>
+          </div>
+          <div class="glossario-item">
+            <span class="termo">Piso 20%</span>
+            <span>Candidato precisa de votos ≥ 20% do QE para ser convocado na Fase 2 (trava individual).</span>
+          </div>
+          <div class="glossario-item">
+            <span class="termo">Federação</span>
+            <span>Aliança de partidos que concorrem como unidade para fins de cálculo, mas mantêm rastreabilidade dos partidos componentes.</span>
+          </div>
+          <div class="glossario-item">
+            <span class="termo">Interpretação conforme</span>
+            <span>Técnica decisória do STF que mantém o texto legal mas delimita seu sentido constitucional: a barreira 80% é válida na Fase 2, mas inválida na Fase 3.</span>
+          </div>
+
+          <h2>Fontes Jurídicas</h2>
+          <ul>
+            <li>Código Eleitoral (Lei nº 4.737/1965), arts. 106, 107, 108, 109 e 111 — redação da Lei nº 14.211/2021</li>
+            <li>Lei das Eleições (Lei nº 9.504/1997), arts. 6º-A e 18-A</li>
+            <li>Resolução TSE nº 23.677/2021 (art. 13 declarado inconstitucional)</li>
+            <li>Resolução TSE nº 23.735/2024</li>
+            <li>STF, ADIs 7.228, 7.263 e 7.325 — julgamento de mérito e ED (13/03/2025)</li>
+            <li>Ato nº 209/2025 da Mesa da Câmara dos Deputados</li>
+          </ul>
+
+          <div class="alerta" style="margin-top:20px;">
+            <div class="alerta-titulo">⚠ Disclaimer</div>
+            Esta ferramenta é um instrumento de apoio técnico-jurídico para advogados eleitorais, assessores legislativos
+            e pesquisadores acadêmicos. <strong>Não substitui decisão da Justiça Eleitoral.</strong>
+            Os presets incluem dados aproximados para fins de demonstração e validação; os dados oficiais devem ser
+            obtidos diretamente dos sistemas do TSE/TREs.
+          </div>
+
+        </div><!-- .docs-container -->
+      </div><!-- #docs-section -->
+
+    </main><!-- .main-content -->
+
+  </div><!-- .app-body -->
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <span class="footer-legal" id="rodape-versao">
+      Sistema RetotalizaJE · v2.0 · art. 109 CE · ADIs 7.228/7.263/7.325 STF (13/03/2025)
+    </span>
+    <span class="footer-disclaimer">
+      Ferramenta técnico-jurídica de apoio · Não substitui decisão da Justiça Eleitoral
+    </span>
+  </footer>
+
+  <!-- ═══ MODO APRESENTAÇÃO ════════════════════════════════════════════════════ -->
+  <div id="apres-overlay" role="dialog" aria-modal="true" aria-label="Modo Apresentação">
+    <div id="apres-conteudo">
+      <h2 id="apres-titulo"></h2>
+      <p  id="apres-subtitulo"></p>
+      <div id="apres-tabela"></div>
+    </div>
+  </div>
+  <button id="apres-sair" class="btn btn-acento" aria-label="Sair do modo apresentação">
+    ✕ Sair da Apresentação
+  </button>
+
+  <!-- ═══ NAVEGAÇÃO OCULTA (compatibilidade JS ativarAba) ══════════════════════ -->
+  <!--
+    A função ativarAba() em ui.js faz:
+      document.querySelectorAll('nav button')...classList.toggle('ativo', b.dataset.aba === nome)
+      document.querySelectorAll('.tab-content')...classList.toggle('ativo', t.id === 'aba-' + nome)
+    Mantemos esses elementos para não alterar a lógica JS.
+  -->
+  <nav style="display:none;" aria-hidden="true" role="presentation">
+    <button data-aba="entrada"     class="ativo" aria-selected="true"  tabindex="-1">Entrada de Dados</button>
+    <button data-aba="resultado"   aria-selected="false" tabindex="-1">Resultado</button>
+    <button data-aba="auditoria"   aria-selected="false" tabindex="-1">Auditoria D'Hondt</button>
+    <button data-aba="comparativo" aria-selected="false" tabindex="-1">Comparativo</button>
+    <button data-aba="docs"        aria-selected="false" tabindex="-1">Como Funciona</button>
+  </nav>
+
+  <!-- Stubs de aba (tab-content — sempre ocultos via CSS; evitam erros em ativarAba) -->
+  <div id="aba-entrada"     class="tab-content" aria-hidden="true"></div>
+  <div id="aba-resultado"   class="tab-content" aria-hidden="true"></div>
+  <div id="aba-auditoria"   class="tab-content" aria-hidden="true"></div>
+  <div id="aba-comparativo" class="tab-content" aria-hidden="true"></div>
+  <div id="aba-docs"        class="tab-content" aria-hidden="true"></div>
+
+</div><!-- #app -->
+
+<!-- ═══ BIBLIOTECAS EXTERNAS ════════════════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="js/pdf-font.js?v=1" defer></script>
+
+<!-- ═══ MÓDULOS DA APLICAÇÃO ════════════════════════════════════════════════════ -->
+<script src="js/i18n.js?v=6"></script>
+<script src="js/engine.js?v=8"></script>
+<script src="js/presets.js?v=5"></script>
+<script src="js/export.js?v=9"></script>
+<script src="js/ui.js?v=14"></script>
+<script src="js/import.js?v=2"></script>
+<script src="js/runner.js?v=1"></script>
+
+<!-- ═══ SCRIPTS INLINE ══════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── 1. Docs toggle ───────────────────────────────────────────────────────── */
+  const btnDocs    = document.getElementById('btn-toggle-docs');
+  const docsSection = document.getElementById('docs-section');
+
+  if (btnDocs && docsSection) {
+    btnDocs.addEventListener('click', function () {
+      const open = docsSection.style.display === 'block';
+      docsSection.style.display = open ? 'none' : 'block';
+      btnDocs.setAttribute('aria-expanded', String(!open));
+      if (!open) {
+        docsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+
+  /* ── 2. Phase nav → scroll into view ────────────────────────────────────── */
+  const phaseTargets = {
+    f1:    'section-resultado',
+    f2:    'section-resultado',
+    f3:    'section-resultado',
+    audit: 'section-auditoria',
+  };
+
+  document.querySelectorAll('.phase-nav .phase-tab').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      // Update active state
+      document.querySelectorAll('.phase-nav .phase-tab').forEach(function (b) {
+        b.classList.remove('active');
+      });
+      btn.classList.add('active');
+
+      // Scroll to target section
+      var targetId = phaseTargets[btn.dataset.phase];
+      var target   = targetId && document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  /* ── 3. MutationObserver — phase count badges ────────────────────────────── */
+  function updatePhaseBadges() {
+    var counts = { f1: 0, f2: 0, f3: 0 };
+
+    // Parse result table: F1 = col5, F2 = col6, F3 = col7
+    document.querySelectorAll('#tabela-resultado table tbody tr').forEach(function (tr) {
+      var cells = tr.querySelectorAll('td.td-fase');
+      cells.forEach(function (td) {
+        var idx = Array.prototype.indexOf.call(tr.children, td) + 1; // 1-based
+        var val = parseInt(td.textContent.trim(), 10);
+        if (!isNaN(val) && val > 0) {
+          if (idx === 5) counts.f1 += val;
+          else if (idx === 6) counts.f2 += val;
+          else if (idx === 7) counts.f3 += val;
+        }
+      });
+    });
+
+    // Count audit rounds
+    var auditRounds = document.querySelectorAll('#auditoria-container .rodada-card').length;
+
+    var b1 = document.getElementById('badge-f1');
+    var b2 = document.getElementById('badge-f2');
+    var b3 = document.getElementById('badge-f3');
+    var ba = document.getElementById('badge-audit');
+
+    if (b1) b1.textContent = counts.f1 > 0 ? counts.f1 : '—';
+    if (b2) b2.textContent = counts.f2 > 0 ? counts.f2 : '—';
+    if (b3) b3.textContent = counts.f3 > 0 ? counts.f3 : '—';
+    if (ba) ba.textContent = auditRounds > 0 ? auditRounds : '—';
+  }
+
+  // Watch for result table and audit container changes
+  var resultObs = new MutationObserver(updatePhaseBadges);
+  var observeWhenReady = function () {
+    var tabelaEl   = document.getElementById('tabela-resultado');
+    var auditoriaEl = document.getElementById('auditoria-container');
+    if (tabelaEl && auditoriaEl) {
+      resultObs.observe(tabelaEl,    { childList: true, subtree: true });
+      resultObs.observe(auditoriaEl, { childList: true, subtree: true });
+    } else {
+      // Retry until DOM is ready (should be immediate after DOMContentLoaded)
+      requestAnimationFrame(observeWhenReady);
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', observeWhenReady);
+  } else {
+    observeWhenReady();
+  }
+
+  /* ── 4. Comparativo sync ──────────────────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', function () {
+    // Sync on aba-comparativo click (hidden nav button, kept for JS compat)
+    var btnComparativo = document.querySelector('[data-aba="comparativo"]');
+    if (btnComparativo) {
+      btnComparativo.addEventListener('click', function () {
+        var temComp = document.getElementById('secao-comparativo').style.display !== 'none';
+        document.getElementById('secao-sem-comparativo').style.display = temComp ? 'none' : 'block';
+      });
+    }
+
+    // Sync when #secao-comparativo visibility changes
+    var secaoComp = document.getElementById('secao-comparativo');
+    var secaoSem  = document.getElementById('secao-sem-comparativo');
+    if (secaoComp && secaoSem) {
+      var compObs = new MutationObserver(function () {
+        var temComp = secaoComp.style.display !== 'none';
+        secaoSem.style.display = temComp ? 'none' : 'block';
+      });
+      compObs.observe(secaoComp, { attributes: true, attributeFilter: ['style'] });
+    }
+
+    // runner.js handles Shift+Click on h1 directly via document.querySelector('h1')
+  });
+
+  /* ── 5. Salvar Estudo ──────────────────────────────────────────── */
+  (function () {
+    var btnSalvar = document.getElementById('btn-salvar-estudo');
+    if (!btnSalvar) return;
+
+    // Enable button whenever results appear in painel-parametros
+    var paramEl = document.getElementById('painel-parametros');
+    if (paramEl) {
+      new MutationObserver(function () {
+        btnSalvar.disabled =
+          document.querySelectorAll('#painel-parametros .param-item').length === 0;
+      }).observe(paramEl, { childList: true, subtree: true });
+    }
+
+    btnSalvar.addEventListener('click', function () {
+      var rotulo = (document.getElementById('input-rotulo') || {}).value || 'Sem rótulo';
+      var vagas  = parseInt((document.getElementById('input-vagas') || {}).value, 10) || 0;
+
+      var partidos = [];
+      document.querySelectorAll('.partido-card').forEach(function (card) {
+        var sigla    = (card.querySelector('.partido-sigla')    || {}).value || '';
+        var nome     = (card.querySelector('.partido-nome')     || {}).value || sigla;
+        var nominais = parseInt((card.querySelector('.partido-nominais') || {}).value, 10) || 0;
+        var legenda  = parseInt((card.querySelector('.partido-legenda')  || {}).value, 10) || 0;
+        var candidatos = [];
+        card.querySelectorAll('.candidato-row').forEach(function (row) {
+          var inputs = row.querySelectorAll('input');
+          var nomeC  = (inputs[0] || {}).value || '';
+          var votos  = parseInt((inputs[1] || {}).value, 10) || 0;
+          if (nomeC) candidatos.push({ nome: nomeC, partido: sigla, votos: votos });
+        });
+        if (sigla) partidos.push({
+          sigla: sigla, nome: nome,
+          votosNominais: nominais, votosLegenda: legenda,
+          candidatos: candidatos
+        });
+      });
+
+      var cassacoes = [];
+      document.querySelectorAll('.cassacao-row').forEach(function (row) {
+        var partido     = (row.querySelector('.cass-partido')    || {}).value || '';
+        var candidato   = (row.querySelector('.cass-candidato')  || {}).value || '';
+        var votosAnular = parseInt((row.querySelector('.cass-votos')      || {}).value, 10) || 0;
+        var modalidade  = (row.querySelector('.cass-modalidade') || {}).value || 'nominal';
+        if (partido && votosAnular > 0) {
+          cassacoes.push({ partido: partido, candidato: candidato,
+                           votosAnular: votosAnular, modalidade: modalidade });
+        }
+      });
+
+      var cenario   = { rotulo: rotulo, vagas: vagas, partidos: partidos, cassacoes: cassacoes };
+      var resultado = null;
+      if (window.ElectoralEngine && partidos.length > 0 && vagas > 0) {
+        try { resultado = window.ElectoralEngine.calcular(cenario); }
+        catch (e) { console.warn('Salvar Estudo: erro ao calcular', e); }
+      }
+
+      var estudo = {
+        sistema:         'Sistema RetotalizaJE',
+        versao:          'v2.0',
+        dataExportacao:  new Date().toISOString(),
+        parametros:      cenario,
+        resultado:       resultado
+      };
+
+      var blob = new Blob([JSON.stringify(estudo, null, 2)], { type: 'application/json' });
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'retotalizaje-' +
+        rotulo.replace(/[^a-zA-Z0-9\-_]/g, '-').slice(0, 40) +
+        '-' + new Date().toISOString().slice(0, 10) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  })();
+
+})();
+</script>
+<script type="module">
+    import { cadastrarEmail, loginEmail, loginGoogle, logout } from "./js/auth.js";
+    import { iniciarPaywall } from "./js/paywall.js";
+    import { auth } from "./js/firebase-init.js";
+
+    iniciarPaywall();
+
+    window.fazerLogin = async () => {
+      const email = document.getElementById("login-email").value;
+      const senha = document.getElementById("login-senha").value;
+      try { await loginEmail(email, senha); }
+      catch(e) { document.getElementById("login-erro").textContent = traduzirErro(e.code); }
+    };
+    window.fazerCadastro = async () => {
+      const email = document.getElementById("cad-email").value;
+      const senha = document.getElementById("cad-senha").value;
+      try { await cadastrarEmail(email, senha); }
+      catch(e) { document.getElementById("cad-erro").textContent = traduzirErro(e.code); }
+    };
+    window.fazerLoginGoogle = async () => { try { await loginGoogle(); } catch(e) { console.error(e); } };
+    window.fazerLogout = () => logout();
+    window.alternarTab = (tab) => {
+      document.getElementById("form-login").style.display    = tab === "login"    ? "" : "none";
+      document.getElementById("form-cadastro").style.display = tab === "cadastro" ? "" : "none";
+      document.querySelectorAll(".tab-btn").forEach((b,i) =>
+        b.classList.toggle("active", (i===0)===(tab==="login")));
+    };
+    function traduzirErro(code) {
+      return ({ "auth/user-not-found":"Usuário não encontrado.",
+        "auth/wrong-password":"Senha incorreta.",
+        "auth/email-already-in-use":"E-mail já cadastrado.",
+        "auth/weak-password":"Senha muito fraca.",
+        "auth/invalid-email":"E-mail inválido." })[code] ?? "Erro inesperado.";
+    }
+  </script>
+  </div>
+</body>
+</html>
