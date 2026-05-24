@@ -21,6 +21,7 @@
 function exportarCSV(resultado) {
   const agora = new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'medium' });
 
+  // Fix 3: status em português
   const STATUS_PT = {
     'eleito':               'Eleito',
     'barrado_80':           'Barrado (80% QE)',
@@ -30,6 +31,7 @@ function exportarCSV(resultado) {
     'fase3_apenas':         'Eleito (Fase 3)',
   };
 
+  // Fix 4: média D'Hondt — máximo 2 casas decimais, ponto decimal, sem zeros à direita
   function formatarMedia(v) {
     return v.toFixed(2).replace(/\.?0+$/, '');
   }
@@ -44,8 +46,8 @@ function exportarCSV(resultado) {
     [`Vagas: ${resultado.vagas}`],
     [`Votos Válidos: ${resultado.votosValidos}`],
     [`Quociente Eleitoral (QE): ${resultado.qe}`],
-    [`Barreira 80% QE: ${resultado.barreira80.toFixed(2)}`],
-    [`Piso 20% QE: ${resultado.piso20.toFixed(2)}`],
+    [`Barreira 80% QE: ${resultado.barreira80.toFixed(2)}`],   // Fix 1+5: arredonda, ponto decimal
+    [`Piso 20% QE: ${resultado.piso20.toFixed(2)}`],           // Fix 1+5: arredonda, ponto decimal
     [`Total QPs (Fase 1): ${resultado.totalQPs}`],
     [`Sobras: ${resultado.sobras}`],
     [`Fase 3 Ativada: ${resultado.fase3Ativada ? 'Sim' : 'Não'}`],
@@ -55,12 +57,12 @@ function exportarCSV(resultado) {
       p.sigla,
       p.nome,
       p.votos,
-      (p.percentualQE * 100).toFixed(2) + '%',
+      (p.percentualQE * 100).toFixed(2) + '%',               // Fix 2: remove replace('.', ',')
       p.qp,
       p.sobrasF2,
       p.sobrasF3,
       p.total,
-      STATUS_PT[p.status] || p.status,
+      STATUS_PT[p.status] || p.status,                       // Fix 3: status em português
     ]),
     [],
     ['Auditoria D\'Hondt'],
@@ -69,13 +71,29 @@ function exportarCSV(resultado) {
       r.rodada,
       r.fase,
       r.vencedor,
-      formatarMedia(r.mediaVencedor),
+      formatarMedia(r.mediaVencedor),                        // Fix 4: max 2 casas, ponto decimal
       r.candidatoConvocado ? r.candidatoConvocado.nome : '(sem lista)',
       r.fundamentacao,
     ]),
   ];
 
   return linhas.map(l => l.map(c => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\r\n');
+}
+
+/**
+ * Faz download de um CSV.
+ * @param {string} conteudo
+ * @param {string} nomeArquivo
+ */
+function downloadCSV(conteudo, nomeArquivo) {
+  const BOM = '﻿'; // UTF-8 BOM para Excel
+  const blob = new Blob([BOM + conteudo], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = nomeArquivo || 'resultado_eleitoral.csv';
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 // ════════════════════════════════════════════════════════════════════════════════
@@ -561,7 +579,7 @@ function exportarPDF(resultado, original) {
   // ════════════════════════════════════════════════════════════════════════════
 
   if (resultado.auditoria && resultado.auditoria.length > 0) {
-    sectionTitle('EXECUÇÃO PASSO A PASSO — ALGORITMO D’HONDT', CN);
+    sectionTitle('EXECUÇÃO PASSO A PASSO — ALGORITMO D\u2019HONDT', CN);
 
     // 5a. Resumo de todas as rodadas
     subTitle('Resumo das rodadas');
@@ -800,11 +818,11 @@ function exportarPDF(resultado, original) {
     { h: 'FUNDAMENTOS JURÍDICOS', b: null },
     { h: null, b: '• Art. 106 CE: QE = floor(total de votos válidos ÷ número de vagas).' },
     { h: null, b: '• Art. 109, I, CE: Fase 1 — quociente partidário; vagas = floor(votos do partido ÷ QE).' },
-    { h: null, b: '• Art. 109, II, CE (Lei 14.211/2021): Fase 2 — D’Hondt com barreira de 80% QE e piso individual de 20% QE por candidato convocado.' },
-    { h: null, b: '• ADIs 7.228, 7.263 e 7.325 (STF, 13/03/2025, Min. Flávio Dino): Fase 3 — D’Hondt sem barreira partidária. Declarada a inconstitucionalidade do art. 111 CE (distritão residual); vagas restantes não são preenchidas pelo critério de maior votação individual.' },
+    { h: null, b: '• Art. 109, II, CE (Lei 14.211/2021): Fase 2 — D\u2019Hondt com barreira de 80% QE e piso individual de 20% QE por candidato convocado.' },
+    { h: null, b: '• ADIs 7.228, 7.263 e 7.325 (STF, 13/03/2025, Min. Flávio Dino): Fase 3 — D\u2019Hondt sem barreira partidária. Declarada a inconstitucionalidade do art. 111 CE (distritão residual); vagas restantes não são preenchidas pelo critério de maior votação individual.' },
     { h: 'PRECISÃO ARITMÉTICA', b: null },
     { h: null, b: '• Divisão inteira por truncamento — floor(a/b) — sem arredondamento em QE e QP.' },
-    { h: null, b: '• Comparação de médias D’Hondt com tolerância ε = 1×10⁻¹⁰ (proteção contra erro de ponto flutuante).' },
+    { h: null, b: '• Comparação de médias D\u2019Hondt com tolerância ε = 1×10⁻¹⁰ (proteção contra erro de ponto flutuante).' },
     { h: null, b: '• Em caso de empate exato de médias, prevalece a ordem de entrada dos partidos (desempate por art. 108 CE — mais idoso — não implementado).' },
     { h: 'INTERPRETAÇÃO DA FASE 3', b: 'Expansiva — piso individual de 20% QE suprimido na Fase 3 (padrão pós-ADIs 7.228/7.263/7.325 STF).' },
     { h: 'FONTES JURÍDICAS', b: null },
