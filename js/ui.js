@@ -844,42 +844,305 @@ function renderizarComparativo(original, retotalizado) {
   }
 }
 
-// ─── Modo Apresentação ─────────────────────────────────────────────────────────
+// ─── Modo Apresentação — Slides ────────────────────────────────────────────────
 
-/** Listener de teclado — salvo fora para permitir removeEventListener */
-function _apresEscape(e) {
-  if (e.key === 'Escape') sairApresentacao();
+/* Estado interno dos slides */
+const _Apres = { slides: [], indice: 0 };
+
+/** Listener de teclado */
+function _apresKeys(e) {
+  if (e.key === 'Escape')       sairApresentacao();
+  if (e.key === 'ArrowRight')   _apresNavegar(1);
+  if (e.key === 'ArrowLeft')    _apresNavegar(-1);
 }
+
+/** Navega para o slide índice `idx`, com fade suave */
+function _apresIrPara(idx) {
+  const slides = _Apres.slides;
+  if (!slides.length) return;
+  idx = Math.max(0, Math.min(idx, slides.length - 1));
+
+  const atual = slides[_Apres.indice];
+  if (atual) atual.classList.remove('ativo');
+
+  _Apres.indice = idx;
+
+  const prox = slides[idx];
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => { if (prox) prox.classList.add('ativo'); });
+  });
+
+  const total = slides.length;
+  $('apres-contador').textContent = `${idx + 1} / ${total}`;
+  $('apres-barra').style.width = `${((idx + 1) / total) * 100}%`;
+  $('apres-prev').disabled = idx === 0;
+  $('apres-next').disabled = idx === slides.length - 1;
+}
+
+function _apresNavegar(delta) { _apresIrPara(_Apres.indice + delta); }
+
+function _apresSlide(cls) {
+  const s = el('div', { class: `apres-slide ${cls}` });
+  _Apres.slides.push(s);
+  return s;
+}
+
+function _apresB(txt, cls) { return el('span', { class: `apres-badge ${cls}` }, txt); }
+
+// ── Construtores de cada slide ──────────────────────────────────────────────
+
+function _criarSlideCapa(r) {
+  const s = _apresSlide('slide-capa');
+  s.appendChild(el('div', { class: 'capa-pleito' }, r.rotulo));
+  s.appendChild(el('div', { class: 'capa-subtitulo' },
+    `${r.vagas} vagas  ·  QE ${fmt(r.qe)}  ·  Barreira 80% ${fmt(r.barreira80)}  ·  Piso 20% ${fmt(r.piso20)}`
+  ));
+  s.appendChild(el('div', { class: 'capa-badge' }, 'ADIs 7.228/7.263/7.325 — STF 13/03/2025'));
+  if (r.fase3Ativada) {
+    s.appendChild(el('div', { class: 'capa-fase3-badge' }, '⚖ FASE 3 ATIVADA — ADIs 7.228/7.263/7.325'));
+  }
+}
+
+function _criarSlideMetricas(r) {
+  const s = _apresSlide('slide-dark');
+  s.appendChild(el('div', { class: 'slide-titulo' }, '📊 Métricas do Pleito'));
+
+  const cards = [
+    { label: 'Votos Válidos',       valor: fmt(r.votosValidos), sub: 'nominais + legenda',     cls: 'blue'  },
+    { label: 'Quociente Eleitoral', valor: fmt(r.qe),           sub: `÷ ${r.vagas} vagas`,    cls: 'blue'  },
+    { label: 'Barreira 80% QE',     valor: fmt(r.barreira80),   sub: 'mínimo para Fase 2',    cls: 'amber' },
+    { label: 'Piso 20% QE',         valor: fmt(r.piso20),       sub: 'candidato elegível F2', cls: 'amber' },
+    { label: 'Vagas Totais',        valor: fmt(r.vagas),        sub: 'ofertadas',              cls: 'green' },
+    { label: 'QPs — Fase 1',        valor: fmt(r.totalQPs),     sub: 'vagas diretas',          cls: 'green' },
+    { label: 'Sobras',              valor: fmt(r.sobras),       sub: 'para maiores médias',    cls: 'gray'  },
+  ];
+
+  const grid = el('div', { class: 'apres-kpi-grid' });
+  for (const c of cards) {
+    const card = el('div', { class: `apres-kpi-card ${c.cls}` });
+    card.appendChild(el('div', { class: 'apres-kpi-label' }, c.label));
+    card.appendChild(el('div', { class: 'apres-kpi-valor' }, c.valor));
+    card.appendChild(el('div', { class: 'apres-kpi-sub'   }, c.sub));
+    grid.appendChild(card);
+  }
+  s.appendChild(grid);
+}
+
+function _criarSlideDistribuicao(r, original) {
+  const s = _apresSlide('slide-dark');
+  s.appendChild(el('div', { class: 'slide-titulo' }, '🏛 Distribuição de Cadeiras'));
+
+  const variacao = original ? ElectoralEngine.compararResultados(original, r) : {};
+  const temComp  = !!original;
+
+  const ths = ['Partido', 'Votos', '% QE', 'F1', 'F2', 'F3', 'Total'];
+  if (temComp) ths.push('Variação');
+  ths.push('F2?', 'Status');
+
+  const thead = el('thead', {}, el('tr', {},
+    ...ths.map(h => el('th', { class: ['Votos','% QE','F1','F2','F3','Total','Variação'].includes(h) ? 'right' : '' }, h))
+  ));
+
+  const tbody = el('tbody');
+  for (const p of r.partidos) {
+    const tr = el('tr');
+
+    const tdSigla = el('td', {});
+    tdSigla.appendChild(el('strong', {}, p.sigla));
+    if (p.membros && p.membros.length) {
+      tdSigla.appendChild(el('div', { style: 'font-size:10px;color:rgba(255,255,255,.4)' }, p.membros.join(' · ')));
+    }
+    tr.appendChild(tdSigla);
+
+    tr.appendChild(el('td', { class: 'right' }, fmt(p.votos)));
+    tr.appendChild(el('td', { class: 'right' }, fmtPct(p.percentualQE)));
+    tr.appendChild(el('td', { class: 'right center' }, String(p.qp)));
+    tr.appendChild(el('td', { class: 'right center' }, String(p.sobrasF2)));
+    tr.appendChild(el('td', { class: 'right center' }, String(p.sobrasF3)));
+    tr.appendChild(el('td', { class: 'right center' },
+      el('strong', { style: p.total > 0 ? 'color:#34D399' : '' }, String(p.total))
+    ));
+
+    if (temComp) {
+      const diff = variacao[p.sigla] || 0;
+      const cls = diff > 0 ? 'apres-var-pos' : diff < 0 ? 'apres-var-neg' : 'apres-var-zero';
+      const txt = diff > 0 ? `+${diff}` : diff < 0 ? String(diff) : '—';
+      tr.appendChild(el('td', { class: `right ${cls}` }, txt));
+    }
+
+    const limiar85 = r.qe * 0.85;
+    const limiar75 = r.qe * 0.75;
+    let badgeF2;
+    if (p.votos >= limiar85)      badgeF2 = _apresB('Apto F2',    'apto-f2');
+    else if (p.votos >= limiar75) badgeF2 = _apresB('⚠ Sensível', 'sens-f2');
+    else                          badgeF2 = _apresB('Excluído F2','excl-f2');
+    tr.appendChild(el('td', {}, badgeF2));
+
+    const SBADGE = {
+      eleito:               ['Eleito',    'eleito'],
+      qualificado_sem_vaga: ['Qualif.',   'qualif'],
+      barrado_80:           ['Barrado',   'barrado'],
+      fase3_apenas:         ['Fase 3',    'fase3'],
+      sem_votos:            ['Sem votos', 'qualif'],
+    };
+    const [stxt, scls] = SBADGE[p.status] || [p.status, 'qualif'];
+    tr.appendChild(el('td', {}, _apresB(stxt, scls)));
+    tbody.appendChild(tr);
+  }
+
+  s.appendChild(el('div', { class: 'apres-table-wrap' },
+    el('table', { class: 'apres-table' }, thead, tbody)
+  ));
+}
+
+function _criarSlideFase3(r) {
+  const s = _apresSlide('slide-fase3');
+  s.appendChild(el('div', { class: 'f3-titulo' }, '⚖ FASE 3 ATIVADA'));
+  s.appendChild(el('div', { class: 'f3-subtitulo' }, r.fase3Motivo ||
+    'Fase 3 ativada — vagas residuais distribuídas sem barreira partidária.'));
+  s.appendChild(el('div', { class: 'f3-badge' }, 'ADIs 7.228/7.263/7.325 — STF 13/03/2025'));
+}
+
+function _criarSlideAuditoria(rodada, r) {
+  const s = _apresSlide('slide-dark');
+
+  const hdr = el('div', { class: 'apres-audit-header' });
+  hdr.appendChild(el('span', { class: 'apres-audit-num' }, `#${rodada.rodada}`));
+  hdr.appendChild(el('span', { class: `apres-audit-fase ${rodada.fase === 3 ? 'f3' : 'f2'}` },
+    rodada.fase === 3 ? 'Fase 3' : 'Fase 2'));
+
+  const vencedorInfo = rodada.medias.find(m => m.sigla === rodada.vencedor);
+  const vencedorLabel = (vencedorInfo && vencedorInfo.membros && vencedorInfo.membros.length)
+    ? `${rodada.vencedor} (${vencedorInfo.membros.join(' + ')})` : rodada.vencedor;
+
+  hdr.appendChild(el('span', { class: 'apres-audit-venc' }, `Vencedor: ${vencedorLabel}`));
+  hdr.appendChild(el('span', { class: 'apres-audit-media' }, `Média: ${fmtD(rodada.mediaVencedor, 2)}`));
+
+  if (rodada.candidatoConvocado) {
+    const partLabel = (rodada.candidatoConvocado.partido && rodada.candidatoConvocado.partido !== rodada.vencedor)
+      ? ` [${rodada.candidatoConvocado.partido}]` : '';
+    hdr.appendChild(el('span', { class: 'apres-audit-cand' },
+      `↪ ${rodada.candidatoConvocado.nome}${partLabel} (${fmt(rodada.candidatoConvocado.votos)})`));
+  }
+  s.appendChild(hdr);
+
+  const thead = el('thead', {}, el('tr', {},
+    el('th', {}, 'Partido'),
+    el('th', { class: 'right' }, 'Votos'),
+    el('th', { class: 'right' }, 'Cads+1'),
+    el('th', { class: 'right' }, 'Média'),
+    el('th', { class: 'center' }, '>80% QE?'),
+    el('th', { class: 'center' }, 'Cands. 20%'),
+    el('th', { class: 'center' }, 'Participa?'),
+  ));
+
+  const tbody = el('tbody');
+  for (const m of rodada.medias) {
+    const isVenc = m.sigla === rodada.vencedor && m.participaDaRodada;
+    const tr = el('tr', { class: isVenc ? 'row-venc' : !m.participaDaRodada ? 'row-excl' : '' });
+    const tdSigla = el('td', {});
+    tdSigla.appendChild(el('strong', {}, m.sigla));
+    if (m.membros && m.membros.length) {
+      tdSigla.appendChild(el('div', { style: 'font-size:10px;color:rgba(255,255,255,.35)' }, m.membros.join(' · ')));
+    }
+    tr.appendChild(tdSigla);
+    tr.appendChild(el('td', { class: 'right' }, fmt(m.votos)));
+    tr.appendChild(el('td', { class: 'right' }, String(m.cadeirasMaisUm)));
+    tr.appendChild(el('td', { class: 'right' }, fmtD(m.media, 2)));
+    tr.appendChild(el('td', { class: 'center' }, m.qualificado80 ? '✓' : '✕'));
+    tr.appendChild(el('td', { class: 'center' }, m.candidatos20disponiveis < 0 ? '(s/lista)' : String(m.candidatos20disponiveis)));
+    tr.appendChild(el('td', { class: 'center' }, m.participaDaRodada ? '✓' : '✕'));
+    tbody.appendChild(tr);
+  }
+
+  s.appendChild(el('div', { class: 'apres-table-wrap' },
+    el('table', { class: 'apres-table' }, thead, tbody)
+  ));
+  s.appendChild(el('div', { class: 'apres-audit-fund' }, rodada.fundamentacao));
+}
+
+function _criarSlideComparativo(original, r) {
+  const s = _apresSlide('slide-dark');
+  s.appendChild(el('div', { class: 'slide-titulo' }, '🔄 Comparativo: Original × Retotalizado'));
+
+  const variacao = ElectoralEngine.compararResultados(original, r);
+  const grid = el('div', { class: 'apres-comp-grid' });
+
+  const colOrig = el('div', { class: 'apres-comp-col' });
+  colOrig.appendChild(el('h3', {}, 'Cenário Original'));
+  for (const p of original.partidos) {
+    const row = el('div', { class: 'apres-comp-row' });
+    row.appendChild(el('span', { class: 'sigla' }, p.sigla));
+    row.appendChild(el('span', { class: 'vagas' }, String(p.total)));
+    colOrig.appendChild(row);
+  }
+  grid.appendChild(colOrig);
+
+  const colRet = el('div', { class: 'apres-comp-col' });
+  colRet.appendChild(el('h3', {}, 'Cenário Retotalizado'));
+  for (const p of r.partidos) {
+    const diff = variacao[p.sigla] || 0;
+    const cor = diff > 0 ? '#34D399' : diff < 0 ? '#FCA5A5' : '';
+    const row = el('div', { class: 'apres-comp-row' });
+    row.appendChild(el('span', { class: 'sigla', style: cor ? `color:${cor}` : '' }, p.sigla));
+    const vagasEl = el('span', { class: 'vagas', style: cor ? `color:${cor}` : '' }, String(p.total));
+    if (diff !== 0) {
+      vagasEl.appendChild(el('span', {
+        style: `font-size:12px;margin-left:6px;color:${diff > 0 ? '#34D399' : '#FCA5A5'}`,
+      }, diff > 0 ? `+${diff}` : String(diff)));
+    }
+    row.appendChild(vagasEl);
+    colRet.appendChild(row);
+  }
+  grid.appendChild(colRet);
+  s.appendChild(grid);
+
+  const migracoes = Object.entries(variacao).filter(([, v]) => v !== 0);
+  if (migracoes.length) {
+    const wrap = el('div', { class: 'apres-migracoes' });
+    for (const [sigla, diff] of migracoes) {
+      const acao = diff > 0 ? `${sigla} +${diff}` : `${sigla} ${diff}`;
+      wrap.appendChild(el('span', { class: `apres-migr-chip ${diff > 0 ? 'ganhou' : 'perdeu'}` }, acao));
+    }
+    s.appendChild(wrap);
+  }
+}
+
+// ── Orquestrador principal ──────────────────────────────────────────────────
 
 function entrarApresentacao() {
   if (!Estado.resultado) return;
 
-  const r = Estado.resultado;
+  const r        = Estado.resultado;
+  const original = Estado.resultadoOriginal;
 
-  // Preencher cabeçalho
-  $('apres-titulo').textContent = r.rotulo;
-  $('apres-subtitulo').textContent =
-    `${r.vagas} vagas  ·  QE ${fmt(r.qe)}  ·  ` +
-    `Barreira 80% ${fmt(r.barreira80)}  ·  ` +
-    (r.fase3Ativada ? '⚖ Fase 3 ativada' : 'Fase 3 não ativada');
+  _Apres.slides = [];
+  _Apres.indice = 0;
+  const area = $('apres-slides-area');
+  area.innerHTML = '';
 
-  // Clonar a tabela de resultado para a overlay
-  const src = $('tabela-resultado');
-  const dst = $('apres-tabela');
-  dst.innerHTML = '';
-  if (src) dst.appendChild(src.cloneNode(true));
+  _criarSlideCapa(r);
+  _criarSlideMetricas(r);
+  _criarSlideDistribuicao(r, original);
+  if (r.fase3Ativada) _criarSlideFase3(r);
+  for (const rod of r.auditoria) {
+    _criarSlideAuditoria(rod, r);
+  }
+  if (original) _criarSlideComparativo(original, r);
 
-  // Ativar modo e reposicionar scroll
+  for (const s of _Apres.slides) area.appendChild(s);
+
   document.body.classList.add('modo-apresentacao');
-  $('apres-overlay').scrollTop = 0;
+  _apresIrPara(0);
 
-  // Escape para sair
-  document.addEventListener('keydown', _apresEscape);
+  document.addEventListener('keydown', _apresKeys);
+  $('apres-prev').addEventListener('click', () => _apresNavegar(-1));
+  $('apres-next').addEventListener('click', () => _apresNavegar(1));
 }
 
 function sairApresentacao() {
   document.body.classList.remove('modo-apresentacao');
-  document.removeEventListener('keydown', _apresEscape);
+  document.removeEventListener('keydown', _apresKeys);
 }
 
 // ─── Cassações ──────────────────────────────────────────────────────────────────
