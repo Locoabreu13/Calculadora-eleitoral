@@ -257,16 +257,42 @@
 
       <!-- Empty state (shown by CSS :has() when no results exist) -->
       <div class="empty-state" aria-hidden="true">
-        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8"  y="34" width="8"  height="14" rx="2" fill="currentColor"/>
-          <rect x="22" y="22" width="8"  height="26" rx="2" fill="currentColor"/>
-          <rect x="36" y="10" width="8"  height="38" rx="2" fill="currentColor"/>
-          <path d="M44 14 L50 8 M47 8 L50 8 L50 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <div class="empty-title">Nenhum cálculo realizado</div>
-        <div class="empty-sub">Preencha os dados no painel lateral e clique em Calcular para ver a distribuição de cadeiras.</div>
+  <div class="tse-tutorial">
+    <div class="tse-tutorial-header">
+      <div class="tse-tutorial-badge">Como começar</div>
+      <h3 class="tse-tutorial-title">Importe os dados do TSE para calcular</h3>
+      <p class="tse-tutorial-sub">Siga os passos abaixo para baixar o arquivo correto e iniciar o cálculo.</p>
+    </div>
+    <div class="tse-steps">
+      <div class="tse-step">
+        <div class="tse-step-num">1</div>
+        <div class="tse-step-body">
+          <div class="tse-step-title">Acesse o Portal TSE</div>
+          <div class="tse-step-desc">Clique no botão <strong>↗ Portal TSE</strong> no painel lateral. Você será direcionado ao portal de dados abertos do TSE.</div>
+        </div>
       </div>
-
+      <div class="tse-step">
+        <div class="tse-step-num">2</div>
+        <div class="tse-step-body">
+          <div class="tse-step-title">Localize o arquivo de votação</div>
+          <div class="tse-step-desc">No portal, procure por <strong>Resultados</strong> → selecione o ano da eleição → baixe o arquivo de <strong>votação nominal por município e zona</strong> do estado desejado.</div>
+        </div>
+      </div>
+      <div class="tse-step">
+        <div class="tse-step-num">3</div>
+        <div class="tse-step-body">
+          <div class="tse-step-title">Importe o arquivo CSV</div>
+          <div class="tse-step-desc">Clique em <strong>↓ Importar dados do TSE</strong> no painel lateral, selecione o arquivo baixado. O sistema detecta automaticamente os partidos e votos.</div>
+        </div>
+      </div>
+      <div class="tse-step">
+        <div class="tse-step-num">4</div>
+        <div class="tse-step-body">
+          <div class="tse-step-title">Configure e calcule</div>
+          <div class="tse-step-desc">Preencha o número de vagas, adicione cassações se necessário e clique em <strong>▶ Calcular Distribuição</strong>.</div>
+        </div>
+      </div>
+    </div>
       <!-- Result sections (shown by CSS :has() when results exist) -->
       <div class="result-sections">
 
