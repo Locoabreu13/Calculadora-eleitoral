@@ -20,6 +20,20 @@
  */
 function exportarCSV(resultado) {
   const agora = new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'medium' });
+
+  const STATUS_PT = {
+    'eleito':               'Eleito',
+    'barrado_80':           'Barrado (80% QE)',
+    'barrado_piso':         'Barrado (piso 20%)',
+    'sem_votos':            'Sem votos',
+    'qualificado_sem_vaga': 'Qualificado (sem vaga)',
+    'fase3_apenas':         'Eleito (Fase 3)',
+  };
+
+  function formatarMedia(v) {
+    return v.toFixed(2).replace(/\.?0+$/, '');
+  }
+
   const linhas = [
     [`# Sistema RetotalizaJE v2.0`],
     [`# Gerado em: ${agora}`],
@@ -30,8 +44,8 @@ function exportarCSV(resultado) {
     [`Vagas: ${resultado.vagas}`],
     [`Votos Válidos: ${resultado.votosValidos}`],
     [`Quociente Eleitoral (QE): ${resultado.qe}`],
-    [`Barreira 80% QE: ${resultado.barreira80}`],
-    [`Piso 20% QE: ${resultado.piso20}`],
+    [`Barreira 80% QE: ${resultado.barreira80.toFixed(2)}`],
+    [`Piso 20% QE: ${resultado.piso20.toFixed(2)}`],
     [`Total QPs (Fase 1): ${resultado.totalQPs}`],
     [`Sobras: ${resultado.sobras}`],
     [`Fase 3 Ativada: ${resultado.fase3Ativada ? 'Sim' : 'Não'}`],
@@ -41,12 +55,12 @@ function exportarCSV(resultado) {
       p.sigla,
       p.nome,
       p.votos,
-      (p.percentualQE * 100).toFixed(2).replace('.', ',') + '%',
+      (p.percentualQE * 100).toFixed(2) + '%',
       p.qp,
       p.sobrasF2,
       p.sobrasF3,
       p.total,
-      p.status,
+      STATUS_PT[p.status] || p.status,
     ]),
     [],
     ['Auditoria D\'Hondt'],
@@ -55,29 +69,13 @@ function exportarCSV(resultado) {
       r.rodada,
       r.fase,
       r.vencedor,
-      r.mediaVencedor.toFixed(4).replace('.', ','),
+      formatarMedia(r.mediaVencedor),
       r.candidatoConvocado ? r.candidatoConvocado.nome : '(sem lista)',
       r.fundamentacao,
     ]),
   ];
 
   return linhas.map(l => l.map(c => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\r\n');
-}
-
-/**
- * Faz download de um CSV.
- * @param {string} conteudo
- * @param {string} nomeArquivo
- */
-function downloadCSV(conteudo, nomeArquivo) {
-  const BOM = '﻿'; // UTF-8 BOM para Excel
-  const blob = new Blob([BOM + conteudo], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = nomeArquivo || 'resultado_eleitoral.csv';
-  a.click();
-  URL.revokeObjectURL(url);
 }
 
 // ════════════════════════════════════════════════════════════════════════════════
