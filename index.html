@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RetotalizaJE — Sistema de Retotalização Eleitoral</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#08111F;--navy-2:#0D1E35;--navy-3:#112440;--accent:#F5A623;--accent-2:#E8951A;--teal:#00D4A4;--red:#FF4D4D;--blue:#3B82F6;--text:#E8EDF5;--text-muted:#6B84A3;--text-dim:#3A5070;--border:rgba(255,255,255,0.07);--border-bright:rgba(255,255,255,0.12)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -27,7 +27,7 @@ nav.scrolled{background:rgba(8,17,31,.94);backdrop-filter:blur(20px);border-colo
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.25);color:var(--accent);font-family:'DM Mono',monospace;font-size:11px;padding:6px 14px;border-radius:20px;margin-bottom:28px;letter-spacing:.05em}
 .hero-badge-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(40px,6vw,80px);font-weight:800;line-height:1.05;letter-spacing:-.03em;margin-bottom:20px;max-width:900px}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(40px,6vw,80px);font-weight:700;line-height:1.1;letter-spacing:-.01em;margin-bottom:20px;max-width:900px}
 .hero h1 .line2{color:var(--accent)}
 .hero-sub{font-size:clamp(15px,2vw,19px);color:var(--text-muted);max-width:600px;margin:0 auto 40px;line-height:1.7;font-weight:300}
 .hero-sub strong{color:var(--text);font-weight:400}
@@ -121,7 +121,7 @@ nav.scrolled{background:rgba(8,17,31,.94);backdrop-filter:blur(20px);border-colo
 /* FEATURES */
 .section{padding:0 48px 120px;max-width:1200px;margin:0 auto}
 .section-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
-.section-h{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:16px}
+.section-h{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-.01em;line-height:1.15;margin-bottom:16px}
 .section-sub{font-size:16px;color:var(--text-muted);max-width:520px;line-height:1.7;margin-bottom:48px}
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .feat-card{background:var(--navy-2);border:1px solid var(--border);border-radius:14px;padding:26px;transition:all .3s;position:relative;overflow:hidden}
@@ -283,7 +283,7 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify
     <div class="steps-nav">
       <div style="margin-bottom:32px" class="reveal">
         <div class="section-label">Fluxo de uso</div>
-        <h2 style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:10px">Do arquivo do TSE ao resultado em minutos</h2>
+        <h2 style="font-family:'Syne',sans-serif;font-size:30px;font-weight:700;letter-spacing:-.01em;line-height:1.155;margin-bottom:10px">Do arquivo do TSE ao resultado em minutos</h2>
         <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Sem configuração manual. O sistema lê o CSV oficial e calcula automaticamente todas as fases.</p>
       </div>
       <div class="step-item active" data-step="0">
