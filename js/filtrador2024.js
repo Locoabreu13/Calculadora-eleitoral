@@ -25,6 +25,17 @@
 (function () {
   'use strict';
 
+  /* ─── Normalização de município (ignora maiúsculas, acentos, espaços) ───── */
+  function normMun(s) {
+    return (s || '')
+      .replace(/^"|"$/g, '')
+      .trim()
+      .toUpperCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ');
+  }
+
   /* ─── Utilitário DOM ────────────────────────────────────────────────────── */
   const $ = id => document.getElementById(id);
 
@@ -239,7 +250,7 @@
       if (!ufOk) return false;
       if (municipio && iMun !== -1) {
         return iMun < cols.length &&
-               cols[iMun].replace(/^"|"$/g, '').trim() === municipio;
+               normMun(cols[iMun]) === normMun(municipio);
       }
       return true;
     });
@@ -294,7 +305,7 @@
       const cols = l.split(';');
       if (iUF < cols.length && cols[iUF].replace(/^"|"$/g,'').trim() === uf &&
           iMun !== -1 && iMun < cols.length) {
-        municipios.add(cols[iMun].replace(/^"|"$/g,'').trim());
+        municipios.add(normMun(cols[iMun]));
       }
     });
     const sel = $('f24-municipio');
