@@ -46,5 +46,21 @@ export async function logout() {
 }
 
 export function observarAuth(callback) {
-  return onAuthStateChanged(auth, callback);
+  let resolvido = false;
+
+  const timeoutId = setTimeout(() => {
+    if (!resolvido) {
+      resolvido = true;
+      console.warn("[Auth] Timeout de 8 s — Firebase não respondeu. Exibindo tela de login.");
+      callback(null);
+    }
+  }, 8000);
+
+  return onAuthStateChanged(auth, (user) => {
+    if (!resolvido) {
+      resolvido = true;
+      clearTimeout(timeoutId);
+    }
+    callback(user);
+  });
 }
