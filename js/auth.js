@@ -17,7 +17,7 @@ async function garantirPerfil(user) {
   if (!snap.exists()) {
     await setDoc(ref, {
       email: user.email,
-      credits: 0,
+      credits: 1,
       createdAt: serverTimestamp()
     });
   }

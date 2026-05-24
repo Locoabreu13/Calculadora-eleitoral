@@ -549,56 +549,66 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify
 <section id="planos" class="pricing">
   <div class="section-label reveal">Planos</div>
   <h2 class="section-h reveal">Pague pelo que usar</h2>
-  <p style="font-size:16px;color:var(--text-muted);margin-top:12px" class="reveal">Sem assinatura. Sem prazo de validade. 1 cálculo = 1 crédito.</p>
-  <div class="price-grid">
+  <p style="font-size:16px;color:var(--text-muted);margin-top:12px" class="reveal">Sem assinatura. Sem prazo de validade.<br>Novo cadastro inclui <strong style="color:var(--teal)">1 cálculo gratuito</strong> para você testar.</p>
+  <div class="price-grid" style="grid-template-columns:repeat(4,1fr);max-width:1100px;margin:48px auto 0">
     <div class="price-card reveal">
-      <div class="price-name">Starter</div>
-      <div class="price-cred">5 <span>créditos</span></div>
-      <div class="price-val">R$ 15</div>
-      <div class="price-sub">R$ 3,00 por cálculo</div>
-      <a href="app.html" class="price-btn">Começar</a>
+      <div class="price-name">Avulso</div>
+      <div class="price-cred">1 <span>cálculo</span></div>
+      <div class="price-val">R$ 200</div>
+      <div class="price-sub">caso pontual</div>
+      <a href="app.html" class="price-btn">Adquirir</a>
       <div class="price-feat">
-        <div class="pf">Importação CSV do TSE</div>
-        <div class="pf">4 modalidades de cassação</div>
+        <div class="pf">Todas as funcionalidades</div>
         <div class="pf">Exportação CSV e PDF</div>
+        <div class="pf">Auditoria passo a passo</div>
       </div>
     </div>
-    <div class="price-card pop reveal reveal-delay-1">
-      <div class="price-name">Pro</div>
-      <div class="price-cred">20 <span>créditos</span></div>
-      <div class="price-val">R$ 45</div>
-      <div class="price-sub">R$ 2,25 por cálculo</div>
-      <a href="app.html" class="price-btn">Escolher</a>
+    <div class="price-card reveal reveal-delay-1">
+      <div class="price-name">Escritório</div>
+      <div class="price-cred">5 <span>cálculos</span></div>
+      <div class="price-val">R$ 750</div>
+      <div class="price-sub">R$ 150 por cálculo</div>
+      <a href="app.html" class="price-btn">Adquirir</a>
       <div class="price-feat">
-        <div class="pf">Tudo do Starter</div>
+        <div class="pf">Todas as funcionalidades</div>
         <div class="pf">Federações partidárias</div>
-        <div class="pf">Auditoria passo a passo</div>
         <div class="pf">Comparativo de cenários</div>
       </div>
     </div>
-    <div class="price-card reveal reveal-delay-2">
-      <div class="price-name">Escritório</div>
-      <div class="price-cred">50 <span>créditos</span></div>
-      <div class="price-val">R$ 90</div>
-      <div class="price-sub">R$ 1,80 por cálculo</div>
-      <a href="app.html" class="price-btn">Escolher</a>
+    <div class="price-card pop reveal reveal-delay-2">
+      <div class="price-name">Especializado</div>
+      <div class="price-cred">10 <span>cálculos</span></div>
+      <div class="price-val">R$ 1.200</div>
+      <div class="price-sub">R$ 120 por cálculo</div>
+      <a href="app.html" class="price-btn">Adquirir</a>
       <div class="price-feat">
-        <div class="pf">Tudo do Pro</div>
-        <div class="pf">Múltiplos casos salvos</div>
-        <div class="pf">PDF como parecer técnico</div>
+        <div class="pf">Todas as funcionalidades</div>
         <div class="pf">Presets de casos reais</div>
+        <div class="pf">PDF como parecer técnico</div>
+      </div>
+    </div>
+    <div class="price-card reveal reveal-delay-3">
+      <div class="price-name">Tribunal</div>
+      <div class="price-cred">25 <span>cálculos</span></div>
+      <div class="price-val">R$ 2.500</div>
+      <div class="price-sub">R$ 100 por cálculo</div>
+      <a href="app.html" class="price-btn">Adquirir</a>
+      <div class="price-feat">
+        <div class="pf">Todas as funcionalidades</div>
+        <div class="pf">Para TREs e grandes escritórios</div>
+        <div class="pf">Melhor custo por cálculo</div>
       </div>
     </div>
   </div>
+  <p style="font-size:12px;color:var(--text-dim);margin-top:24px;text-align:center">Créditos não expiram · Pagamento via Pix ou cartão · Nota fiscal disponível</p>
 </section>
-
 <!-- FAQ -->
 <section class="faq">
   <div class="section-label reveal">FAQ</div>
   <h2 class="section-h reveal" style="margin-bottom:36px">Perguntas frequentes</h2>
   <div class="faq-item">
     <div class="faq-q">O sistema implementa corretamente as ADIs do STF? <span class="faq-ico">+</span></div>
-    <div class="faq-a">Sim. O algoritmo foi desenvolvido e validado com base nas ADIs 7.228, 7.263 e 7.325, julgadas em 13/03/2025 sob relatoria do Min. Flávio Dino. A Fase 3 opera sem barreira, conforme a interpretação expansiva fixada pelo STF. O Art. 111 CE foi declarado inconstitucional e não está implementado.</div>
+    <div class="faq-a">Sim. O algoritmo foi desenvolvido e validado com base nas ADIs 7.228, 7.263 e 7.325, julgadas em 13/03/2025 sob relatoria do Min. Flávio Dino. A Fase 3 opera sem barreira, conforme a interpretação expansiva fixada pelo STF. O Art. 111 CE (distritão) foi declarado inconstitucional e não está implementado.</div>
   </div>
   <div class="faq-item">
     <div class="faq-q">Como obtenho o arquivo CSV do TSE? <span class="faq-ico">+</span></div>
