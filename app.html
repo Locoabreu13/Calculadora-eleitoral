@@ -531,17 +531,18 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
   </footer>
 
   <!-- ═══ MODO APRESENTAÇÃO ════════════════════════════════════════════════════ -->
-<div id="apres-overlay">
+<div id="apres-overlay" role="dialog" aria-modal="true" aria-label="Modo Apresentação">
   <div id="apres-slides-area"></div>
   <div id="apres-nav">
-    <button id="apres-prev" class="apres-nav-btn">←</button>
-    <div id="apres-barra-wrap"><div id="apres-barra"></div></div>
+    <button id="apres-prev" class="apres-nav-btn" aria-label="Slide anterior">&#8592;</button>
+    <div id="apres-barra-wrap"><div id="apres-barra" style="width:0%"></div></div>
     <span id="apres-contador">1 / 1</span>
-    <button id="apres-next" class="apres-nav-btn">→</button>
+    <button id="apres-next" class="apres-nav-btn" aria-label="Próximo slide">&#8594;</button>
   </div>
 </div>
-    ✕ Sair da Apresentação
-  </button>
+<button id="apres-sair" class="btn" aria-label="Sair do modo apresentação">
+  ✕ Sair da Apresentação
+</button>
 
   <!-- ═══ NAVEGAÇÃO OCULTA (compatibilidade JS ativarAba) ══════════════════════ -->
   <!--
