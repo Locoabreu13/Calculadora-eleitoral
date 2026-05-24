@@ -2357,3 +2357,207 @@ button:focus:not(:focus-visible) { outline: none; }
 .tse-tip strong {
   color: var(--teal);
 }
+/* ============================================================
+   PATCH — Tela de Compra / Créditos
+   Aplique no FINAL de css/styles.css
+   (sobrescreve as regras problemáticas por especificidade)
+   ============================================================ */
+
+/* 1 + 2 — Fundo e container */
+#tela-auth,
+#tela-compra {
+  background: var(--navy, #1B2B4B);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.compra-container {
+  background: var(--navy-mid, #243656);
+  border: 1px solid var(--navy-border, rgba(255,255,255,.12));
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  color: var(--text-primary, #E8EEF7);
+}
+
+/* 4 (header) — Cabeçalho "Conectado como" */
+.compra-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--navy-border, rgba(255,255,255,.12));
+  color: var(--text-hint, #8B9FC0);
+  font-size: 13px;
+}
+
+.compra-header strong {
+  color: var(--text-primary, #E8EEF7);
+  font-weight: 600;
+}
+
+/* 4 (botão Sair) */
+.btn-logout {
+  background: transparent;
+  border: 1px solid var(--navy-border, rgba(255,255,255,.18));
+  color: var(--text-hint, #8B9FC0);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  font-family: inherit;
+}
+.btn-logout:hover {
+  background: rgba(255,255,255,.07);
+  color: var(--text-primary, #E8EEF7);
+}
+
+/* Títulos dentro do container */
+.compra-container h2 {
+  color: var(--text-primary, #E8EEF7);
+  font-size: 1.25rem;
+  margin: 0 0 .4rem;
+}
+.compra-container p {
+  color: var(--text-hint, #8B9FC0);
+  font-size: 14px;
+  margin: 0 0 1.5rem;
+}
+
+/* 6 — Grid de cartões */
+.pacotes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 3 — Cartões de plano */
+.pacote-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--navy-border, rgba(255,255,255,.12));
+  border-radius: 10px;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: .5rem;
+  transition: background .15s, border-color .15s, transform .15s;
+  position: relative;
+}
+.pacote-card:hover {
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.25);
+  transform: translateY(-2px);
+}
+
+.pacote-card .pacote-nome {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-hint, #8B9FC0);
+}
+.pacote-card .pacote-qtd {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-primary, #E8EEF7);
+  line-height: 1;
+}
+.pacote-card .pacote-label {
+  font-size: 12px;
+  color: var(--text-hint, #8B9FC0);
+  margin-top: -.25rem;
+}
+.pacote-card .pacote-preco-total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary, #E8EEF7);
+}
+.pacote-card .pacote-preco-unit {
+  font-size: 11px;
+  color: var(--text-hint, #8B9FC0);
+}
+
+/* Botão comprar dentro do cartão */
+.pacote-card .btn-comprar {
+  margin-top: auto;
+  width: 100%;
+  padding: 8px 0;
+  background: #1e6fc7;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+  font-family: inherit;
+}
+.pacote-card .btn-comprar:hover {
+  background: #2581e0;
+}
+
+/* 5 — Destaque do plano mais escolhido */
+.pacote-destaque {
+  border-color: #d4a017 !important;
+  background: rgba(212,160,23,.07) !important;
+}
+.pacote-destaque .btn-comprar {
+  background: #d4a017;
+}
+.pacote-destaque .btn-comprar:hover {
+  background: #e0b020;
+}
+
+/* 5 — Badge "Mais escolhido" */
+.pacote-badge {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #d4a017;
+  color: #1B2B4B;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: 2px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* 4 — Nota de rodapé */
+.compra-nota {
+  font-size: 12px;
+  color: var(--text-hint, #8B9FC0);
+  text-align: center;
+  margin-top: .5rem;
+}
+
+/* 6 — Responsividade */
+@media (max-width: 860px) {
+  .pacotes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .pacotes-grid {
+    grid-template-columns: 1fr;
+  }
+  .compra-container {
+    padding: 1.25rem;
+  }
+}
+/* ============================================================
+   FIM DO PATCH
+   ============================================================ */
