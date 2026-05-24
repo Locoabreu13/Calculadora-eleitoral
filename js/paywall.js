@@ -44,13 +44,19 @@ function renderizarPacotes(uid) {
 export function iniciarPaywall() {
   observarAuth(async (user) => {
     if (!user) { mostrar(TELA_AUTH); return; }
-    const creditos = await obterCreditos(user.uid);
-    atualizarUI(user, creditos);
-    if (creditos <= 0) {
-      mostrar(TELA_COMPRA);
-      renderizarPacotes(user.uid);
-    } else {
-      mostrar(TELA_APP);
+
+    try {
+      const creditos = await obterCreditos(user.uid);
+      atualizarUI(user, creditos);
+      if (creditos <= 0) {
+        mostrar(TELA_COMPRA);
+        renderizarPacotes(user.uid);
+      } else {
+        mostrar(TELA_APP);
+      }
+    } catch (err) {
+      console.error("[Paywall] Falha ao obter créditos:", err);
+      mostrar(TELA_AUTH);
     }
   });
 }
