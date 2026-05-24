@@ -873,10 +873,14 @@ function _apresIrPara(idx) {
   });
 
   const total = slides.length;
-  $('apres-contador').textContent = `${idx + 1} / ${total}`;
-  $('apres-barra').style.width = `${((idx + 1) / total) * 100}%`;
-  $('apres-prev').disabled = idx === 0;
-  $('apres-next').disabled = idx === slides.length - 1;
+  const _cnt  = $('apres-contador');
+const _bar  = $('apres-barra');
+const _prev = $('apres-prev');
+const _next = $('apres-next');
+if (_cnt)  _cnt.textContent  = `${idx + 1} / ${total}`;
+if (_bar)  _bar.style.width  = `${((idx + 1) / total) * 100}%`;
+if (_prev) _prev.disabled    = idx === 0;
+if (_next) _next.disabled    = idx === slides.length - 1;
 }
 
 function _apresNavegar(delta) { _apresIrPara(_Apres.indice + delta); }
