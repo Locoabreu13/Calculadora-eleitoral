@@ -1868,95 +1868,120 @@ button:focus:not(:focus-visible) { outline: none; }
 @media (max-width: 480px) {
   .pacotes-grid { grid-template-columns: 1fr; }
   .auth
-  /* ===== TUTORIAL TSE ===== */
+ /* ===== TUTORIAL TSE ===== */
 .tse-tutorial {
-  max-width: 580px;
+  max-width: 560px;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 28px 20px;
 }
 .tse-tutorial-header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 .tse-tutorial-badge {
   display: inline-block;
-  background: rgba(245,166,35,.12);
-  border: 1px solid rgba(245,166,35,.3);
-  color: #F5A623;
-  font-size: 11px;
+  background: rgba(245,159,11,.12);
+  border: 1px solid rgba(245,159,11,.3);
+  color: var(--gold);
+  font-size: 10px;
   padding: 4px 12px;
   border-radius: 20px;
-  margin-bottom: 12px;
-  letter-spacing: .05em;
+  margin-bottom: 10px;
+  letter-spacing: .06em;
   text-transform: uppercase;
+  font-weight: 600;
 }
 .tse-tutorial-title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--text-main);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  line-height: 1.3;
 }
 .tse-tutorial-sub {
   font-size: 13px;
-  color: var(--text-muted, #6B84A3);
+  color: var(--text-muted);
   line-height: 1.6;
 }
 .tse-steps {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 .tse-step {
   display: flex;
   gap: 14px;
   align-items: flex-start;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.07);
+  background: var(--slate);
+  border: 1px solid var(--slate-mid);
   border-radius: 10px;
   padding: 14px 16px;
   transition: border-color .2s;
 }
 .tse-step:hover {
-  border-color: rgba(245,166,35,.25);
+  border-color: var(--gold);
 }
 .tse-step-num {
-  width: 28px;
-  height: 28px;
-  background: rgba(245,166,35,.15);
-  border: 1px solid rgba(245,166,35,.3);
+  width: 26px;
+  height: 26px;
+  background: rgba(245,159,11,.15);
+  border: 1px solid rgba(245,159,11,.3);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: #F5A623;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
   flex-shrink: 0;
+  margin-top: 1px;
+}
+.tse-step-body {
+  flex: 1;
 }
 .tse-step-title {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-main);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 .tse-step-desc {
   font-size: 12px;
-  color: var(--text-muted, #6B84A3);
-  line-height: 1.6;
+  color: var(--text-muted);
+  line-height: 1.65;
 }
 .tse-step-desc strong {
   color: var(--text-main);
+  font-weight: 600;
+}
+.tse-files-note {
+  background: rgba(59,130,246,.07);
+  border: 1px solid rgba(59,130,246,.2);
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+.tse-files-note strong {
+  color: var(--accent-blue);
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
 }
 .tse-tip {
-  background: rgba(0,212,164,.06);
-  border: 1px solid rgba(0,212,164,.2);
+  background: rgba(16,185,129,.06);
+  border: 1px solid rgba(16,185,129,.2);
   border-radius: 8px;
-  padding: 12px 16px;
+  padding: 11px 14px;
   font-size: 12px;
-  color: #6B84A3;
+  color: var(--text-muted);
   line-height: 1.6;
 }
 .tse-tip strong {
-  color: #00D4A4;
+  color: var(--teal);
 }
