@@ -49,9 +49,9 @@ export function iniciarPaywall() {
     try {
       const creditos = await obterCreditos(user.uid);
       atualizarUI(user, creditos);
-      if (creditos <= 0) {
-        mostrar(TELA_COMPRA);
-        renderizarPacotes(user.uid);
+      if (!creditos || creditos <= 0) {
+  mostrar(TELA_COMPRA);
+  renderizarPacotes(user.uid);
       } else {
         mostrar(TELA_DASH);
         if (typeof window.dashInit === 'function') {
