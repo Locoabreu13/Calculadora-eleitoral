@@ -42,26 +42,37 @@ function renderizarPacotes(uid) {
   `).join("");
 }
 
+let _paywallSeq = 0; // incrementa a cada disparo do callback para descartar corridas
+
 export function iniciarPaywall() {
   observarAuth(async (user) => {
+    const seq = ++_paywallSeq; // token desta invocação
+
     if (!user) { mostrar(TELA_AUTH); return; }
 
-    console.log(`[Paywall] user=${user.email} uid=${user.uid}`);
+    console.log(`[Paywall] seq=${seq} user=${user.email} uid=${user.uid}`);
     try {
       const creditos = await obterCreditos(user.uid);
+
+      // Se outro callback disparou enquanto aguardávamos o Firestore, descarta.
+      if (seq !== _paywallSeq) {
+        console.log(`[Paywall] seq=${seq} descartado (atual=${_paywallSeq})`);
+        return;
+      }
+
       atualizarUI(user, creditos);
-      if (!creditos || creditos <= 0) {
-  mostrar(TELA_COMPRA);
-  renderizarPacotes(user.uid);
-      } else {
+      if (creditos > 0) {
         mostrar(TELA_DASH);
         if (typeof window.dashInit === 'function') {
           window.dashInit(user, creditos);
         }
+      } else {
+        mostrar(TELA_COMPRA);
+        renderizarPacotes(user.uid);
       }
     } catch (err) {
       console.error("[Paywall] Falha ao obter créditos:", err);
-      mostrar(TELA_AUTH);
+      if (seq === _paywallSeq) mostrar(TELA_AUTH);
     }
   });
 
