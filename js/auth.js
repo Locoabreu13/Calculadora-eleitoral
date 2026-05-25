@@ -11,15 +11,14 @@ import { doc, setDoc, getDocFromServer, serverTimestamp } from "https://www.gsta
 
 const googleProvider = new GoogleAuthProvider();
 
-// Cria documento apenas se não existir — usa getDocFromServer para ignorar
-// cache local que poderia indicar erroneamente "não existe" e sobrescrever créditos.
+// Cria documento apenas se não existir — ativo: false por padrão até liberação manual.
 async function garantirPerfil(user) {
   const ref = doc(db, "users", user.uid);
   const snap = await getDocFromServer(ref);
   if (!snap.exists()) {
     await setDoc(ref, {
       email: user.email,
-      credits: 1,
+      ativo: false,
       createdAt: serverTimestamp()
     });
   }

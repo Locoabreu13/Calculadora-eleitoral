@@ -85,7 +85,6 @@
         <button class="dash-nav-item" data-sec="calc">
           <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
           <span>Novo Cálculo</span>
-          <span class="dash-nav-badge saldo-creditos">—</span>
         </button>
         <button class="dash-nav-item" data-sec="estudos">
           <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
@@ -126,10 +125,6 @@
             <h1 class="dash-greeting">Olá, <span class="dash-first-name">—</span> 👋</h1>
             <p class="dash-greeting-sub">Sistema RetotalizaJE · art. 109 CE</p>
           </div>
-          <div class="dash-credits-chip">
-            <span class="dash-credits-num saldo-creditos">—</span>
-            <span class="dash-credits-lbl">crédito(s)</span>
-          </div>
         </div>
 
         <!-- Hero: Novo Cálculo -->
@@ -159,7 +154,7 @@
             <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
             <div class="dash-card-title">Plano &amp; Créditos</div>
             <div class="dash-card-desc">Saldo e aquisição</div>
-            <div class="dash-card-foot"><span class="saldo-creditos">—</span> crédito(s)</div>
+            <div class="dash-card-foot">Acesso ativo</div>
           </div>
           <div class="dash-card dash-card-blue" id="dash-card-manual">
             <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
@@ -189,51 +184,16 @@
         <div id="dash-estudos-list" class="dash-estudos-list"></div>
       </div>
 
-      <!-- ── PLANO & CRÉDITOS ─────────────────────────────────────── -->
+      <!-- ── PLANO & ACESSO ─────────────────────────────────────── -->
       <div class="dash-sec" id="dsec-plano">
         <div class="dash-sec-head">
-          <h2 class="dash-sec-title">Plano &amp; Créditos</h2>
+          <h2 class="dash-sec-title">Plano &amp; Acesso</h2>
         </div>
         <div class="dash-plano-saldo">
           <div class="dash-plano-num-wrap">
-            <span class="dash-plano-big saldo-creditos">—</span>
-            <span class="dash-plano-big-lbl">crédito(s) disponível(eis)</span>
+            <span class="dash-plano-big-lbl">Acesso ativo — sistema liberado</span>
           </div>
-          <p class="dash-plano-note">Cada crédito equivale a 1 cálculo completo de distribuição proporcional de cadeiras, incluindo auditoria D'Hondt e exportação.</p>
-          <button class="dash-adquirir-btn" id="dash-btn-comprar">+ Adquirir Créditos</button>
-        </div>
-        <div class="dash-plano-pacotes">
-          <div class="dash-block-title" style="margin-bottom:16px">Planos disponíveis</div>
-          <div class="dash-plano-grid">
-            <div class="dash-plano-card">
-              <div class="dash-plano-nome">Avulso</div>
-              <div class="dash-plano-qtd">1 cálculo</div>
-              <div class="dash-plano-price">R$ 200</div>
-              <div class="dash-plano-unit">R$ 200 / cálculo</div>
-            </div>
-            <div class="dash-plano-card">
-              <div class="dash-plano-nome">Escritório</div>
-              <div class="dash-plano-qtd">5 cálculos</div>
-              <div class="dash-plano-price">R$ 750</div>
-              <div class="dash-plano-unit">R$ 150 / cálculo</div>
-            </div>
-            <div class="dash-plano-card dash-plano-dest">
-              <div class="dash-plano-badge">Mais escolhido</div>
-              <div class="dash-plano-nome">Especializado</div>
-              <div class="dash-plano-qtd">10 cálculos</div>
-              <div class="dash-plano-price">R$ 1.200</div>
-              <div class="dash-plano-unit">R$ 120 / cálculo</div>
-            </div>
-            <div class="dash-plano-card">
-              <div class="dash-plano-nome">Avançado</div>
-              <div class="dash-plano-qtd">25 cálculos</div>
-              <div class="dash-plano-price">R$ 2.500</div>
-              <div class="dash-plano-unit">R$ 100 / cálculo</div>
-            </div>
-          </div>
-          <div style="text-align:center;margin-top:24px">
-            <button class="dash-adquirir-btn" id="dash-btn-comprar2">Adquirir agora via Pix / Cartão</button>
-          </div>
+          <p class="dash-plano-note">Seu acesso ao sistema foi liberado. Para dúvidas ou renovação, entre em contato com o administrador.</p>
         </div>
       </div>
 
@@ -1032,25 +992,22 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
     }
 
     /* ===== DASHBOARD ===== */
-    window.dashInit = function(user, creditos) {
+    window.dashInit = function(user) {
       window.__dashUser = user;
       const email = user.email || '';
       const first = (email.split('@')[0] || '').split('.')[0];
       const nome  = first ? first.charAt(0).toUpperCase() + first.slice(1) : 'Usuário';
 
-      // Preenche nome e avatar
       document.querySelectorAll('.dash-first-name').forEach(el => el.textContent = nome);
       const av = document.getElementById('dash-avatar');
       if (av) av.textContent = nome.charAt(0).toUpperCase();
 
-      // Contador de estudos
       const cnt = _dashEstudos().length;
       const cntEl = document.getElementById('dash-nav-cnt');
       if (cntEl) cntEl.textContent = cnt || '';
       const cardCnt = document.getElementById('dash-card-cnt');
       if (cardCnt) cardCnt.textContent = cnt === 0 ? 'Nenhum salvo' : cnt + ' estudo(s)';
 
-      // Bind clicks
       document.getElementById('dash-nav').addEventListener('click', function(e) {
         const btn = e.target.closest('[data-sec]');
         if (!btn) return;
@@ -1064,12 +1021,8 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
       const veBtn = document.querySelector('.dash-ver-todos');
       if (veBtn) veBtn.addEventListener('click', () => _dashGo('estudos'));
 
-      document.getElementById('dash-btn-comprar')?.addEventListener('click', _dashGoCompra);
-      document.getElementById('dash-btn-comprar2')?.addEventListener('click', _dashGoCompra);
-
       _dashRenderRecentes();
 
-      // Guarda uid para renderizar pacotes
       window.__dashUid = user.uid;
     };
 

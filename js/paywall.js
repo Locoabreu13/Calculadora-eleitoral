@@ -1,5 +1,5 @@
 import { observarAuth, logout } from "./auth.js?v=9";
-import { obterCreditos } from "./credits.js?v=9";
+import { obterAcesso } from "./credits.js?v=9";
 
 const TELA_AUTH   = "tela-auth";
 const TELA_COMPRA = "tela-compra";
@@ -7,10 +7,10 @@ const TELA_APP    = "tela-app";
 const TELA_DASH   = "tela-dashboard";
 
 export const PACOTES = [
-  { id: "avulso",        nome: "Avulso",        creditos: 1,  preco: "R$ 200",   detalhe: "R$ 200 por cálculo", url: "https://mpago.la/21BVAc7" },
-  { id: "escritorio",    nome: "Escritório",    creditos: 5,  preco: "R$ 750",   detalhe: "R$ 150 por cálculo", url: "https://mpago.la/2yu38tB" },
-  { id: "especializado", nome: "Especializado", creditos: 10, preco: "R$ 1.200", detalhe: "R$ 120 por cálculo", url: "https://mpago.la/1KBNzpa" },
-  { id: "tribunal",      nome: "Avançado",      creditos: 25, preco: "R$ 2.500", detalhe: "R$ 100 por cálculo", url: "https://mpago.la/2kE1eh6" },
+  { id: "avulso",        nome: "Avulso",        url: "https://mpago.la/21BVAc7" },
+  { id: "escritorio",    nome: "Escritório",    url: "https://mpago.la/2yu38tB" },
+  { id: "especializado", nome: "Especializado", url: "https://mpago.la/1KBNzpa" },
+  { id: "tribunal",      nome: "Avançado",      url: "https://mpago.la/2kE1eh6" },
 ];
 
 function mostrar(id) {
@@ -20,21 +20,16 @@ function mostrar(id) {
   });
 }
 
-function atualizarUI(user, creditos) {
+function atualizarUI(user) {
   document.querySelectorAll(".usuario-email").forEach(el => el.textContent = user.email);
-  document.querySelectorAll(".saldo-creditos").forEach(el => el.textContent = creditos);
 }
 
 function renderizarPacotes(uid) {
   const container = document.getElementById("pacotes-container");
   if (!container) return;
-  container.innerHTML = PACOTES.map((p, i) => `
-    <div class="pacote-card ${i === 2 ? 'pacote-destaque' : ''}">
-      ${i === 2 ? '<div class="pacote-badge">Mais escolhido</div>' : ''}
+  container.innerHTML = PACOTES.map(p => `
+    <div class="pacote-card">
       <h3>${p.nome}</h3>
-      <p class="pacote-creditos">${p.creditos} ${p.creditos === 1 ? 'cálculo' : 'cálculos'}</p>
-      <p class="pacote-preco">${p.preco}</p>
-      <p class="pacote-detalhe">${p.detalhe}</p>
       <a href="${p.url}?uid=${uid}" target="_blank" class="btn-comprar">
         Adquirir via Pix / Cartão
       </a>
@@ -42,41 +37,39 @@ function renderizarPacotes(uid) {
   `).join("");
 }
 
-let _paywallSeq = 0; // incrementa a cada disparo do callback para descartar corridas
+let _paywallSeq = 0;
 
 export function iniciarPaywall() {
   observarAuth(async (user) => {
-    const seq = ++_paywallSeq; // token desta invocação
+    const seq = ++_paywallSeq;
 
     if (!user) { mostrar(TELA_AUTH); return; }
 
     console.log(`[Paywall] seq=${seq} user=${user.email} uid=${user.uid}`);
     try {
-      const creditos = await obterCreditos(user.uid);
+      const ativo = await obterAcesso(user.uid);
 
-      // Se outro callback disparou enquanto aguardávamos o Firestore, descarta.
       if (seq !== _paywallSeq) {
         console.log(`[Paywall] seq=${seq} descartado (atual=${_paywallSeq})`);
         return;
       }
 
-      atualizarUI(user, creditos);
-      if (creditos > 0) {
+      atualizarUI(user);
+      if (ativo) {
         mostrar(TELA_DASH);
         if (typeof window.dashInit === 'function') {
-          window.dashInit(user, creditos);
+          window.dashInit(user);
         }
       } else {
         mostrar(TELA_COMPRA);
         renderizarPacotes(user.uid);
       }
     } catch (err) {
-      console.error("[Paywall] Falha ao obter créditos:", err);
+      console.error("[Paywall] Falha ao verificar acesso:", err);
       if (seq === _paywallSeq) mostrar(TELA_AUTH);
     }
   });
 
-  // Expõe renderizarPacotes para o dashboard acionar
   window._renderizarPacotes = renderizarPacotes;
 }
 
