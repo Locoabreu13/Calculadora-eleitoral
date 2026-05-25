@@ -4,6 +4,7 @@ import { obterCreditos } from "./credits.js";
 const TELA_AUTH   = "tela-auth";
 const TELA_COMPRA = "tela-compra";
 const TELA_APP    = "tela-app";
+const TELA_DASH   = "tela-dashboard";
 
 export const PACOTES = [
   { id: "avulso",        nome: "Avulso",        creditos: 1,  preco: "R$ 200",   detalhe: "R$ 200 por cálculo", url: "https://mpago.la/21BVAc7" },
@@ -13,7 +14,7 @@ export const PACOTES = [
 ];
 
 function mostrar(id) {
-  [TELA_AUTH, TELA_COMPRA, TELA_APP].forEach(t => {
+  [TELA_AUTH, TELA_COMPRA, TELA_APP, TELA_DASH].forEach(t => {
     const el = document.getElementById(t);
     if (el) el.style.display = (t === id) ? "" : "none";
   });
@@ -52,13 +53,19 @@ export function iniciarPaywall() {
         mostrar(TELA_COMPRA);
         renderizarPacotes(user.uid);
       } else {
-        mostrar(TELA_APP);
+        mostrar(TELA_DASH);
+        if (typeof window.dashInit === 'function') {
+          window.dashInit(user, creditos);
+        }
       }
     } catch (err) {
       console.error("[Paywall] Falha ao obter créditos:", err);
       mostrar(TELA_AUTH);
     }
   });
+
+  // Expõe renderizarPacotes para o dashboard acionar
+  window._renderizarPacotes = renderizarPacotes;
 }
 
 export { logout };

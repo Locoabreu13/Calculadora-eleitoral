@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/styles.css?v=7" />
+  <link rel="stylesheet" href="css/styles.css?v=8" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -56,7 +56,201 @@
       <p class="compra-nota">Após pagamento aprovado, seus créditos são adicionados automaticamente.<br>Recarregue a página se não atualizar em 30 segundos.</p>
     </div>
   </div>
-<div id="tela-app" style="display:none">
+<!-- TELA: Dashboard -->
+<div id="tela-dashboard" style="display:none">
+  <div class="dash-layout">
+
+    <!-- ═══ SIDEBAR ═══════════════════════════════════════════════════ -->
+    <aside class="dash-sidebar">
+
+      <!-- Brand -->
+      <div class="dash-brand">
+        <div class="dash-brand-icon">
+          <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="1" y="10" width="3" height="5" rx="1"/>
+            <rect x="5.5" y="6" width="3" height="9" rx="1"/>
+            <rect x="10" y="2" width="3" height="13" rx="1"/>
+            <path d="M13.5 4.5 L15 3 L13.5 1.5" stroke="currentColor" stroke-width="1" fill="none"/>
+          </svg>
+        </div>
+        <span class="dash-brand-text">Retotaliza<span class="title-je">JE</span></span>
+      </div>
+
+      <!-- Nav -->
+      <nav class="dash-nav" id="dash-nav">
+        <button class="dash-nav-item active" data-sec="home">
+          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+          <span>Início</span>
+        </button>
+        <button class="dash-nav-item" data-sec="calc">
+          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+          <span>Novo Cálculo</span>
+          <span class="dash-nav-badge saldo-creditos">—</span>
+        </button>
+        <button class="dash-nav-item" data-sec="estudos">
+          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
+          <span>Meus Estudos</span>
+          <span class="dash-nav-cnt" id="dash-nav-cnt"></span>
+        </button>
+        <button class="dash-nav-item" data-sec="plano">
+          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
+          <span>Plano &amp; Créditos</span>
+        </button>
+        <button class="dash-nav-item" data-sec="manual">
+          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
+          <span>Manual de Uso</span>
+        </button>
+      </nav>
+
+      <!-- User chip -->
+      <div class="dash-sidebar-footer">
+        <div class="dash-user-chip">
+          <div class="dash-avatar" id="dash-avatar">?</div>
+          <div class="dash-user-detail">
+            <span class="dash-user-email-sm usuario-email"></span>
+          </div>
+        </div>
+        <button class="dash-sair-btn" onclick="fazerLogout()">Sair</button>
+      </div>
+
+    </aside>
+
+    <!-- ═══ MAIN ══════════════════════════════════════════════════════ -->
+    <main class="dash-main">
+
+      <!-- ── INÍCIO ──────────────────────────────────────────────── -->
+      <div class="dash-sec dash-sec-active" id="dsec-home">
+
+        <div class="dash-welcome-bar">
+          <div>
+            <h1 class="dash-greeting">Olá, <span class="dash-first-name">—</span> 👋</h1>
+            <p class="dash-greeting-sub">Sistema RetotalizaJE · art. 109 CE</p>
+          </div>
+          <div class="dash-credits-chip">
+            <span class="dash-credits-num saldo-creditos">—</span>
+            <span class="dash-credits-lbl">crédito(s)</span>
+          </div>
+        </div>
+
+        <!-- Hero: Novo Cálculo -->
+        <div class="dash-hero" id="dash-hero-calc">
+          <div class="dash-hero-left">
+            <div class="dash-hero-play">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <div>
+              <div class="dash-hero-sup">Iniciar agora</div>
+              <div class="dash-hero-title">Novo Cálculo</div>
+              <div class="dash-hero-desc">Retotalização proporcional · art. 109 CE · ADIs 7.228/7.263/7.325 STF</div>
+            </div>
+          </div>
+          <svg class="dash-hero-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="22" height="22"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+
+        <!-- Cards secundários -->
+        <div class="dash-cards-grid">
+          <div class="dash-card dash-card-teal" id="dash-card-estudos">
+            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+            <div class="dash-card-title">Meus Estudos</div>
+            <div class="dash-card-desc">Cálculos salvos neste navegador</div>
+            <div class="dash-card-foot" id="dash-card-cnt">— estudos</div>
+          </div>
+          <div class="dash-card dash-card-gold" id="dash-card-plano">
+            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            <div class="dash-card-title">Plano &amp; Créditos</div>
+            <div class="dash-card-desc">Saldo e aquisição</div>
+            <div class="dash-card-foot"><span class="saldo-creditos">—</span> crédito(s)</div>
+          </div>
+          <div class="dash-card dash-card-blue" id="dash-card-manual">
+            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+            <div class="dash-card-title">Manual de Uso</div>
+            <div class="dash-card-desc">Documentação técnico-jurídica</div>
+            <div class="dash-card-foot">ADIs 7.228/7.263/7.325</div>
+          </div>
+        </div>
+
+        <!-- Recentes -->
+        <div class="dash-block">
+          <div class="dash-block-top">
+            <span class="dash-block-title">Estudos Recentes</span>
+            <button class="dash-ver-todos" data-sec="estudos">Ver todos →</button>
+          </div>
+          <div id="dash-recentes" class="dash-recentes"></div>
+        </div>
+
+      </div>
+
+      <!-- ── MEUS ESTUDOS ─────────────────────────────────────────── -->
+      <div class="dash-sec" id="dsec-estudos">
+        <div class="dash-sec-head">
+          <h2 class="dash-sec-title">Meus Estudos</h2>
+          <p class="dash-sec-sub">Cálculos salvos via <strong>💾 Salvar Estudo</strong> na calculadora. Armazenados localmente neste navegador.</p>
+        </div>
+        <div id="dash-estudos-list" class="dash-estudos-list"></div>
+      </div>
+
+      <!-- ── PLANO & CRÉDITOS ─────────────────────────────────────── -->
+      <div class="dash-sec" id="dsec-plano">
+        <div class="dash-sec-head">
+          <h2 class="dash-sec-title">Plano &amp; Créditos</h2>
+        </div>
+        <div class="dash-plano-saldo">
+          <div class="dash-plano-num-wrap">
+            <span class="dash-plano-big saldo-creditos">—</span>
+            <span class="dash-plano-big-lbl">crédito(s) disponível(eis)</span>
+          </div>
+          <p class="dash-plano-note">Cada crédito equivale a 1 cálculo completo de distribuição proporcional de cadeiras, incluindo auditoria D'Hondt e exportação.</p>
+          <button class="dash-adquirir-btn" id="dash-btn-comprar">+ Adquirir Créditos</button>
+        </div>
+        <div class="dash-plano-pacotes">
+          <div class="dash-block-title" style="margin-bottom:16px">Planos disponíveis</div>
+          <div class="dash-plano-grid">
+            <div class="dash-plano-card">
+              <div class="dash-plano-nome">Avulso</div>
+              <div class="dash-plano-qtd">1 cálculo</div>
+              <div class="dash-plano-price">R$ 200</div>
+              <div class="dash-plano-unit">R$ 200 / cálculo</div>
+            </div>
+            <div class="dash-plano-card">
+              <div class="dash-plano-nome">Escritório</div>
+              <div class="dash-plano-qtd">5 cálculos</div>
+              <div class="dash-plano-price">R$ 750</div>
+              <div class="dash-plano-unit">R$ 150 / cálculo</div>
+            </div>
+            <div class="dash-plano-card dash-plano-dest">
+              <div class="dash-plano-badge">Mais escolhido</div>
+              <div class="dash-plano-nome">Especializado</div>
+              <div class="dash-plano-qtd">10 cálculos</div>
+              <div class="dash-plano-price">R$ 1.200</div>
+              <div class="dash-plano-unit">R$ 120 / cálculo</div>
+            </div>
+            <div class="dash-plano-card">
+              <div class="dash-plano-nome">Avançado</div>
+              <div class="dash-plano-qtd">25 cálculos</div>
+              <div class="dash-plano-price">R$ 2.500</div>
+              <div class="dash-plano-unit">R$ 100 / cálculo</div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:24px">
+            <button class="dash-adquirir-btn" id="dash-btn-comprar2">Adquirir agora via Pix / Cartão</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MANUAL DE USO ───────────────────────────────────────── -->
+      <div class="dash-sec" id="dsec-manual">
+        <div class="dash-sec-head">
+          <h2 class="dash-sec-title">Manual de Uso</h2>
+          <p class="dash-sec-sub">Documentação técnico-jurídica do sistema</p>
+        </div>
+        <div id="dash-manual-wrap" class="dash-manual-wrap"></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+
 
   <!-- ═══ TOPBAR ═══════════════════════════════════════════════════════════════ -->
   <header class="topbar">
@@ -83,6 +277,7 @@
     </div>
 
     <div class="topbar-right">
+      <button class="topbar-dash-btn" onclick="voltarDashboard()" title="Voltar ao Dashboard">← Dashboard</button>
       <span class="topbar-version" id="topbar-version">v2.0</span>
       <button class="topbar-docs-btn" id="btn-toggle-docs"
               aria-expanded="false" aria-controls="docs-section"
@@ -791,6 +986,11 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+
+      // Persiste também no dashboard (localStorage)
+      if (typeof window._dashSalvarLocal === 'function') {
+        window._dashSalvarLocal(estudo);
+      }
     });
   })();
 
@@ -830,6 +1030,173 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
         "auth/weak-password":"Senha muito fraca.",
         "auth/invalid-email":"E-mail inválido." })[code] ?? "Erro inesperado.";
     }
+
+    /* ===== DASHBOARD ===== */
+    window.dashInit = function(user, creditos) {
+      window.__dashUser = user;
+      const email = user.email || '';
+      const first = (email.split('@')[0] || '').split('.')[0];
+      const nome  = first ? first.charAt(0).toUpperCase() + first.slice(1) : 'Usuário';
+
+      // Preenche nome e avatar
+      document.querySelectorAll('.dash-first-name').forEach(el => el.textContent = nome);
+      const av = document.getElementById('dash-avatar');
+      if (av) av.textContent = nome.charAt(0).toUpperCase();
+
+      // Contador de estudos
+      const cnt = _dashEstudos().length;
+      const cntEl = document.getElementById('dash-nav-cnt');
+      if (cntEl) cntEl.textContent = cnt || '';
+      const cardCnt = document.getElementById('dash-card-cnt');
+      if (cardCnt) cardCnt.textContent = cnt === 0 ? 'Nenhum salvo' : cnt + ' estudo(s)';
+
+      // Bind clicks
+      document.getElementById('dash-nav').addEventListener('click', function(e) {
+        const btn = e.target.closest('[data-sec]');
+        if (!btn) return;
+        _dashGo(btn.dataset.sec);
+      });
+      document.getElementById('dash-hero-calc').addEventListener('click', dashGoCalc);
+      document.getElementById('dash-card-estudos').addEventListener('click', () => _dashGo('estudos'));
+      document.getElementById('dash-card-plano').addEventListener('click', () => _dashGo('plano'));
+      document.getElementById('dash-card-manual').addEventListener('click', () => _dashGo('manual'));
+
+      const veBtn = document.querySelector('.dash-ver-todos');
+      if (veBtn) veBtn.addEventListener('click', () => _dashGo('estudos'));
+
+      document.getElementById('dash-btn-comprar')?.addEventListener('click', _dashGoCompra);
+      document.getElementById('dash-btn-comprar2')?.addEventListener('click', _dashGoCompra);
+
+      _dashRenderRecentes();
+
+      // Guarda uid para renderizar pacotes
+      window.__dashUid = user.uid;
+    };
+
+    function _dashEstudos() {
+      try { return JSON.parse(localStorage.getItem('rje_estudos') || '[]'); }
+      catch { return []; }
+    }
+
+    function _dashSalvarLocal(estudo) {
+      const arr = _dashEstudos();
+      arr.unshift({ ...estudo, savedAt: new Date().toISOString() });
+      localStorage.setItem('rje_estudos', JSON.stringify(arr.slice(0, 20)));
+    }
+    window._dashSalvarLocal = _dashSalvarLocal;
+
+    function _dashGo(sec) {
+      if (sec === 'calc') { dashGoCalc(); return; }
+      document.querySelectorAll('.dash-sec').forEach(el => el.classList.remove('dash-sec-active'));
+      document.querySelectorAll('.dash-nav-item').forEach(el => el.classList.remove('active'));
+      const secEl = document.getElementById('dsec-' + sec);
+      if (secEl) secEl.classList.add('dash-sec-active');
+      const navEl = document.querySelector('.dash-nav-item[data-sec="' + sec + '"]');
+      if (navEl) navEl.classList.add('active');
+      document.querySelector('.dash-main').scrollTop = 0;
+      if (sec === 'estudos') _dashRenderEstudos();
+      if (sec === 'manual') _dashRenderManual();
+    }
+
+    function dashGoCalc() {
+      document.getElementById('tela-dashboard').style.display = 'none';
+      document.getElementById('tela-app').style.display = '';
+    }
+    window.dashGoCalc = dashGoCalc;
+
+    function voltarDashboard() {
+      document.getElementById('tela-app').style.display = 'none';
+      document.getElementById('tela-compra').style.display = 'none';
+      document.getElementById('tela-dashboard').style.display = '';
+      _dashRenderRecentes();
+    }
+    window.voltarDashboard = voltarDashboard;
+
+    function _dashGoCompra() {
+      document.getElementById('tela-dashboard').style.display = 'none';
+      document.getElementById('tela-compra').style.display = '';
+      if (window._renderizarPacotes && window.__dashUid) {
+        window._renderizarPacotes(window.__dashUid);
+      }
+    }
+
+    function _h(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function _dashRenderRecentes() {
+      const arr = _dashEstudos().slice(0, 3);
+      const el = document.getElementById('dash-recentes');
+      if (!el) return;
+      if (!arr.length) {
+        el.innerHTML = '<div class="dash-empty">Nenhum estudo salvo ainda. Use <strong>💾 Salvar Estudo</strong> na calculadora.</div>';
+        return;
+      }
+      el.innerHTML = arr.map((e, i) => `
+        <div class="dash-rec-item">
+          <div class="dash-rec-badge">JE</div>
+          <div class="dash-rec-info">
+            <div class="dash-rec-rotulo">${_h(e.parametros?.rotulo || 'Sem rótulo')}</div>
+            <div class="dash-rec-meta">${e.parametros?.vagas || 0} vagas · ${e.parametros?.partidos?.length || 0} partidos · ${new Date(e.savedAt || Date.now()).toLocaleDateString('pt-BR')}</div>
+          </div>
+          <button class="dash-rec-dl" onclick="dashDlEstudo(${i})" title="Baixar JSON">⬇</button>
+        </div>
+      `).join('');
+    }
+
+    function _dashRenderEstudos() {
+      const arr = _dashEstudos();
+      const el = document.getElementById('dash-estudos-list');
+      if (!el) return;
+      if (!arr.length) {
+        el.innerHTML = '<div class="dash-empty">Nenhum estudo salvo neste navegador.<br>Use <strong>💾 Salvar Estudo</strong> na calculadora para armazená-los aqui.</div>';
+        return;
+      }
+      el.innerHTML = arr.map((e, i) => `
+        <div class="dash-estudo-row">
+          <div class="dash-estudo-ico">JE</div>
+          <div class="dash-estudo-info">
+            <div class="dash-estudo-nome">${_h(e.parametros?.rotulo || 'Sem rótulo')}</div>
+            <div class="dash-estudo-meta">${e.parametros?.vagas || 0} vagas · ${e.parametros?.partidos?.length || 0} partidos · v${e.versao || '—'}</div>
+            <div class="dash-estudo-data">${new Date(e.savedAt || Date.now()).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'})}</div>
+          </div>
+          <div class="dash-estudo-acoes">
+            <button class="dash-estudo-btn" onclick="dashDlEstudo(${i})">⬇ JSON</button>
+            <button class="dash-estudo-btn dash-estudo-del" onclick="dashDelEstudo(${i})">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function _dashRenderManual() {
+      const wrap = document.getElementById('dash-manual-wrap');
+      if (!wrap || wrap.dataset.loaded) return;
+      const src = document.querySelector('#docs-section .docs-container');
+      if (src) { wrap.innerHTML = src.innerHTML; wrap.dataset.loaded = '1'; }
+    }
+
+    window.dashDlEstudo = function(i) {
+      const e = _dashEstudos()[i];
+      if (!e) return;
+      const slug = (e.parametros?.rotulo || 'estudo').replace(/[^\w\-]/g, '-').slice(0, 40);
+      const blob = new Blob([JSON.stringify(e, null, 2)], {type: 'application/json'});
+      const url  = URL.createObjectURL(blob);
+      const a    = Object.assign(document.createElement('a'), {href: url, download: 'rje-' + slug + '.json'});
+      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    };
+
+    window.dashDelEstudo = function(i) {
+      if (!confirm('Remover este estudo da lista?')) return;
+      const arr = _dashEstudos();
+      arr.splice(i, 1);
+      localStorage.setItem('rje_estudos', JSON.stringify(arr));
+      _dashRenderEstudos();
+      _dashRenderRecentes();
+      const cntEl = document.getElementById('dash-nav-cnt');
+      if (cntEl) cntEl.textContent = arr.length || '';
+      const cardCnt = document.getElementById('dash-card-cnt');
+      if (cardCnt) cardCnt.textContent = arr.length === 0 ? 'Nenhum salvo' : arr.length + ' estudo(s)';
+    };
   </script>
   </div>
 </body>
