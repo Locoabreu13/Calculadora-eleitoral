@@ -1,4 +1,4 @@
-import { observarAuth, logout } from "./auth.js?v=8";
+import { observarAuth, logout } from "./auth.js?v=9";
 import { obterCreditos } from "./credits.js?v=9";
 
 const TELA_AUTH   = "tela-auth";
