@@ -2315,8 +2315,8 @@ button:focus:not(:focus-visible) { outline: none; }
 
 @media (max-width: 480px) {
   .pacotes-grid { grid-template-columns: 1fr; }
-  .auth
- /* ===== TUTORIAL TSE ===== */
+}
+/* ===== TUTORIAL TSE ===== */
 .tse-tutorial {
   max-width: 560px;
   margin: 0 auto;
@@ -2637,3 +2637,211 @@ button:focus:not(:focus-visible) { outline: none; }
 /* ============================================================
    FIM DO PATCH
    ============================================================ */
+
+/* ===== JE LARANJA ===== */
+.title-je {
+  color: var(--gold, #F59E0B);
+  font-style: normal;
+}
+
+/* ===== COMPRA — dark theme reforçado (fix @media bug) ===== */
+#tela-compra {
+  background: #0F1C2E !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 2rem 1rem !important;
+  box-sizing: border-box !important;
+}
+
+#tela-compra .compra-container {
+  background: #1A2F4A !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  border-radius: 14px !important;
+  padding: 2rem !important;
+  width: 100% !important;
+  max-width: 920px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.45) !important;
+  color: #E8EEF7 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+#tela-compra h2 {
+  color: #E8EEF7 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  margin: 0 0 .3rem !important;
+}
+
+#tela-compra > .compra-container > p {
+  color: #8B9FC0 !important;
+  font-size: 14px !important;
+  margin: 0 0 1.5rem !important;
+}
+
+#tela-compra .compra-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding-bottom: 1rem !important;
+  margin-bottom: 1.5rem !important;
+  border-bottom: 1px solid rgba(255,255,255,.1) !important;
+  color: #8B9FC0 !important;
+  font-size: 13px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+#tela-compra .compra-header strong {
+  color: #E8EEF7 !important;
+}
+
+#tela-compra .pacotes-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+#tela-compra .pacote-card {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  border-radius: 10px !important;
+  padding: 1.25rem 1rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: .5rem !important;
+  color: #E8EEF7 !important;
+  transition: background .15s, transform .15s !important;
+  position: relative !important;
+}
+
+#tela-compra .pacote-card:hover {
+  background: rgba(255,255,255,.08) !important;
+  border-color: rgba(255,255,255,.25) !important;
+  transform: translateY(-2px) !important;
+}
+
+#tela-compra .pacote-card h3 {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .06em !important;
+  color: #8B9FC0 !important;
+  margin: 0 !important;
+}
+
+#tela-compra .pacote-creditos,
+#tela-compra .pacote-card .pacote-qtd {
+  font-size: 2.2rem !important;
+  font-weight: 700 !important;
+  color: #E8EEF7 !important;
+  line-height: 1 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+#tela-compra .pacote-preco,
+#tela-compra .pacote-card .pacote-preco-total {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: #FCD34D !important;
+}
+
+#tela-compra .pacote-card small,
+#tela-compra .pacote-card .pacote-detalhe,
+#tela-compra .pacote-card .pacote-preco-unit {
+  font-size: 11px !important;
+  color: #8B9FC0 !important;
+}
+
+#tela-compra .btn-comprar,
+#tela-compra .pacote-card a.btn-comprar {
+  display: block !important;
+  width: 100% !important;
+  padding: 9px 0 !important;
+  background: #1e6fc7 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 7px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: background .15s !important;
+  font-family: 'Inter', sans-serif !important;
+  margin-top: auto !important;
+}
+
+#tela-compra .btn-comprar:hover,
+#tela-compra .pacote-card a.btn-comprar:hover {
+  background: #2581e0 !important;
+}
+
+#tela-compra .pacote-destaque {
+  border-color: #d4a017 !important;
+  background: rgba(212,160,23,.08) !important;
+}
+
+#tela-compra .pacote-destaque .btn-comprar,
+#tela-compra .pacote-destaque a.btn-comprar {
+  background: #d4a017 !important;
+}
+
+#tela-compra .pacote-badge {
+  position: absolute !important;
+  top: -11px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background: #d4a017 !important;
+  color: #1B2B4B !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .05em !important;
+  padding: 2px 10px !important;
+  border-radius: 20px !important;
+  white-space: nowrap !important;
+}
+
+#tela-compra .compra-nota {
+  font-size: 12px !important;
+  color: #8B9FC0 !important;
+  text-align: center !important;
+  margin-top: .5rem !important;
+  line-height: 1.6 !important;
+}
+
+#tela-compra .btn-logout {
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  color: #8B9FC0 !important;
+  border-radius: 6px !important;
+  padding: 4px 12px !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
+  transition: background .15s, color .15s !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+#tela-compra .btn-logout:hover {
+  background: rgba(255,255,255,.07) !important;
+  color: #E8EEF7 !important;
+}
+
+@media (max-width: 860px) {
+  #tela-compra .pacotes-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 480px) {
+  #tela-compra .pacotes-grid {
+    grid-template-columns: 1fr !important;
+  }
+  #tela-compra .compra-container {
+    padding: 1.25rem !important;
+  }
+}
