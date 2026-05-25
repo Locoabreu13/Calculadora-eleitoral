@@ -1,5 +1,5 @@
-import { observarAuth, logout } from "./auth.js";
-import { obterCreditos } from "./credits.js";
+import { observarAuth, logout } from "./auth.js?v=8";
+import { obterCreditos } from "./credits.js?v=8";
 
 const TELA_AUTH   = "tela-auth";
 const TELA_COMPRA = "tela-compra";

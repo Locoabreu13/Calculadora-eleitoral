@@ -1,4 +1,4 @@
-import { db } from "./firebase-init.js";
+import { db } from "./firebase-init.js?v=8";
 import { doc, getDocFromServer, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 export async function obterCreditos(uid) {
