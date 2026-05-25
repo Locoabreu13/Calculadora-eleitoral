@@ -51,10 +51,10 @@ export function observarAuth(callback) {
   const timeoutId = setTimeout(() => {
     if (!resolvido) {
       resolvido = true;
-      console.warn("[Auth] Timeout de 8 s — Firebase não respondeu. Exibindo tela de login.");
+      console.warn("[Auth] Timeout de 2 s — Firebase não respondeu. Exibindo tela de login.");
       callback(null);
     }
-  }, 8000);
+  }, 2000);
 
   return onAuthStateChanged(auth, (user) => {
     if (!resolvido) {

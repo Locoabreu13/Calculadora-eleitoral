@@ -2066,104 +2066,180 @@ button:focus:not(:focus-visible) { outline: none; }
 /* Sistema RetotalizaJE — Design System v4 */
 /* ===== AUTH / PAYWALL ===== */
 
-.auth-container,
-.compra-container {
+/* === AUTH — dark theme alinhado ao design system navy === */
+
+/* Wrapper: fundo navy cobrindo toda a viewport */
+#tela-auth {
+  background: var(--navy, #1B2B4B);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+/* Card central */
+.auth-container {
+  width: 100%;
   max-width: 400px;
-  margin: 80px auto;
-  padding: 40px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,.12);
+  background: var(--navy-mid, #243656);
+  border: 1px solid var(--navy-border, rgba(255,255,255,.12));
+  border-radius: 14px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
 }
 
+/* Título */
 .auth-container h1 {
-  font-size: 1.4rem;
-  color: var(--navy);
-  margin-bottom: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #E8EEF7;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
 }
 
+/* Subtítulo (badge jurídico) */
 .auth-subtitle {
-  font-size: 0.8rem;
-  color: #6b7280;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #8B9FC0;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   margin-bottom: 24px;
 }
 
+/* Abas Entrar / Criar conta */
 .auth-tabs {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 20px;
+  background: rgba(255,255,255,.04);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.07);
 }
 
 .tab-btn {
   flex: 1;
   padding: 8px;
-  border: 1px solid #d1d5db;
+  border: none;
   border-radius: 6px;
-  background: #f9fafb;
+  background: transparent;
   cursor: pointer;
-  font-size: 0.9rem;
-  color: #374151;
-  transition: all .15s;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #8B9FC0;
+  transition: background .15s, color .15s;
 }
-
+.tab-btn:hover { background: rgba(255,255,255,.06); color: #C8D6EA; }
 .tab-btn.active {
-  background: var(--navy);
+  background: #2563EB;
   color: #fff;
-  border-color: var(--navy);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(37,99,235,.35);
 }
 
+/* Inputs de e-mail e senha */
 .auth-input {
   display: block;
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 0.95rem;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #E8EEF7;
   margin-bottom: 10px;
   box-sizing: border-box;
+  outline: none;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.auth-input::placeholder { color: rgba(255,255,255,.25); }
+.auth-input:focus {
+  border-color: rgba(59,130,246,.55);
+  background: rgba(255,255,255,.08);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
 }
 
+/* Botão principal (Entrar / Criar conta) */
 .btn-primary {
   width: 100%;
   padding: 11px;
-  background: var(--navy);
+  background: #2563EB;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  font-size: 0.95rem;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
   margin-top: 4px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 14px rgba(37,99,235,.35);
+  transition: background .15s, box-shadow .15s, transform .1s;
 }
+.btn-primary:hover  { background: #1D4ED8; box-shadow: 0 6px 18px rgba(37,99,235,.45); }
+.btn-primary:active { transform: scale(0.98); }
 
-.btn-primary:hover { background: var(--navy-mid); }
-
+/* Separador "ou" */
 .auth-separator {
   text-align: center;
-  color: #9ca3af;
+  color: rgba(255,255,255,.2);
   margin: 16px 0;
-  font-size: 0.85rem;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  position: relative;
 }
+.auth-separator::before,
+.auth-separator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 42%;
+  height: 1px;
+  background: rgba(255,255,255,.1);
+}
+.auth-separator::before { left: 0; }
+.auth-separator::after  { right: 0; }
 
+/* Botão Google */
 .btn-google {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background: #fff;
+  padding: 10px 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 8px;
+  background: rgba(255,255,255,.05);
   cursor: pointer;
-  font-size: 0.9rem;
-  color: #374151;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #C8D6EA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background .15s, border-color .15s;
+}
+.btn-google:hover {
+  background: rgba(255,255,255,.09);
+  border-color: rgba(255,255,255,.25);
+  color: #E8EEF7;
 }
 
-.btn-google:hover { background: #f9fafb; }
-
+/* Mensagem de erro */
 .auth-erro {
-  color: #dc2626;
-  font-size: 0.85rem;
+  color: #FCA5A5;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
   margin-top: 6px;
   min-height: 16px;
 }
 
+/* Legacy — mantido para não quebrar compra-container */
 .compra-header {
   display: flex;
   justify-content: space-between;
