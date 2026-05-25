@@ -9,8 +9,12 @@ async function _aguardarToken() {
 export async function obterCreditos(uid) {
   await _aguardarToken();
   const snap = await getDocFromServer(doc(db, "users", uid));
-  if (!snap.exists()) return 0;
-  return snap.data().credits ?? 0;
+  const existe = snap.exists();
+  const dados = existe ? snap.data() : null;
+  const creditos = dados?.credits ?? 0;
+  console.log(`[Credits] uid=${uid} exists=${existe} data=${JSON.stringify(dados)} credits=${creditos}`);
+  if (!existe) return 0;
+  return creditos;
 }
 
 export async function debitarCredito(uid) {

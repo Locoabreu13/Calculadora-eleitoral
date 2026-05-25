@@ -46,6 +46,7 @@ export function iniciarPaywall() {
   observarAuth(async (user) => {
     if (!user) { mostrar(TELA_AUTH); return; }
 
+    console.log(`[Paywall] user=${user.email} uid=${user.uid}`);
     try {
       const creditos = await obterCreditos(user.uid);
       atualizarUI(user, creditos);
