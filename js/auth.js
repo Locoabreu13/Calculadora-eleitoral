@@ -50,24 +50,28 @@ export async function logout() {
 }
 
 export function observarAuth(callback) {
-  let initialResolved = false;
+  let debounceTimer  = null;
+  let safetyFired    = false;
 
-  // Timeout de segurança: só dispara o callback(null) uma única vez se o
-  // Firebase não responder. Aumentado para 10s para cobrir cold-start lento.
-  const timeoutId = setTimeout(() => {
-    if (!initialResolved) {
-      initialResolved = true;
-      console.warn("[Auth] Timeout de 10 s — Firebase não respondeu. Exibindo tela de login.");
+  // Se o Firebase não responder em 10 s (cold start muito lento), mostra login.
+  const safetyTimeout = setTimeout(() => {
+    if (!safetyFired) {
+      safetyFired = true;
+      clearTimeout(debounceTimer);
+      console.warn("[Auth] Timeout de 10 s — Firebase não respondeu.");
       callback(null);
     }
   }, 10000);
 
   return onAuthStateChanged(auth, (user) => {
-    if (!initialResolved) {
-      initialResolved = true;
-      clearTimeout(timeoutId);
+    // Cancela o safety timeout na primeira resposta real do Firebase.
+    if (!safetyFired) {
+      safetyFired = true;
+      clearTimeout(safetyTimeout);
     }
-    // Sempre repassa a mudança de estado (login, logout, login manual pós-timeout)
-    callback(user);
+    // Debounce de 300 ms: colapsa oscilações user→null→user que o Firebase
+    // emite durante signInWithPopup / refresh de token. Só o estado final importa.
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => callback(user), 300);
   });
 }

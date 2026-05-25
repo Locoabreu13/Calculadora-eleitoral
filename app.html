@@ -1053,12 +1053,13 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
 
     function dashGoCalc() {
       document.getElementById('tela-dashboard').style.display = 'none';
-      document.getElementById('tela-app').style.display = '';
+      document.getElementById('tela-compra').style.display = 'none';
+      document.getElementById('tela-auth').style.display = 'none';
     }
     window.dashGoCalc = dashGoCalc;
 
     function voltarDashboard() {
-      document.getElementById('tela-app').style.display = 'none';
+      document.getElementById('tela-auth').style.display = 'none';
       document.getElementById('tela-compra').style.display = 'none';
       document.getElementById('tela-dashboard').style.display = '';
       _dashRenderRecentes();

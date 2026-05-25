@@ -41,9 +41,9 @@ let _paywallSeq = 0;
 
 export function iniciarPaywall() {
   observarAuth(async (user) => {
-    const seq = ++_paywallSeq;
-
     if (!user) { mostrar(TELA_AUTH); return; }
+
+    const seq = ++_paywallSeq;
 
     console.log(`[Paywall] seq=${seq} user=${user.email} uid=${user.uid}`);
     try {
@@ -56,6 +56,7 @@ export function iniciarPaywall() {
 
       atualizarUI(user);
       if (ativo) {
+        console.log('[Dashboard] mostrando tela-dashboard', { seq, uid: user.uid });
         mostrar(TELA_DASH);
         if (typeof window.dashInit === 'function') {
           window.dashInit(user);
