@@ -2832,6 +2832,23 @@ button:focus:not(:focus-visible) { outline: none; }
   color: #E8EEF7 !important;
 }
 
+#tela-compra .compra-free-banner {
+  background: rgba(16,185,129,.1) !important;
+  border: 1px solid rgba(16,185,129,.3) !important;
+  border-radius: 8px !important;
+  padding: 10px 16px !important;
+  margin-bottom: 1.25rem !important;
+  font-size: 13px !important;
+  color: #6EE7B7 !important;
+  font-family: 'Inter', sans-serif !important;
+  line-height: 1.5 !important;
+}
+
+#tela-compra .compra-free-banner strong {
+  color: #34D399 !important;
+  font-weight: 700 !important;
+}
+
 @media (max-width: 860px) {
   #tela-compra .pacotes-grid {
     grid-template-columns: repeat(2, 1fr) !important;

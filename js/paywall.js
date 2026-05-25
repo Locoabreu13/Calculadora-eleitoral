@@ -9,7 +9,7 @@ export const PACOTES = [
   { id: "avulso",        nome: "Avulso",        creditos: 1,  preco: "R$ 200",   detalhe: "R$ 200 por cálculo", url: "https://mpago.la/21BVAc7" },
   { id: "escritorio",    nome: "Escritório",    creditos: 5,  preco: "R$ 750",   detalhe: "R$ 150 por cálculo", url: "https://mpago.la/2yu38tB" },
   { id: "especializado", nome: "Especializado", creditos: 10, preco: "R$ 1.200", detalhe: "R$ 120 por cálculo", url: "https://mpago.la/1KBNzpa" },
-  { id: "tribunal",      nome: "Tribunal",      creditos: 25, preco: "R$ 2.500", detalhe: "R$ 100 por cálculo", url: "https://mpago.la/2kE1eh6" },
+  { id: "tribunal",      nome: "Avançado",      creditos: 25, preco: "R$ 2.500", detalhe: "R$ 100 por cálculo", url: "https://mpago.la/2kE1eh6" },
 ];
 
 function mostrar(id) {
