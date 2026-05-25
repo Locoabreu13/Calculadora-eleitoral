@@ -1,8 +1,8 @@
 import { db } from "./firebase-init.js";
-import { doc, getDoc, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { doc, getDocFromServer, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 export async function obterCreditos(uid) {
-  const snap = await getDoc(doc(db, "users", uid));
+  const snap = await getDocFromServer(doc(db, "users", uid));
   if (!snap.exists()) return 0;
   return snap.data().credits ?? 0;
 }
