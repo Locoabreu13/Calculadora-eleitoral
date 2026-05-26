@@ -305,64 +305,129 @@
 
         <div id="import-body" style="display:none;">
 
-          <!-- Passo 1: arquivo de votos por partido -->
-          <div class="import-step">
-            <label class="import-step-label" for="file-partido">
-              <span class="import-step-num">1</span>
-              Votos por partido <span class="import-step-req">*</span>
-            </label>
-            <div class="import-step-hint">votacao_partido_munzona_{ano}_{uf}.csv</div>
-            <input type="file" id="file-partido" accept=".csv"
-                   class="import-file-input"
-                   aria-label="Arquivo de votação por partido do TSE" />
+          <!-- ── TABS ──────────────────────────────────────────────── -->
+          <div class="import-modo-tabs">
+            <button class="import-modo-tab import-modo-tab--active" data-modo="auto">
+              ▼ Automático (TSE direto)
+            </button>
+            <button class="import-modo-tab" data-modo="manual">
+              CSV Manual
+            </button>
           </div>
 
-          <!-- Passo 2: arquivo de candidatos (opcional) -->
-          <div class="import-step">
-            <label class="import-step-label" for="file-candidato">
-              <span class="import-step-num">2</span>
-              Candidatos <span class="import-step-opt">(opcional)</span>
-            </label>
-            <div class="import-step-hint">votacao_candidato_munzona_{ano}_{uf}.csv</div>
-            <input type="file" id="file-candidato" accept=".csv"
-                   class="import-file-input"
-                   aria-label="Arquivo de votação por candidato do TSE (opcional)" />
-          </div>
+          <!-- ── PAINEL AUTOMÁTICO ──────────────────────────────────── -->
+          <div id="import-panel-auto">
 
-          <!-- Filtros -->
-          <div class="import-filters">
             <div class="import-filter-field">
-              <label class="import-filter-label" for="filter-cargo">Cargo</label>
-              <select id="filter-cargo" class="import-filter-select"
-                      aria-label="Filtrar por cargo">
-                <option value="Deputado Federal">Deputado Federal</option>
-                <option value="Deputado Estadual">Deputado Estadual / Distrital</option>
-                <option value="Vereador">Vereador</option>
+              <label class="import-filter-label" for="tse-ano">Ano</label>
+              <select id="tse-ano" class="import-filter-select" aria-label="Selecionar ano da eleição">
+                <option value="">— Selecionar —</option>
+                <option value="2024">2024 — Eleições Municipais</option>
+                <option value="2022">2022 — Eleições Gerais</option>
+                <option value="2020">2020 — Eleições Municipais</option>
               </select>
             </div>
+
             <div class="import-filter-field">
-              <label class="import-filter-label" for="filter-uf">UF</label>
-              <select id="filter-uf" class="import-filter-select"
-                      aria-label="Filtrar por estado">
-                <option value="">Todas as UFs</option>
+              <label class="import-filter-label" for="tse-uf">Estado (UF)</label>
+              <select id="tse-uf" class="import-filter-select" disabled
+                      aria-label="Selecionar estado">
+                <option value="">— Selecionar ano primeiro —</option>
               </select>
             </div>
-            <div class="import-filter-field" id="filter-municipio-wrap" style="display:none;">
-              <label class="import-filter-label" for="filter-municipio">Município</label>
-              <select id="filter-municipio" class="import-filter-select"
-                      aria-label="Filtrar por município">
-                <option value="">Todos</option>
+
+            <div class="import-filter-field">
+              <label class="import-filter-label" for="tse-cargo">Cargo</label>
+              <select id="tse-cargo" class="import-filter-select" disabled
+                      aria-label="Selecionar cargo">
+                <option value="">— Selecionar —</option>
               </select>
             </div>
-          </div>
 
-          <!-- Botão processar -->
-          <button id="btn-processar-csv" class="import-btn-processar">
-            ▶ Processar e preencher campos
-          </button>
+            <div class="import-filter-field" id="tse-mun-wrap" style="display:none">
+              <label class="import-filter-label" for="tse-municipio">Município</label>
+              <select id="tse-municipio" class="import-filter-select"
+                      aria-label="Selecionar município">
+                <option value="">— Carregar dados primeiro —</option>
+              </select>
+            </div>
 
-          <!-- Status / progresso -->
-          <div id="import-status" class="import-status" aria-live="polite"></div>
+            <button id="btn-tse-carregar" class="import-btn-processar" disabled>
+              ▶ Carregar do TSE
+            </button>
+
+            <div id="tse-direto-status" class="import-status" aria-live="polite"></div>
+
+            <p class="tse-nota-cand">
+              ⓘ O modo automático carrega votos por partido direto do servidor do TSE.
+              Para incluir nomes de candidatos individuais, use o modo CSV Manual.
+            </p>
+
+          </div><!-- #import-panel-auto -->
+
+          <!-- ── PAINEL MANUAL (CSV) ────────────────────────────────── -->
+          <div id="import-panel-manual" style="display:none;">
+
+            <!-- Passo 1: arquivo de votos por partido -->
+            <div class="import-step">
+              <label class="import-step-label" for="file-partido">
+                <span class="import-step-num">1</span>
+                Votos por partido <span class="import-step-req">*</span>
+              </label>
+              <div class="import-step-hint">votacao_partido_munzona_{ano}_{uf}.csv</div>
+              <input type="file" id="file-partido" accept=".csv"
+                     class="import-file-input"
+                     aria-label="Arquivo de votação por partido do TSE" />
+            </div>
+
+            <!-- Passo 2: arquivo de candidatos (opcional) -->
+            <div class="import-step">
+              <label class="import-step-label" for="file-candidato">
+                <span class="import-step-num">2</span>
+                Candidatos <span class="import-step-opt">(opcional)</span>
+              </label>
+              <div class="import-step-hint">votacao_candidato_munzona_{ano}_{uf}.csv</div>
+              <input type="file" id="file-candidato" accept=".csv"
+                     class="import-file-input"
+                     aria-label="Arquivo de votação por candidato do TSE (opcional)" />
+            </div>
+
+            <!-- Filtros -->
+            <div class="import-filters">
+              <div class="import-filter-field">
+                <label class="import-filter-label" for="filter-cargo">Cargo</label>
+                <select id="filter-cargo" class="import-filter-select"
+                        aria-label="Filtrar por cargo">
+                  <option value="Deputado Federal">Deputado Federal</option>
+                  <option value="Deputado Estadual">Deputado Estadual / Distrital</option>
+                  <option value="Vereador">Vereador</option>
+                </select>
+              </div>
+              <div class="import-filter-field">
+                <label class="import-filter-label" for="filter-uf">UF</label>
+                <select id="filter-uf" class="import-filter-select"
+                        aria-label="Filtrar por estado">
+                  <option value="">Todas as UFs</option>
+                </select>
+              </div>
+              <div class="import-filter-field" id="filter-municipio-wrap" style="display:none;">
+                <label class="import-filter-label" for="filter-municipio">Município</label>
+                <select id="filter-municipio" class="import-filter-select"
+                        aria-label="Filtrar por município">
+                  <option value="">Todos</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Botão processar -->
+            <button id="btn-processar-csv" class="import-btn-processar">
+              ▶ Processar e preencher campos
+            </button>
+
+            <!-- Status / progresso -->
+            <div id="import-status" class="import-status" aria-live="polite"></div>
+
+          </div><!-- #import-panel-manual -->
 
         </div><!-- #import-body -->
 
@@ -746,6 +811,7 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="js/filtrador2024.js?v=1"></script>
+<script src="js/tse-direto.js?v=1"></script>
 <script src="js/runner.js?v=1"></script>
 
 <!-- ═══ SCRIPTS INLINE ══════════════════════════════════════════════════════════ -->

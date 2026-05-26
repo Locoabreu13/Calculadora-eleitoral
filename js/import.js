@@ -641,8 +641,25 @@ document.addEventListener('DOMContentLoaded', init);
 // ═══════════════════════════════════════════════════════════════════════════════
 
 window.ImportTSE = {
-  /** Retorna os metadados da última importação, ou null se nenhuma foi feita. */
   getFonteDados: () => fonteDados,
+
+  /**
+   * Preenche o formulário com dados de partidos já processados.
+   * Chamado por tse-direto.js após fetch direto do TSE.
+   * @param {Array}  partidos  - [{ sigla, nome, nominais, legenda }]
+   * @param {Array|null} candidatos
+   * @param {Object} meta      - { arquivo, partidos, totalVotos, cargo, uf, timestamp }
+   */
+  injetarDados: function (partidos, candidatos, meta) {
+    preencherCamposComDadosTSE(partidos, candidatos);
+    if (meta) {
+      const totalVotos = meta.totalVotos ||
+        partidos.reduce((s, p) => s + (p.nominais || 0) + (p.legenda || 0), 0);
+      fonteDados = meta;
+      mostrarBadge(meta.partidos || partidos.length, totalVotos,
+        meta.cargo, meta.uf, meta.arquivo, meta.timestamp);
+    }
+  },
 };
 
 })();
