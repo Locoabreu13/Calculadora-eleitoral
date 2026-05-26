@@ -1,6 +1,140 @@
 {
   "presets": [
     {
+      "id": "ce2022_cassacao_tse_real",
+      "rotulo": "CE 2022 — Cassação Heitor Freire (TRE-CE)",
+      "vagas": 22,
+      "notas": "Dados oficiais do TSE (votacao_partido_munzona_2022.zip). Cassação de Heitor Freire (UNIÃO Brasil) anula 48.888 votos nominais (modalidade nominal). Resultado esperado: UNIÃO 4→3 vagas, PL 5→6 vagas. Ref.: TRE-CE.",
+      "cassacoes": [
+        {
+          "partido": "UNIÃO",
+          "candidato": "Heitor Freire",
+          "votosAnular": 48888,
+          "modalidade": "nominal"
+        }
+      ],
+      "partidos": [
+        { "sigla": "PL",          "nome": "Partido Liberal",                          "votosNominais": 1018156, "votosLegenda": 16412 },
+        { "sigla": "PDT",         "nome": "Partido Democrático Trabalhista",          "votosNominais": 932593,  "votosLegenda": 42814 },
+        { "sigla": "PT",          "nome": "Partido dos Trabalhadores",                "votosNominais": 496927,  "votosLegenda": 65530 },
+        {
+          "sigla": "UNIÃO",
+          "nome": "União Brasil",
+          "votosNominais": 709596,
+          "votosLegenda": 10205,
+          "candidatos": [
+            { "nome": "Heitor Freire", "partido": "UNIÃO", "votos": 48888 }
+          ]
+        },
+        { "sigla": "PSD",         "nome": "Partido Social Democrático",              "votosNominais": 615006,  "votosLegenda": 6803  },
+        { "sigla": "MDB",         "nome": "Movimento Democrático Brasileiro",        "votosNominais": 254306,  "votosLegenda": 5239  },
+        { "sigla": "PP",          "nome": "Progressistas",                           "votosNominais": 216275,  "votosLegenda": 9188  },
+        { "sigla": "REPUBLICANOS","nome": "Republicanos",                            "votosNominais": 176939,  "votosLegenda": 2432  },
+        { "sigla": "PSB",         "nome": "Partido Socialista Brasileiro",           "votosNominais": 167841,  "votosLegenda": 1637  },
+        { "sigla": "PSOL",        "nome": "Partido Socialismo e Liberdade",          "votosNominais": 121635,  "votosLegenda": 3244  },
+        { "sigla": "PC do B",     "nome": "Partido Comunista do Brasil",             "votosNominais": 48183,   "votosLegenda": 2984  },
+        { "sigla": "AVANTE",      "nome": "Avante",                                  "votosNominais": 33354,   "votosLegenda": 3446  },
+        { "sigla": "PSDB",        "nome": "Partido da Social Democracia Brasileira", "votosNominais": 28895,   "votosLegenda": 2181  },
+        { "sigla": "CIDADANIA",   "nome": "Cidadania",                               "votosNominais": 19513,   "votosLegenda": 3986  },
+        { "sigla": "PSC",         "nome": "Partido Social Cristão",                  "votosNominais": 11476,   "votosLegenda": 424   },
+        { "sigla": "PMN",         "nome": "Partido da Mobilização Nacional",         "votosNominais": 7185,    "votosLegenda": 3876  },
+        { "sigla": "PTB",         "nome": "Partido Trabalhista Brasileiro",          "votosNominais": 5296,    "votosLegenda": 1518  },
+        { "sigla": "PODE",        "nome": "Podemos",                                 "votosNominais": 5171,    "votosLegenda": 530   },
+        { "sigla": "PV",          "nome": "Partido Verde",                           "votosNominais": 4265,    "votosLegenda": 1403  },
+        { "sigla": "PCB",         "nome": "Partido Comunista Brasileiro",            "votosNominais": 3579,    "votosLegenda": 2073  }
+      ]
+    },
+    {
+      "id": "ap2022_retotalizacao_tse_real",
+      "rotulo": "AP 2022 — Retotalização TRE-AP (Resolução 620/2025)",
+      "vagas": 8,
+      "notas": "Dados oficiais do TSE (votacao_partido_munzona_2022.zip). Retotalização completa determinada pelo TRE-AP (Res. 620/2025) — sem cassação individual. QE=52.877 | Barreira 80%=42.301. Apenas PDT, PL e MDB superam a barreira na Fase 2. Resultado: PDT 3, PL 3, MDB 2.",
+      "cassacoes": [],
+      "partidos": [
+        {
+          "sigla": "PDT",
+          "nome": "Partido Democrático Trabalhista",
+          "votosNominais": 63498,
+          "votosLegenda": 1390
+        },
+        {
+          "sigla": "PL",
+          "nome": "Partido Liberal",
+          "votosNominais": 47480,
+          "votosLegenda": 1361
+        },
+        {
+          "sigla": "MDB",
+          "nome": "Movimento Democrático Brasileiro",
+          "votosNominais": 44541,
+          "votosLegenda": 1156
+        },
+        {
+          "sigla": "PP",
+          "nome": "Progressistas",
+          "votosNominais": 38443,
+          "votosLegenda": 643
+        },
+        {
+          "sigla": "REPUBLICANOS",
+          "nome": "Republicanos",
+          "votosNominais": 37790,
+          "votosLegenda": 556
+        },
+        {
+          "sigla": "PSOL REDE",
+          "nome": "Federação PSOL Rede (PSOL · REDE)",
+          "votosNominais": 35668,
+          "votosLegenda": 557,
+          "partidos": ["PSOL", "REDE"]
+        },
+        {
+          "sigla": "FE BRASIL",
+          "nome": "Federação Brasil da Esperança (PT · PC do B · PV)",
+          "votosNominais": 35014,
+          "votosLegenda": 1402,
+          "partidos": ["PT", "PC do B", "PV"]
+        },
+        {
+          "sigla": "PTB",
+          "nome": "Partido Trabalhista Brasileiro",
+          "votosNominais": 26937,
+          "votosLegenda": 501
+        },
+        {
+          "sigla": "PODE",
+          "nome": "Podemos",
+          "votosNominais": 26279,
+          "votosLegenda": 522
+        },
+        {
+          "sigla": "PSDB CIDADANIA",
+          "nome": "Federação PSDB Cidadania (PSDB · CIDADANIA)",
+          "votosNominais": 17172,
+          "votosLegenda": 677,
+          "partidos": ["PSDB", "CIDADANIA"]
+        },
+        {
+          "sigla": "PSC",
+          "nome": "Partido Social Cristão",
+          "votosNominais": 15788,
+          "votosLegenda": 352
+        },
+        {
+          "sigla": "PSB",
+          "nome": "Partido Socialista Brasileiro",
+          "votosNominais": 15303,
+          "votosLegenda": 329
+        },
+        {
+          "sigla": "PSD",
+          "nome": "Partido Social Democrático",
+          "votosNominais": 5536,
+          "votosLegenda": 573
+        }
+      ]
+    },
+    {
       "id": "ce2022_original",
       "rotulo": "Deputado Federal — Ceará 2022 (original)",
       "vagas": 22,
