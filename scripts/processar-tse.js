@@ -259,7 +259,7 @@ function salvarJSON(ano, uf, cargo, por_cargo) {
   const fpath  = path.join(dir, fname);
   fs.mkdirSync(dir, { recursive: true });
 
-  const conteudo = JSON.stringify(json);
+  const conteudo = JSON.stringify(json, null, 4);
   fs.writeFileSync(fpath, conteudo, 'utf8');
 
   const kb     = (Buffer.byteLength(conteudo, 'utf8') / 1024).toFixed(1);
