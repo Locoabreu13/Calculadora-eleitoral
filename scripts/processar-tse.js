@@ -161,6 +161,8 @@ function parsearCSVdeUF(texto, uf) {
     ? col('QT_TOTAL_VOTOS_LEG_VALIDOS')
     : col('QT_VOTOS_LEGENDA_VALIDOS') >= 0
       ? col('QT_VOTOS_LEGENDA_VALIDOS') : col('QT_VOTOS_LEGENDA');
+  const cSgFed = col('SG_FEDERACAO');
+  const cNmFed = col('NM_FEDERACAO');
 
   if (cCargo < 0 || cSigla < 0 || cNom < 0 || cLeg < 0) {
     throw new Error(`Colunas obrigatórias ausentes.\nHeader: ${header.slice(0, 10).join(' | ')}`);
@@ -196,18 +198,31 @@ function parsearCSVdeUF(texto, uf) {
     const nom = parseInt(cols[cNom] || '0', 10) || 0;
     const leg = parseInt(cols[cLeg] || '0', 10) || 0;
 
+    // Agrupa por federação quando o partido pertence a uma (SG_FEDERACAO != '#NULO#')
+    const sgFed = cSgFed >= 0 ? (cols[cSgFed] || '').trim() : '';
+    const nmFed = cNmFed >= 0 ? (cols[cNmFed] || '').trim() : '';
+    const emFed = sgFed && sgFed !== '#NULO#' && sgFed !== '-1';
+    const chave = emFed ? sgFed : sigla;
+    const nomeEntidade = emFed ? nmFed : nome;
+
     if (!por_cargo.has(cargo)) por_cargo.set(cargo, { estado: {}, muns: {} });
     const g = por_cargo.get(cargo);
 
-    if (!g.estado[sigla]) g.estado[sigla] = { sigla, nome, votosNominais: 0, votosLegenda: 0 };
-    g.estado[sigla].votosNominais += nom;
-    g.estado[sigla].votosLegenda  += leg;
+    if (!g.estado[chave]) {
+      g.estado[chave] = { sigla: chave, nome: nomeEntidade, votosNominais: 0, votosLegenda: 0 };
+      if (emFed) g.estado[chave].partidos = [];
+    }
+    g.estado[chave].votosNominais += nom;
+    g.estado[chave].votosLegenda  += leg;
+    if (emFed && !g.estado[chave].partidos.includes(sigla)) {
+      g.estado[chave].partidos.push(sigla);
+    }
 
     if (cargo === 'Vereador' && mun) {
       if (!g.muns[mun]) g.muns[mun] = {};
-      if (!g.muns[mun][sigla]) g.muns[mun][sigla] = { sigla, nome, votosNominais: 0, votosLegenda: 0 };
-      g.muns[mun][sigla].votosNominais += nom;
-      g.muns[mun][sigla].votosLegenda  += leg;
+      if (!g.muns[mun][chave]) g.muns[mun][chave] = { sigla: chave, nome: nomeEntidade, votosNominais: 0, votosLegenda: 0 };
+      g.muns[mun][chave].votosNominais += nom;
+      g.muns[mun][chave].votosLegenda  += leg;
     }
     nProc++;
   }
