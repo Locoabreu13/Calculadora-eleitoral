@@ -1,15 +1,17 @@
 /**
- * tse-direto.js — Carregamento direto dos dados do TSE via CORS
+ * tse-direto.js — Carregamento de dados do TSE via JSONs pré-processados
  *
  * Fluxo:
  *   1. Usuário seleciona Ano → UF → Cargo (→ Município se Vereador)
- *   2. Verifica cache IndexedDB; se ausente, baixa o ZIP do cdn.tse.jus.br
- *   3. Descomprime com JSZip, decodifica ISO-8859-1, parseia CSV
- *   4. Cacheia TODAS as combinações UF×cargo do ano de uma vez
- *   5. Chama window.ImportTSE.injetarDados() para preencher o formulário
+ *   2. Verifica cache IndexedDB; se ausente, faz fetch do JSON local em data/tse/
+ *   3. Cacheia no IDB para uso offline subsequente
+ *   4. Chama window.ImportTSE.injetarDados() para preencher o formulário
  *
- * CORS: cdn.tse.jus.br retorna Access-Control-Allow-Origin: *
- * Cache: IndexedDB "tse-direto-v1" — persiste entre sessões, sem expiração
+ * JSONs pré-processados: data/tse/{ano}_{UF}_{cargo}.json
+ *   Gerados por: node scripts/processar-tse.js <ano> <UF> <cargo>
+ *   Tamanho típico: < 5 KB por estado/cargo (vs. 25 MB do ZIP original)
+ *
+ * Cache: IndexedDB "tse-direto-v2" — persiste entre sessões, sem expiração
  *         (dados eleitorais não mudam após publicação)
  */
 (function () {
@@ -19,23 +21,21 @@
      CONFIGURAÇÃO
   ═══════════════════════════════════════════════════════════════════ */
 
-  const CDN_DIRETO = ano =>
-    `https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_partido_munzona/votacao_partido_munzona_${ano}.zip`;
+  // Slug de cargo → nome canônico (espelha o script processar-tse.js)
+  const CARGO_SLUG = {
+    'Deputado Federal':   'federal',
+    'Deputado Distrital': 'distrital',
+    'Deputado Estadual':  'estadual',
+    'Vereador':           'vereador',
+  };
 
-  // Tentativa 0: CDN direto (funciona em muitos browsers quando o header duplicado é tolerado).
-  // Tentativas 1-2: proxies CORS, usados apenas como fallback para este fetch.
-  // Diagnóstico 2026-05-25: allorigins.win = timeout, corsproxy.io = 403 p/ TSE.
-  // O proxy mais recente a funcionar é indicado pelo console.log abaixo.
-  const FONTES = [
-    url => url,                                                           // 0: direto
-    url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`, // 1: allorigins
-    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,             // 2: corsproxy
-  ];
+  const urlJSON = (ano, uf, cargo) =>
+    `data/tse/${ano}_${uf}_${CARGO_SLUG[cargo] || cargo}.json`;
 
   // Apenas anos juridicamente relevantes para retotalização (ADIs 7.228/7.263/7.325)
   const ANOS = [
-    { ano: '2022', label: '2022 — Eleições Gerais',      tipo: 'gerais',     sizeMB: 25 },
-    { ano: '2024', label: '2024 — Eleições Municipais',  tipo: 'municipais', sizeMB: 6  },
+    { ano: '2022', label: '2022 — Eleições Gerais',     tipo: 'gerais'     },
+    { ano: '2024', label: '2024 — Eleições Municipais', tipo: 'municipais' },
   ];
 
   // 2022: só Federal (todas as UFs) e Distrital (apenas DF)
@@ -53,19 +53,11 @@
     'PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO',
   ];
 
-  // TSE CSV usa maiúsculas; Deputado Estadual ignorado (não relevante para ADIs)
-  const CARGO_MAP = {
-    'DEPUTADO FEDERAL':   'Deputado Federal',
-    'DEPUTADO DISTRITAL': 'Deputado Distrital',
-    'VEREADOR':           'Vereador',
-    // 'DEPUTADO ESTADUAL' ausente → _normCargo retorna null → linha ignorada
-  };
-
   /* ═══════════════════════════════════════════════════════════════════
      INDEXEDDB
   ═══════════════════════════════════════════════════════════════════ */
 
-  const IDB_NAME  = 'tse-direto-v1';
+  const IDB_NAME  = 'tse-direto-v2';
   const IDB_STORE = 'dados';
   let   _idb      = null;
 
@@ -99,185 +91,52 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════════
-     DOWNLOAD + UNZIP + PARSE
+     FETCH JSON PRÉ-PROCESSADO
   ═══════════════════════════════════════════════════════════════════ */
 
-  function _splitLinha(linha) {
-    return linha.split(';').map(c => c.trim().replace(/^"|"$/g, ''));
-  }
+  async function _buscarJSON(ano, uf, cargo, onProgress) {
+    const url = urlJSON(ano, uf, cargo);
+    console.log(`[TSE Direto] buscando JSON local: ${url}`);
+    onProgress(0, 'Carregando dados pré-processados…');
 
-  function _normCargo(s) {
-    return CARGO_MAP[(s || '').trim().toUpperCase()] || null;
-  }
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(
+      `Dados não disponíveis para ${cargo} · ${uf} · ${ano}. ` +
+      `Arquivo ${url} não encontrado (HTTP ${resp.status}). ` +
+      `Use o modo CSV Manual ou aguarde a geração do arquivo.`
+    );
 
-  function _encontrarCol(header, opcoes) {
-    for (const o of opcoes) if (header.includes(o)) return o;
-    return opcoes[opcoes.length - 1];
-  }
+    onProgress(0.6, 'Processando…');
+    const json = await resp.json();
 
-  /**
-   * Parseia o CSV completo e retorna Map keyed "ano:uf:cargo"
-   * com { partidos, municipios, munPartidos }.
-   */
-  function _parsearCSV(text, ano) {
-    const linhas = text.split(/\r?\n/);
-    if (linhas.length < 2) throw new Error('Arquivo CSV vazio ou inválido.');
-
-    const header = _splitLinha(linhas[0]);
-    const cNom = _encontrarCol(header, ['QT_VOTOS_NOMINAIS_VALIDOS', 'QT_VOTOS_NOMINAIS']);
-    const cLeg = _encontrarCol(header, ['QT_TOTAL_VOTOS_LEG_VALIDOS', 'QT_VOTOS_LEGENDA_VALIDOS', 'QT_VOTOS_LEGENDA']);
-
-    const idx = {};
-    for (const c of ['DS_CARGO', 'SG_UF', 'NM_MUNICIPIO', 'SG_PARTIDO', 'NM_PARTIDO', cNom, cLeg]) {
-      idx[c] = header.indexOf(c);
-    }
-
-    if (idx['DS_CARGO'] === -1 || idx['SG_UF'] === -1) {
-      throw new Error('Colunas DS_CARGO ou SG_UF não encontradas. Verifique o arquivo.');
-    }
-
-    // Map: "ano:uf:cargo" → { estado: {sigla→p}, muns: {mun→{sigla→p}} }
-    const agrupado = new Map();
-
-    for (let i = 1; i < linhas.length; i++) {
-      const linha = linhas[i];
-      if (!linha.trim()) continue;
-
-      const cols  = _splitLinha(linha);
-      if (cols.length < 5) continue;
-
-      const cargo = _normCargo(cols[idx['DS_CARGO']] || '');
-      if (!cargo) continue; // ignora Presidente, Governador, Senador, etc.
-
-      const uf    = (cols[idx['SG_UF']]      || '').trim();
-      const mun   = idx['NM_MUNICIPIO'] >= 0 ? (cols[idx['NM_MUNICIPIO']] || '').trim() : '';
-      const sigla = (cols[idx['SG_PARTIDO']] || '').trim();
-      const nome  = (cols[idx['NM_PARTIDO']] || '').trim();
-      if (!uf || !sigla) continue;
-
-      const nominais = parseInt(cols[idx[cNom]], 10) || 0;
-      const legenda  = parseInt(cols[idx[cLeg]], 10) || 0;
-
-      const chave = `${ano}:${uf}:${cargo}`;
-      if (!agrupado.has(chave)) agrupado.set(chave, { estado: {}, muns: {} });
-      const g = agrupado.get(chave);
-
-      if (!g.estado[sigla]) g.estado[sigla] = { sigla, nome, nominais: 0, legenda: 0 };
-      g.estado[sigla].nominais += nominais;
-      g.estado[sigla].legenda  += legenda;
-
-      if (cargo === 'Vereador' && mun) {
-        if (!g.muns[mun]) g.muns[mun] = {};
-        if (!g.muns[mun][sigla]) g.muns[mun][sigla] = { sigla, nome, nominais: 0, legenda: 0 };
-        g.muns[mun][sigla].nominais += nominais;
-        g.muns[mun][sigla].legenda  += legenda;
+    const partidos = json.partidos.map(p => ({
+      sigla: p.sigla, nome: p.nome,
+      nominais: p.votosNominais, legenda: p.votosLegenda,
+    }));
+    const municipios  = json.municipios || [];
+    const munPartidos = {};
+    if (json.dadosMun) {
+      for (const [mun, ps] of Object.entries(json.dadosMun)) {
+        munPartidos[mun] = ps.map(p => ({
+          sigla: p.sigla, nome: p.nome,
+          nominais: p.votosNominais, legenda: p.votosLegenda,
+        }));
       }
     }
 
-    return agrupado;
-  }
-
-  async function _baixarECacharAno(ano, onProgress) {
-    const cfg = ANOS.find(a => a.ano === ano) || { sizeMB: '?' };
-
-    // 1. Download — tenta CDN direto primeiro, depois proxies CORS em cascata
-    onProgress(0, `Conectando ao servidor do TSE…`);
-
-    const urlOrigem = CDN_DIRETO(ano);
-    const rotulos   = ['CDN direto', 'proxy allorigins.win', 'proxy corsproxy.io'];
-    let resp = null;
-    let fonteUsada = '';
-    for (let i = 0; i < FONTES.length; i++) {
-      const url = FONTES[i](urlOrigem);
-      try {
-        console.log(`[TSE Direto] tentativa ${i + 1}/${FONTES.length} (${rotulos[i]}):`, url);
-        const r = await fetch(url, { signal: AbortSignal.timeout(30000) });
-        if (r.ok) { resp = r; fonteUsada = rotulos[i]; break; }
-        console.warn(`[TSE Direto] ${rotulos[i]} retornou HTTP ${r.status}`);
-      } catch (e) {
-        console.warn(`[TSE Direto] ${rotulos[i]} falhou:`, e.message);
-      }
-    }
-    if (!resp) {
-      throw new Error(
-        'Serviço temporariamente indisponível. ' +
-        'Use o modo CSV Manual (baixe o arquivo no Portal TSE e importe pelo campo acima) ' +
-        'ou aguarde alguns minutos e tente novamente.'
-      );
-    }
-    console.log(`[TSE Direto] download bem-sucedido via ${fonteUsada}`);
-
-    const total   = parseInt(resp.headers.get('Content-Length') || '0', 10);
-    const reader  = resp.body.getReader();
-    const chunks  = [];
-    let   received = 0;
-
-    for (;;) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      chunks.push(value);
-      received += value.length;
-      if (total) {
-        onProgress(
-          (received / total) * 0.55,
-          `Baixando… ${(received / 1048576).toFixed(1)} / ${cfg.sizeMB} MB`
-        );
-      }
-    }
-
-    const raw = new Uint8Array(received);
-    let off = 0;
-    for (const c of chunks) { raw.set(c, off); off += c.length; }
-
-    // 2. Unzip
-    onProgress(0.55, 'Descomprimindo ZIP…');
-    if (!window.JSZip) throw new Error('JSZip não encontrado. Verifique os scripts do app.');
-
-    const zip = await window.JSZip.loadAsync(raw.buffer);
-
-    // Encontra o CSV de partidos (ignora LEIAME, README, etc.)
-    const entradas = Object.values(zip.files);
-    const csvEntry = entradas.find(f =>
-      !f.dir && f.name.toLowerCase().includes('partido') && f.name.endsWith('.csv')
-    ) || entradas.find(f => !f.dir && f.name.endsWith('.csv'));
-
-    if (!csvEntry) throw new Error('CSV de partidos não encontrado dentro do ZIP.');
-
-    // 3. Decodifica ISO-8859-1
-    onProgress(0.65, 'Extraindo e decodificando CSV…');
-    const ab   = await csvEntry.async('arraybuffer');
-    const text = new TextDecoder('iso-8859-1').decode(ab);
-
-    // 4. Parseia
-    onProgress(0.75, 'Processando dados (pode demorar alguns segundos)…');
-    const agrupado = _parsearCSV(text, ano);
-
-    // 5. Cacheia tudo
-    onProgress(0.90, 'Salvando no cache local…');
-    const promises = [];
-    for (const [chave, dados] of agrupado) {
-      const partidos  = Object.values(dados.estado)
-        .sort((a, b) => (b.nominais + b.legenda) - (a.nominais + a.legenda));
-      const municipios = Object.keys(dados.muns).sort();
-      const munPartidos = {};
-      for (const [m, ps] of Object.entries(dados.muns)) {
-        munPartidos[m] = Object.values(ps)
-          .sort((a, b) => (b.nominais + b.legenda) - (a.nominais + a.legenda));
-      }
-      promises.push(_cachePut(chave, { partidos, municipios, munPartidos }));
-    }
-    // Marca que o ano foi processado
-    promises.push(_cachePut(`${ano}:_ok`, { ts: Date.now(), qtd: agrupado.size }));
-    await Promise.all(promises);
-
+    await _cachePut(`v2:${ano}:${uf}:${cargo}`, { partidos, municipios, munPartidos });
+    console.log(`[TSE Direto] ${partidos.length} partidos carregados e cacheados`);
     onProgress(1, 'Pronto!');
   }
 
   async function _obterDados(ano, uf, cargo, onProgress) {
-    const chave = `${ano}:${uf}:${cargo}`;
+    const chave = `v2:${ano}:${uf}:${cargo}`;
     let dados = await _cacheGet(chave);
-    if (!dados) {
-      await _baixarECacharAno(ano, onProgress);
+    if (dados) {
+      console.log(`[TSE Direto] cache hit: ${chave}`);
+      onProgress(1, 'Dados carregados do cache local.');
+    } else {
+      await _buscarJSON(ano, uf, cargo, onProgress);
       dados = await _cacheGet(chave);
     }
     if (!dados) {
@@ -398,12 +257,9 @@
     if (btnCarr) btnCarr.disabled = true;
 
     try {
-      const cfg = ANOS.find(a => a.ano === ano) || {};
       const dados = await _obterDados(ano, uf, cargo, (pct, msg) => {
-        const cachado = pct === 0 && msg.includes('Conectando');
         _setStatus(
           `<span class="import-spinner"></span> ${msg}` +
-          (pct < 0.56 && cfg.sizeMB ? ` <span style="opacity:.7">(~${cfg.sizeMB} MB · cache local após esta vez)</span>` : '') +
           `<br><span style="font-family:monospace;letter-spacing:1px;font-size:11px">${_barra(pct)} ${Math.round(pct * 100)}%</span>`,
           'progresso'
         );
