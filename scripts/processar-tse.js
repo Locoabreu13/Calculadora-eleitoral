@@ -243,7 +243,7 @@ function salvarJSON(ano, uf, cargo, por_cargo) {
   const partidos = Object.values(dados.estado)
     .sort((a, b) => (b.votosNominais + b.votosLegenda) - (a.votosNominais + a.votosLegenda));
 
-  const json = { meta: { ano, uf, cargo, gerado: new Date().toISOString().split('T')[0] }, partidos };
+  const json = { meta: { ano, uf, cargo, gerado: new Date().toISOString() }, partidos };
 
   if (cargo === 'Vereador') {
     json.municipios = Object.keys(dados.muns).sort();

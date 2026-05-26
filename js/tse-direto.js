@@ -114,21 +114,8 @@
      FETCH JSON PRÉ-PROCESSADO
   ═══════════════════════════════════════════════════════════════════ */
 
-  async function _buscarJSON(ano, uf, cargo, onProgress) {
-    const url = urlJSON(ano, uf, cargo);
-    console.log(`[TSE Direto] buscando JSON local: ${url}`);
-    onProgress(0, 'Carregando dados pré-processados…');
-
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error(
-      `Dados não disponíveis para ${cargo} · ${uf} · ${ano}. ` +
-      `Arquivo ${url} não encontrado (HTTP ${resp.status}). ` +
-      `Use o modo CSV Manual ou aguarde a geração do arquivo.`
-    );
-
+  async function _processarJSON(json, chave, onProgress) {
     onProgress(0.6, 'Processando…');
-    const json = await resp.json();
-
     const partidos = json.partidos.map(p => ({
       sigla: p.sigla, nome: p.nome,
       nominais: p.votosNominais, legenda: p.votosLegenda,
@@ -144,26 +131,38 @@
         }));
       }
     }
-
-    await _cachePut(`v2:${ano}:${uf}:${cargo}`, { partidos, municipios, munPartidos });
-    console.log(`[TSE Direto] ${partidos.length} partidos carregados e cacheados`);
+    await _cachePut(chave, { partidos, municipios, munPartidos });
+    console.log(`[TSE Direto] ${partidos.length} partidos processados e cacheados`);
     onProgress(1, 'Pronto!');
   }
 
   async function _obterDados(ano, uf, cargo, onProgress) {
-    const chave = `v2:${ano}:${uf}:${cargo}`;
-    let dados = await _cacheGet(chave);
+    const url = urlJSON(ano, uf, cargo);
+    onProgress(0, 'Verificando versão dos dados…');
+
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(
+      `Dados não disponíveis para ${cargo} · ${uf} · ${ano}. ` +
+      `Arquivo ${url} não encontrado (HTTP ${resp.status}). ` +
+      `Use o modo CSV Manual ou aguarde a geração do arquivo.`
+    );
+
+    const json = await resp.json();
+    const gerado = (json.meta && json.meta.gerado) || '';
+    const chave = `v3:${ano}:${uf}:${cargo}:${gerado}`;
+
+    const dados = await _cacheGet(chave);
     if (dados) {
-      console.log(`[TSE Direto] cache hit: ${chave}`);
+      console.log(`[TSE Direto] cache válido (${gerado || 'sem versão'}): ${chave}`);
       onProgress(1, 'Dados carregados do cache local.');
-    } else {
-      await _buscarJSON(ano, uf, cargo, onProgress);
-      dados = await _cacheGet(chave);
+      return dados;
     }
-    if (!dados) {
-      throw new Error(`Nenhum dado encontrado para ${cargo} · ${uf} · ${ano}.`);
-    }
-    return dados;
+
+    console.log(`[TSE Direto] versão nova ou sem cache (${gerado}): ${chave}`);
+    await _processarJSON(json, chave, onProgress);
+    const resultado = await _cacheGet(chave);
+    if (!resultado) throw new Error(`Nenhum dado encontrado para ${cargo} · ${uf} · ${ano}.`);
+    return resultado;
   }
 
   /* ═══════════════════════════════════════════════════════════════════
