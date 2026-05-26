@@ -303,11 +303,24 @@ async function main() {
     }
   }
 
-  const urlCand = CDN_URL_CAND(ano);
-  console.log(`\n▶ Baixando ZIP de candidatos do TSE…`);
-  console.log(`  ${urlCand}`);
-  const buf = await baixar(urlCand);
-  console.log(`  Tamanho: ${(buf.length / 1048576).toFixed(1)} MB`);
+  const cacheDir  = path.join(__dirname, '..', 'cache');
+  const cachePath = path.join(cacheDir, `votacao_candidato_munzona_${ano}.zip`);
+  const urlCand   = CDN_URL_CAND(ano);
+  let buf;
+  if (fs.existsSync(cachePath)) {
+    console.log(`\n▶ Usando ZIP em cache local…`);
+    console.log(`  ${cachePath}`);
+    buf = fs.readFileSync(cachePath);
+    console.log(`  Tamanho: ${(buf.length / 1048576).toFixed(1)} MB`);
+  } else {
+    console.log(`\n▶ Baixando ZIP de candidatos do TSE…`);
+    console.log(`  ${urlCand}`);
+    buf = await baixar(urlCand);
+    fs.mkdirSync(cacheDir, { recursive: true });
+    fs.writeFileSync(cachePath, buf);
+    console.log(`  Tamanho: ${(buf.length / 1048576).toFixed(1)} MB`);
+    console.log(`  Salvo em cache: ${cachePath}`);
+  }
 
   console.log('\n▶ Lendo estrutura do ZIP…');
   const entradas = parsearDiretorioCentral(buf);
