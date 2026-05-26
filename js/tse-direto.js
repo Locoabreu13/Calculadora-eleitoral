@@ -112,6 +112,7 @@
     const partidos = json.partidos.map(p => ({
       sigla: p.sigla, nome: p.nome,
       nominais: p.votosNominais, legenda: p.votosLegenda,
+      candidatos: p.candidatos || [],
     }));
     const municipios  = json.municipios || [];
     const munPartidos = {};
@@ -214,7 +215,12 @@
     const timestamp   = new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'medium' });
     const ufLabel     = municipio ? `${uf} · ${municipio}` : uf;
 
-    window.ImportTSE.injetarDados(partidos, null, {
+    const candPorSigla = {};
+    for (const p of partidos) {
+      if (p.candidatos?.length) candPorSigla[p.sigla] = p.candidatos;
+    }
+
+    window.ImportTSE.injetarDados(partidos, candPorSigla, {
       arquivo:    `TSE direto · ${ano}`,
       partidos:   partidos.length,
       totalVotos,
