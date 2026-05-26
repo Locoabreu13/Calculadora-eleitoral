@@ -25,8 +25,8 @@
   // CDN do TSE retorna header CORS duplicado ("*, *") que browsers rejeitam.
   // Usamos proxy apenas para este fetch — o resto do app não passa por proxy.
   const PROXIES = [
-    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
     url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
   ];
 
   // Apenas anos juridicamente relevantes para retotalização (ADIs 7.228/7.263/7.325)
