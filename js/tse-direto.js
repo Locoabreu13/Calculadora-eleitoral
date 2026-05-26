@@ -19,8 +19,15 @@
      CONFIGURAÇÃO
   ═══════════════════════════════════════════════════════════════════ */
 
-  const CDN = ano =>
+  const CDN_DIRETO = ano =>
     `https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_partido_munzona/votacao_partido_munzona_${ano}.zip`;
+
+  // CDN do TSE retorna header CORS duplicado ("*, *") que browsers rejeitam.
+  // Usamos proxy apenas para este fetch — o resto do app não passa por proxy.
+  const PROXIES = [
+    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+    url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  ];
 
   // Apenas anos juridicamente relevantes para retotalização (ADIs 7.228/7.263/7.325)
   const ANOS = [
@@ -170,12 +177,28 @@
   async function _baixarECacharAno(ano, onProgress) {
     const cfg = ANOS.find(a => a.ano === ano) || { sizeMB: '?' };
 
-    // 1. Download com streaming progress
+    // 1. Download via proxy (CDN do TSE envia header CORS duplicado "*, *")
     onProgress(0, `Conectando ao servidor do TSE…`);
-    const resp = await fetch(CDN(ano));
-    if (!resp.ok) {
-      throw new Error(`Erro HTTP ${resp.status} — dados de ${ano} não disponíveis no servidor do TSE.`);
+
+    const urlOrigem = CDN_DIRETO(ano);
+    let resp = null;
+    let proxyUsado = '';
+    for (let i = 0; i < PROXIES.length; i++) {
+      const urlProxy = PROXIES[i](urlOrigem);
+      try {
+        console.log(`[TSE Direto] tentando proxy ${i + 1}:`, urlProxy);
+        resp = await fetch(urlProxy);
+        if (resp.ok) { proxyUsado = urlProxy; break; }
+        console.warn(`[TSE Direto] proxy ${i + 1} retornou HTTP ${resp.status}`);
+      } catch (e) {
+        console.warn(`[TSE Direto] proxy ${i + 1} falhou:`, e.message);
+      }
+      resp = null;
     }
+    if (!resp) {
+      throw new Error('Não foi possível baixar os dados do TSE. Verifique sua conexão e tente novamente.');
+    }
+    console.log(`[TSE Direto] download via proxy: ${proxyUsado}`);
 
     const total   = parseInt(resp.headers.get('Content-Length') || '0', 10);
     const reader  = resp.body.getReader();
