@@ -123,17 +123,28 @@ function parsearDiretorioCentral(buf) {
   return entradas;
 }
 
-function extrairEntrada(buf, entrada) {
-  const LFH_SIG = 0x04034b50;
-  const p = entrada.offsetLocal;
-  if (buf.readUInt32LE(p) !== LFH_SIG) throw new Error(`LFH inválido para "${entrada.nome}"`);
-  const fnLen  = buf.readUInt16LE(p + 26);
-  const exLen  = buf.readUInt16LE(p + 28);
-  const inicio = p + 30 + fnLen + exLen;
-  const dados  = buf.slice(inicio, inicio + entrada.tamComprimido);
-  if (entrada.compressao === 0) return dados;
-  if (entrada.compressao === 8) return zlib.inflateRawSync(dados, { maxOutputLength: 512 * 1024 * 1024 });
-  throw new Error(`Compressão ${entrada.compressao} não suportada.`);
+function extrairParaArquivo(buf, entrada, destPath) {
+  return new Promise((resolve, reject) => {
+    const LFH_SIG = 0x04034b50;
+    const p = entrada.offsetLocal;
+    if (buf.readUInt32LE(p) !== LFH_SIG) return reject(new Error(`LFH inválido para "${entrada.nome}"`));
+    const fnLen  = buf.readUInt16LE(p + 26);
+    const exLen  = buf.readUInt16LE(p + 28);
+    const inicio = p + 30 + fnLen + exLen;
+    const dados  = buf.slice(inicio, inicio + entrada.tamComprimido);
+    const out    = fs.createWriteStream(destPath);
+    if (entrada.compressao === 0) {
+      out.end(dados);
+    } else if (entrada.compressao === 8) {
+      const inflate = zlib.createInflateRaw();
+      inflate.pipe(out);
+      inflate.end(dados);
+    } else {
+      return reject(new Error(`Compressão ${entrada.compressao} não suportada.`));
+    }
+    out.on('finish', resolve);
+    out.on('error', reject);
+  });
 }
 
 function encontrarEntradaUF(entradas, uf) {
@@ -143,75 +154,71 @@ function encontrarEntradaUF(entradas, uf) {
 
 /* ── Parse CSV de candidatos ─────────────────────────────────────────────── */
 
-/**
- * Lê o CSV de candidatos e agrupa por bloco (partido direto ou federação).
- * mapaFederacao: { siglaMembroOuPartido → siglaBloco }
- * Retorna: { siglaBloco → [ { nome, votos, partido } ] } ordenado por votos desc.
- */
-function parsearCSVCandidatos(texto, uf, cargoAlvo, mapaFederacao) {
-  const linhas = texto.split(/\r?\n/);
-  if (linhas.length < 2) throw new Error('CSV de candidatos vazio ou inválido.');
+function parsearCSVCandidatosArquivo(filePath, uf, cargoAlvo, mapaFederacao) {
+  return new Promise((resolve, reject) => {
+    const stream = fs.createReadStream(filePath, { encoding: 'latin1' });
+    const rl     = readline.createInterface({ input: stream, crlfDelay: Infinity });
+    let cCargo, cUF, cNome, cNum, cSigla, cVotos;
+    const porBloco = {};
+    let nProc = 0, nIgn = 0;
+    let primeiraLinha = true;
 
-  const header = splitLinha(linhas[0]);
-  const col    = nome => header.indexOf(nome);
+    rl.on('line', linha => {
+      if (primeiraLinha) {
+        primeiraLinha = false;
+        const header = splitLinha(linha);
+        const col    = nome => header.indexOf(nome);
+        cCargo = col('DS_CARGO');
+        cUF    = col('SG_UF');
+        cNome  = col('NM_CANDIDATO');
+        cNum   = col('NR_CANDIDATO');
+        cSigla = col('SG_PARTIDO');
+        cVotos = col('QT_VOTOS_NOMINAIS_VALIDOS') >= 0
+          ? col('QT_VOTOS_NOMINAIS_VALIDOS')
+          : col('QT_VOTOS_NOMINAIS');
+        if (cNome < 0 || cSigla < 0 || cVotos < 0) {
+          rl.close();
+          return reject(new Error(
+            'Colunas obrigatórias não encontradas (NM_CANDIDATO, SG_PARTIDO, votos). ' +
+            'Confirme que é o arquivo votacao_candidato_munzona do TSE.'
+          ));
+        }
+        return;
+      }
+      linha = linha.trim();
+      if (!linha) return;
+      const cols = splitLinha(linha);
+      if (cols.length < 5) { nIgn++; return; }
+      if (cUF >= 0 && cols[cUF].trim().toUpperCase() !== uf) { nIgn++; return; }
+      const cargoRaw = (cols[cCargo] || '').trim().toUpperCase();
+      if (CARGO_MAP_CSV[cargoRaw] !== cargoAlvo) { nIgn++; return; }
+      const siglaPartido = (cols[cSigla] || '').trim();
+      const nomeCand     = (cols[cNome]  || '').trim();
+      const numCand      = cNum >= 0 ? (cols[cNum] || '').trim() : '';
+      const votos        = parseInt(cols[cVotos] || '0', 10) || 0;
+      if (!siglaPartido || !nomeCand) { nIgn++; return; }
+      const blocoKey = mapaFederacao[siglaPartido] || siglaPartido;
+      if (!porBloco[blocoKey]) porBloco[blocoKey] = {};
+      const chave = `${numCand}_${nomeCand}`;
+      if (!porBloco[blocoKey][chave]) {
+        porBloco[blocoKey][chave] = { nome: nomeCand, votos: 0, partido: siglaPartido };
+      }
+      porBloco[blocoKey][chave].votos += votos;
+      nProc++;
+    });
 
-  const cCargo = col('DS_CARGO');
-  const cUF    = col('SG_UF');
-  const cNome  = col('NM_CANDIDATO');
-  const cNum   = col('NR_CANDIDATO');
-  const cSigla = col('SG_PARTIDO');
-  const cVotos = col('QT_VOTOS_NOMINAIS_VALIDOS') >= 0
-    ? col('QT_VOTOS_NOMINAIS_VALIDOS')
-    : col('QT_VOTOS_NOMINAIS');
+    rl.on('close', () => {
+      process.stdout.write(`    linhas: ${fmt(nProc)} úteis, ${fmt(nIgn)} ignoradas\n`);
+      const resultado = {};
+      for (const [bloco, cands] of Object.entries(porBloco)) {
+        resultado[bloco] = Object.values(cands).sort((a, b) => b.votos - a.votos);
+      }
+      resolve(resultado);
+    });
 
-  if (cNome < 0 || cSigla < 0 || cVotos < 0) {
-    throw new Error(
-      'Colunas obrigatórias não encontradas (NM_CANDIDATO, SG_PARTIDO, votos). ' +
-      'Confirme que é o arquivo votacao_candidato_munzona do TSE.'
-    );
-  }
-
-  const porBloco = {};
-  let nProc = 0, nIgn = 0;
-
-  for (let i = 1; i < linhas.length; i++) {
-    const linha = linhas[i].trim();
-    if (!linha) continue;
-    const cols = splitLinha(linha);
-    if (cols.length < 5) { nIgn++; continue; }
-
-    if (cUF >= 0 && cols[cUF].trim().toUpperCase() !== uf) { nIgn++; continue; }
-
-    const cargoRaw = (cols[cCargo] || '').trim().toUpperCase();
-    if (CARGO_MAP_CSV[cargoRaw] !== cargoAlvo) { nIgn++; continue; }
-
-    const siglaPartido = (cols[cSigla] || '').trim();
-    const nomeCand     = (cols[cNome]  || '').trim();
-    const numCand      = cNum >= 0 ? (cols[cNum] || '').trim() : '';
-    const votos        = parseInt(cols[cVotos] || '0', 10) || 0;
-
-    if (!siglaPartido || !nomeCand) { nIgn++; continue; }
-
-    const blocoKey = mapaFederacao[siglaPartido] || siglaPartido;
-
-    if (!porBloco[blocoKey]) porBloco[blocoKey] = {};
-    const chave = `${numCand}_${nomeCand}`;
-    if (!porBloco[blocoKey][chave]) {
-      porBloco[blocoKey][chave] = { nome: nomeCand, votos: 0, partido: siglaPartido };
-    }
-    porBloco[blocoKey][chave].votos += votos;
-    nProc++;
-  }
-
-  process.stdout.write(
-    `    linhas: ${fmt(nProc)} úteis, ${fmt(nIgn)} ignoradas\n`
-  );
-
-  const resultado = {};
-  for (const [bloco, cands] of Object.entries(porBloco)) {
-    resultado[bloco] = Object.values(cands).sort((a, b) => b.votos - a.votos);
-  }
-  return resultado;
+    rl.on('error', reject);
+    stream.on('error', reject);
+  });
 }
 
 /* ── Validação: margem zero ───────────────────────────────────────────────── */
@@ -332,12 +339,18 @@ async function main() {
     console.error(`\n❌ CSV para UF ${ufArg} não encontrado no ZIP.`);
     process.exit(1);
   }
-  console.log(`\n▶ Extraindo ${path.basename(entry.nome)}…`);
-  const raw  = extrairEntrada(buf, entry);
-  const text = raw.toString('latin1');
+  console.log(`\n▶ Extraindo ${path.basename(entry.nome)} para arquivo temporário…`);
+  const tempPath = path.join(cacheDir, `temp_${ufArg}_${ano}.csv`);
+  fs.mkdirSync(cacheDir, { recursive: true });
+  await extrairParaArquivo(buf, entry, tempPath);
 
   console.log('\n▶ Processando candidatos…');
-  const candidatosPorBloco = parsearCSVCandidatos(text, ufArg, cargo, mapaFederacao);
+  let candidatosPorBloco;
+  try {
+    candidatosPorBloco = await parsearCSVCandidatosArquivo(tempPath, ufArg, cargo, mapaFederacao);
+  } finally {
+    try { fs.unlinkSync(tempPath); } catch (_) {}
+  }
 
   const totalCands = Object.values(candidatosPorBloco).reduce((s, a) => s + a.length, 0);
   console.log(`    total de candidatos encontrados: ${fmt(totalCands)}`);
