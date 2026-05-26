@@ -445,6 +445,7 @@ function renderizarResultado(resultado, original) {
   renderizarTabelaResultado(resultado, original);
   renderizarAuditoria(resultado);
   if (original) renderizarComparativo(original, resultado);
+  renderizarRelatorio(resultado, original);
 
   $('secao-comparativo').style.display = original ? 'block' : 'none';
   $('btn-exportar-csv').disabled = false;
@@ -842,6 +843,328 @@ function renderizarComparativo(original, retotalizado) {
     }
     container.appendChild(p);
   }
+}
+
+// ─── Relatório Técnico ─────────────────────────────────────────────────────────
+
+/**
+ * Gera o texto plano do relatório (para copiar em petições).
+ */
+function gerarTextoRelatorio(resultado, original) {
+  const r = resultado;
+  const n = v => Math.round(v).toLocaleString('pt-BR');
+  const hoje = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+  const L = [];
+
+  L.push('═══════════════════════════════════════════════════════════════');
+  L.push('RELATÓRIO TÉCNICO — DISTRIBUIÇÃO PROPORCIONAL DE CADEIRAS');
+  L.push('Art. 109 CE (Lei 14.211/2021) · ADIs 7.228/7.263/7.325 STF');
+  L.push('═══════════════════════════════════════════════════════════════');
+  L.push('');
+  L.push(`Pleito: ${r.rotulo}`);
+  L.push(`Gerado em: ${hoje}`);
+  L.push('');
+
+  L.push('───────────────────────────────────────────────────────────────');
+  L.push('1. PARÂMETROS DA ELEIÇÃO');
+  L.push('───────────────────────────────────────────────────────────────');
+  L.push('');
+  L.push(`Vagas disputadas .............. ${r.vagas}`);
+  if (original && original.votosValidos !== r.votosValidos) {
+    L.push(`Votos válidos (antes)  ........ ${n(original.votosValidos)}`);
+    L.push(`Votos válidos (após cassação) . ${n(r.votosValidos)}`);
+  } else {
+    L.push(`Votos válidos ................. ${n(r.votosValidos)}`);
+  }
+  if (original && original.qe !== r.qe) {
+    L.push(`QE antes da cassação .......... ${n(original.qe)}`);
+    L.push(`QE após cassação .............. ${n(r.qe)}  [= floor(${n(r.votosValidos)} ÷ ${r.vagas})]`);
+  } else {
+    L.push(`Quociente Eleitoral (QE) ...... ${n(r.qe)}  [= floor(${n(r.votosValidos)} ÷ ${r.vagas})]`);
+  }
+  L.push(`Barreira 80% QE ............... ${n(r.barreira80)}  [= 0,8 × ${n(r.qe)}]`);
+  L.push(`Piso individual 20% QE ........ ${n(r.piso20)}  [= 0,2 × ${n(r.qe)}]`);
+  L.push(`QPs distribuídos (Fase 1) ..... ${r.totalQPs}`);
+  L.push(`Sobras (Fases 2+3) ............ ${r.sobras}`);
+  L.push('');
+
+  L.push('───────────────────────────────────────────────────────────────');
+  L.push('2. DISTRIBUIÇÃO DE CADEIRAS POR PARTIDO E FASE');
+  L.push('───────────────────────────────────────────────────────────────');
+  L.push('');
+  L.push(`${'Partido'.padEnd(22)} ${'Votos'.padStart(11)} ${'%QE'.padStart(6)} ${'F1'.padStart(4)} ${'F2'.padStart(4)} ${'F3'.padStart(4)} ${'Total'.padStart(6)} ${'Status F2'}`);
+  L.push('─'.repeat(75));
+  for (const p of r.partidos) {
+    const pct = (p.percentualQE * 100).toFixed(1) + '%';
+    const st = p.votos >= r.barreira80 ? 'Apto' : 'Barrado';
+    L.push(
+      `${p.sigla.padEnd(22)} ${n(p.votos).padStart(11)} ${pct.padStart(6)} ` +
+      `${String(p.qp).padStart(4)} ${String(p.sobrasF2).padStart(4)} ` +
+      `${String(p.sobrasF3).padStart(4)} ${String(p.total).padStart(6)}  ${st}`
+    );
+  }
+  L.push('');
+
+  const barrados = r.partidos.filter(p => p.status === 'barrado_80');
+  if (barrados.length > 0) {
+    L.push('───────────────────────────────────────────────────────────────');
+    L.push('3. PARTIDOS EXCLUÍDOS DA FASE 2 (abaixo da barreira 80% QE)');
+    L.push('───────────────────────────────────────────────────────────────');
+    L.push(`Barreira: ${n(r.barreira80)} votos (80% × QE ${n(r.qe)})`);
+    L.push('');
+    for (const p of barrados) {
+      const deficit = Math.floor(r.barreira80) - p.votos;
+      L.push(`• ${p.sigla}: ${n(p.votos)} votos — faltaram ${n(deficit)} votos para a barreira`);
+    }
+    L.push('');
+    L.push('  Base: Art. 109, II, CE (Lei 14.211/2021) — constitucional conforme');
+    L.push('  STF ADIs 7.228/7.263/7.325 (13/03/2025).');
+    L.push('');
+  }
+
+  if (r.fase3Ativada) {
+    L.push('───────────────────────────────────────────────────────────────');
+    L.push('4. FASE 3 — MAIORES MÉDIAS SEM BARREIRA (ADIs STF)');
+    L.push('───────────────────────────────────────────────────────────────');
+    L.push('');
+    L.push(`Motivo: ${r.fase3Motivo}`);
+    L.push('');
+    const g3 = r.partidos.filter(p => p.sobrasF3 > 0);
+    for (const p of g3) {
+      L.push(`• ${p.sigla}: ${p.sobrasF3} vaga(s) distribuída(s) na Fase 3`);
+    }
+    L.push('');
+    L.push('  Base: Art. 109, III, CE — sem barreira partidária na Fase 3');
+    L.push('  (ADIs 7.228/7.263/7.325 STF, 13/03/2025 — Red. Min. Flávio Dino).');
+    L.push('');
+  }
+
+  if (original) {
+    const variacao = ElectoralEngine.compararResultados(original, r);
+    const mudancas = Object.entries(variacao).filter(([, v]) => v !== 0);
+    L.push('───────────────────────────────────────────────────────────────');
+    L.push('5. VARIAÇÃO DE CADEIRAS (Original × Retotalizado)');
+    L.push('───────────────────────────────────────────────────────────────');
+    L.push(`QE original: ${n(original.qe)} → QE retotalizado: ${n(r.qe)}`);
+    L.push('');
+    if (mudancas.length === 0) {
+      L.push('Nenhuma variação — resultado idêntico ao cenário original.');
+    } else {
+      for (const [sigla, diff] of mudancas.sort((a, b) => b[1] - a[1])) {
+        const acao = diff > 0 ? `GANHOU +${diff} vaga(s)` : `PERDEU ${Math.abs(diff)} vaga(s)`;
+        const pNome = (diff > 0 ? r : original).partidos.find(p => p.sigla === sigla)?.nome || sigla;
+        L.push(`• ${sigla} (${pNome}): ${acao}`);
+      }
+    }
+    L.push('');
+  }
+
+  L.push('═══════════════════════════════════════════════════════════════');
+  L.push('FUNDAMENTAÇÃO LEGAL');
+  L.push('═══════════════════════════════════════════════════════════════');
+  L.push('');
+  L.push('Calculado conforme Art. 109 do Código Eleitoral (Lei nº 4.737/1965,');
+  L.push('com redação dada pela Lei nº 14.211/2021) e interpretação conforme');
+  L.push('fixada pelo Supremo Tribunal Federal nas ADIs 7.228, 7.263 e 7.325,');
+  L.push('julgamento de mérito e embargos de declaração em 13/03/2025,');
+  L.push('Redator Min. Flávio Dino.');
+  L.push('');
+  L.push('Sistema RetotalizaJE · Ferramenta técnico-jurídica de apoio.');
+  L.push('Não substitui decisão da Justiça Eleitoral.');
+  L.push('═══════════════════════════════════════════════════════════════');
+  return L.join('\n');
+}
+
+/**
+ * Renderiza o painel HTML do relatório técnico.
+ */
+function renderizarRelatorio(resultado, original) {
+  const container = $('relatorio-container');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const r = resultado;
+  const n = v => Math.round(v).toLocaleString('pt-BR');
+  const hoje = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+  // ── Cabeçalho ──────────────────────────────────────────────────
+  const hdr = el('div', { class: 'relatorio-header' });
+  const titWrap = el('div');
+  titWrap.appendChild(el('div', { class: 'relatorio-titulo' }, 'Relatório Técnico'));
+  titWrap.appendChild(el('div', { class: 'relatorio-subtitulo' }, `${r.rotulo} · Gerado em ${hoje}`));
+  hdr.appendChild(titWrap);
+
+  const btnCopiar = el('button', { class: 'btn-relatorio-copiar' }, '📋 Copiar como texto');
+  btnCopiar.addEventListener('click', () => {
+    const texto = gerarTextoRelatorio(resultado, original);
+    const restaurar = () => { btnCopiar.textContent = '📋 Copiar como texto'; };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(texto).then(() => {
+        btnCopiar.textContent = '✓ Copiado!';
+        setTimeout(restaurar, 2000);
+      }).catch(() => fallbackCopiar(texto, btnCopiar, restaurar));
+    } else {
+      fallbackCopiar(texto, btnCopiar, restaurar);
+    }
+  });
+  hdr.appendChild(btnCopiar);
+  container.appendChild(hdr);
+
+  // ── Seção 1: Parâmetros ─────────────────────────────────────────
+  const sec1 = el('div', { class: 'relatorio-sec' });
+  sec1.appendChild(el('div', { class: 'relatorio-sec-titulo' }, '1. Parâmetros da Eleição'));
+
+  const grid1 = el('div', { class: 'relatorio-kpi-grid' });
+  const kpi = (label, valor, formula, destaque) => {
+    const d = el('div', { class: 'relatorio-kpi' + (destaque ? ' relatorio-kpi--destaque' : '') });
+    d.appendChild(el('div', { class: 'relatorio-kpi-label' }, label));
+    d.appendChild(el('div', { class: 'relatorio-kpi-valor' }, valor));
+    if (formula) d.appendChild(el('div', { class: 'relatorio-kpi-formula' }, formula));
+    return d;
+  };
+
+  if (original && original.votosValidos !== r.votosValidos) {
+    grid1.appendChild(kpi('Votos válidos (antes)', n(original.votosValidos)));
+    grid1.appendChild(kpi('Votos válidos (após cassação)', n(r.votosValidos), null, true));
+  } else {
+    grid1.appendChild(kpi('Votos válidos', n(r.votosValidos), 'nominais + legenda'));
+  }
+  if (original && original.qe !== r.qe) {
+    grid1.appendChild(kpi('QE antes da cassação', n(original.qe)));
+    grid1.appendChild(kpi('QE após cassação', n(r.qe), `floor(${n(r.votosValidos)} ÷ ${r.vagas})`, true));
+  } else {
+    grid1.appendChild(kpi('Quociente Eleitoral (QE)', n(r.qe), `floor(${n(r.votosValidos)} ÷ ${r.vagas})`));
+  }
+  grid1.appendChild(kpi('Barreira 80% QE', n(r.barreira80), `0,8 × ${n(r.qe)}`));
+  grid1.appendChild(kpi('Piso individual 20% QE', n(r.piso20), `0,2 × ${n(r.qe)}`));
+  grid1.appendChild(kpi('Vagas', String(r.vagas)));
+  grid1.appendChild(kpi('QPs — Fase 1', String(r.totalQPs), 'vagas diretas'));
+  grid1.appendChild(kpi('Sobras — F2+F3', String(r.sobras), 'por maiores médias'));
+  sec1.appendChild(grid1);
+  container.appendChild(sec1);
+
+  // ── Seção 2: Tabela por partido ─────────────────────────────────
+  const sec2 = el('div', { class: 'relatorio-sec' });
+  sec2.appendChild(el('div', { class: 'relatorio-sec-titulo' }, '2. Distribuição por Partido e Fase'));
+
+  const thead2 = el('thead', {}, el('tr', {},
+    el('th', {}, 'Partido'),
+    el('th', { class: 'right' }, 'Votos'),
+    el('th', { class: 'right' }, '% QE'),
+    el('th', { class: 'center' }, 'F1'),
+    el('th', { class: 'center' }, 'F2'),
+    el('th', { class: 'center' }, 'F3'),
+    el('th', { class: 'center' }, 'Total'),
+    el('th', { class: 'center' }, 'Status F2'),
+  ));
+  const tbody2 = el('tbody');
+  for (const p of r.partidos) {
+    const barrado = p.status === 'barrado_80';
+    const tr = el('tr', { class: barrado ? 'relatorio-tr-barrado' : '' });
+    tr.appendChild(el('td', {}, el('strong', {}, p.sigla)));
+    tr.appendChild(el('td', { class: 'right' }, n(p.votos)));
+    tr.appendChild(el('td', { class: 'right' }, (p.percentualQE * 100).toFixed(1) + '%'));
+    tr.appendChild(el('td', { class: 'center' }, String(p.qp)));
+    tr.appendChild(el('td', { class: 'center' }, String(p.sobrasF2)));
+    tr.appendChild(el('td', { class: 'center' }, String(p.sobrasF3)));
+    tr.appendChild(el('td', { class: 'center bold' }, String(p.total)));
+    const deficit = Math.floor(r.barreira80) - p.votos;
+    const badge = barrado
+      ? el('span', { class: 'relatorio-badge relatorio-badge--barrado', title: `Faltaram ${n(deficit)} votos` }, 'Barrado')
+      : el('span', { class: 'relatorio-badge relatorio-badge--apto' }, 'Apto');
+    tr.appendChild(el('td', { class: 'center' }, badge));
+    tbody2.appendChild(tr);
+  }
+  sec2.appendChild(el('div', { class: 'tabela-scroll' }, el('table', { class: 'relatorio-tabela' }, thead2, tbody2)));
+  container.appendChild(sec2);
+
+  // ── Seção 3: Partidos barrados ──────────────────────────────────
+  const barrados = r.partidos.filter(p => p.status === 'barrado_80');
+  if (barrados.length > 0) {
+    const sec3 = el('div', { class: 'relatorio-sec' });
+    sec3.appendChild(el('div', { class: 'relatorio-sec-titulo' }, '3. Partidos Excluídos da Fase 2'));
+    sec3.appendChild(el('div', { class: 'relatorio-sec-sub' },
+      `Barreira: ${n(r.barreira80)} votos (80% × QE ${n(r.qe)})`));
+    const ul3 = el('ul', { class: 'relatorio-lista' });
+    for (const p of barrados) {
+      const deficit = Math.floor(r.barreira80) - p.votos;
+      ul3.appendChild(el('li', {},
+        el('strong', {}, p.sigla),
+        ` — ${n(p.votos)} votos (faltaram `,
+        el('strong', {}, n(deficit)),
+        ` para a barreira)`
+      ));
+    }
+    sec3.appendChild(ul3);
+    sec3.appendChild(el('div', { class: 'relatorio-legal' },
+      'Base legal: Art. 109, II, CE (Lei 14.211/2021) — constitucional conforme STF ADIs 7.228/7.263/7.325 (13/03/2025).'));
+    container.appendChild(sec3);
+  }
+
+  // ── Seção 4: Fase 3 ────────────────────────────────────────────
+  if (r.fase3Ativada) {
+    const secF3 = el('div', { class: 'relatorio-sec relatorio-sec--f3' });
+    secF3.appendChild(el('div', { class: 'relatorio-sec-titulo' }, '⚖ Fase 3 — Maiores Médias sem Barreira'));
+    secF3.appendChild(el('p', { class: 'relatorio-motivo' }, r.fase3Motivo));
+    const g3 = r.partidos.filter(p => p.sobrasF3 > 0);
+    if (g3.length > 0) {
+      const ul = el('ul', { class: 'relatorio-lista' });
+      for (const p of g3) {
+        ul.appendChild(el('li', {}, el('strong', {}, p.sigla), ` — ${p.sobrasF3} vaga(s) distribuída(s) na Fase 3`));
+      }
+      secF3.appendChild(ul);
+    }
+    secF3.appendChild(el('div', { class: 'relatorio-legal' },
+      'Base legal: Art. 109, III, CE — sem barreira partidária na Fase 3 (ADIs 7.228/7.263/7.325 STF, 13/03/2025, Red. Min. Flávio Dino).'));
+    container.appendChild(secF3);
+  }
+
+  // ── Seção 5: Comparativo ────────────────────────────────────────
+  if (original) {
+    const variacao = ElectoralEngine.compararResultados(original, r);
+    const mudancas = Object.entries(variacao).filter(([, v]) => v !== 0);
+    const secComp = el('div', { class: 'relatorio-sec' });
+    secComp.appendChild(el('div', { class: 'relatorio-sec-titulo' }, '5. Variação de Cadeiras (Original × Retotalizado)'));
+    secComp.appendChild(el('div', { class: 'relatorio-sec-sub' },
+      `QE original: ${n(original.qe)} → QE retotalizado: ${n(r.qe)}`));
+    if (mudancas.length === 0) {
+      secComp.appendChild(el('p', { class: 'relatorio-motivo' }, 'Nenhuma variação — resultado idêntico ao cenário original.'));
+    } else {
+      const ulComp = el('ul', { class: 'relatorio-lista' });
+      for (const [sigla, diff] of mudancas.sort((a, b) => b[1] - a[1])) {
+        const pNome = (diff > 0 ? r : original).partidos.find(p => p.sigla === sigla)?.nome || sigla;
+        const cls = diff > 0 ? 'relatorio-ganhou' : 'relatorio-perdeu';
+        const txt = diff > 0 ? `ganhou +${diff} vaga(s)` : `perdeu ${Math.abs(diff)} vaga(s)`;
+        ulComp.appendChild(el('li', { class: cls }, el('strong', {}, sigla), ` (${pNome}): ${txt}`));
+      }
+      secComp.appendChild(ulComp);
+    }
+    container.appendChild(secComp);
+  }
+
+  // ── Rodapé jurídico ─────────────────────────────────────────────
+  const rodape = el('div', { class: 'relatorio-rodape' });
+  rodape.innerHTML =
+    '<strong>Fundamentação legal:</strong> Calculado conforme Art. 109 do Código Eleitoral ' +
+    '(Lei nº 4.737/1965, redação dada pela Lei nº 14.211/2021) e interpretação conforme ' +
+    'fixada pelo STF nas <strong>ADIs 7.228, 7.263 e 7.325</strong>, julgamento de mérito e ' +
+    'embargos de declaração em 13/03/2025 (Redator Min. Flávio Dino).' +
+    '<br><em>Sistema RetotalizaJE · Ferramenta técnico-jurídica de apoio · ' +
+    'Não substitui decisão da Justiça Eleitoral.</em>';
+  container.appendChild(rodape);
+}
+
+function fallbackCopiar(texto, btn, restaurar) {
+  const ta = document.createElement('textarea');
+  ta.value = texto;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); btn.textContent = '✓ Copiado!'; } catch { btn.textContent = '⚠ Copie manualmente'; }
+  document.body.removeChild(ta);
+  setTimeout(restaurar, 2000);
 }
 
 // ─── Modo Apresentação — Slides ────────────────────────────────────────────────

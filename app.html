@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/styles.css?v=8" />
+  <link rel="stylesheet" href="css/styles.css?v=9" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -561,6 +561,12 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
               <span class="phase-tab-label">Auditoria</span>
               <span class="phase-count-badge count-audit" id="badge-audit">—</span>
             </button>
+            <button class="phase-tab" data-phase="relatorio"
+                    title="Relatório técnico para uso em petições"
+                    aria-label="Relatório Técnico">
+              <span class="phase-dot phase-dot-relatorio"></span>
+              <span class="phase-tab-label">Relatório</span>
+            </button>
           </nav>
 
           <div class="export-actions">
@@ -613,6 +619,11 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
             Execute um cálculo com cassação/anulação de votos para habilitar esta seção.
           </div>
         </div>
+
+        <!-- Relatório técnico -->
+        <section id="section-relatorio" class="relatorio-panel" aria-label="Relatório técnico jurídico">
+          <div id="relatorio-container"></div>
+        </section>
 
       </div><!-- .result-sections -->
 
@@ -802,7 +813,7 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
 <script src="js/engine.js?v=8"></script>
 <script src="js/presets.js?v=5"></script>
 <script src="js/export.js?v=9"></script>
-<script src="js/ui.js?v=14"></script>
+<script src="js/ui.js?v=15"></script>
 <script src="js/import.js?v=2"></script>
   <!-- Filtrador 2024 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
@@ -835,10 +846,11 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
 
   /* ── 2. Phase nav → scroll into view ────────────────────────────────────── */
   const phaseTargets = {
-    f1:    'section-resultado',
-    f2:    'section-resultado',
-    f3:    'section-resultado',
-    audit: 'section-auditoria',
+    f1:        'section-resultado',
+    f2:        'section-resultado',
+    f3:        'section-resultado',
+    audit:     'section-auditoria',
+    relatorio: 'section-relatorio',
   };
 
   document.querySelectorAll('.phase-nav .phase-tab').forEach(function (btn) {

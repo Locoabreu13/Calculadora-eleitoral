@@ -3479,3 +3479,213 @@ button:focus:not(:focus-visible) { outline: none; }
   .dash-plano-grid { grid-template-columns: repeat(2, 1fr); }
   .dash-hero-desc { display: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   RELATÓRIO TÉCNICO
+   ══════════════════════════════════════════════════════════════ */
+
+/* Phase tab dot */
+.phase-dot-relatorio { background: #8B5CF6; }
+
+.relatorio-panel {
+  background: var(--white);
+  border: 1px solid var(--slate-mid);
+  border-radius: var(--raio);
+  padding: 0;
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+/* ── Cabeçalho ───────────────────────────────────────────────── */
+.relatorio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #1B2B4B 0%, #2A4A6B 100%);
+  color: #fff;
+}
+.relatorio-titulo {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+.relatorio-subtitulo {
+  font-size: 11px;
+  opacity: .75;
+  margin-top: 2px;
+}
+
+.btn-relatorio-copiar {
+  flex-shrink: 0;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.btn-relatorio-copiar:hover { background: rgba(255,255,255,.25); }
+
+/* ── Seções internas ─────────────────────────────────────────── */
+.relatorio-sec {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--slate-mid);
+}
+.relatorio-sec:last-child { border-bottom: none; }
+
+.relatorio-sec-titulo {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.relatorio-sec-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+/* Fase 3 highlight */
+.relatorio-sec--f3 {
+  background: #EFF6FF;
+  border-left: 4px solid #3B82F6;
+}
+.relatorio-sec--f3 .relatorio-sec-titulo { color: #1E40AF; }
+
+/* ── KPI grid ────────────────────────────────────────────────── */
+.relatorio-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+.relatorio-kpi {
+  background: var(--slate);
+  border-radius: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--slate-mid);
+}
+.relatorio-kpi--destaque {
+  background: #ECFDF5;
+  border-color: #6EE7B7;
+}
+.relatorio-kpi-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.relatorio-kpi-valor {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  font-family: 'JetBrains Mono', monospace;
+}
+.relatorio-kpi-formula {
+  font-size: 10px;
+  color: var(--text-hint);
+  margin-top: 2px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Tabela ──────────────────────────────────────────────────── */
+.relatorio-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.relatorio-tabela th {
+  background: var(--slate);
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  padding: 7px 10px;
+  border-bottom: 2px solid var(--slate-mid);
+  white-space: nowrap;
+}
+.relatorio-tabela td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--slate-mid);
+  vertical-align: middle;
+}
+.relatorio-tabela tbody tr:hover { background: var(--slate); }
+.relatorio-tr-barrado td { color: var(--text-muted); background: #FEF2F2; }
+.relatorio-tabela .bold { font-weight: 700; }
+.relatorio-tabela .right { text-align: right; }
+.relatorio-tabela .center { text-align: center; }
+
+/* ── Badges ──────────────────────────────────────────────────── */
+.relatorio-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+.relatorio-badge--apto {
+  background: #DCFCE7;
+  color: #15803D;
+}
+.relatorio-badge--barrado {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+/* ── Lista ───────────────────────────────────────────────────── */
+.relatorio-lista {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.relatorio-lista li {
+  padding: 6px 10px;
+  background: var(--slate);
+  border-radius: 5px;
+  font-size: 12px;
+  border-left: 3px solid var(--slate-dark);
+}
+.relatorio-ganhou { border-left-color: #22C55E !important; background: #F0FDF4 !important; }
+.relatorio-perdeu { border-left-color: #EF4444 !important; background: #FEF2F2 !important; }
+
+/* ── Textos ──────────────────────────────────────────────────── */
+.relatorio-motivo {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+  line-height: 1.55;
+}
+.relatorio-legal {
+  font-size: 11px;
+  color: var(--text-hint);
+  font-style: italic;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--slate-mid);
+  line-height: 1.5;
+}
+
+/* ── Rodapé ──────────────────────────────────────────────────── */
+.relatorio-rodape {
+  padding: 14px 20px;
+  background: var(--slate);
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  border-top: 1px solid var(--slate-mid);
+}
