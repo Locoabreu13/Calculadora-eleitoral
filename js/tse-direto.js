@@ -53,6 +53,26 @@
     'PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO',
   ];
 
+  // Vagas por cargo e UF — Deputado Federal: TSE Res. 23.669/2021 (513 cadeiras)
+  // Deputado Estadual: CF art. 27 (federal≤12 → 3×fed; federal>12 → 36+(fed−12))
+  // Deputado Distrital: CLDF, 24 cadeiras
+  // Vereador: omitido (varia por município — não auto-preenche)
+  const VAGAS = {
+    'Deputado Federal': {
+      AC:  8, AL:  9, AM:  8, AP:  8, BA: 39, CE: 22, DF:  8,
+      ES: 10, GO: 17, MA: 18, MG: 53, MS:  8, MT:  8, PA: 17,
+      PB: 12, PE: 25, PI: 10, PR: 30, RJ: 46, RN:  8, RO:  8,
+      RR:  8, RS: 31, SC: 16, SE:  8, SP: 70, TO:  8,
+    },
+    'Deputado Estadual': {
+      AC: 24, AL: 27, AM: 24, AP: 24, BA: 63, CE: 46,
+      ES: 30, GO: 41, MA: 42, MG: 77, MS: 24, MT: 24, PA: 41,
+      PB: 36, PE: 49, PI: 30, PR: 54, RJ: 70, RN: 24, RO: 24,
+      RR: 24, RS: 55, SC: 40, SE: 24, SP: 94, TO: 24,
+    },
+    'Deputado Distrital': { DF: 24 },
+  };
+
   /* ═══════════════════════════════════════════════════════════════════
      INDEXEDDB
   ═══════════════════════════════════════════════════════════════════ */
@@ -233,6 +253,13 @@
     const rotulo = $('input-rotulo');
     if (rotulo && !rotulo.value.trim()) {
       rotulo.value = `${cargo} · ${ufLabel} · ${ano}`;
+    }
+
+    // Auto-preenche vagas conforme tabela oficial (sobrescreve sempre ao carregar)
+    const vagasOficiais = (VAGAS[cargo] || {})[uf];
+    if (vagasOficiais) {
+      const elVagas = $('input-vagas');
+      if (elVagas) elVagas.value = vagasOficiais;
     }
 
     const munLabel = municipio ? ` · ${municipio}` : '';
@@ -419,6 +446,12 @@
         const wrap = $('tse-mun-wrap');
         if (wrap) wrap.style.display = 'none';
         _atualizarBotao();
+
+        // Pré-preenche vagas ao selecionar cargo (UF já está definida)
+        const ufAtual = ($('tse-uf') || {}).value;
+        const vagasPrev = (VAGAS[cargo] || {})[ufAtual];
+        const elVagasPrev = $('input-vagas');
+        if (vagasPrev && elVagasPrev) elVagasPrev.value = vagasPrev;
       });
     }
 
