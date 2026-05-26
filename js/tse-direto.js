@@ -22,11 +22,14 @@
   const CDN_DIRETO = ano =>
     `https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_partido_munzona/votacao_partido_munzona_${ano}.zip`;
 
-  // CDN do TSE retorna header CORS duplicado ("*, *") que browsers rejeitam.
-  // Usamos proxy apenas para este fetch — o resto do app não passa por proxy.
-  const PROXIES = [
-    url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  // Tentativa 0: CDN direto (funciona em muitos browsers quando o header duplicado é tolerado).
+  // Tentativas 1-2: proxies CORS, usados apenas como fallback para este fetch.
+  // Diagnóstico 2026-05-25: allorigins.win = timeout, corsproxy.io = 403 p/ TSE.
+  // O proxy mais recente a funcionar é indicado pelo console.log abaixo.
+  const FONTES = [
+    url => url,                                                           // 0: direto
+    url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`, // 1: allorigins
+    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,             // 2: corsproxy
   ];
 
   // Apenas anos juridicamente relevantes para retotalização (ADIs 7.228/7.263/7.325)
@@ -177,28 +180,32 @@
   async function _baixarECacharAno(ano, onProgress) {
     const cfg = ANOS.find(a => a.ano === ano) || { sizeMB: '?' };
 
-    // 1. Download via proxy (CDN do TSE envia header CORS duplicado "*, *")
+    // 1. Download — tenta CDN direto primeiro, depois proxies CORS em cascata
     onProgress(0, `Conectando ao servidor do TSE…`);
 
     const urlOrigem = CDN_DIRETO(ano);
+    const rotulos   = ['CDN direto', 'proxy allorigins.win', 'proxy corsproxy.io'];
     let resp = null;
-    let proxyUsado = '';
-    for (let i = 0; i < PROXIES.length; i++) {
-      const urlProxy = PROXIES[i](urlOrigem);
+    let fonteUsada = '';
+    for (let i = 0; i < FONTES.length; i++) {
+      const url = FONTES[i](urlOrigem);
       try {
-        console.log(`[TSE Direto] tentando proxy ${i + 1}:`, urlProxy);
-        resp = await fetch(urlProxy);
-        if (resp.ok) { proxyUsado = urlProxy; break; }
-        console.warn(`[TSE Direto] proxy ${i + 1} retornou HTTP ${resp.status}`);
+        console.log(`[TSE Direto] tentativa ${i + 1}/${FONTES.length} (${rotulos[i]}):`, url);
+        const r = await fetch(url, { signal: AbortSignal.timeout(30000) });
+        if (r.ok) { resp = r; fonteUsada = rotulos[i]; break; }
+        console.warn(`[TSE Direto] ${rotulos[i]} retornou HTTP ${r.status}`);
       } catch (e) {
-        console.warn(`[TSE Direto] proxy ${i + 1} falhou:`, e.message);
+        console.warn(`[TSE Direto] ${rotulos[i]} falhou:`, e.message);
       }
-      resp = null;
     }
     if (!resp) {
-      throw new Error('Não foi possível baixar os dados do TSE. Verifique sua conexão e tente novamente.');
+      throw new Error(
+        'Serviço temporariamente indisponível. ' +
+        'Use o modo CSV Manual (baixe o arquivo no Portal TSE e importe pelo campo acima) ' +
+        'ou aguarde alguns minutos e tente novamente.'
+      );
     }
-    console.log(`[TSE Direto] download via proxy: ${proxyUsado}`);
+    console.log(`[TSE Direto] download bem-sucedido via ${fonteUsada}`);
 
     const total   = parseInt(resp.headers.get('Content-Length') || '0', 10);
     const reader  = resp.body.getReader();
