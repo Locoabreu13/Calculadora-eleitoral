@@ -413,6 +413,42 @@ function executarCalculo() {
     return;
   }
 
+  // Validar cassações contra partidos e candidatos do cenário carregado
+  const normSigla = s => (s || '').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+  const errosCassacao = [];
+  for (const cass of cenario.cassacoes) {
+    const partidoEncontrado = cenario.partidos.find(
+      p => normSigla(p.sigla) === normSigla(cass.partido)
+    );
+    if (!partidoEncontrado) {
+      const siglas = cenario.partidos.map(p => p.sigla).join(', ');
+      errosCassacao.push(
+        `Partido "${cass.partido}" não encontrado no cenário. Siglas disponíveis: ${siglas}`
+      );
+      continue;
+    }
+    if (cass.candidato && partidoEncontrado.candidatos && partidoEncontrado.candidatos.length > 0) {
+      const achou = partidoEncontrado.candidatos.find(c => c.nome === cass.candidato);
+      if (!achou) {
+        const nomes = partidoEncontrado.candidatos.map(c => c.nome).join(', ');
+        errosCassacao.push(
+          `Candidato "${cass.candidato}" não encontrado no partido "${partidoEncontrado.sigla}". ` +
+          `Candidatos disponíveis: ${nomes}`
+        );
+      }
+    }
+  }
+  if (errosCassacao.length > 0) {
+    for (const msg of errosCassacao) {
+      erroBox.appendChild(el('div', { class: 'alerta critico' },
+        el('div', { class: 'alerta-titulo' }, '✕ Cassação inválida'),
+        msg
+      ));
+    }
+    erroBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+
   // Calcular cenário original para comparação
   if (cenario.cassacoes && cenario.cassacoes.length > 0) {
     // Cassação: original é o mesmo cenário sem as cassações
