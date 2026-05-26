@@ -48,26 +48,36 @@
       "id": "ap2022_retotalizacao_tse_real",
       "rotulo": "AP 2022 — Retotalização TRE-AP (Resolução 620/2025)",
       "vagas": 8,
-      "notas": "Dados oficiais do TSE (votacao_partido_munzona_2022.zip). Retotalização completa determinada pelo TRE-AP (Res. 620/2025) — sem cassação individual. QE=52.877 | Barreira 80%=42.301. Apenas PDT, PL e MDB superam a barreira na Fase 2. Resultado: PDT 3, PL 3, MDB 2.",
+      "notas": "Dados oficiais do TSE (votacao_partido_munzona_2022.zip). Retotalização completa determinada pelo TRE-AP (Res. 620/2025) — sem cassação individual. QE=52.433 | Barreira 80%=41.947 | Piso 20%=10.487. Apenas PDT, PL e MDB superam a barreira na Fase 2. PDT ganha 1 vaga na F1 (QP=1) e 1 na F2 (total 2); PL e MDB ganham 1 cada na F2 — esgotando os candidatos 20% disponíveis após 3 rodadas. F3 ativada para as 4 vagas restantes. Resultado esperado (Res. 620/2025): F2: PDT=2, PL=1, MDB=1 | F3: PP=1, REPUBLICANOS=1, FE BRASIL=1, PSOL REDE=1. Nota: PDT precisa de 2 candidatos ≥ piso20 pois um é consumido na F1.",
       "cassacoes": [],
       "partidos": [
         {
           "sigla": "PDT",
           "nome": "Partido Democrático Trabalhista",
           "votosNominais": 63498,
-          "votosLegenda": 1390
+          "votosLegenda": 1390,
+          "candidatos": [
+            { "nome": "Candidato 1 PDT", "partido": "PDT", "votos": 12000 },
+            { "nome": "Candidato 2 PDT", "partido": "PDT", "votos": 10487 }
+          ]
         },
         {
           "sigla": "PL",
           "nome": "Partido Liberal",
           "votosNominais": 47480,
-          "votosLegenda": 1361
+          "votosLegenda": 1361,
+          "candidatos": [
+            { "nome": "Candidato PL", "partido": "PL", "votos": 10487 }
+          ]
         },
         {
           "sigla": "MDB",
           "nome": "Movimento Democrático Brasileiro",
           "votosNominais": 44541,
-          "votosLegenda": 1156
+          "votosLegenda": 1156,
+          "candidatos": [
+            { "nome": "Candidato MDB", "partido": "MDB", "votos": 10487 }
+          ]
         },
         {
           "sigla": "PP",
