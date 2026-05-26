@@ -22,28 +22,33 @@
   const CDN = ano =>
     `https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_partido_munzona/votacao_partido_munzona_${ano}.zip`;
 
+  // Apenas anos juridicamente relevantes para retotalização (ADIs 7.228/7.263/7.325)
   const ANOS = [
-    { ano: '2024', label: '2024 — Municipais',  tipo: 'municipais', sizeMB: 6  },
-    { ano: '2022', label: '2022 — Gerais',       tipo: 'gerais',     sizeMB: 25 },
-    { ano: '2020', label: '2020 — Municipais',   tipo: 'municipais', sizeMB: 6  },
+    { ano: '2022', label: '2022 — Eleições Gerais',      tipo: 'gerais',     sizeMB: 25 },
+    { ano: '2024', label: '2024 — Eleições Municipais',  tipo: 'municipais', sizeMB: 6  },
   ];
 
+  // 2022: só Federal (todas as UFs) e Distrital (apenas DF)
+  // 2024: só Vereador (todas as UFs)
   const CARGOS_TIPO = {
-    gerais:     ['Deputado Federal', 'Deputado Estadual'],
+    gerais:     ['Deputado Federal', 'Deputado Distrital'],
     municipais: ['Vereador'],
   };
+
+  // Deputado Distrital só existe no DF — bloqueio feito na UI
+  const CARGO_SOMENTE_DF = new Set(['Deputado Distrital']);
 
   const UFS = [
     'AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT',
     'PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO',
   ];
 
-  // TSE CSV usa maiúsculas; filtra apenas cargos relevantes para a calculadora
+  // TSE CSV usa maiúsculas; Deputado Estadual ignorado (não relevante para ADIs)
   const CARGO_MAP = {
     'DEPUTADO FEDERAL':   'Deputado Federal',
-    'DEPUTADO ESTADUAL':  'Deputado Estadual',
-    'DEPUTADO DISTRITAL': 'Deputado Estadual',
+    'DEPUTADO DISTRITAL': 'Deputado Distrital',
     'VEREADOR':           'Vereador',
+    // 'DEPUTADO ESTADUAL' ausente → _normCargo retorna null → linha ignorada
   };
 
   /* ═══════════════════════════════════════════════════════════════════
@@ -510,8 +515,17 @@
     const selCargo = $('tse-cargo');
     if (selCargo) {
       selCargo.addEventListener('change', () => {
+        const cargo = selCargo.value;
+        const selUF = $('tse-uf');
+        if (CARGO_SOMENTE_DF.has(cargo)) {
+          // Deputado Distrital só existe no DF — trava seleção automaticamente
+          if (selUF) { selUF.value = 'DF'; selUF.disabled = true; }
+        } else {
+          // Desbloqueia UF se estava travada por Deputado Distrital
+          if (selUF && selUF.disabled) selUF.disabled = false;
+        }
         const wrap = $('tse-mun-wrap');
-        if (wrap) wrap.style.display = 'none'; // esconde até dados serem carregados
+        if (wrap) wrap.style.display = 'none';
         _atualizarBotao();
       });
     }
