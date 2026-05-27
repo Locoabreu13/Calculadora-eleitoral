@@ -220,6 +220,24 @@
     <!-- ── SIDEBAR ──────────────────────────────────────────────────────────── -->
     <aside class="sidebar" role="complementary" aria-label="Painel de entrada de dados">
 
+      <!-- Fluxo de trabalho -->
+      <div class="sidebar-flow" aria-label="Passos do cálculo">
+        <div class="sf-step sf-active" id="sf-1">
+          <div class="sf-num">1</div>
+          <div class="sf-label">Carregar</div>
+        </div>
+        <div class="sf-connector"></div>
+        <div class="sf-step" id="sf-2">
+          <div class="sf-num">2</div>
+          <div class="sf-label">Cassação</div>
+        </div>
+        <div class="sf-connector"></div>
+        <div class="sf-step" id="sf-3">
+          <div class="sf-num">3</div>
+          <div class="sf-label">Calcular</div>
+        </div>
+      </div>
+
       <!-- Preset -->
       <div class="sidebar-section">
         <div class="sidebar-label">Casos de Estudo</div>
@@ -477,8 +495,12 @@
 
       </div><!-- .result-sections -->
 
-      <!-- ── DOCS SECTION (toggled from topbar) ──────────────────────────────── -->
+      <!-- ── DOCS SECTION (drawer deslizante) ─────────────────────────────────── -->
       <div id="docs-section" class="docs-section" aria-label="Documentação e glossário">
+        <div class="drawer-bar">
+          <span class="drawer-bar-title">⚖ Como Funciona — Documentação Jurídica</span>
+          <button class="drawer-close-btn" id="btn-close-docs">✕ Fechar</button>
+        </div>
         <div class="docs-container">
 
           <h2>O Sistema Proporcional Brasileiro</h2>
@@ -599,8 +621,12 @@
         </div><!-- .docs-container -->
       </div><!-- #docs-section -->
 
-      <!-- ── MANUAL DE USO (toggled from topbar) ────────────────────────────────── -->
-      <div id="manual-section" class="docs-section" style="display:none" aria-label="Manual de uso">
+      <!-- ── MANUAL DE USO (drawer deslizante) ────────────────────────────────── -->
+      <div id="manual-section" class="docs-section" aria-label="Manual de uso">
+        <div class="drawer-bar">
+          <span class="drawer-bar-title">📖 Manual de Uso</span>
+          <button class="drawer-close-btn" id="btn-close-manual">✕ Fechar</button>
+        </div>
         <div class="docs-container">
 
           <h2>Manual de Uso</h2>
@@ -676,6 +702,9 @@
   <div id="aba-docs"        class="tab-content" aria-hidden="true"></div>
 
 </div><!-- #app -->
+<!-- ═══ BACKDROP DOS DRAWERS ══════════════════════════════════════════════ -->
+<div id="docs-backdrop" class="docs-backdrop"></div>
+
 <!-- ═══ MODO APRESENTAÇÃO — SLIDES ════════════════════════════════════════ -->
 <div id="apres-overlay" role="dialog" aria-modal="true" aria-label="Modo Apresentação">
   <div id="apres-slides-area"></div>
@@ -717,43 +746,81 @@
 (function () {
   'use strict';
 
-  /* ── 1. Docs toggle ───────────────────────────────────────────────────────── */
-  const btnDocs    = document.getElementById('btn-toggle-docs');
-  const docsSection = document.getElementById('docs-section');
-
-  if (btnDocs && docsSection) {
-    btnDocs.addEventListener('click', function () {
-      const open = docsSection.style.display === 'block';
-      docsSection.style.display = open ? 'none' : 'block';
-      btnDocs.setAttribute('aria-expanded', String(!open));
-      if (!open) {
-        // Fecha o manual se estiver aberto
-        const ms = document.getElementById('manual-section');
-        const bm = document.getElementById('btn-toggle-manual');
-        if (ms) ms.style.display = 'none';
-        if (bm) bm.setAttribute('aria-expanded', 'false');
-        docsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  }
-
-  /* ── 1b. Manual toggle ─────────────────────────────────────────────────────── */
+  /* ── 1. Drawer: docs + manual ────────────────────────────────────────────── */
+  const backdrop     = document.getElementById('docs-backdrop');
+  const btnDocs      = document.getElementById('btn-toggle-docs');
+  const docsSection  = document.getElementById('docs-section');
   const btnManual    = document.getElementById('btn-toggle-manual');
   const manualSection = document.getElementById('manual-section');
 
-  if (btnManual && manualSection) {
-    btnManual.addEventListener('click', function () {
-      const open = manualSection.style.display === 'block';
-      manualSection.style.display = open ? 'none' : 'block';
-      btnManual.setAttribute('aria-expanded', String(!open));
-      if (!open) {
-        // Fecha o "Como Funciona" se estiver aberto
-        if (docsSection) docsSection.style.display = 'none';
-        if (btnDocs) btnDocs.setAttribute('aria-expanded', 'false');
-        manualSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+  function fecharDrawers() {
+    [docsSection, manualSection].forEach(function(el) {
+      if (el) el.classList.remove('open');
     });
+    [btnDocs, btnManual].forEach(function(b) {
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
+    if (backdrop) backdrop.classList.remove('open');
   }
+
+  function abrirDrawer(painel, btn) {
+    fecharDrawers();
+    if (painel) painel.classList.add('open');
+    if (btn)    btn.setAttribute('aria-expanded', 'true');
+    if (backdrop) backdrop.classList.add('open');
+  }
+
+  if (backdrop)  backdrop.addEventListener('click', fecharDrawers);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') fecharDrawers();
+  });
+
+  if (btnDocs)   btnDocs.addEventListener('click',   function() { abrirDrawer(docsSection,   btnDocs);   });
+  if (btnManual) btnManual.addEventListener('click', function() { abrirDrawer(manualSection, btnManual); });
+
+  var btnCloseDocs   = document.getElementById('btn-close-docs');
+  var btnCloseManual = document.getElementById('btn-close-manual');
+  if (btnCloseDocs)   btnCloseDocs.addEventListener('click',   fecharDrawers);
+  if (btnCloseManual) btnCloseManual.addEventListener('click', fecharDrawers);
+
+  /* ── 1c. Indicador de passos ─────────────────────────────────────────────── */
+  (function() {
+    var sf1 = document.getElementById('sf-1');
+    var sf2 = document.getElementById('sf-2');
+    var sf3 = document.getElementById('sf-3');
+    if (!sf1 || !sf2 || !sf3) return;
+
+    function setStep(n) {
+      [sf1, sf2, sf3].forEach(function(el, i) {
+        el.classList.remove('sf-active', 'sf-done');
+        if (i + 1 < n)  el.classList.add('sf-done');
+        if (i + 1 === n) el.classList.add('sf-active');
+      });
+    }
+
+    // Passo 1 → concluído quando TSE carrega com sucesso
+    var statusEl = document.getElementById('tse-direto-status');
+    if (statusEl) {
+      new MutationObserver(function() {
+        var t = statusEl.textContent || '';
+        if (t.toLowerCase().includes('carregad') || t.includes('✔') || t.includes('partidos')) {
+          setStep(2);
+        }
+      }).observe(statusEl, { childList: true, subtree: true, characterData: true });
+    }
+
+    // Passo 3 → ativo ao clicar em Calcular
+    var btnCalc = document.getElementById('btn-calcular');
+    if (btnCalc) {
+      btnCalc.addEventListener('click', function() { setStep(3); });
+    }
+
+    // Volta ao passo 1 ao limpar
+    var btnLimpar = document.getElementById('btn-limpar');
+    if (btnLimpar) {
+      btnLimpar.addEventListener('click', function() { setStep(1); });
+    }
+  })();
 
   /* ── 2. Phase nav → scroll into view ────────────────────────────────────── */
   const phaseTargets = {
