@@ -200,6 +200,11 @@
 
     <div class="topbar-right">
       <button class="topbar-dash-btn" onclick="voltarDashboard()" title="Voltar ao Dashboard">← Dashboard</button>
+      <button class="topbar-docs-btn" id="btn-toggle-manual"
+              aria-expanded="false" aria-controls="manual-section"
+              title="Manual de uso do sistema">
+        📖 Manual
+      </button>
       <span class="topbar-version" id="topbar-version">v2.0</span>
       <button class="topbar-docs-btn" id="btn-toggle-docs"
               aria-expanded="false" aria-controls="docs-section"
@@ -364,45 +369,7 @@
     <main class="main-content" role="main" aria-label="Resultados da distribuição">
 
       <!-- Empty state (shown by CSS :has() when no results exist) -->
-      <div class="empty-state" aria-hidden="true">
-  <div class="tse-tutorial">
-    <div class="tse-tutorial-header">
-      <div class="tse-tutorial-badge">Como começar</div>
-      <h3 class="tse-tutorial-title">Carregue os dados e calcule</h3>
-      <p class="tse-tutorial-sub">Siga os passos abaixo para iniciar um cálculo de retotalização.</p>
-    </div>
-    <div class="tse-steps">
-      <div class="tse-step">
-        <div class="tse-step-num">1</div>
-        <div class="tse-step-body">
-          <div class="tse-step-title">Abra a seção de carregamento</div>
-          <div class="tse-step-desc">No painel lateral, clique em <strong>⬇ Importar dados do TSE</strong> para expandir os campos de seleção.</div>
-        </div>
-      </div>
-      <div class="tse-step">
-        <div class="tse-step-num">2</div>
-        <div class="tse-step-body">
-          <div class="tse-step-title">Selecione o ano, estado e cargo</div>
-          <div class="tse-step-desc">Escolha o <strong>Ano</strong> da eleição, o <strong>Estado (UF)</strong> e o <strong>Cargo</strong> desejado nos menus correspondentes.</div>
-        </div>
-      </div>
-      <div class="tse-step">
-        <div class="tse-step-num">3</div>
-        <div class="tse-step-body">
-          <div class="tse-step-title">Carregue os dados</div>
-          <div class="tse-step-desc">Clique em <strong>▶ Carregar do TSE</strong>. Os dados serão preenchidos automaticamente — nenhum arquivo precisa ser baixado.</div>
-        </div>
-      </div>
-      <div class="tse-step">
-        <div class="tse-step-num">4</div>
-        <div class="tse-step-body">
-          <div class="tse-step-title">Configure e calcule</div>
-          <div class="tse-step-desc">Confira o número de vagas, adicione cassações se necessário e clique em <strong>▶ Calcular Distribuição</strong>.</div>
-        </div>
-      </div>
-    </div><!-- .tse-steps -->
-  </div><!-- .tse-tutorial -->
-</div><!-- .empty-state -->
+      <div class="empty-state" aria-hidden="true"></div>
 
       <!-- Result sections (shown by CSS :has() when results exist) -->
       <div class="result-sections">
@@ -632,6 +599,44 @@
         </div><!-- .docs-container -->
       </div><!-- #docs-section -->
 
+      <!-- ── MANUAL DE USO (toggled from topbar) ────────────────────────────────── -->
+      <div id="manual-section" class="docs-section" style="display:none" aria-label="Manual de uso">
+        <div class="docs-container">
+
+          <h2>Manual de Uso</h2>
+
+          <h3>1. Carregar os dados</h3>
+          <p>No painel lateral, clique em <strong>⬇ Importar dados do TSE</strong> para abrir os campos de seleção. Escolha o <strong>Ano</strong>, o <strong>Estado (UF)</strong> e o <strong>Cargo</strong> desejado. Clique em <strong>▶ Carregar do TSE</strong> — os partidos e votos são preenchidos automaticamente, sem baixar nenhum arquivo.</p>
+
+          <h3>2. Conferir as vagas</h3>
+          <p>O campo <strong>Vagas</strong> é preenchido automaticamente com o número oficial de cadeiras para o estado e cargo selecionados (conforme a Resolução TSE 23.669/2021 e o art. 27 da CF). Você pode ajustar manualmente se necessário.</p>
+
+          <h3>3. Configurar uma cassação (opcional)</h3>
+          <p>Clique em <strong>+ Cassação / Anulação</strong> no painel lateral. Preencha o partido, o candidato e a quantidade de votos a anular. Escolha a modalidade:</p>
+          <div class="glossario-item"><span class="termo">Nominal</span><span>Anula somente os votos nominais do candidato.</span></div>
+          <div class="glossario-item"><span class="termo">Legenda</span><span>Anula os votos de legenda proporcionais ao candidato.</span></div>
+          <div class="glossario-item"><span class="termo">Total</span><span>Anula votos nominais e de legenda juntos.</span></div>
+          <div class="glossario-item"><span class="termo">DRAP</span><span>Anulação conforme o Demonstrativo de Resultado e Apuração oficial do TRE.</span></div>
+
+          <h3>4. Calcular</h3>
+          <p>Clique em <strong>▶ Calcular Distribuição</strong>. O sistema executa as três fases do algoritmo proporcional e exibe os resultados na área principal da tela.</p>
+
+          <h3>5. Entender os resultados</h3>
+          <div class="glossario-item"><span class="termo">F1 QP</span><span>Vagas distribuídas na Fase 1 — divisão direta dos votos do partido pelo Quociente Eleitoral.</span></div>
+          <div class="glossario-item"><span class="termo">F2 80/20</span><span>Sobras distribuídas pelo método D'Hondt com barreira dupla: partido precisa de ≥ 80% do QE e candidato de ≥ 20% do QE para participar.</span></div>
+          <div class="glossario-item"><span class="termo">F3 ADIs</span><span>Sobras finais distribuídas sem barreira de votos, conforme as ADIs 7.228, 7.263 e 7.325 do STF (13/03/2025).</span></div>
+          <div class="glossario-item"><span class="termo">Auditoria</span><span>Cada rodada do D'Hondt detalhada: médias calculadas, partido vencedor e candidato convocado em cada etapa.</span></div>
+          <div class="glossario-item"><span class="termo">Relatório</span><span>Texto técnico-jurídico pronto para uso em petições, com todos os parâmetros e resultados do cálculo.</span></div>
+
+          <h3>6. Salvar e exportar</h3>
+          <p>Use <strong>💾 Salvar Estudo</strong> para guardar o cálculo completo (parâmetros + resultado) no Dashboard e como arquivo JSON. Use <strong>⬇ CSV</strong> ou <strong>⬇ PDF</strong> para exportar a tabela de resultados.</p>
+
+          <h3>7. Casos de estudo prontos</h3>
+          <p>O menu <strong>Casos de Estudo</strong> no topo do painel lateral contém casos reais pré-configurados (ex: Ceará 2022, Amapá 2022). Selecione um para carregar os dados automaticamente e explorar o cálculo sem precisar importar nada.</p>
+
+        </div>
+      </div><!-- #manual-section -->
+
     </main><!-- .main-content -->
 
   </div><!-- .app-body -->
@@ -722,7 +727,30 @@
       docsSection.style.display = open ? 'none' : 'block';
       btnDocs.setAttribute('aria-expanded', String(!open));
       if (!open) {
+        // Fecha o manual se estiver aberto
+        const ms = document.getElementById('manual-section');
+        const bm = document.getElementById('btn-toggle-manual');
+        if (ms) ms.style.display = 'none';
+        if (bm) bm.setAttribute('aria-expanded', 'false');
         docsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+
+  /* ── 1b. Manual toggle ─────────────────────────────────────────────────────── */
+  const btnManual    = document.getElementById('btn-toggle-manual');
+  const manualSection = document.getElementById('manual-section');
+
+  if (btnManual && manualSection) {
+    btnManual.addEventListener('click', function () {
+      const open = manualSection.style.display === 'block';
+      manualSection.style.display = open ? 'none' : 'block';
+      btnManual.setAttribute('aria-expanded', String(!open));
+      if (!open) {
+        // Fecha o "Como Funciona" se estiver aberto
+        if (docsSection) docsSection.style.display = 'none';
+        if (btnDocs) btnDocs.setAttribute('aria-expanded', 'false');
+        manualSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   }
