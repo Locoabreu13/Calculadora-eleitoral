@@ -246,7 +246,6 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify
     <a href="#como-funciona">Como funciona</a>
     <a href="#funcionalidades">Funcionalidades</a>
     <a href="#casos">Casos reais</a>
-    <a href="#planos">Planos</a>
   </div>
   <a href="app.html" class="nav-cta">Acessar sistema →</a>
 </nav>
@@ -272,7 +271,7 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify
   <div class="hero-stats reveal reveal-delay-3">
     <div class="stat"><span class="stat-n">3</span><div class="stat-l">Fases do algoritmo</div></div>
     <div class="stat"><span class="stat-n">100%</span><div class="stat-l">Fiel às ADIs STF</div></div>
-    <div class="stat"><span class="stat-n">CSV</span><div class="stat-l">Importação direta TSE</div></div>
+    <div class="stat"><span class="stat-n">27</span><div class="stat-l">Estados disponíveis</div></div>
     <div class="stat"><span class="stat-n">4</span><div class="stat-l">Modalidades de cassação</div></div>
   </div>
 </section>
@@ -283,13 +282,13 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify
     <div class="steps-nav">
       <div style="margin-bottom:32px" class="reveal">
         <div class="section-label">Fluxo de uso</div>
-        <h2 style="font-family:'Syne',sans-serif;font-size:30px;font-weight:700;letter-spacing:-.01em;line-height:1.155;margin-bottom:10px">Do arquivo do TSE ao resultado em minutos</h2>
-        <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Sem configuração manual. O sistema lê o CSV oficial e calcula automaticamente todas as fases.</p>
+        <h2 style="font-family:'Syne',sans-serif;font-size:30px;font-weight:700;letter-spacing:-.01em;line-height:1.155;margin-bottom:10px">Dos dados do TSE ao resultado em minutos</h2>
+        <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Sem configuração manual. Selecione o estado e cargo — o sistema carrega os dados automaticamente.</p>
       </div>
       <div class="step-item active" data-step="0">
         <div class="step-num">01</div>
-        <div class="step-title">Importe os dados do TSE</div>
-        <div class="step-desc">Carregue o arquivo CSV oficial. O sistema detecta automaticamente as colunas de votos nominais e de legenda — inclusive variações pré e pós-2022.</div>
+        <div class="step-title">Selecione os dados do TSE</div>
+        <div class="step-desc">Escolha o ano, estado e cargo nos menus de seleção. Os dados são carregados automaticamente — nenhum arquivo precisa ser baixado.</div>
         <div class="step-bar"><div class="step-fill"></div></div>
       </div>
       <div class="step-item" data-step="1">
@@ -318,10 +317,10 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify
           <div class="panel-card">
             <div class="panel-topbar"><div class="panel-dots"><span></span><span></span><span></span></div><div class="panel-title-bar">retotalizaje.com.br — Importar dados</div></div>
             <div class="panel-body">
-              <div class="import-zone">
-                <div style="font-size:26px;margin-bottom:6px">📁</div>
-                <div class="import-txt">Arraste o arquivo CSV ou clique para selecionar</div>
-                <a href="#" class="import-link">↗ Baixar arquivo no Portal TSE</a>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+                <div class="fg"><div class="fl">Ano</div><div class="fv">2022 — Eleições Gerais</div></div>
+                <div class="fg"><div class="fl">Estado (UF)</div><div class="fv">CE — Ceará</div></div>
+                <div class="fg"><div class="fl">Cargo</div><div class="fv">Deputado Federal</div></div>
               </div>
               <div class="pty-row"><span class="pty-sig">PL</span><span class="pty-nm">Partido Liberal</span><span class="pty-v">1.018.156 votos</span><span class="pty-check">✓</span></div>
               <div class="pty-row"><span class="pty-sig">UNIÃO</span><span class="pty-nm">União Brasil</span><span class="pty-v">803.490 votos</span><span class="pty-check">✓</span></div>
@@ -422,7 +421,7 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify
     <div class="feat-card reveal reveal-delay-1">
       <div class="feat-icon">📊</div>
       <div class="feat-title">Importação direta do TSE</div>
-      <div class="feat-body">Lê o CSV oficial com encoding ISO-8859-1. Detecta automaticamente as colunas pré e pós-2022 (QT_VOTOS_NOMINAIS vs QT_VOTOS_NOMINAIS_VALIDOS).</div>
+      <div class="feat-body">Selecione o ano, estado e cargo — os dados oficiais do TSE são carregados automaticamente, sem precisar baixar ou anexar nenhum arquivo.</div>
     </div>
     <div class="feat-card reveal reveal-delay-2">
       <div class="feat-icon">🏛️</div>
@@ -547,63 +546,6 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify
   </div>
 </section>
 
-<!-- PRICING -->
-<section id="planos" class="pricing">
-  <div class="section-label reveal">Planos</div>
-  <h2 class="section-h reveal">Pague pelo que usar</h2>
-  <p style="font-size:16px;color:var(--text-muted);margin-top:12px" class="reveal">Sem assinatura. Sem prazo de validade.<br>Novo cadastro inclui <strong style="color:var(--teal)">1 cálculo gratuito</strong> para você testar.</p>
-  <div class="price-grid" style="grid-template-columns:repeat(4,1fr);max-width:1100px;margin:48px auto 0">
-    <div class="price-card reveal">
-      <div class="price-name">Avulso</div>
-      <div class="price-cred">1 <span>cálculo</span></div>
-      <div class="price-val">R$ 200</div>
-      <div class="price-sub">caso pontual</div>
-      <a href="app.html" class="price-btn">Adquirir</a>
-      <div class="price-feat">
-        <div class="pf">Todas as funcionalidades</div>
-        <div class="pf">Exportação CSV e PDF</div>
-        <div class="pf">Auditoria passo a passo</div>
-      </div>
-    </div>
-    <div class="price-card reveal reveal-delay-1">
-      <div class="price-name">Escritório</div>
-      <div class="price-cred">5 <span>cálculos</span></div>
-      <div class="price-val">R$ 750</div>
-      <div class="price-sub">R$ 150 por cálculo</div>
-      <a href="app.html" class="price-btn">Adquirir</a>
-      <div class="price-feat">
-        <div class="pf">Todas as funcionalidades</div>
-        <div class="pf">Federações partidárias</div>
-        <div class="pf">Comparativo de cenários</div>
-      </div>
-    </div>
-    <div class="price-card pop reveal reveal-delay-2">
-      <div class="price-name">Especializado</div>
-      <div class="price-cred">10 <span>cálculos</span></div>
-      <div class="price-val">R$ 1.200</div>
-      <div class="price-sub">R$ 120 por cálculo</div>
-      <a href="app.html" class="price-btn">Adquirir</a>
-      <div class="price-feat">
-        <div class="pf">Todas as funcionalidades</div>
-        <div class="pf">Presets de casos reais</div>
-        <div class="pf">PDF como parecer técnico</div>
-      </div>
-    </div>
-    <div class="price-card reveal reveal-delay-3">
-      <div class="price-name">Tribunal</div>
-      <div class="price-cred">25 <span>cálculos</span></div>
-      <div class="price-val">R$ 2.500</div>
-      <div class="price-sub">R$ 100 por cálculo</div>
-      <a href="app.html" class="price-btn">Adquirir</a>
-      <div class="price-feat">
-        <div class="pf">Todas as funcionalidades</div>
-        <div class="pf">Para TREs e grandes escritórios</div>
-        <div class="pf">Melhor custo por cálculo</div>
-      </div>
-    </div>
-  </div>
-  <p style="font-size:12px;color:var(--text-dim);margin-top:24px;text-align:center">Créditos não expiram · Pagamento via Pix ou cartão · Nota fiscal disponível</p>
-</section>
 <!-- FAQ -->
 <section class="faq">
   <div class="section-label reveal">FAQ</div>
@@ -613,20 +555,12 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify
     <div class="faq-a">Sim. O algoritmo foi desenvolvido e validado com base nas ADIs 7.228, 7.263 e 7.325, julgadas em 13/03/2025 sob relatoria do Min. Flávio Dino. A Fase 3 opera sem barreira, conforme a interpretação expansiva fixada pelo STF. O Art. 111 CE foi declarado inconstitucional e não está implementado.</div>
   </div>
   <div class="faq-item">
-    <div class="faq-q">Como obtenho o arquivo CSV do TSE? <span class="faq-ico">+</span></div>
-    <div class="faq-a">O próprio sistema tem um link direto para o Portal de Dados Abertos do TSE. Lá você encontra os arquivos de votação nominal por município e zona. O sistema suporta tanto as colunas pré-2022 quanto as novas colunas pós-2022 com sufixo _VALIDOS.</div>
-  </div>
-  <div class="faq-item">
     <div class="faq-q">Quais são as 4 modalidades de cassação? <span class="faq-ico">+</span></div>
     <div class="faq-a">Nominal (anula apenas os votos nominais do candidato), Legenda (anula os votos de legenda proporcionais ao candidato), Total (anula todos os votos atribuíveis — nominal + legenda) e DRAP (anulação conforme o Demonstrativo de Resultado e Apuração oficial do TRE).</div>
   </div>
   <div class="faq-item">
     <div class="faq-q">O sistema funciona com federações partidárias? <span class="faq-ico">+</span></div>
     <div class="faq-a">Sim. Ao cadastrar os partidos você indica a federação via campo federacao. O sistema agrupa os partidos da mesma federação antes de iniciar os cálculos, tratando-os como uma entidade única — como exige a legislação eleitoral vigente.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">Os créditos têm prazo de validade? <span class="faq-ico">+</span></div>
-    <div class="faq-a">Não. Os créditos adquiridos não expiram. Você pode comprar um pacote e usar quando precisar, sem pressão de data ou renovação automática.</div>
   </div>
 </section>
 

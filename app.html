@@ -40,22 +40,6 @@
     </div>
   </div>
 
-  <!-- TELA: Comprar créditos -->
-  <div id="tela-compra" style="display:none">
-    <div class="compra-container">
-      <div class="compra-header">
-        <span>Conectado como <strong class="usuario-email"></strong></span>
-        <button onclick="fazerLogout()" class="btn-logout">Sair</button>
-      </div>
-      <h2>Saldo insuficiente</h2>
-      <p>Adquira créditos para utilizar a calculadora.</p>
-      <div class="compra-free-banner">
-        🎁 Todo novo cadastro inclui <strong>1 cálculo gratuito</strong> na criação da conta.
-      </div>
-      <div id="pacotes-container" class="pacotes-grid"></div>
-      <p class="compra-nota">Após pagamento aprovado, seus créditos são adicionados automaticamente.<br>Recarregue a página se não atualizar em 30 segundos.</p>
-    </div>
-  </div>
 <!-- TELA: Dashboard -->
 <div id="tela-dashboard" style="display:none">
   <div class="dash-layout">
@@ -90,10 +74,6 @@
           <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
           <span>Meus Estudos</span>
           <span class="dash-nav-cnt" id="dash-nav-cnt"></span>
-        </button>
-        <button class="dash-nav-item" data-sec="plano">
-          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
-          <span>Plano &amp; Créditos</span>
         </button>
         <button class="dash-nav-item" data-sec="manual">
           <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
@@ -150,12 +130,6 @@
             <div class="dash-card-desc">Cálculos salvos neste navegador</div>
             <div class="dash-card-foot" id="dash-card-cnt">— estudos</div>
           </div>
-          <div class="dash-card dash-card-gold" id="dash-card-plano">
-            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-            <div class="dash-card-title">Plano &amp; Créditos</div>
-            <div class="dash-card-desc">Saldo e aquisição</div>
-            <div class="dash-card-foot">Acesso ativo</div>
-          </div>
           <div class="dash-card dash-card-blue" id="dash-card-manual">
             <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
             <div class="dash-card-title">Manual de Uso</div>
@@ -184,18 +158,6 @@
         <div id="dash-estudos-list" class="dash-estudos-list"></div>
       </div>
 
-      <!-- ── PLANO & ACESSO ─────────────────────────────────────── -->
-      <div class="dash-sec" id="dsec-plano">
-        <div class="dash-sec-head">
-          <h2 class="dash-sec-title">Plano &amp; Acesso</h2>
-        </div>
-        <div class="dash-plano-saldo">
-          <div class="dash-plano-num-wrap">
-            <span class="dash-plano-big-lbl">Acesso ativo — sistema liberado</span>
-          </div>
-          <p class="dash-plano-note">Seu acesso ao sistema foi liberado. Para dúvidas ou renovação, entre em contato com o administrador.</p>
-        </div>
-      </div>
 
       <!-- ── MANUAL DE USO ───────────────────────────────────────── -->
       <div class="dash-sec" id="dsec-manual">
@@ -295,25 +257,9 @@
             <span class="import-toggle-icon">⬇</span>
             Importar dados do TSE
           </button>
-          <a href="https://dadosabertos.tse.jus.br/dataset/resultados-2022"
-             target="_blank" rel="noopener noreferrer"
-             class="import-link-tse"
-             title="Acesse › Resultados 2022 › votacao_partido_munzona_2022_{UF}.zip">
-            ↗ Portal TSE
-          </a>
         </div>
 
         <div id="import-body" style="display:none;">
-
-          <!-- ── TABS ──────────────────────────────────────────────── -->
-          <div class="import-modo-tabs">
-            <button class="import-modo-tab import-modo-tab--active" data-modo="auto">
-              ▼ Automático (TSE direto)
-            </button>
-            <button class="import-modo-tab" data-modo="manual">
-              CSV Manual
-            </button>
-          </div>
 
           <!-- ── PAINEL AUTOMÁTICO ──────────────────────────────────── -->
           <div id="import-panel-auto">
@@ -351,82 +297,22 @@
               </select>
             </div>
 
+            <div class="import-filter-field" id="tse-cdmun-wrap" style="display:none">
+              <label class="import-filter-label" for="tse-cdmun">Cód. Município</label>
+              <input type="text" id="tse-cdmun" class="import-filter-select"
+                     placeholder="ex: 8893" maxlength="10"
+                     aria-label="Código do município">
+            </div>
+
             <button id="btn-tse-carregar" class="import-btn-processar" disabled>
               ▶ Carregar do TSE
             </button>
 
             <div id="tse-direto-status" class="import-status" aria-live="polite"></div>
 
-            <p class="tse-nota-cand">
-              ⓘ O modo automático carrega votos por partido direto do servidor do TSE.
-              Para incluir nomes de candidatos individuais, use o modo CSV Manual.
-            </p>
 
           </div><!-- #import-panel-auto -->
 
-          <!-- ── PAINEL MANUAL (CSV) ────────────────────────────────── -->
-          <div id="import-panel-manual" style="display:none;">
-
-            <!-- Passo 1: arquivo de votos por partido -->
-            <div class="import-step">
-              <label class="import-step-label" for="file-partido">
-                <span class="import-step-num">1</span>
-                Votos por partido <span class="import-step-req">*</span>
-              </label>
-              <div class="import-step-hint">votacao_partido_munzona_{ano}_{uf}.csv</div>
-              <input type="file" id="file-partido" accept=".csv"
-                     class="import-file-input"
-                     aria-label="Arquivo de votação por partido do TSE" />
-            </div>
-
-            <!-- Passo 2: arquivo de candidatos (opcional) -->
-            <div class="import-step">
-              <label class="import-step-label" for="file-candidato">
-                <span class="import-step-num">2</span>
-                Candidatos <span class="import-step-opt">(opcional)</span>
-              </label>
-              <div class="import-step-hint">votacao_candidato_munzona_{ano}_{uf}.csv</div>
-              <input type="file" id="file-candidato" accept=".csv"
-                     class="import-file-input"
-                     aria-label="Arquivo de votação por candidato do TSE (opcional)" />
-            </div>
-
-            <!-- Filtros -->
-            <div class="import-filters">
-              <div class="import-filter-field">
-                <label class="import-filter-label" for="filter-cargo">Cargo</label>
-                <select id="filter-cargo" class="import-filter-select"
-                        aria-label="Filtrar por cargo">
-                  <option value="Deputado Federal">Deputado Federal</option>
-                  <option value="Deputado Estadual">Deputado Estadual / Distrital</option>
-                  <option value="Vereador">Vereador</option>
-                </select>
-              </div>
-              <div class="import-filter-field">
-                <label class="import-filter-label" for="filter-uf">UF</label>
-                <select id="filter-uf" class="import-filter-select"
-                        aria-label="Filtrar por estado">
-                  <option value="">Todas as UFs</option>
-                </select>
-              </div>
-              <div class="import-filter-field" id="filter-municipio-wrap" style="display:none;">
-                <label class="import-filter-label" for="filter-municipio">Município</label>
-                <select id="filter-municipio" class="import-filter-select"
-                        aria-label="Filtrar por município">
-                  <option value="">Todos</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Botão processar -->
-            <button id="btn-processar-csv" class="import-btn-processar">
-              ▶ Processar e preencher campos
-            </button>
-
-            <!-- Status / progresso -->
-            <div id="import-status" class="import-status" aria-live="polite"></div>
-
-          </div><!-- #import-panel-manual -->
 
         </div><!-- #import-body -->
 
@@ -482,39 +368,36 @@
   <div class="tse-tutorial">
     <div class="tse-tutorial-header">
       <div class="tse-tutorial-badge">Como começar</div>
-      <h3 class="tse-tutorial-title">Importe os dados do TSE para calcular</h3>
-      <p class="tse-tutorial-sub">Siga os passos abaixo para baixar o arquivo correto e iniciar o cálculo.</p>
+      <h3 class="tse-tutorial-title">Carregue os dados e calcule</h3>
+      <p class="tse-tutorial-sub">Siga os passos abaixo para iniciar um cálculo de retotalização.</p>
     </div>
     <div class="tse-steps">
       <div class="tse-step">
         <div class="tse-step-num">1</div>
         <div class="tse-step-body">
-          <div class="tse-step-title">Acesse o Portal TSE</div>
-          <div class="tse-step-desc">Clique no botão <strong>↗ Portal TSE</strong> no painel lateral. Você será direcionado ao portal de dados abertos do TSE.</div>
+          <div class="tse-step-title">Abra a seção de carregamento</div>
+          <div class="tse-step-desc">No painel lateral, clique em <strong>⬇ Importar dados do TSE</strong> para expandir os campos de seleção.</div>
         </div>
       </div>
       <div class="tse-step">
         <div class="tse-step-num">2</div>
         <div class="tse-step-body">
-          <div class="tse-step-title">Localize o arquivo de votação</div>
-          <div class="tse-step-desc">No portal, procure por <strong>Resultados</strong> → selecione o ano da eleição → baixe o arquivo de <strong>votação nominal por município e zona</strong> do estado desejado.</div>
+          <div class="tse-step-title">Selecione o ano, estado e cargo</div>
+          <div class="tse-step-desc">Escolha o <strong>Ano</strong> da eleição, o <strong>Estado (UF)</strong> e o <strong>Cargo</strong> desejado nos menus correspondentes.</div>
         </div>
       </div>
       <div class="tse-step">
         <div class="tse-step-num">3</div>
         <div class="tse-step-body">
-          <div class="tse-step-title">Importe o arquivo CSV</div>
-          <div class="tse-step-desc">O sistema requer <strong>2 arquivos</strong>:<br>
-① <strong>Votos por partido</strong> — <code>votacao_partido_munzona_{ano}_{uf}.csv</code><br>
-② <strong>Votos por candidato</strong> — <code>votacao_candidato_munzona_{ano}_{uf}.csv</code><br>
-Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no campo correspondente.</div>
+          <div class="tse-step-title">Carregue os dados</div>
+          <div class="tse-step-desc">Clique em <strong>▶ Carregar do TSE</strong>. Os dados serão preenchidos automaticamente — nenhum arquivo precisa ser baixado.</div>
         </div>
       </div>
       <div class="tse-step">
         <div class="tse-step-num">4</div>
         <div class="tse-step-body">
           <div class="tse-step-title">Configure e calcule</div>
-          <div class="tse-step-desc">Preencha o número de vagas, adicione cassações se necessário e clique em <strong>▶ Calcular Distribuição</strong>.</div>
+          <div class="tse-step-desc">Confira o número de vagas, adicione cassações se necessário e clique em <strong>▶ Calcular Distribuição</strong>.</div>
         </div>
       </div>
     </div><!-- .tse-steps -->
@@ -1092,7 +975,6 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
       });
       document.getElementById('dash-hero-calc').addEventListener('click', dashGoCalc);
       document.getElementById('dash-card-estudos').addEventListener('click', () => _dashGo('estudos'));
-      document.getElementById('dash-card-plano').addEventListener('click', () => _dashGo('plano'));
       document.getElementById('dash-card-manual').addEventListener('click', () => _dashGo('manual'));
 
       const veBtn = document.querySelector('.dash-ver-todos');
@@ -1130,26 +1012,16 @@ Clique em <strong>↓ Importar dados do TSE</strong> e selecione cada arquivo no
 
     function dashGoCalc() {
       document.getElementById('tela-dashboard').style.display = 'none';
-      document.getElementById('tela-compra').style.display = 'none';
       document.getElementById('tela-auth').style.display = 'none';
     }
     window.dashGoCalc = dashGoCalc;
 
     function voltarDashboard() {
       document.getElementById('tela-auth').style.display = 'none';
-      document.getElementById('tela-compra').style.display = 'none';
       document.getElementById('tela-dashboard').style.display = '';
       _dashRenderRecentes();
     }
     window.voltarDashboard = voltarDashboard;
-
-    function _dashGoCompra() {
-      document.getElementById('tela-dashboard').style.display = 'none';
-      document.getElementById('tela-compra').style.display = '';
-      if (window._renderizarPacotes && window.__dashUid) {
-        window._renderizarPacotes(window.__dashUid);
-      }
-    }
 
     function _h(s) {
       return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
