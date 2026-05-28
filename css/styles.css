@@ -939,6 +939,15 @@ input.valido   { border-color: #27ae60 !important; box-shadow: 0 0 0 2px rgba(39
 .btn-action-primary:hover { background: var(--navy-mid); }
 .btn-action-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 
+/* Botão voltar ao formulário — destaque sutil no toolbar de resultados */
+.btn-novo-calculo {
+  background: var(--navy) !important;
+  color: var(--white) !important;
+  border-color: var(--navy-mid) !important;
+  margin-right: 6px;
+}
+.btn-novo-calculo:hover { background: var(--navy-mid) !important; }
+
 /* ── Result panel ────────────────────────────────────────────── */
 .result-panel {
   background: var(--white);
@@ -4073,11 +4082,11 @@ button:focus:not(:focus-visible) { outline: none; }
 /* Transição suave da sidebar */
 .sidebar { transition: width 0.38s cubic-bezier(0.22, 1, 0.36, 1); }
 
-/* Estado inicial: sidebar ocupa toda a tela, centralizada */
+/* Estado inicial: sidebar ocupa TODA a largura da tela */
 .app-body:not(.tem-resultados) .sidebar {
-  width: min(800px, 100%);
+  width: 100%;
   min-width: unset;
-  margin: 0 auto;
+  margin: 0;
   border-right: none;
 }
 
@@ -4093,20 +4102,13 @@ button:focus:not(:focus-visible) { outline: none; }
   display: none;
 }
 
-/* Com resultados: layout lado a lado, sobrescreve media query mobile */
+/* Com resultados: sidebar oculta, apenas área de resultados */
 .app-body.tem-resultados {
   flex-direction: row;
   overflow: hidden;
 }
 .app-body.tem-resultados .sidebar {
-  width: 340px;
-  min-width: 340px;
-  max-width: 340px;
-  height: calc(100vh - 52px - 40px);
-  overflow-y: auto;
-  flex-shrink: 0;
-  margin: 0;
-  border-right: 1px solid var(--navy-border);
+  display: none;
 }
 
 /* Resultados surgem com fade + slide lateral */

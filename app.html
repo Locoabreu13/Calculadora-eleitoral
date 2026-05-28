@@ -496,6 +496,7 @@
           </nav>
 
           <div class="export-actions">
+            <button id="btn-novo-calculo" class="btn-action btn-novo-calculo">← Novo Cálculo</button>
             <button id="btn-exportar-csv" class="btn-action" disabled>⬇ CSV</button>
             <button id="btn-exportar-pdf" class="btn-action" disabled>⬇ PDF</button>
             <button id="btn-link" class="btn-action" disabled>🔗 Link</button>
@@ -1083,6 +1084,13 @@
     var btnLimpar = document.getElementById('btn-limpar');
     if (btnLimpar) {
       btnLimpar.addEventListener('click', function() {
+        appBody.classList.remove('tem-resultados');
+      });
+    }
+
+    var btnNovoCalculo = document.getElementById('btn-novo-calculo');
+    if (btnNovoCalculo) {
+      btnNovoCalculo.addEventListener('click', function() {
         appBody.classList.remove('tem-resultados');
       });
     }
