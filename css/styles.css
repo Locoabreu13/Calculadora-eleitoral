@@ -282,40 +282,36 @@ body {
 }
 
 /* ── Sidebar: party cards (JS-generated) ─────────────────────── */
+/* ── Party card: CSS Grid layout ──────────────────────────────── */
 .partido-card {
   background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 8px;
-  padding: 10px 10px 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 12px;
   margin-bottom: 8px;
 }
 .partido-card-header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  grid-template-areas:
+    "sigla  nome    remover"
+    "nomin  legenda legenda";
+  grid-template-columns: 90px 1fr 32px;
+  gap: 6px 8px;
 }
-/* Linha dentro do card (linha 1: sigla+nome+btns / linha 2: nominais+legenda) */
-.partido-card-row {
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
-  flex-wrap: wrap;
-}
-/* Grupo label + input */
+.pcard-sigla    { grid-area: sigla; }
+.pcard-nome     { grid-area: nome; }
+.pcard-remover  { grid-area: remover; display: flex; align-items: flex-end; justify-content: center; }
+.pcard-nominais { grid-area: nomin; }
+.pcard-legenda  { grid-area: legenda; }
+
+/* Group: label + input */
 .partido-field-group {
   display: flex;
   flex-direction: column;
   gap: 3px;
+  min-width: 0;
 }
-.partido-field-nome {
-  flex: 1;
-  min-width: 120px;
-}
-.partido-field-votos {
-  flex: 1;
-  min-width: 120px;
-}
-/* Rótulo de campo dentro do card */
+/* Field label (gold, uppercase, 9px) */
 .partido-field-label {
   font-family: 'Inter', sans-serif;
   font-size: 9px;
@@ -323,49 +319,85 @@ body {
   color: #c9983a;
   text-transform: uppercase;
   letter-spacing: 0.07em;
+  white-space: nowrap;
 }
-/* Botões do card alinhados ao fundo */
-.partido-card-btns {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  padding-bottom: 1px;
-}
-/* Force inputs to work inside narrow sidebar (override inline width styles) */
-.partido-sigla    { width: 86px !important; }
-.partido-nome     { width: auto !important; flex: 1 !important; min-width: 70px !important; }
-.partido-nominais { width: 100% !important; }
-.partido-legenda  { width: 100% !important; }
-.partido-card-header .input-valida { flex: 1 1 100px; }
-.partido-card-header .input-valida:first-child { flex: 0 0 auto; }
 
-/* Style all inputs inside party cards */
+/* All inputs inside party cards take full container width */
+.partido-sigla, .partido-nome, .partido-nominais, .partido-legenda {
+  width: 100% !important;
+}
 .partido-card input {
   background: rgba(255,255,255,0.06) !important;
   border: 1px solid rgba(255,255,255,0.1) !important;
   border-radius: 5px;
-  color: rgba(255,255,255,0.8);
-  padding: 5px 8px;
-  font-size: 11px;
+  color: rgba(255,255,255,0.85);
+  padding: 6px 8px;
+  font-size: 12px;
   font-family: 'Inter', sans-serif;
   outline: none;
   transition: border-color 0.15s;
+  box-sizing: border-box;
 }
-.partido-card input:focus { border-color: rgba(201,152,58,0.45) !important; }
-.partido-card input::placeholder { color: rgba(255,255,255,0.18); font-size: 10px; }
+.partido-card input:focus { border-color: rgba(201,152,58,0.5) !important; }
+.partido-card input::placeholder { color: rgba(255,255,255,0.2); font-size: 11px; }
 .partido-card .partido-sigla {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--white);
   letter-spacing: 0.04em;
 }
 .partido-card .partido-nominais,
 .partido-card .partido-legenda {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
+  color: #FCD34D;
 }
 
+/* Card footer: Candidatos toggle + Federação inline */
+.pcard-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  flex-wrap: wrap;
+}
+.pcard-footer-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 10px;
+  font-family: 'Inter', sans-serif;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  padding: 3px 8px;
+  border-radius: 5px;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.pcard-footer-btn:hover {
+  color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.2);
+}
+.partido-federacao {
+  flex: 1;
+  min-width: 100px;
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 5px;
+  color: rgba(255,255,255,0.7) !important;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+}
+.partido-federacao::placeholder { color: rgba(255,255,255,0.2) !important; font-size: 10px; }
+.partido-federacao:focus { border-color: rgba(201,152,58,0.45) !important; }
+
+/* Candidates section */
 .candidatos-wrapper { margin-top: 8px; }
 .candidatos-lista { padding-left: 0; }
 .candidato-row {
@@ -387,40 +419,73 @@ body {
   flex: 1;
 }
 .candidato-row input.votos { width: 90px !important; flex: 0 0 90px; font-family: 'JetBrains Mono', monospace; }
-.candidato-row input[style*="width:80px"] { width: 70px !important; flex: 0 0 70px; }
 
-/* ── Sidebar: cassation rows ─────────────────────────────────── */
+/* ── Cassação: smart card ──────────────────────────────────────── */
 .cassacao-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  align-items: flex-start;
-  margin-bottom: 8px;
-  padding: 8px 8px 6px;
   background: rgba(255,255,255,0.04);
-  border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cass-field-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.cass-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 100px;
+}
+.cass-field-modal { flex: 0 0 160px; min-width: 130px; }
+.cass-btn-rem     { flex-shrink: 0; align-self: flex-end; margin-bottom: 1px; }
+.cass-field-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  color: #c9983a;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  white-space: nowrap;
 }
 .cassacao-row input, .cassacao-row select {
   background: rgba(255,255,255,0.06) !important;
   border: 1px solid rgba(255,255,255,0.1) !important;
   border-radius: 5px;
-  color: rgba(255,255,255,0.8);
-  padding: 5px 8px;
-  font-size: 11px;
+  color: rgba(255,255,255,0.85) !important;
+  padding: 6px 8px;
+  font-size: 12px;
   font-family: 'Inter', sans-serif;
   outline: none;
+  width: 100%;
+  box-sizing: border-box;
   transition: border-color 0.15s;
 }
 .cassacao-row input:focus, .cassacao-row select:focus {
-  border-color: rgba(201,152,58,0.45) !important;
+  border-color: rgba(201,152,58,0.5) !important;
 }
-.cass-partido  { width: 80px !important; flex: 0 0 80px; font-family: 'JetBrains Mono', monospace; }
-.cass-candidato { width: auto !important; flex: 1 1 100px; min-width: 80px; }
-.cass-votos    { width: 100% !important; font-family: 'JetBrains Mono', monospace; }
-.cass-modalidade { width: 100% !important; flex: 1 1 110px; }
-.cassacao-row .input-valida { flex: 1 1 100px; }
-.cassacao-row select option { background: var(--navy-mid); }
+.cassacao-row select option { background: var(--navy-mid); color: rgba(255,255,255,0.85); }
+.cass-votos { font-family: 'JetBrains Mono', monospace !important; color: #FCD34D !important; }
+/* Resumo da cassação */
+.cass-preview {
+  font-size: 11px;
+  color: #c9983a;
+  font-family: 'Inter', sans-serif;
+  padding: 6px 10px;
+  background: rgba(201,152,58,0.08);
+  border-radius: 6px;
+  border-left: 3px solid rgba(201,152,58,0.5);
+  line-height: 1.5;
+  display: none;
+}
+.cass-preview:not(:empty) { display: block; }
 
 /* ── Sidebar: presets ────────────────────────────────────────── */
 .sidebar-preset-nota {

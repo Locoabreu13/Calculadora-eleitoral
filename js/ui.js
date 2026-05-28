@@ -104,54 +104,46 @@ function adicionarPartidoUI(dados = null) {
   }, '✕');
 
   const btnToggleCandidatos = el('button', {
-    class: 'btn btn-secundario btn-xs',
+    class: 'pcard-footer-btn',
     title: 'Editar lista de candidatos',
     onclick: () => {
       const lista = card.querySelector('.candidatos-wrapper');
       lista.style.display = lista.style.display === 'none' ? 'block' : 'none';
     },
-  }, 'Candidatos');
+  }, '👥 Candidatos');
 
-  // ── Grupos: label + input ────────────────────────────────────────────────────
-  // Grupo Sigla
-  const gSigla = el('div', { class: 'partido-field-group' });
+  // ── Grid areas: label + input ─────────────────────────────────────────────────
+  // Área: Sigla
+  const gSigla = el('div', { class: 'partido-field-group pcard-sigla' });
   const lSigla = el('label', { class: 'partido-field-label' }); lSigla.textContent = 'Sigla';
   const wSigla = el('div', { class: 'input-valida' }); wSigla.appendChild(inputSigla);
   gSigla.append(lSigla, wSigla);
 
-  // Grupo Nome do Partido
-  const gNome = el('div', { class: 'partido-field-group partido-field-nome' });
+  // Área: Nome do Partido
+  const gNome = el('div', { class: 'partido-field-group pcard-nome' });
   const lNome = el('label', { class: 'partido-field-label' }); lNome.textContent = 'Nome do Partido';
   gNome.append(lNome, inputNome);
 
-  // Botões no canto direito
-  const btns = el('div', { class: 'partido-card-btns' });
-  btns.append(btnToggleCandidatos, btnRemover);
+  // Área: Botão remover
+  const gRemover = el('div', { class: 'pcard-remover' });
+  gRemover.appendChild(btnRemover);
 
-  // Grupo Votos Nominais
-  const gNominais = el('div', { class: 'partido-field-group partido-field-votos' });
+  // Área: Votos Nominais
+  const gNominais = el('div', { class: 'partido-field-group pcard-nominais' });
   const lNominais = el('label', { class: 'partido-field-label' }); lNominais.textContent = 'Votos Nominais';
   const wNominais = el('div', { class: 'input-valida' }); wNominais.appendChild(inputNominais);
   gNominais.append(lNominais, wNominais);
 
-  // Grupo Votos de Legenda
-  const gLegenda = el('div', { class: 'partido-field-group partido-field-votos' });
+  // Área: Votos de Legenda
+  const gLegenda = el('div', { class: 'partido-field-group pcard-legenda' });
   const lLegenda = el('label', { class: 'partido-field-label' }); lLegenda.textContent = 'Votos de Legenda';
   const wLegenda = el('div', { class: 'input-valida' }); wLegenda.appendChild(inputLegenda);
   gLegenda.append(lLegenda, wLegenda);
 
-  // Linha 1: Sigla + Nome + Botões
-  const row1 = el('div', { class: 'partido-card-row' });
-  row1.append(gSigla, gNome, btns);
-
-  // Linha 2: Votos Nominais + Votos de Legenda
-  const row2 = el('div', { class: 'partido-card-row' });
-  row2.append(gNominais, gLegenda);
-
-  header.append(row1, row2);
+  header.append(gSigla, gNome, gRemover, gNominais, gLegenda);
   card.appendChild(header);
 
-  // ── Linha de federação (MUDANÇA 3) ──────────────────────────────────────────
+  // ── Footer: Candidatos + Federação ───────────────────────────────────────────
   const inputFederacao = el('input', {
     type: 'text',
     placeholder: 'Federação (opcional)',
@@ -160,10 +152,13 @@ function adicionarPartidoUI(dados = null) {
     value: dados ? (dados.federacao || '') : '',
     title: 'Se este partido integra uma federação, informe o mesmo nome para todos os membros. Eles serão agrupados automaticamente no cálculo.',
   });
-  const fedRow = el('div', { class: 'partido-fed-row' });
-  fedRow.appendChild(el('span', { class: 'partido-fed-label' }, '⊕ Federação:'));
-  fedRow.appendChild(inputFederacao);
-  card.appendChild(fedRow);
+  const gFed = el('div', { class: 'partido-field-group pcard-footer-fed' });
+  const lFed = el('label', { class: 'partido-field-label' }); lFed.textContent = 'Federação';
+  gFed.append(lFed, inputFederacao);
+
+  const footer = el('div', { class: 'pcard-footer' });
+  footer.append(btnToggleCandidatos, gFed);
+  card.appendChild(footer);
 
   // Lista de candidatos
   const candWrapper = el('div', { class: 'candidatos-wrapper', style: 'display:none; margin-top:8px;' });
@@ -1544,33 +1539,171 @@ function sairApresentacao() {
 
 let contadorCassacao = 0;
 
-function adicionarCassacaoUI() {
+function adicionarCassacaoUI(dados = null) {
   const id = ++contadorCassacao;
   const container = $('lista-cassacoes');
-  const row = el('div', { class: 'cassacao-row form-row', id: `cassacao-${id}` });
+  const row = el('div', { class: 'cassacao-row', id: `cassacao-${id}` });
 
-  const selPartido = el('input', { type: 'text', placeholder: 'Sigla partido', class: 'cass-partido', style: 'width:100px', 'aria-label': 'Partido' });
-  const selCandidato = el('input', { type: 'text', placeholder: 'Nome candidato (opcional)', class: 'cass-candidato', style: 'flex:1', 'aria-label': 'Candidato' });
-  const selVotos = el('input', { type: 'number', placeholder: 'Votos a anular', min: '0', class: 'cass-votos', style: 'width:140px', 'aria-label': 'Votos' });
+  // ── Coletar siglas disponíveis dos cards de partido ───────────────────────────
+  const siglaEls = document.querySelectorAll('.partido-sigla');
+  const siglas = Array.from(siglaEls).map(e => e.value.trim()).filter(Boolean);
+
+  // ── Campo Partido: dropdown se há dados carregados, senão texto livre ─────────
+  let selPartido;
+  if (siglas.length > 0) {
+    selPartido = el('select', { class: 'cass-partido', 'aria-label': 'Partido' });
+    selPartido.appendChild(el('option', { value: '' }, '— Partido —'));
+    for (const s of siglas) selPartido.appendChild(el('option', { value: s }, s));
+  } else {
+    selPartido = el('input', { type: 'text', placeholder: 'Sigla partido', class: 'cass-partido', 'aria-label': 'Partido' });
+  }
+
+  // ── Campo Candidato: dropdown se há candidatos nos cards ──────────────────────
+  const temCandidatos = document.querySelectorAll('.candidato-row .candidato-nome').length > 0;
+  let selCandidato;
+  if (temCandidatos) {
+    selCandidato = el('select', { class: 'cass-candidato', 'aria-label': 'Candidato' });
+    selCandidato.appendChild(el('option', { value: '' }, '— Candidato (opcional) —'));
+  } else {
+    selCandidato = el('input', { type: 'text', placeholder: 'Nome candidato (opcional)', class: 'cass-candidato', 'aria-label': 'Candidato' });
+  }
+
+  const selVotos = el('input', { type: 'number', placeholder: 'Votos a anular', min: '0', class: 'cass-votos', 'aria-label': 'Votos' });
+
   const selModal = el('select', { class: 'cass-modalidade', 'aria-label': 'Modalidade' });
   for (const [k, v] of Object.entries(I18N.MODALIDADE_CASSACAO)) {
     selModal.appendChild(el('option', { value: k }, v));
   }
-  const btnRem = el('button', { class: 'btn btn-perigo btn-xs', onclick: () => row.remove() }, '✕');
+
+  const btnRem = el('button', { class: 'btn btn-perigo btn-xs cass-btn-rem', onclick: () => row.remove() }, '✕');
+
+  // ── Montar grupos com label ───────────────────────────────────────────────────
+  const gPartido = el('div', { class: 'cass-field-group' });
+  const lPartido = el('label', { class: 'cass-field-label' }); lPartido.textContent = 'Partido';
+  gPartido.append(lPartido, selPartido);
+
+  const gCandidato = el('div', { class: 'cass-field-group' });
+  const lCandidato = el('label', { class: 'cass-field-label' }); lCandidato.textContent = 'Candidato';
+  gCandidato.append(lCandidato, selCandidato);
 
   const wVotos = el('div', { class: 'input-valida' }); wVotos.appendChild(selVotos);
-  row.append(selPartido, selCandidato, wVotos, selModal, btnRem);
+  const gVotos = el('div', { class: 'cass-field-group' });
+  const lVotos = el('label', { class: 'cass-field-label' }); lVotos.textContent = 'Votos a anular';
+  gVotos.append(lVotos, wVotos);
 
-  // Ocultar candidato e votos quando a modalidade for cassacao_drap
-  // (cassação de partido inteiro não tem candidato nem votos individuais)
+  const gModal = el('div', { class: 'cass-field-group cass-field-modal' });
+  const lModal = el('label', { class: 'cass-field-label' }); lModal.textContent = 'Modalidade';
+  gModal.append(lModal, selModal);
+
+  const fieldRow = el('div', { class: 'cass-field-row' });
+  fieldRow.append(gPartido, gCandidato, gVotos, gModal, btnRem);
+
+  const preview = el('div', { class: 'cass-preview' });
+
+  row.append(fieldRow, preview);
+  container.appendChild(row);
+
+  // ── Lógica de cascata ─────────────────────────────────────────────────────────
+
+  function getSigla() {
+    return selPartido.tagName === 'SELECT' ? selPartido.value : selPartido.value.trim();
+  }
+
+  function atualizarCandidatos() {
+    if (selCandidato.tagName !== 'SELECT') return;
+    const sigla = getSigla();
+    const cards = document.querySelectorAll('.partido-card');
+    const candidatos = [];
+    for (const card of cards) {
+      const sig = card.querySelector('.partido-sigla');
+      if (sig && sig.value.trim() === sigla) {
+        card.querySelectorAll('.candidato-row').forEach(cr => {
+          const nome = cr.querySelector('.candidato-nome');
+          const votos = cr.querySelector('.candidato-votos');
+          if (nome && nome.value.trim()) {
+            candidatos.push({ nome: nome.value.trim(), votos: votos ? (votos.value.trim() || '') : '' });
+          }
+        });
+        break;
+      }
+    }
+    selCandidato.innerHTML = '';
+    selCandidato.appendChild(el('option', { value: '' }, '— Candidato (opcional) —'));
+    for (const c of candidatos) {
+      const label = c.votos ? `${c.nome} (${Number(c.votos).toLocaleString('pt-BR')} votos)` : c.nome;
+      selCandidato.appendChild(el('option', { value: c.nome, 'data-votos': c.votos }, label));
+    }
+  }
+
+  function atualizarVotosDoCandidato() {
+    if (selCandidato.tagName !== 'SELECT') return;
+    const opt = selCandidato.selectedOptions[0];
+    if (opt && opt.dataset.votos) selVotos.value = opt.dataset.votos;
+    atualizarPreview();
+  }
+
+  function atualizarPreview() {
+    const partido = getSigla();
+    const candidato = selCandidato.tagName === 'SELECT' ? selCandidato.value : selCandidato.value.trim();
+    const votos = selVotos.value ? Number(selVotos.value).toLocaleString('pt-BR') : '';
+    const modalText = selModal.selectedOptions[0] ? selModal.selectedOptions[0].textContent : '';
+    const isDrap = selModal.value === 'cassacao_drap';
+
+    if (!partido) { preview.textContent = ''; return; }
+
+    let texto = '';
+    if (isDrap) {
+      texto = `Cassação do DRAP — ${partido}`;
+    } else if (candidato && votos) {
+      texto = `Anular ${votos} votos de ${candidato} (${partido}) · ${modalText}`;
+    } else if (votos) {
+      texto = `Anular ${votos} votos do partido ${partido} · ${modalText}`;
+    } else if (candidato) {
+      texto = `Cassação de ${candidato} (${partido}) · ${modalText}`;
+    } else {
+      texto = `Cassação — ${partido} · ${modalText}`;
+    }
+    preview.textContent = texto;
+  }
+
   function atualizarCamposCassacao() {
     const isDrap = selModal.value === 'cassacao_drap';
-    selCandidato.style.display = isDrap ? 'none' : '';
-    wVotos.style.display       = isDrap ? 'none' : '';
+    gCandidato.style.display = isDrap ? 'none' : '';
+    gVotos.style.display     = isDrap ? 'none' : '';
+    atualizarPreview();
   }
+
+  if (selPartido.tagName === 'SELECT') {
+    selPartido.addEventListener('change', () => { atualizarCandidatos(); atualizarPreview(); });
+  } else {
+    selPartido.addEventListener('input', atualizarPreview);
+  }
+  if (selCandidato.tagName === 'SELECT') {
+    selCandidato.addEventListener('change', atualizarVotosDoCandidato);
+  } else {
+    selCandidato.addEventListener('input', atualizarPreview);
+  }
+  selVotos.addEventListener('input', atualizarPreview);
   selModal.addEventListener('change', atualizarCamposCassacao);
 
-  container.appendChild(row);
+  // ── Preencher com dados passados (preset / URL restore) ───────────────────────
+  if (dados) {
+    if (selPartido.tagName === 'SELECT') {
+      selPartido.value = dados.partido || '';
+      atualizarCandidatos();
+    } else {
+      selPartido.value = dados.partido || '';
+    }
+    if (selCandidato.tagName === 'SELECT') {
+      selCandidato.value = dados.candidato || '';
+    } else {
+      selCandidato.value = dados.candidato || '';
+    }
+    selVotos.value = dados.votosAnular || '';
+    selModal.value = dados.modalidade || 'nominal';
+    selModal.dispatchEvent(new Event('change'));
+    atualizarPreview();
+  }
 }
 
 // ─── Presets ────────────────────────────────────────────────────────────────────
@@ -1594,15 +1727,7 @@ async function carregarPresetUI(id) {
   $('lista-cassacoes').innerHTML = '';
   contadorCassacao = 0;
   for (const cass of (preset.cassacoes || [])) {
-    adicionarCassacaoUI();
-    const rows = document.querySelectorAll('.cassacao-row');
-    const row = rows[rows.length - 1];
-    row.querySelector('.cass-partido').value = cass.partido || '';
-    row.querySelector('.cass-candidato').value = cass.candidato || '';
-    row.querySelector('.cass-votos').value = cass.votosAnular || '';
-    const selMod = row.querySelector('.cass-modalidade');
-    selMod.value = cass.modalidade || 'nominal';
-    selMod.dispatchEvent(new Event('change')); // sincroniza visibilidade dos campos
+    adicionarCassacaoUI(cass);
   }
 
   Estado.presetComparar = preset.comparar_com || null;
@@ -1712,15 +1837,7 @@ function preencherFormularioDeCenario(cenario) {
   $('lista-cassacoes').innerHTML = '';
   contadorCassacao = 0;
   for (const c of (cenario.cassacoes || [])) {
-    adicionarCassacaoUI();
-    const rows = document.querySelectorAll('.cassacao-row');
-    const row = rows[rows.length - 1];
-    row.querySelector('.cass-partido').value = c.partido || '';
-    row.querySelector('.cass-candidato').value = c.candidato || '';
-    row.querySelector('.cass-votos').value = c.votosAnular || '';
-    const selMod = row.querySelector('.cass-modalidade');
-    selMod.value = c.modalidade || 'nominal';
-    selMod.dispatchEvent(new Event('change')); // sincroniza visibilidade dos campos
+    adicionarCassacaoUI(c);
   }
 }
 
