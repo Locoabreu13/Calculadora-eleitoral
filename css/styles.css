@@ -4124,3 +4124,113 @@ button:focus:not(:focus-visible) { outline: none; }
   animation: fadeInRight 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* ── Candidatos por ordem — tabela de resultados ─────────────── */
+.td-cands-ordem { min-width: 220px; }
+.cands-ordem-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.cand-row-eleito,
+.cand-row-suplente {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1.4;
+}
+.cand-row-suplente {
+  color: rgba(0,0,0,0.45);
+}
+.cand-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 1px 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.cand-eleito-tag {
+  background: rgba(5,150,105,0.12);
+  color: #059669;
+  border: 1px solid rgba(5,150,105,0.25);
+}
+.cand-suplente-tag {
+  background: rgba(100,116,139,0.08);
+  color: #64748B;
+  border: 1px solid rgba(100,116,139,0.2);
+}
+
+/* ── Candidatos por ordem — slide de apresentação ───────────── */
+.apres-cands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+.apres-cand-box {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.apres-cand-titulo {
+  font-size: clamp(13px, 1.4vw, 16px);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.apres-cand-vagas {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.5);
+}
+.apres-cand-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.apres-cand-eleito,
+.apres-cand-suplente {
+  font-size: clamp(11px, 1.1vw, 13px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.4;
+}
+.apres-cand-suplente { color: rgba(255,255,255,0.4); }
+.apres-cand-eleito   { color: rgba(255,255,255,0.9); }
+.apres-ctag-eleito {
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(52,211,153,0.15);
+  color: #34D399;
+  border: 1px solid rgba(52,211,153,0.3);
+  border-radius: 4px;
+  padding: 1px 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.apres-ctag-sup {
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(100,116,139,0.12);
+  color: rgba(255,255,255,0.35);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 1px 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+

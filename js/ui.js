@@ -633,6 +633,29 @@ function formatarSiglaFed(p) {
   return p.sigla;
 }
 
+/**
+ * Retorna candidatos de um partido em ordem de preferência:
+ * eleitos (ordem D'Hondt determinada pelo engine) + não-eleitos por votos DESC.
+ * Retorna null se o partido não tem lista de candidatos no cenário de entrada.
+ */
+function candidatosOrdenados(pResult, cenario) {
+  if (!cenario) return null;
+  const pc = (cenario.partidos || []).find(p => p.sigla === pResult.sigla);
+  if (!pc || !pc.candidatos || pc.candidatos.length === 0) return null;
+
+  const eleitos      = pResult.eleitos || [];
+  const eleitosNomes = new Set(eleitos.map(c => c.nome));
+
+  const suplentes = pc.candidatos
+    .filter(c => !c.cassado && !eleitosNomes.has(c.nome))
+    .sort((a, b) => b.votos - a.votos);
+
+  return [
+    ...eleitos.map(c => ({ nome: c.nome, votos: c.votos, partido: c.partido, eleito: true })),
+    ...suplentes.map(c => ({ nome: c.nome, votos: c.votos, partido: c.partido || pc.sigla, eleito: false })),
+  ];
+}
+
 /** Calcula quantas vagas cada membro de uma federação recebeu, baseado nos eleitos. */
 function distribuicaoInterna(p) {
   if (!p.membros || p.membros.length === 0) return null;
@@ -657,7 +680,7 @@ function renderizarTabelaResultado(resultado, original) {
   const thead = el('thead');
   const ths = ['Partido', 'Nome', 'Votos Válidos', '% QE', 'F1 (QP)', 'F2 (Sobras)', 'F3 (Sobras)', 'Total'];
   if (original) ths.push('Variação');
-  ths.push('Status', 'Eleitos');
+  ths.push('Status', 'Eleitos / Suplentes');
 
   const trHead = el('tr');
   for (const h of ths) {
@@ -736,14 +759,32 @@ function renderizarTabelaResultado(resultado, original) {
     }[p.status] || '';
     tr.appendChild(el('td', {}, el('span', { class: `badge ${badgeClass}` }, I18N.STATUS[p.status] || p.status)));
 
-    // Eleitos — para federações, mostra partido membro entre parênteses
-    const eletosCell = el('td', {});
-    if (p.eleitos && p.eleitos.length > 0) {
-      const ul = el('ul', { style: 'list-style:none; margin:0; padding:0; font-size:11px;' });
+    // Candidatos por ordem (eleitos + suplentes)
+    const eletosCell = el('td', { class: 'td-cands-ordem' });
+    const ordemCands = candidatosOrdenados(p, Estado.cenario);
+    if (ordemCands && ordemCands.length > 0) {
+      const ul = el('ul', { class: 'cands-ordem-lista' });
+      ordemCands.forEach((c, i) => {
+        const pos = i + 1;
+        const partidoLabel = (p._isFederacao && c.partido && c.partido !== p.sigla)
+          ? ` [${c.partido}]` : '';
+        const tag = c.eleito
+          ? el('span', { class: 'cand-tag cand-eleito-tag' }, '✓')
+          : el('span', { class: 'cand-tag cand-suplente-tag' }, `${pos}º`);
+        const li = el('li', { class: c.eleito ? 'cand-row-eleito' : 'cand-row-suplente' });
+        li.append(tag, ` ${c.nome}${partidoLabel} (${fmt(c.votos)})`);
+        ul.appendChild(li);
+      });
+      eletosCell.appendChild(ul);
+    } else if (p.eleitos && p.eleitos.length > 0) {
+      // fallback: sem lista de candidatos no cenário, apenas eleitos do engine
+      const ul = el('ul', { class: 'cands-ordem-lista' });
       for (const c of p.eleitos) {
         const partidoLabel = (p._isFederacao && c.partido && c.partido !== p.sigla)
           ? ` [${c.partido}]` : '';
-        ul.appendChild(el('li', {}, `${c.nome}${partidoLabel} (${fmt(c.votos)})`));
+        const li = el('li', { class: 'cand-row-eleito' });
+        li.append(el('span', { class: 'cand-tag cand-eleito-tag' }, '✓'), ` ${c.nome}${partidoLabel} (${fmt(c.votos)})`);
+        ul.appendChild(li);
       }
       eletosCell.appendChild(ul);
     }
@@ -1451,6 +1492,57 @@ function _criarSlideAuditoria(rodada, r) {
   s.appendChild(el('div', { class: 'apres-audit-fund' }, rodada.fundamentacao));
 }
 
+function _criarSlideCandidatos(r, cenario) {
+  if (!cenario) return;
+  // Apenas partidos com vagas E candidatos cadastrados
+  const partidos = r.partidos.filter(p => {
+    if (p.total === 0) return false;
+    const pc = (cenario.partidos || []).find(cp => cp.sigla === p.sigla);
+    return pc && pc.candidatos && pc.candidatos.length > 0;
+  });
+  if (partidos.length === 0) return;
+
+  // Agrupar em slides de até 4 partidos
+  const PORSLIDE = 4;
+  for (let i = 0; i < partidos.length; i += PORSLIDE) {
+    const grupo = partidos.slice(i, i + PORSLIDE);
+    const s = _apresSlide('slide-dark');
+    const sufixo = partidos.length > PORSLIDE
+      ? ` (${i + 1}–${Math.min(i + PORSLIDE, partidos.length)} de ${partidos.length})`
+      : '';
+    s.appendChild(el('div', { class: 'slide-titulo' }, `👥 Candidatos por Ordem${sufixo}`));
+
+    const grid = el('div', { class: 'apres-cands-grid' });
+    for (const p of grupo) {
+      const ordemCands = candidatosOrdenados(p, cenario);
+      if (!ordemCands || ordemCands.length === 0) continue;
+
+      const box = el('div', { class: 'apres-cand-box' });
+      const titulo = el('div', { class: 'apres-cand-titulo' });
+      titulo.append(
+        el('strong', {}, p.sigla),
+        el('span', { class: 'apres-cand-vagas' }, ` — ${p.total} vaga${p.total !== 1 ? 's' : ''}`)
+      );
+      box.appendChild(titulo);
+
+      const ul = el('ul', { class: 'apres-cand-lista' });
+      ordemCands.forEach((c, idx) => {
+        const pos = idx + 1;
+        const li = el('li', { class: c.eleito ? 'apres-cand-eleito' : 'apres-cand-suplente' });
+        const tagTxt = c.eleito ? `${pos}º ✓` : `${pos}º`;
+        li.append(
+          el('span', { class: c.eleito ? 'apres-ctag-eleito' : 'apres-ctag-sup' }, tagTxt),
+          ` ${c.nome} (${fmt(c.votos)})`
+        );
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
+      grid.appendChild(box);
+    }
+    s.appendChild(grid);
+  }
+}
+
 function _criarSlideComparativo(original, r) {
   const s = _apresSlide('slide-dark');
   s.appendChild(el('div', { class: 'slide-titulo' }, '🔄 Comparativo: Original × Retotalizado'));
@@ -1515,6 +1607,7 @@ function entrarApresentacao() {
   _criarSlideMetricas(r);
   _criarSlideDistribuicao(r, original);
   if (r.fase3Ativada) _criarSlideFase3(r);
+  _criarSlideCandidatos(r, Estado.cenario);
   for (const rod of r.auditoria) {
     _criarSlideAuditoria(rod, r);
   }
@@ -1797,11 +1890,11 @@ async function init() {
 
   $('btn-exportar-csv').addEventListener('click', () => {
     if (!Estado.resultado) return;
-    Export.downloadCSV(Export.exportarCSV(Estado.resultado), `retotalizacao.csv`);
+    Export.downloadCSV(Export.exportarCSV(Estado.resultado, Estado.cenario), `retotalizacao.csv`);
   });
   $('btn-exportar-pdf').addEventListener('click', () => {
     if (!Estado.resultado) return;
-    Export.exportarPDF(Estado.resultado, Estado.resultadoOriginal);
+    Export.exportarPDF(Estado.resultado, Estado.resultadoOriginal, Estado.cenario);
   });
   $('btn-link').addEventListener('click', copiarLink);
 

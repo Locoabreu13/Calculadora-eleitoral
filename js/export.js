@@ -18,7 +18,7 @@
  * @param {import('./engine').ResultadoFinal} resultado
  * @returns {string} conteúdo CSV
  */
-function exportarCSV(resultado) {
+function exportarCSV(resultado, cenario) {
   const agora = new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'medium' });
 
   // Fix 3: status em português
@@ -71,11 +71,39 @@ function exportarCSV(resultado) {
       r.rodada,
       r.fase,
       r.vencedor,
-      formatarMedia(r.mediaVencedor),                        // Fix 4: max 2 casas, ponto decimal
+      formatarMedia(r.mediaVencedor),
       r.candidatoConvocado ? r.candidatoConvocado.nome : '(sem lista)',
       r.fundamentacao,
     ]),
   ];
+
+  // Seção de candidatos por partido (só se há dados de candidatos)
+  if (cenario) {
+    var partidosComCands = resultado.partidos.filter(function(p) {
+      var pc = (cenario.partidos || []).find(function(cp) { return cp.sigla === p.sigla; });
+      return pc && pc.candidatos && pc.candidatos.length > 0;
+    });
+    if (partidosComCands.length > 0) {
+      linhas.push([]);
+      linhas.push(['Candidatos por Partido — Ordem de Preferência']);
+      linhas.push(['Partido', 'Nº', 'Nome', 'Votos', 'Status']);
+      for (var pi = 0; pi < partidosComCands.length; pi++) {
+        var p = partidosComCands[pi];
+        var pc = (cenario.partidos || []).find(function(cp) { return cp.sigla === p.sigla; });
+        var eleitos     = p.eleitos || [];
+        var eleitosMap  = {};
+        eleitos.forEach(function(c) { eleitosMap[c.nome] = true; });
+        var suplentes   = (pc.candidatos || [])
+          .filter(function(c) { return !c.cassado && !eleitosMap[c.nome]; })
+          .sort(function(a, b) { return b.votos - a.votos; });
+        var todos = eleitos.map(function(c) { return { nome: c.nome, votos: c.votos, status: 'Eleito' }; })
+          .concat(suplentes.map(function(c) { return { nome: c.nome, votos: c.votos, status: 'Suplente' }; }));
+        todos.forEach(function(c, i) {
+          linhas.push([p.sigla, i + 1, c.nome, c.votos, c.status]);
+        });
+      }
+    }
+  }
 
   return linhas.map(l => l.map(c => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\r\n');
 }
@@ -109,7 +137,7 @@ function downloadCSV(conteudo, nomeArquivo) {
  * @param {import('./engine').ResultadoFinal} resultado
  * @param {import('./engine').ResultadoFinal|null} original - cenário base p/ comparativo
  */
-function exportarPDF(resultado, original) {
+function exportarPDF(resultado, original, cenario) {
 
   // ── Guard: carregar fontes lazily se ainda não disponíveis ──────────────────
   if (!window.PDF_FONTS) {
@@ -573,6 +601,70 @@ function exportarPDF(resultado, original) {
   );
   doc.setTextColor(...CBK);
   y += lh(8.5) + 4;
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // 4b. CANDIDATOS POR PARTIDO — ORDEM DE PREFERÊNCIA
+  // ════════════════════════════════════════════════════════════════════════════
+  if (cenario) {
+    var partidosComCandsPDF = resultado.partidos.filter(function(p) {
+      var pc = (cenario.partidos || []).find(function(cp) { return cp.sigla === p.sigla; });
+      return pc && pc.candidatos && pc.candidatos.length > 0;
+    });
+    if (partidosComCandsPDF.length > 0) {
+      sectionTitle('CANDIDATOS POR PARTIDO — ORDEM DE PREFERÊNCIA', CN);
+
+      var candRows = [];
+      for (var ci = 0; ci < partidosComCandsPDF.length; ci++) {
+        var pCand = partidosComCandsPDF[ci];
+        var pcCand = (cenario.partidos || []).find(function(cp) { return cp.sigla === pCand.sigla; });
+        var eleitosCand = pCand.eleitos || [];
+        var eleitosMapC = {};
+        eleitosCand.forEach(function(c) { eleitosMapC[c.nome] = true; });
+        var suplentesCand = (pcCand.candidatos || [])
+          .filter(function(c) { return !c.cassado && !eleitosMapC[c.nome]; })
+          .sort(function(a, b) { return b.votos - a.votos; });
+        var todosCand = eleitosCand.map(function(c) {
+            return { sigla: pCand.sigla, nome: c.nome, votos: c.votos, status: 'Eleito' };
+          }).concat(suplentesCand.map(function(c) {
+            return { sigla: '', nome: c.nome, votos: c.votos, status: 'Suplente' };
+          }));
+        todosCand.forEach(function(c, idx) {
+          candRows.push({ sigla: idx === 0 ? pCand.sigla : '', pos: idx + 1, nome: c.nome, votos: fI(c.votos), status: c.status });
+        });
+      }
+
+      if (doc.autoTable) {
+        doc.autoTable({
+          startY: y,
+          margin: { left: ML, right: PW - MR },
+          styles: { font: F, fontSize: 8.5, cellPadding: 2 },
+          headStyles: { fillColor: CN, textColor: CW2, fontStyle: 'bold', fontSize: 8 },
+          alternateRowStyles: { fillColor: CSF },
+          columnStyles: {
+            0: { cellWidth: 24, fontStyle: 'bold' },
+            1: { cellWidth: 10, halign: 'center' },
+            2: { cellWidth: 'auto' },
+            3: { cellWidth: 28, halign: 'right' },
+            4: { cellWidth: 22, halign: 'center' },
+          },
+          head: [['PARTIDO', 'Nº', 'CANDIDATO', 'VOTOS', 'STATUS']],
+          body: candRows.map(function(r) {
+            return [r.sigla, r.pos, r.nome, r.votos, r.status];
+          }),
+          didParseCell: function(data) {
+            if (data.section !== 'body') return;
+            var row = candRows[data.row.index];
+            if (!row) return;
+            if (data.column.index === 4) {
+              data.cell.styles.textColor = row.status === 'Eleito' ? CG : CGR;
+              data.cell.styles.fontStyle = row.status === 'Eleito' ? 'bold' : 'normal';
+            }
+          },
+        });
+        y = doc.lastAutoTable.finalY + 5;
+      }
+    }
+  }
 
   // ════════════════════════════════════════════════════════════════════════════
   // 5. EXECUÇÃO PASSO A PASSO — AUDITORIA D'HONDT
