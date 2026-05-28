@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/styles.css?v=9" />
+  <link rel="stylesheet" href="css/styles.css?v=10" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -386,8 +386,66 @@
     <!-- ── MAIN CONTENT ──────────────────────────────────────────────────────── -->
     <main class="main-content" role="main" aria-label="Resultados da distribuição">
 
-      <!-- Empty state (shown by CSS :has() when no results exist) -->
-      <div class="empty-state" aria-hidden="true"></div>
+      <!-- Tela de boas-vindas (visível quando não há resultados) -->
+      <div class="empty-state">
+        <div class="welcome-screen">
+
+          <div class="welcome-header">
+            <div class="welcome-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30">
+                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                <path d="M8 21h8M12 17v4"/>
+                <path d="M7 8h3M7 11.5h2M14 8l2 2.5-2 2.5"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="welcome-title">Calculadora RetotalizaJE</h2>
+              <p class="welcome-sub">Retotalização proporcional · art. 109 CE · ADIs 7.228/7.263/7.325 STF</p>
+            </div>
+          </div>
+
+          <div class="welcome-quickstart">
+            <div class="welcome-section-label">⚡ Início rápido</div>
+            <div class="welcome-cards-grid">
+              <button class="welcome-card" onclick="carregarPresetRapido('ce2022_cassacao_tse_real')">
+                <div class="welcome-card-uf">CE</div>
+                <div class="welcome-card-info">
+                  <div class="welcome-card-title">Ceará 2022 — 22 vagas</div>
+                  <div class="welcome-card-desc">Cassação Heitor Freire (UNIÃO) · PL 5→6, UNIÃO 4→3</div>
+                </div>
+                <div class="welcome-card-arrow">→</div>
+              </button>
+              <button class="welcome-card" onclick="carregarPresetRapido('ap2022_retotalizacao_tse_real')">
+                <div class="welcome-card-uf">AP</div>
+                <div class="welcome-card-info">
+                  <div class="welcome-card-title">Amapá 2022 — 8 vagas</div>
+                  <div class="welcome-card-desc">Retotalização TRE-AP · Resolução 620/2025 · Fase 3 ativa</div>
+                </div>
+                <div class="welcome-card-arrow">→</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="welcome-howto">
+            <div class="welcome-section-label">Como usar</div>
+            <div class="welcome-steps-grid">
+              <div class="welcome-step">
+                <div class="welcome-step-num">1</div>
+                <div class="welcome-step-text">Selecione o <strong>Estado, cargo e ano</strong> na barra lateral e clique em <strong>▶ Carregar do TSE</strong></div>
+              </div>
+              <div class="welcome-step">
+                <div class="welcome-step-num">2</div>
+                <div class="welcome-step-text">Adicione <strong>cassações ou anulações</strong> de votos em "Cassação / Anulação" — ou pule esta etapa</div>
+              </div>
+              <div class="welcome-step">
+                <div class="welcome-step-num">3</div>
+                <div class="welcome-step-text">Clique em <strong>▶ Calcular Distribuição</strong> e veja o resultado com as fases F1, F2 e F3 detalhadas</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
 
       <!-- Result sections (shown by CSS :has() when results exist) -->
       <div class="result-sections">
@@ -1008,6 +1066,37 @@
       }
     });
   })();
+
+  /* ── Layout dinâmico: tela cheia → sidebar + resultados ────────────────── */
+  (function() {
+    var appBody = document.querySelector('.app-body');
+    var paramEl = document.getElementById('painel-parametros');
+    if (!appBody || !paramEl) return;
+
+    function atualizarLayout() {
+      var temResultados = paramEl.querySelectorAll('.param-item').length > 0;
+      appBody.classList.toggle('tem-resultados', temResultados);
+    }
+
+    new MutationObserver(atualizarLayout).observe(paramEl, { childList: true, subtree: true });
+
+    var btnLimpar = document.getElementById('btn-limpar');
+    if (btnLimpar) {
+      btnLimpar.addEventListener('click', function() {
+        appBody.classList.remove('tem-resultados');
+      });
+    }
+  })();
+
+  /* ── Início rápido — cards da tela de boas-vindas ───────────────────────── */
+  window.carregarPresetRapido = function(id) {
+    var sel = document.getElementById('select-preset');
+    if (!sel) return;
+    sel.value = id;
+    sel.dispatchEvent(new Event('change'));
+    var sidebar = document.querySelector('.sidebar');
+    if (sidebar) sidebar.scrollTop = 0;
+  };
 
 })();
 </script>
