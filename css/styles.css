@@ -177,7 +177,7 @@ body {
 .sidebar-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  color: rgba(255,255,255,0.3);
+  color: #c9983a;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 10px;
@@ -194,7 +194,7 @@ body {
 .field-label {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.75);
   margin-bottom: 4px;
   display: block;
 }
@@ -291,10 +291,45 @@ body {
 }
 .partido-card-header {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+/* Linha dentro do card (linha 1: sigla+nome+btns / linha 2: nominais+legenda) */
+.partido-card-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
   flex-wrap: wrap;
-  gap: 5px;
-  align-items: flex-start;
-  margin-bottom: 0;
+}
+/* Grupo label + input */
+.partido-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.partido-field-nome {
+  flex: 1;
+  min-width: 120px;
+}
+.partido-field-votos {
+  flex: 1;
+  min-width: 120px;
+}
+/* Rótulo de campo dentro do card */
+.partido-field-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  color: #c9983a;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+/* Botões do card alinhados ao fundo */
+.partido-card-btns {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding-bottom: 1px;
 }
 /* Force inputs to work inside narrow sidebar (override inline width styles) */
 .partido-sigla    { width: 86px !important; }
@@ -4020,4 +4055,108 @@ button:focus:not(:focus-visible) { outline: none; }
   height: calc(100vh - 52px - 40px);
   overflow-y: auto;
   animation: fadeInRight 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LAYOUT DUAS TELAS — tela-form / tela-resultado
+   ═══════════════════════════════════════════════════════════════ */
+
+#tela-form {
+  height: calc(100vh - 52px - 40px);
+  overflow-y: auto;
+  background: var(--navy);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.form-inner {
+  width: min(720px, 100%);
+  padding: 0 20px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Partidos em 2 colunas na tela de formulário */
+#tela-form #lista-partidos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 8px;
+}
+
+#tela-resultado {
+  display: none;
+  height: calc(100vh - 52px - 40px);
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Barra de navegação do resultado */
+.resultado-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: var(--white);
+  border-bottom: 1px solid var(--slate-mid);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  min-height: 52px;
+}
+
+.btn-novo-calculo {
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.btn-novo-calculo:hover { background: var(--navy-mid); }
+
+.resultado-rotulo-display {
+  flex: 1;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.resultado-nav-export {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Área de conteúdo dos resultados */
+.resultado-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--slate);
+}
+
+/* Phase-nav dentro do resultado */
+.resultado-content .phase-nav {
+  background: var(--white);
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--slate-mid);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  flex-shrink: 0;
 }

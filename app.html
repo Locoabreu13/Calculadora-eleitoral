@@ -214,11 +214,11 @@
     </div>
   </header>
 
-  <!-- ═══ APP BODY (sidebar + main) ════════════════════════════════════════════ -->
-  <div class="app-body">
+  <!-- ═══ TELA 1 — FORMULÁRIO ══════════════════════════════════════════════════ -->
+  <section id="tela-form" class="tela-form">
 
-    <!-- ── SIDEBAR ──────────────────────────────────────────────────────────── -->
-    <aside class="sidebar" role="complementary" aria-label="Painel de entrada de dados">
+    <!-- ── FORMULÁRIO ──────────────────────────────────────────────────────────── -->
+    <div class="form-inner">
 
       <!-- Fluxo de trabalho -->
       <div class="sidebar-flow" aria-label="Passos do cálculo">
@@ -381,130 +381,73 @@
         </button>
       </div>
 
-    </aside><!-- .sidebar -->
+    </div><!-- .form-inner -->
+  </section><!-- #tela-form -->
 
-    <!-- ── MAIN CONTENT ──────────────────────────────────────────────────────── -->
-    <main class="main-content" role="main" aria-label="Resultados da distribuição">
+  <!-- ═══ TELA 2 — RESULTADO ════════════════════════════════════════════════════ -->
+  <section id="tela-resultado" class="tela-resultado">
 
-      <!-- Tela de boas-vindas (visível quando não há resultados) -->
-      <div class="empty-state">
-        <div class="welcome-screen">
-
-          <div class="welcome-header">
-            <div class="welcome-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30">
-                <rect x="2" y="3" width="20" height="14" rx="2"/>
-                <path d="M8 21h8M12 17v4"/>
-                <path d="M7 8h3M7 11.5h2M14 8l2 2.5-2 2.5"/>
-              </svg>
-            </div>
-            <div>
-              <h2 class="welcome-title">Calculadora RetotalizaJE</h2>
-              <p class="welcome-sub">Retotalização proporcional · art. 109 CE · ADIs 7.228/7.263/7.325 STF</p>
-            </div>
-          </div>
-
-          <div class="welcome-quickstart">
-            <div class="welcome-section-label">⚡ Início rápido</div>
-            <div class="welcome-cards-grid">
-              <button class="welcome-card" onclick="carregarPresetRapido('ce2022_cassacao_tse_real')">
-                <div class="welcome-card-uf">CE</div>
-                <div class="welcome-card-info">
-                  <div class="welcome-card-title">Ceará 2022 — 22 vagas</div>
-                  <div class="welcome-card-desc">Cassação Heitor Freire (UNIÃO) · PL 5→6, UNIÃO 4→3</div>
-                </div>
-                <div class="welcome-card-arrow">→</div>
-              </button>
-              <button class="welcome-card" onclick="carregarPresetRapido('ap2022_retotalizacao_tse_real')">
-                <div class="welcome-card-uf">AP</div>
-                <div class="welcome-card-info">
-                  <div class="welcome-card-title">Amapá 2022 — 8 vagas</div>
-                  <div class="welcome-card-desc">Retotalização TRE-AP · Resolução 620/2025 · Fase 3 ativa</div>
-                </div>
-                <div class="welcome-card-arrow">→</div>
-              </button>
-            </div>
-          </div>
-
-          <div class="welcome-howto">
-            <div class="welcome-section-label">Como usar</div>
-            <div class="welcome-steps-grid">
-              <div class="welcome-step">
-                <div class="welcome-step-num">1</div>
-                <div class="welcome-step-text">Selecione o <strong>Estado, cargo e ano</strong> na barra lateral e clique em <strong>▶ Carregar do TSE</strong></div>
-              </div>
-              <div class="welcome-step">
-                <div class="welcome-step-num">2</div>
-                <div class="welcome-step-text">Adicione <strong>cassações ou anulações</strong> de votos em "Cassação / Anulação" — ou pule esta etapa</div>
-              </div>
-              <div class="welcome-step">
-                <div class="welcome-step-num">3</div>
-                <div class="welcome-step-text">Clique em <strong>▶ Calcular Distribuição</strong> e veja o resultado com as fases F1, F2 e F3 detalhadas</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
+    <!-- Barra de navegação superior -->
+    <div class="resultado-nav">
+      <button id="btn-novo-calculo" class="btn-novo-calculo">← Novo Cálculo</button>
+      <span id="resultado-rotulo-display" class="resultado-rotulo-display"></span>
+      <div class="resultado-nav-export">
+        <button id="btn-exportar-csv" class="btn-action" disabled>⬇ CSV</button>
+        <button id="btn-exportar-pdf" class="btn-action" disabled>⬇ PDF</button>
+        <button id="btn-link" class="btn-action" disabled>🔗 Link</button>
+        <button id="btn-apresentacao" class="btn-action-primary" disabled
+                title="Exibe a tabela em tela cheia (Esc para sair)">▶ Apresentação</button>
+        <button id="btn-salvar-estudo" class="btn-action" disabled
+                title="Exportar estudo completo (parâmetros + resultado) como JSON">💾 Salvar Estudo</button>
       </div>
+    </div>
 
-      <!-- Result sections (shown by CSS :has() when results exist) -->
-      <div class="result-sections">
+    <!-- Conteúdo dos resultados -->
+    <div class="resultado-content">
 
-        <!-- QE Banner -->
-        <div id="painel-parametros" class="params-grid" aria-label="Parâmetros da eleição"></div>
+      <!-- Parâmetros da eleição -->
+      <div id="painel-parametros" class="params-grid" aria-label="Parâmetros da eleição"></div>
 
-        <!-- Alertas / banners -->
-        <div id="painel-alertas"></div>
+      <!-- Alertas / banners -->
+      <div id="painel-alertas"></div>
 
-        <!-- Toolbar: phase nav + export buttons -->
-        <div class="result-toolbar">
-          <nav class="phase-nav" aria-label="Navegação por fase">
-            <button class="phase-tab active" data-phase="f1"
-                    title="Ir para a seção Fase 1 — Quociente Partidário"
-                    aria-label="Fase 1 — Quociente Partidário">
-              <span class="phase-dot phase-dot-f1"></span>
-              <span class="phase-tab-label">F1 QP</span>
-              <span class="phase-count-badge count-f1" id="badge-f1">—</span>
-            </button>
-            <button class="phase-tab" data-phase="f2"
-                    title="Ir para a seção Fase 2 — Maiores Médias c/ barreira"
-                    aria-label="Fase 2 — Maiores Médias com barreira 80/20">
-              <span class="phase-dot phase-dot-f2"></span>
-              <span class="phase-tab-label">F2 80/20</span>
-              <span class="phase-count-badge count-f2" id="badge-f2">—</span>
-            </button>
-            <button class="phase-tab" data-phase="f3"
-                    title="Ir para a seção Fase 3 — Maiores Médias s/ barreira (ADIs STF)"
-                    aria-label="Fase 3 — Maiores Médias sem barreira">
-              <span class="phase-dot phase-dot-f3"></span>
-              <span class="phase-tab-label">F3 ADIs</span>
-              <span class="phase-count-badge count-f3" id="badge-f3">—</span>
-            </button>
-            <button class="phase-tab" data-phase="audit"
-                    title="Ir para a seção de Auditoria D'Hondt"
-                    aria-label="Auditoria D'Hondt">
-              <span class="phase-dot phase-dot-audit"></span>
-              <span class="phase-tab-label">Auditoria</span>
-              <span class="phase-count-badge count-audit" id="badge-audit">—</span>
-            </button>
-            <button class="phase-tab" data-phase="relatorio"
-                    title="Relatório técnico para uso em petições"
-                    aria-label="Relatório Técnico">
-              <span class="phase-dot phase-dot-relatorio"></span>
-              <span class="phase-tab-label">Relatório</span>
-            </button>
-          </nav>
-
-          <div class="export-actions">
-            <button id="btn-exportar-csv" class="btn-action" disabled>⬇ CSV</button>
-            <button id="btn-exportar-pdf" class="btn-action" disabled>⬇ PDF</button>
-            <button id="btn-link" class="btn-action" disabled>🔗 Link</button>
-            <button id="btn-apresentacao" class="btn-action-primary" disabled
-                    title="Exibe a tabela em tela cheia (Esc para sair)">▶ Apresentação</button>
-            <button id="btn-salvar-estudo" class="btn-action" disabled
-                    title="Exportar estudo completo (parâmetros + resultado) como JSON">💾 Salvar Estudo</button>
-          </div>
-        </div>
+      <!-- Navegação por fase -->
+      <nav class="phase-nav" aria-label="Navegação por fase">
+        <button class="phase-tab active" data-phase="f1"
+                title="Ir para a seção Fase 1 — Quociente Partidário"
+                aria-label="Fase 1 — Quociente Partidário">
+          <span class="phase-dot phase-dot-f1"></span>
+          <span class="phase-tab-label">F1 QP</span>
+          <span class="phase-count-badge count-f1" id="badge-f1">—</span>
+        </button>
+        <button class="phase-tab" data-phase="f2"
+                title="Ir para a seção Fase 2 — Maiores Médias c/ barreira"
+                aria-label="Fase 2 — Maiores Médias com barreira 80/20">
+          <span class="phase-dot phase-dot-f2"></span>
+          <span class="phase-tab-label">F2 80/20</span>
+          <span class="phase-count-badge count-f2" id="badge-f2">—</span>
+        </button>
+        <button class="phase-tab" data-phase="f3"
+                title="Ir para a seção Fase 3 — Maiores Médias s/ barreira (ADIs STF)"
+                aria-label="Fase 3 — Maiores Médias sem barreira">
+          <span class="phase-dot phase-dot-f3"></span>
+          <span class="phase-tab-label">F3 ADIs</span>
+          <span class="phase-count-badge count-f3" id="badge-f3">—</span>
+        </button>
+        <button class="phase-tab" data-phase="audit"
+                title="Ir para a seção de Auditoria D'Hondt"
+                aria-label="Auditoria D'Hondt">
+          <span class="phase-dot phase-dot-audit"></span>
+          <span class="phase-tab-label">Auditoria</span>
+          <span class="phase-count-badge count-audit" id="badge-audit">—</span>
+        </button>
+        <button class="phase-tab" data-phase="relatorio"
+                title="Relatório técnico para uso em petições"
+                aria-label="Relatório Técnico">
+          <span class="phase-dot phase-dot-relatorio"></span>
+          <span class="phase-tab-label">Relatório</span>
+        </button>
+      </nav>
 
         <!-- Result panel: tabela principal -->
         <section id="section-resultado" class="result-panel" aria-label="Distribuição de cadeiras">
@@ -551,7 +494,8 @@
           <div id="relatorio-container"></div>
         </section>
 
-      </div><!-- .result-sections -->
+    </div><!-- .resultado-content -->
+  </section><!-- #tela-resultado -->
 
       <!-- ── DOCS SECTION (drawer deslizante) ─────────────────────────────────── -->
       <div id="docs-section" class="docs-section" aria-label="Documentação e glossário">
@@ -720,10 +664,6 @@
 
         </div>
       </div><!-- #manual-section -->
-
-    </main><!-- .main-content -->
-
-  </div><!-- .app-body -->
 
   <!-- ═══ FOOTER ════════════════════════════════════════════════════════════════ -->
   <footer class="footer">
@@ -1067,35 +1007,51 @@
     });
   })();
 
-  /* ── Layout dinâmico: tela cheia → sidebar + resultados ────────────────── */
+  /* ── Navegação entre telas form/resultado ────────────────────────────────── */
   (function() {
-    var appBody = document.querySelector('.app-body');
-    var paramEl = document.getElementById('painel-parametros');
-    if (!appBody || !paramEl) return;
+    var telaForm     = document.getElementById('tela-form');
+    var telaResultado = document.getElementById('tela-resultado');
+    var paramEl      = document.getElementById('painel-parametros');
 
-    function atualizarLayout() {
-      var temResultados = paramEl.querySelectorAll('.param-item').length > 0;
-      appBody.classList.toggle('tem-resultados', temResultados);
+    function mostrarResultados() {
+      var rotulo  = (document.getElementById('input-rotulo') || {}).value || '';
+      var rotElem = document.getElementById('resultado-rotulo-display');
+      if (rotElem) rotElem.textContent = rotulo;
+      if (telaForm)      telaForm.style.display = 'none';
+      if (telaResultado) {
+        telaResultado.style.display = 'flex';
+        var rc = telaResultado.querySelector('.resultado-content');
+        if (rc) rc.scrollTop = 0;
+      }
     }
 
-    new MutationObserver(atualizarLayout).observe(paramEl, { childList: true, subtree: true });
+    function mostrarForm() {
+      if (telaResultado) telaResultado.style.display = 'none';
+      if (telaForm)      telaForm.style.display = 'flex';
+    }
 
+    if (paramEl) {
+      new MutationObserver(function() {
+        if (paramEl.querySelectorAll('.param-item').length > 0) {
+          mostrarResultados();
+        }
+      }).observe(paramEl, { childList: true, subtree: true });
+    }
+
+    var btnNovo   = document.getElementById('btn-novo-calculo');
     var btnLimpar = document.getElementById('btn-limpar');
-    if (btnLimpar) {
-      btnLimpar.addEventListener('click', function() {
-        appBody.classList.remove('tem-resultados');
-      });
-    }
+    if (btnNovo)   btnNovo.addEventListener('click', mostrarForm);
+    if (btnLimpar) btnLimpar.addEventListener('click', mostrarForm);
   })();
 
-  /* ── Início rápido — cards da tela de boas-vindas ───────────────────────── */
+  /* ── Início rápido — preset dropdown ────────────────────────────────────── */
   window.carregarPresetRapido = function(id) {
     var sel = document.getElementById('select-preset');
     if (!sel) return;
     sel.value = id;
     sel.dispatchEvent(new Event('change'));
-    var sidebar = document.querySelector('.sidebar');
-    if (sidebar) sidebar.scrollTop = 0;
+    var inner = document.querySelector('.form-inner');
+    if (inner) inner.scrollTop = 0;
   };
 
 })();

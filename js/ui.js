@@ -112,11 +112,43 @@ function adicionarPartidoUI(dados = null) {
     },
   }, 'Candidatos');
 
-  // Wraps individuais: input + mensagem de erro ficam em coluna flex
-  const wSigla    = el('div', { class: 'input-valida' }); wSigla.appendChild(inputSigla);
+  // ── Grupos: label + input ────────────────────────────────────────────────────
+  // Grupo Sigla
+  const gSigla = el('div', { class: 'partido-field-group' });
+  const lSigla = el('label', { class: 'partido-field-label' }); lSigla.textContent = 'Sigla';
+  const wSigla = el('div', { class: 'input-valida' }); wSigla.appendChild(inputSigla);
+  gSigla.append(lSigla, wSigla);
+
+  // Grupo Nome do Partido
+  const gNome = el('div', { class: 'partido-field-group partido-field-nome' });
+  const lNome = el('label', { class: 'partido-field-label' }); lNome.textContent = 'Nome do Partido';
+  gNome.append(lNome, inputNome);
+
+  // Botões no canto direito
+  const btns = el('div', { class: 'partido-card-btns' });
+  btns.append(btnToggleCandidatos, btnRemover);
+
+  // Grupo Votos Nominais
+  const gNominais = el('div', { class: 'partido-field-group partido-field-votos' });
+  const lNominais = el('label', { class: 'partido-field-label' }); lNominais.textContent = 'Votos Nominais';
   const wNominais = el('div', { class: 'input-valida' }); wNominais.appendChild(inputNominais);
-  const wLegenda  = el('div', { class: 'input-valida' }); wLegenda.appendChild(inputLegenda);
-  header.append(wSigla, inputNome, wNominais, wLegenda, btnToggleCandidatos, btnRemover);
+  gNominais.append(lNominais, wNominais);
+
+  // Grupo Votos de Legenda
+  const gLegenda = el('div', { class: 'partido-field-group partido-field-votos' });
+  const lLegenda = el('label', { class: 'partido-field-label' }); lLegenda.textContent = 'Votos de Legenda';
+  const wLegenda = el('div', { class: 'input-valida' }); wLegenda.appendChild(inputLegenda);
+  gLegenda.append(lLegenda, wLegenda);
+
+  // Linha 1: Sigla + Nome + Botões
+  const row1 = el('div', { class: 'partido-card-row' });
+  row1.append(gSigla, gNome, btns);
+
+  // Linha 2: Votos Nominais + Votos de Legenda
+  const row2 = el('div', { class: 'partido-card-row' });
+  row2.append(gNominais, gLegenda);
+
+  header.append(row1, row2);
   card.appendChild(header);
 
   // ── Linha de federação (MUDANÇA 3) ──────────────────────────────────────────
@@ -1648,20 +1680,12 @@ async function init() {
   });
   $('btn-link').addEventListener('click', copiarLink);
 
-  // Carregar da URL se houver
+  // Carregar da URL se houver (compartilhamento via botão 🔗 Link)
   const cenarioDaURL = Export.lerCenarioDaURL();
   if (cenarioDaURL) {
     preencherFormularioDeCenario(cenarioDaURL);
-  } else {
-    // Restaurar último cálculo
-    const ultimoRaw = localStorage.getItem('ultimo_calculo');
-    if (ultimoRaw) {
-      try {
-        const { cenario } = JSON.parse(ultimoRaw);
-        if (cenario) preencherFormularioDeCenario(cenario);
-      } catch { /* ignorar */ }
-    }
   }
+  // Auto-restore do último cálculo removido — página inicia sempre limpa
 
   // Adicionar ao menos um partido vazio inicialmente
   if (document.querySelectorAll('.partido-card').length === 0) {
