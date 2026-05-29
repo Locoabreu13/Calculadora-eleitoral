@@ -29,8 +29,10 @@
     'Vereador':           'vereador',
   };
 
-  const urlJSON = (ano, uf, cargo) =>
-    `data/tse/${ano}_${uf}_${CARGO_SLUG[cargo] || cargo}.json`;
+  const urlJSON = (ano, uf, cargo, cdMun) =>
+    cdMun
+      ? `data/tse/${ano}_${uf}_${cdMun}_${CARGO_SLUG[cargo] || cargo}.json`
+      : `data/tse/${ano}_${uf}_${CARGO_SLUG[cargo] || cargo}.json`;
 
   // Apenas anos juridicamente relevantes para retotalização (ADIs 7.228/7.263/7.325)
   const ANOS = [
@@ -38,10 +40,10 @@
     { ano: '2024', label: '2024 — Eleições Municipais', tipo: 'municipais' },
   ];
 
-  // 2022: só Federal (todas as UFs) e Distrital (apenas DF)
+  // 2022: Federal (todas as UFs), Estadual (todas exceto DF) e Distrital (apenas DF)
   // 2024: só Vereador (todas as UFs)
   const CARGOS_TIPO = {
-    gerais:     ['Deputado Federal', 'Deputado Distrital'],
+    gerais:     ['Deputado Federal', 'Deputado Estadual', 'Deputado Distrital'],
     municipais: ['Vereador'],
   };
 
@@ -136,8 +138,8 @@
     onProgress(1, 'Pronto!');
   }
 
-  async function _obterDados(ano, uf, cargo, onProgress) {
-    const url = urlJSON(ano, uf, cargo);
+  async function _obterDados(ano, uf, cargo, onProgress, cdMun) {
+    const url = urlJSON(ano, uf, cargo, cdMun);
     onProgress(0, 'Verificando versão dos dados…');
 
     const resp = await fetch(url);
@@ -195,7 +197,12 @@
   function _popularCargos(tipo) {
     const sel = $('tse-cargo');
     if (!sel) return;
-    const lista = CARGOS_TIPO[tipo] || [];
+    const uf  = ($('tse-uf') || {}).value;
+    const lista = (CARGOS_TIPO[tipo] || []).filter(c => {
+      if (c === 'Deputado Distrital') return uf === 'DF';
+      if (c === 'Deputado Estadual')  return uf !== 'DF';
+      return true;
+    });
     sel.innerHTML = '<option value="">— Selecionar cargo —</option>' +
       lista.map(c => `<option value="${c}">${c}</option>`).join('');
     sel.disabled = false;
@@ -289,13 +296,14 @@
     if (btnCarr) btnCarr.disabled = true;
 
     try {
+      const cdMun = ($('tse-cdmun') || {}).value || undefined;
       const dados = await _obterDados(ano, uf, cargo, (pct, msg) => {
         _setStatus(
           `<span class="import-spinner"></span> ${msg}` +
           `<br><span style="font-family:monospace;letter-spacing:1px;font-size:11px">${_barra(pct)} ${Math.round(pct * 100)}%</span>`,
           'progresso'
         );
-      });
+      }, cdMun);
 
       _dadosMuns = dados.munPartidos || {};
 
@@ -444,6 +452,10 @@
         }
         const wrap = $('tse-mun-wrap');
         if (wrap) wrap.style.display = 'none';
+        const wrapCd = $('tse-cdmun-wrap');
+        if (wrapCd) wrapCd.style.display = cargo === 'Vereador' ? '' : 'none';
+        const inputCd = $('tse-cdmun');
+        if (inputCd) inputCd.value = '';
         _atualizarBotao();
 
         // Pré-preenche vagas ao selecionar cargo (UF já está definida)

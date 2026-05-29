@@ -333,9 +333,22 @@ async function main() {
   console.log('═══════════════════════════════════════════════════════════════');
 
   // Download do ZIP (uma vez, mesmo para múltiplas UFs)
-  console.log('\n▶ Baixando ZIP do TSE…');
-  const buf = await baixar(CDN_URL(ano));
-  console.log(`  Tamanho: ${(buf.length / 1048576).toFixed(1)} MB`);
+  const cacheDir  = path.join(__dirname, '..', 'cache');
+  const cachePath = path.join(cacheDir, `votacao_partido_munzona_${ano}.zip`);
+  let buf;
+  if (fs.existsSync(cachePath)) {
+    console.log('\n▶ Usando ZIP em cache local…');
+    console.log(`  ${cachePath}`);
+    buf = fs.readFileSync(cachePath);
+    console.log(`  Tamanho: ${(buf.length / 1048576).toFixed(1)} MB`);
+  } else {
+    console.log('\n▶ Baixando ZIP do TSE…');
+    buf = await baixar(CDN_URL(ano));
+    fs.mkdirSync(cacheDir, { recursive: true });
+    fs.writeFileSync(cachePath, buf);
+    console.log(`  Tamanho: ${(buf.length / 1048576).toFixed(1)} MB`);
+    console.log(`  Salvo em cache: ${cachePath}`);
+  }
 
   // Parse do central directory (mapa de entradas)
   console.log('\n▶ Lendo estrutura do ZIP…');
