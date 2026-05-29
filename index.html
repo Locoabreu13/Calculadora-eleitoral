@@ -104,6 +104,47 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .footer-lp-contato-wpp{font-size:var(--texto-sm);font-weight:var(--peso-medio);color:var(--cor-texto-inv);text-decoration:none;transition:color var(--transicao)}
 .footer-lp-contato-wpp:hover{color:var(--cor-ambar)}
 .footer-lp-bottom{border-top:1px solid var(--cor-profundo-borda);margin-top:var(--espaco-16);padding-top:var(--espaco-16);text-align:center;font-size:var(--texto-xs);color:var(--cor-texto-inv-suave)}
+/* STEP MOCKUPS */
+.step-mockup{margin-top:var(--espaco-20);background:var(--cor-profundo);border-radius:var(--raio-lg);padding:var(--espaco-16);overflow:hidden;min-height:140px;position:relative}
+.sm-lbl{font-size:9px;color:var(--cor-texto-inv-suave);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:3px}
+.sm-field{background:var(--cor-profundo-meio);border:1px solid var(--cor-profundo-borda);border-radius:3px;padding:3px 8px;font-size:10px;color:var(--cor-texto-inv);display:inline-block;white-space:nowrap}
+.sm-field-sel::after{content:' ▾';font-size:8px;color:var(--cor-texto-inv-suave)}
+.sm-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:10px}
+.sm-col{display:flex;flex-direction:column}
+.sm-frow{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.sm-frow .sm-lbl{min-width:58px;margin-bottom:0}
+.sm-btn-mock{background:var(--cor-confiante);border-radius:3px;padding:5px 12px;font-size:10px;font-weight:500;color:var(--cor-texto-inv);display:inline-block;margin-bottom:10px}
+.sm-ok{font-size:10px;color:#4ade80}
+.sm-info{font-size:10px;color:var(--cor-texto-inv-suave);margin-bottom:10px}
+.sm-info b{color:var(--cor-texto-inv);font-weight:500}
+.sm-th,.sm-tr{display:flex;align-items:center}
+.sm-th{padding-bottom:4px;border-bottom:1px solid var(--cor-profundo-borda);margin-bottom:3px}
+.sm-th span{flex:1;font-size:8px;color:var(--cor-texto-inv-suave);text-transform:uppercase;letter-spacing:.06em}
+.sm-tr{padding:3px 2px;border-radius:2px;margin-bottom:1px}
+.sm-tr span{flex:1;font-size:10px;color:var(--cor-texto-inv)}
+.sm-up{color:#4ade80!important;font-weight:700}
+.sm-dn{color:var(--cor-ambar)!important;font-weight:700}
+.sm-bar{color:var(--cor-texto-inv-suave)!important;font-size:9px}
+.sm-row-up{background:rgba(74,222,128,.1)}
+.sm-row-dn{background:rgba(212,160,23,.1)}
+.sm-ptrack{background:var(--cor-profundo-borda);border-radius:2px;height:3px;overflow:hidden;margin:3px 0 8px}
+.sm-pfill{height:100%;background:var(--cor-confiante);border-radius:2px;width:0}
+.sm-loading{font-size:9px;color:var(--cor-texto-inv-suave)}
+/* KEYFRAMES — ciclo 6s */
+@keyframes smW1{0%,3%{opacity:0;transform:translateY(5px)}8%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
+@keyframes smW2{0%,15%{opacity:0;transform:translateY(5px)}20%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
+@keyframes smW3{0%,26%{opacity:0;transform:translateY(5px)}31%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
+@keyframes smW4{0%,37%{opacity:0;transform:translateY(5px)}42%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
+@keyframes smBtn{0%,15%{opacity:0;transform:translateY(5px)}20%,26%{opacity:1;transform:translateY(0) scale(1)}28%{transform:translateY(0) scale(.93)}30%,77%{transform:translateY(0) scale(1);opacity:1}85%,100%{opacity:0}}
+@keyframes smPbar1{0%,29%{width:0}48%{width:62%}60%,100%{width:100%}}
+@keyframes smPbar2{0%,38%{width:0}56%{width:50%}68%,100%{width:100%}}
+.sm-w1{animation:smW1 6s ease infinite}
+.sm-w2{animation:smW2 6s ease infinite}
+.sm-w3{animation:smW3 6s ease infinite}
+.sm-w4{animation:smW4 6s ease infinite}
+.sm-btn{animation:smBtn 6s ease infinite}
+.sm-pb1{animation:smPbar1 6s ease infinite}
+.sm-pb2{animation:smPbar2 6s ease infinite}
 /* ANIMAÇÕES DE SCROLL */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -204,26 +245,127 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
       <p class="secao-header-desc">Quatro etapas simples. O sistema cuida da complexidade jurídica e matemática.</p>
     </div>
     <div class="editorial-grid">
+
+      <!-- STEP 1 — SELEÇÃO -->
       <div class="editorial-item">
         <span class="editorial-num">[ 1 ]</span>
         <div class="editorial-titulo">Selecione o estado e cargo</div>
         <p class="editorial-desc">Ano, UF e cargo nos menus. Os dados do TSE são carregados automaticamente.</p>
+        <div class="step-mockup">
+          <div class="sm-w1">
+            <div class="sm-row">
+              <div class="sm-col">
+                <span class="sm-lbl">Ano</span>
+                <div class="sm-field sm-field-sel">2022</div>
+              </div>
+              <div class="sm-col">
+                <span class="sm-lbl">UF</span>
+                <div class="sm-field sm-field-sel">CE</div>
+              </div>
+              <div class="sm-col">
+                <span class="sm-lbl">Cargo</span>
+                <div class="sm-field sm-field-sel">Dep. Federal</div>
+              </div>
+            </div>
+          </div>
+          <div class="sm-btn">
+            <div class="sm-btn-mock">Carregar dados do TSE</div>
+          </div>
+          <div class="sm-w4">
+            <div class="sm-ok">✓ 28 partidos · 22 vagas · QE 231.084</div>
+          </div>
+        </div>
       </div>
+
+      <!-- STEP 2 — CASSAÇÃO -->
       <div class="editorial-item">
         <span class="editorial-num">[ 2 ]</span>
         <div class="editorial-titulo">Configure a cassação</div>
         <p class="editorial-desc">Escolha o candidato, os votos e a modalidade. O QE é recalculado automaticamente.</p>
+        <div class="step-mockup">
+          <div class="sm-w1">
+            <div class="sm-frow">
+              <span class="sm-lbl">Partido</span>
+              <div class="sm-field sm-field-sel">UNIÃO</div>
+            </div>
+          </div>
+          <div class="sm-w2">
+            <div class="sm-frow">
+              <span class="sm-lbl">Candidato</span>
+              <div class="sm-field">Heitor Freire</div>
+            </div>
+          </div>
+          <div class="sm-w3">
+            <div class="sm-frow">
+              <span class="sm-lbl">Votos</span>
+              <div class="sm-field">48.888</div>
+            </div>
+          </div>
+          <div class="sm-w4">
+            <div class="sm-frow">
+              <span class="sm-lbl">Modalidade</span>
+              <div class="sm-field sm-field-sel">Total</div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <!-- STEP 3 — CALCULAR -->
       <div class="editorial-item">
         <span class="editorial-num">[ 3 ]</span>
         <div class="editorial-titulo">Calcule com um clique</div>
         <p class="editorial-desc">O algoritmo de três fases processa a distribuição conforme as ADIs.</p>
+        <div class="step-mockup">
+          <div class="sm-w1">
+            <div class="sm-info">QE <b>231.084</b> · Vagas <b>22</b> · Fase 3 <b>Não</b></div>
+          </div>
+          <div class="sm-btn">
+            <div class="sm-btn-mock">Calcular →</div>
+          </div>
+          <div class="sm-w3">
+            <div class="sm-loading">Fase 1 — Distribuição por quociente eleitoral</div>
+            <div class="sm-ptrack"><div class="sm-pfill sm-pb1"></div></div>
+            <div class="sm-loading">Fase 2 — Distribuição de sobras D'Hondt</div>
+            <div class="sm-ptrack"><div class="sm-pfill sm-pb2"></div></div>
+          </div>
+          <div class="sm-w4">
+            <div class="sm-ok">✓ Cálculo concluído — 3 fases processadas</div>
+          </div>
+        </div>
       </div>
+
+      <!-- STEP 4 — RESULTADO -->
       <div class="editorial-item">
         <span class="editorial-num">[ 4 ]</span>
         <div class="editorial-titulo">Analise e exporte</div>
         <p class="editorial-desc">Tabela de resultados, auditoria D'Hondt e exportação em PDF e CSV.</p>
+        <div class="step-mockup">
+          <div class="sm-w1">
+            <div class="sm-th">
+              <span>Partido</span><span>F1</span><span>F2</span><span>Total</span><span>Δ</span>
+            </div>
+          </div>
+          <div class="sm-w2">
+            <div class="sm-tr sm-row-up">
+              <span>PL</span><span>4</span><span>2</span><span>6</span><span class="sm-up">+1</span>
+            </div>
+          </div>
+          <div class="sm-w3">
+            <div class="sm-tr sm-row-dn">
+              <span>UNIÃO</span><span>3</span><span>0</span><span>3</span><span class="sm-dn">−1</span>
+            </div>
+          </div>
+          <div class="sm-w4">
+            <div class="sm-tr">
+              <span>MDB</span><span>3</span><span>0</span><span>3</span><span>—</span>
+            </div>
+            <div class="sm-tr">
+              <span>Republicanos</span><span>0</span><span>0</span><span>0</span><span class="sm-bar">barrado</span>
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
     <div class="entregas-grid" style="border-top-color:var(--cor-borda-suave)">
       <div class="entrega-item" style="border-right-color:var(--cor-borda-suave)">
