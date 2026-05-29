@@ -180,6 +180,18 @@ nav.scrolled{background:rgba(8,17,31,.94);backdrop-filter:blur(20px);border-colo
 .f3-notice{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);border-radius:7px;padding:10px 12px;font-size:11px;color:var(--accent);margin-top:14px;line-height:1.6}
 /* PRICING */
 .pricing{padding:0 48px 120px;max-width:900px;margin:0 auto;text-align:center}
+.reports-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.report-card{background:var(--navy-2);border:1px solid var(--border);border-radius:14px;padding:26px;transition:all .3s;display:flex;flex-direction:column;gap:12px}
+.report-card:hover{border-color:var(--border-bright);transform:translateY(-3px)}
+.report-header{display:flex;align-items:center;justify-content:space-between}
+.report-icon{font-size:26px}
+.report-badge{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;color:var(--accent);background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.25);padding:3px 10px;border-radius:20px;letter-spacing:.08em}
+.report-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#fff}
+.report-body{font-size:13px;color:var(--text-muted);line-height:1.6}
+.report-list{margin:0;padding-left:16px;display:flex;flex-direction:column;gap:6px}
+.report-list li{font-size:12.5px;color:var(--text-muted);line-height:1.5}
+.report-footer{margin-top:auto;font-size:12px;color:var(--accent);font-family:'DM Mono',monospace;letter-spacing:.04em;padding-top:12px;border-top:1px solid var(--border)}
+@media(max-width:768px){.reports-grid{grid-template-columns:1fr}}
 .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;text-align:left}
 .price-card{background:var(--navy-2);border:1px solid var(--border);border-radius:14px;padding:26px;transition:all .3s}
 .price-card.pop{border-color:var(--accent);position:relative}
@@ -438,6 +450,64 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify
       <div class="feat-title">Auditoria completa passo a passo</div>
       <div class="feat-body">Cada rodada do D'Hondt é documentada: médias calculadas, candidatos elegíveis, barreira aplicada e vencedor. Exportável em CSV e PDF estruturado como parecer técnico.</div>
     </div>
+  </div>
+</section>
+
+<!-- RELATÓRIOS -->
+<section id="relatorios" class="section" style="padding-top:0">
+  <div class="section-label reveal">Exportação</div>
+  <h2 class="section-h reveal">Do cálculo ao documento<br>em um clique</h2>
+  <p class="section-sub reveal">O sistema gera três tipos de saída prontos para uso jurídico e estratégico — sem precisar copiar nada à mão.</p>
+  <div class="reports-grid">
+
+    <div class="report-card reveal">
+      <div class="report-header">
+        <div class="report-icon">📄</div>
+        <div class="report-badge">PDF</div>
+      </div>
+      <div class="report-title">Parecer Técnico Completo</div>
+      <div class="report-body">Documento jurídico estruturado, gerado automaticamente com:</div>
+      <ul class="report-list">
+        <li>Capa com dados do pleito e fundamentação legal</li>
+        <li>Quadro de parâmetros: QE, vagas, votos válidos</li>
+        <li>Tabela de partidos e distribuição fase a fase (F1 → F2 → F3)</li>
+        <li>Auditoria D'Hondt rodada a rodada com médias calculadas</li>
+      </ul>
+      <div class="report-footer">Pronto para juntar aos autos</div>
+    </div>
+
+    <div class="report-card reveal reveal-delay-1">
+      <div class="report-header">
+        <div class="report-icon">📊</div>
+        <div class="report-badge">CSV</div>
+      </div>
+      <div class="report-title">Planilha para Análise</div>
+      <div class="report-body">Exporta todos os dados em formato aberto, compatível com Excel e Google Sheets:</div>
+      <ul class="report-list">
+        <li>Partidos, votos nominais e de legenda</li>
+        <li>Quociente Partidário de cada fase</li>
+        <li>Resultado final com variação de cadeiras</li>
+        <li>Auditoria das rodadas D'Hondt</li>
+      </ul>
+      <div class="report-footer">Ideal para cruzar com dados próprios</div>
+    </div>
+
+    <div class="report-card reveal reveal-delay-2">
+      <div class="report-header">
+        <div class="report-icon">🎬</div>
+        <div class="report-badge">SLIDES</div>
+      </div>
+      <div class="report-title">Modo Apresentação</div>
+      <div class="report-body">Gera slides automáticos no próprio navegador, sem instalar nada:</div>
+      <ul class="report-list">
+        <li>Slide de capa com nome do pleito</li>
+        <li>Métricas principais: QE, votos, vagas</li>
+        <li>Quadro de cadeiras antes e depois</li>
+        <li>Evolução fase a fase em tela cheia</li>
+      </ul>
+      <div class="report-footer">Ideal para audiências e sustentações orais</div>
+    </div>
+
   </div>
 </section>
 
