@@ -156,6 +156,14 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 @keyframes s1CargoDrop{0%,45%{opacity:0;transform:scaleY(0)}49%,58%{opacity:1;transform:scaleY(1)}61%,100%{opacity:0;transform:scaleY(0)}}
 @keyframes s1Btn{0%,63%{opacity:0;transform:translateY(4px)}66%,72%{opacity:1;transform:translateY(0) scale(1)}74%{transform:translateY(0) scale(.91)}76%,84%{transform:translateY(0) scale(1);opacity:1}88%,100%{opacity:0}}
 @keyframes s1Status{0%,75%{opacity:0;transform:translateY(4px)}78%,84%{opacity:1;transform:none}88%,100%{opacity:0}}
+/* STEP 2 — keyframes 14s, preenchimento sequencial */
+@keyframes s2Parti{0%,2%{opacity:0;transform:translateY(4px)}5%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
+@keyframes s2PartiDrop{0%,4%{opacity:0;transform:scaleY(0)}7%,14%{opacity:1;transform:scaleY(1)}17%,100%{opacity:0;transform:scaleY(0)}}
+@keyframes s2Cand{0%,19%{opacity:0;transform:translateY(4px)}23%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
+@keyframes s2Votos{0%,29%{opacity:0;transform:translateY(4px)}33%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
+@keyframes s2Modal{0%,37%{opacity:0;transform:translateY(4px)}41%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
+@keyframes s2ModalDrop{0%,38%{opacity:0;transform:scaleY(0)}42%,52%{opacity:1;transform:scaleY(1)}55%,100%{opacity:0;transform:scaleY(0)}}
+@keyframes s2QE{0%,57%{opacity:0;transform:translateY(4px)}61%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
 /* STEP 4 — keyframes 10s */
 @keyframes s4Head{0%,4%{opacity:0;transform:translateY(4px)}8%,82%{opacity:1;transform:none}88%,100%{opacity:0;transform:translateY(-2px)}}
 @keyframes s4RowA{0%,10%{opacity:0;transform:translateY(4px)}14%,82%{opacity:1;transform:none}88%,100%{opacity:0}}
@@ -200,6 +208,13 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .s1CargoDrop{animation:s1CargoDrop 14s ease infinite;transform-origin:top}
 .s1Btn{animation:s1Btn 14s ease infinite}
 .s1Status{animation:s1Status 14s ease infinite}
+.s2Parti{animation:s2Parti 14s ease infinite}
+.s2PartiDrop{animation:s2PartiDrop 14s ease infinite;transform-origin:top}
+.s2Cand{animation:s2Cand 14s ease infinite}
+.s2Votos{animation:s2Votos 14s ease infinite}
+.s2Modal{animation:s2Modal 14s ease infinite}
+.s2ModalDrop{animation:s2ModalDrop 14s ease infinite;transform-origin:top}
+.s2QE{animation:s2QE 14s ease infinite}
 /* ANIMAÇÕES DE SCROLL */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -404,34 +419,55 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
           <p class="step-card-d">Informe o partido, o candidato, o total de votos a anular e a modalidade de cassação. O sistema recalcula o Quociente Eleitoral automaticamente.</p>
         </div>
         <div class="step-card-full-sml">
-          <div class="smA">
-            <div class="sml-frow">
-              <span class="sml-lbl-i">Partido</span>
-              <div class="sml-field sml-field-sel" style="min-width:120px">UNIÃO Brasil</div>
+          <!-- Partido com dropdown -->
+          <div class="s2Parti" style="margin-bottom:var(--espaco-10)">
+            <div class="sml-frow" style="align-items:flex-start">
+              <span class="sml-lbl-i" style="padding-top:6px">Partido</span>
+              <div class="sml-col">
+                <div class="sml-field sml-field-sel" style="min-width:130px">UNIÃO Brasil</div>
+                <div class="sml-dropdown s2PartiDrop">
+                  <div class="sml-dd-item">MDB</div>
+                  <div class="sml-dd-item">PDT</div>
+                  <div class="sml-dd-item">PL</div>
+                  <div class="sml-dd-item">PT</div>
+                  <div class="sml-dd-item sml-dd-hl">UNIÃO Brasil ✓</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="smB">
+          <!-- Candidato -->
+          <div class="s2Cand" style="margin-bottom:var(--espaco-10)">
             <div class="sml-frow">
               <span class="sml-lbl-i">Candidato</span>
               <div class="sml-field" style="min-width:140px">Heitor Freire</div>
             </div>
           </div>
-          <div class="smC">
+          <!-- Votos -->
+          <div class="s2Votos" style="margin-bottom:var(--espaco-10)">
             <div class="sml-frow">
               <span class="sml-lbl-i">Votos anulados</span>
               <div class="sml-field">48.888</div>
             </div>
           </div>
-          <div class="smD">
-            <div class="sml-frow">
-              <span class="sml-lbl-i">Modalidade</span>
-              <div class="sml-field sml-field-sel">Anular nominais — sem reatribuição</div>
+          <!-- Modalidade com dropdown -->
+          <div class="s2Modal" style="margin-bottom:var(--espaco-10)">
+            <div class="sml-frow" style="align-items:flex-start">
+              <span class="sml-lbl-i" style="padding-top:6px">Modalidade</span>
+              <div class="sml-col">
+                <div class="sml-field sml-field-sel" style="min-width:200px">Anular nominais — sem reatribuição</div>
+                <div class="sml-dropdown s2ModalDrop">
+                  <div class="sml-dd-item">Anular legenda</div>
+                  <div class="sml-dd-item sml-dd-hl">Anular nominais — sem reatribuição ✓</div>
+                  <div class="sml-dd-item">Anular nominais — com reatribuição</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="smE">
+          <!-- QE recalculado -->
+          <div class="s2QE">
             <div style="height:1px;background:var(--cor-profundo-borda);margin:var(--espaco-12) 0"></div>
             <div class="sml-frow">
-              <span class="sml-lbl-i">QE original</span>
+              <span class="sml-lbl-i">QE</span>
               <div class="sml-field">231.084</div>
               <span style="font-size:10px;color:var(--cor-texto-inv-suave)">→</span>
               <div class="sml-field" style="color:#4ade80">182.506</div>
