@@ -1359,6 +1359,35 @@ tr.qualificado td:first-child { border-left: 3px solid var(--gold); }
 /* ═══════════════════════════════════════════════════════════════
    ZONA 5 — FOOTER
    ═══════════════════════════════════════════════════════════════ */
+.footer-contato {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 10px 24px;
+  background: var(--navy);
+  border-top: 1px solid var(--navy-border);
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.footer-contato-nome {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.82rem;
+}
+.footer-contato-btn {
+  background: #25d366;
+  color: #fff;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.footer-contato-btn:hover {
+  background: #1ebe5d;
+}
+
 .footer {
   background: var(--navy);
   padding: 0 24px;

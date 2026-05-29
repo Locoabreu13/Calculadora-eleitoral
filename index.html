@@ -54,7 +54,7 @@ nav.scrolled{background:rgba(8,17,31,.94);backdrop-filter:blur(20px);border-colo
 .step-item.active .step-desc{max-height:80px;color:var(--text-muted)}
 .step-bar{height:2px;background:var(--border);position:relative;margin-top:12px;border-radius:2px;overflow:hidden;display:none}
 .step-item.active .step-bar{display:block}
-.step-fill{height:100%;background:var(--accent);border-radius:2px;animation:fill 4s linear forwards}
+.step-fill{height:100%;background:var(--accent);border-radius:2px;animation:fill 8s linear forwards}
 @keyframes fill{from{width:0}to{width:100%}}
 .content-wrap{position:relative;min-height:440px}
 .content-panel{opacity:0;transform:translateY(20px);transition:all .5s;position:absolute;pointer-events:none;width:100%}
@@ -262,7 +262,7 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify
     <span class="line2">com rigor jurídico.</span>
   </h1>
   <p class="hero-sub reveal reveal-delay-1">
-    A única ferramenta que implementa <strong>fielmente a regra imposta pelo STF</strong> para a distribuição das sobras eleitorais — conforme as ADIs 7.228, 7.263 e 7.325, relatadas pelo Min. Flávio Dino. Para advogados eleitorais, TREs e pesquisadores.
+    A ferramenta que implementa <strong>fielmente a regra imposta pelo STF</strong> para a distribuição das sobras eleitorais — conforme as ADIs 7.228, 7.263 e 7.325, relatadas pelo Min. Flávio Dino. Para advogados eleitorais, TREs e pesquisadores.
   </p>
   <div class="hero-actions reveal reveal-delay-2">
     <a href="app.html" class="btn-primary">Usar o sistema →</a>
@@ -595,7 +595,7 @@ new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting)x.target.classL
 const steps=document.querySelectorAll('.step-item'),panels=document.querySelectorAll('.content-panel');
 let cur=0,timer;
 function activate(i){steps.forEach(s=>s.classList.remove('active'));panels.forEach(p=>p.classList.remove('active'));steps[i].classList.add('active');panels[i].classList.add('active');cur=i}
-function startTimer(){clearInterval(timer);timer=setInterval(()=>activate((cur+1)%steps.length),4200)}
+function startTimer(){clearInterval(timer);timer=setInterval(()=>activate((cur+1)%steps.length),8000)}
 steps.forEach((s,i)=>s.addEventListener('click',()=>{activate(i);startTimer()}));
 startTimer();
 // cases
