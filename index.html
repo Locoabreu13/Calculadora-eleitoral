@@ -164,6 +164,16 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 @keyframes s2Modal{0%,37%{opacity:0;transform:translateY(4px)}41%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
 @keyframes s2ModalDrop{0%,38%{opacity:0;transform:scaleY(0)}42%,52%{opacity:1;transform:scaleY(1)}55%,100%{opacity:0;transform:scaleY(0)}}
 @keyframes s2QE{0%,57%{opacity:0;transform:translateY(4px)}61%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
+/* STEP 3 — keyframes 14s, cálculo por fases */
+@keyframes s3Info{0%,4%{opacity:0;transform:translateY(4px)}8%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
+@keyframes s3Btn{0%,11%{opacity:0;transform:translateY(4px)}14%,18%{opacity:1;transform:translateY(0) scale(1)}20%{transform:translateY(0) scale(.91)}22%,80%{transform:translateY(0) scale(1);opacity:1}84%,100%{opacity:0}}
+@keyframes s3F1{0%,21%{opacity:0;transform:translateY(3px)}24%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
+@keyframes s3Pb1{0%,24%{width:0}39%{width:100%}100%{width:100%}}
+@keyframes s3F2{0%,36%{opacity:0;transform:translateY(3px)}39%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
+@keyframes s3Pb2{0%,39%{width:0}54%{width:100%}100%{width:100%}}
+@keyframes s3F3{0%,51%{opacity:0;transform:translateY(3px)}54%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
+@keyframes s3Pb3{0%,54%{width:0}68%{width:100%}100%{width:100%}}
+@keyframes s3Ok{0%,66%{opacity:0;transform:translateY(3px)}69%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
 /* STEP 4 — keyframes 10s */
 @keyframes s4Head{0%,4%{opacity:0;transform:translateY(4px)}8%,82%{opacity:1;transform:none}88%,100%{opacity:0;transform:translateY(-2px)}}
 @keyframes s4RowA{0%,10%{opacity:0;transform:translateY(4px)}14%,82%{opacity:1;transform:none}88%,100%{opacity:0}}
@@ -215,6 +225,15 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .s2Modal{animation:s2Modal 14s ease infinite}
 .s2ModalDrop{animation:s2ModalDrop 14s ease infinite;transform-origin:top}
 .s2QE{animation:s2QE 14s ease infinite}
+.s3Info{animation:s3Info 14s ease infinite}
+.s3Btn{animation:s3Btn 14s ease infinite}
+.s3F1{animation:s3F1 14s ease infinite}
+.s3Pb1{animation:s3Pb1 14s ease infinite}
+.s3F2{animation:s3F2 14s ease infinite}
+.s3Pb2{animation:s3Pb2 14s ease infinite}
+.s3F3{animation:s3F3 14s ease infinite}
+.s3Pb3{animation:s3Pb3 14s ease infinite}
+.s3Ok{animation:s3Ok 14s ease infinite}
 /* ANIMAÇÕES DE SCROLL */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -485,23 +504,31 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
           <p class="step-card-d">O algoritmo executa as três fases da distribuição proporcional conforme as ADIs 7.228, 7.263 e 7.325 do STF.</p>
         </div>
         <div class="step-card-full-sml">
-          <div class="smA">
-            <div class="sml-info" style="margin-bottom:var(--espaco-16)">
-              QE <b>182.506</b> &nbsp;·&nbsp; Vagas <b>22</b> &nbsp;·&nbsp; Barreira 80% <b>146.004</b> &nbsp;·&nbsp; Partidos <b>28</b>
-            </div>
+          <!-- Painel de parâmetros -->
+          <div class="s3Info" style="margin-bottom:var(--espaco-16)">
+            <div class="sml-info">QE <b>182.506</b> &nbsp;·&nbsp; Vagas <b>22</b> &nbsp;·&nbsp; Barreira 80% <b>146.004</b> &nbsp;·&nbsp; Partidos <b>28</b></div>
           </div>
-          <div class="smBtn">
+          <!-- Botão com efeito de clique -->
+          <div class="s3Btn" style="margin-bottom:var(--espaco-20)">
             <div class="sml-btn">Calcular retotalização →</div>
           </div>
-          <div class="smC" style="margin-top:var(--espaco-16)">
+          <!-- Fase 1 -->
+          <div class="s3F1" style="margin-bottom:var(--espaco-12)">
             <div class="sml-pname">Fase 1 — Distribuição por quociente eleitoral</div>
-            <div class="sml-ptrack"><div class="sml-pfill smPb1"></div></div>
-            <div class="sml-pname">Fase 2 — Distribuição de sobras (D'Hondt)</div>
-            <div class="sml-ptrack"><div class="sml-pfill smPb2"></div></div>
-            <div class="sml-pname">Fase 3 — Verificação de barreira legal (80% do QE)</div>
-            <div class="sml-ptrack"><div class="sml-pfill smPb3"></div></div>
+            <div class="sml-ptrack"><div class="sml-pfill s3Pb1"></div></div>
           </div>
-          <div class="smE" style="margin-top:var(--espaco-12)">
+          <!-- Fase 2 -->
+          <div class="s3F2" style="margin-bottom:var(--espaco-12)">
+            <div class="sml-pname">Fase 2 — Distribuição de sobras (D'Hondt)</div>
+            <div class="sml-ptrack"><div class="sml-pfill s3Pb2"></div></div>
+          </div>
+          <!-- Fase 3 -->
+          <div class="s3F3" style="margin-bottom:var(--espaco-12)">
+            <div class="sml-pname">Fase 3 — Verificação de barreira legal (80% do QE)</div>
+            <div class="sml-ptrack"><div class="sml-pfill s3Pb3"></div></div>
+          </div>
+          <!-- Concluído -->
+          <div class="s3Ok">
             <div class="sml-ok">✓ Concluído · 3 fases processadas · 22 vagas redistribuídas · 1 alteração identificada</div>
           </div>
         </div>
