@@ -555,12 +555,27 @@
           // Desbloqueia UF se estava travada por Deputado Distrital
           if (selUF && selUF.disabled) selUF.disabled = false;
         }
+        const ano = ($('tse-ano') || {}).value;
+        const vereador2024 = cargo === 'Vereador' && ano === '2024';
         const wrap = $('tse-mun-wrap');
-        if (wrap) wrap.style.display = 'none';
         const wrapCd = $('tse-cdmun-wrap');
-        if (wrapCd) wrapCd.style.display = cargo === 'Vereador' ? '' : 'none';
         const inputCd = $('tse-cdmun');
-        if (inputCd) inputCd.value = '';
+        if (vereador2024) {
+          // Supabase: mostra busca por nome, esconde campo de código
+          if (wrap) wrap.style.display = '';
+          if (wrapCd) wrapCd.style.display = 'none';
+          if (inputCd) inputCd.value = '';
+          const inputBusca = $('tse-municipio-busca');
+          if (inputBusca) { inputBusca.value = ''; inputBusca.focus(); }
+          const hdCd = $('tse-municipio-cd');
+          const hdNm = $('tse-municipio');
+          if (hdCd) hdCd.value = '';
+          if (hdNm) hdNm.value = '';
+        } else {
+          if (wrap) wrap.style.display = 'none';
+          if (wrapCd) wrapCd.style.display = cargo === 'Vereador' ? '' : 'none';
+          if (inputCd) inputCd.value = '';
+        }
         _atualizarBotao();
 
         // Pré-preenche vagas ao selecionar cargo (UF já está definida)
