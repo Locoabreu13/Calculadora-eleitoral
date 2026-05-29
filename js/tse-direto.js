@@ -288,10 +288,18 @@
     if (btnCarr) btnCarr.disabled = true;
 
     try {
-      const [rowsPart, rowsCand] = await Promise.all([
-        _sbGet('partidos_2024', `cd_municipio=eq.${cd}&order=votos_nominais.desc`),
+      const [rowsMun, rowsPart, rowsCand] = await Promise.all([
+        _sbGet('municipios_2024', `cd_municipio=eq.${cd}&select=vagas`),
+        _sbGet('partidos_2024',   `cd_municipio=eq.${cd}&order=votos_nominais.desc`),
         _sbGet('candidatos_2024', `cd_municipio=eq.${cd}&order=votos.desc`),
       ]);
+
+      // Preenche vagas automaticamente
+      const vagas = rowsMun[0] && rowsMun[0].vagas;
+      if (vagas) {
+        const elVagas = $('input-vagas');
+        if (elVagas) elVagas.value = vagas;
+      }
 
       // Reconstrói estrutura igual ao JSON local
       const candPorBloco = {};
