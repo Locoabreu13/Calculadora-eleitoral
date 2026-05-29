@@ -40,45 +40,51 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .hero-metricas{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--espaco-16);border-top:1px solid var(--cor-profundo-borda);padding-top:var(--espaco-32);max-width:var(--largura-texto);margin-inline:auto;text-align:left}
 .hero-metrica-item{display:flex;flex-direction:column;gap:var(--espaco-4)}
 .hero-metrica-numero{font-family:var(--fonte-titulo);font-weight:var(--peso-black);font-size:var(--texto-2xl);color:var(--cor-ambar);line-height:1}
+/* PADRÃO EDITORIAL — cabeçalho assimétrico usado nas seções */
+.secao-header{display:grid;grid-template-columns:1fr 1fr;gap:var(--grid-gap-lg);align-items:end;margin-bottom:var(--espaco-64)}
+.secao-header-label{font-size:var(--texto-xs);letter-spacing:var(--tracking-label);color:var(--cor-texto-label);text-transform:uppercase;margin-bottom:var(--espaco-16)}
+.secao-header-titulo{font-family:var(--fonte-titulo);font-size:var(--texto-2xl);font-weight:var(--peso-bold);color:var(--cor-texto);letter-spacing:var(--tracking-titulo);line-height:var(--linha-titulo)}
+.secao-header-titulo--inv{color:var(--cor-texto-inv)}
+.secao-header-desc{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo);align-self:end}
+.secao-header-desc--inv{color:var(--cor-texto-inv-medio)}
+/* ITENS EDITORIAIS [1][2][3] */
+.editorial-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--cor-borda-suave)}
+.editorial-item{padding:var(--espaco-32) var(--espaco-24) var(--espaco-32) 0;border-right:1px solid var(--cor-borda-suave)}
+.editorial-item:last-child{border-right:none}
+.editorial-num{font-size:var(--texto-xs);letter-spacing:var(--tracking-label);color:var(--cor-texto-label);margin-bottom:var(--espaco-20);display:block}
+.editorial-titulo{font-weight:var(--peso-bold);font-size:var(--texto-base);color:var(--cor-texto);margin-bottom:var(--espaco-8)}
+.editorial-desc{font-size:var(--texto-sm);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
+/* CARD VISUAL GRANDE */
+.visual-card{margin-top:var(--espaco-48);border-radius:var(--raio-xl);overflow:hidden;background:var(--cor-profundo);height:480px}
+.visual-card img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+/* ENTREGAS — 3 colunas editoriais */
+.entregas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--cor-profundo-borda);margin-top:var(--espaco-48)}
+.entrega-item{padding:var(--espaco-32) var(--espaco-24) var(--espaco-32) 0;border-right:1px solid var(--cor-profundo-borda)}
+.entrega-item:last-child{border-right:none}
+.entrega-titulo{font-weight:var(--peso-bold);font-size:var(--texto-base);color:var(--cor-texto);margin-bottom:var(--espaco-8)}
+.entrega-desc{font-size:var(--texto-sm);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
 /* SEÇÃO 02 — O PROBLEMA */
 .secao-02{background:var(--cor-fundo-neutro);padding-block:var(--secao-padding-v)}
-.secao-02-inner{max-width:var(--largura-texto);margin-inline:auto}
-.secao-02-titulo{font-family:var(--fonte-titulo);font-size:var(--texto-2xl);font-weight:var(--peso-bold);color:var(--cor-texto);letter-spacing:var(--tracking-titulo);line-height:var(--linha-titulo);margin-bottom:var(--espaco-24)}
 .secao-02-corpo{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
 /* SEÇÃO 03 — COMO FUNCIONA */
 .secao-03{background:var(--cor-fundo-principal);padding-block:var(--secao-padding-v)}
-.secao-03-cabecalho{max-width:var(--largura-texto);margin-inline:auto;text-align:center;margin-bottom:var(--espaco-48)}
-.secao-03-label{margin-bottom:var(--espaco-16)}
-.secao-titulo{font-family:var(--fonte-titulo);font-size:var(--texto-2xl);font-weight:var(--peso-bold);color:var(--cor-texto);letter-spacing:var(--tracking-titulo);line-height:var(--linha-titulo)}
-.secao-03-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--grid-gap)}
-.secao-03-entregas{margin-top:var(--espaco-48);border-top:1px solid var(--cor-borda-suave);padding-top:var(--espaco-40)}
-.secao-03-entregas-label{margin-bottom:var(--espaco-24)}
-.secao-03-entregas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--grid-gap)}
-.card-numero{font-family:var(--fonte-titulo);font-weight:var(--peso-black);font-size:var(--texto-2xl);color:var(--cor-confiante);margin-bottom:var(--espaco-12)}
-.card-titulo{font-weight:var(--peso-bold);font-size:var(--texto-lg);color:var(--cor-texto);margin-bottom:var(--espaco-8)}
-.card-descricao{font-size:var(--texto-sm);color:var(--cor-texto-suave)}
 /* SEÇÃO 04 — RESULTADO */
 .secao-04{background:var(--cor-fundo-neutro);padding-block:var(--secao-padding-v)}
-.secao-04-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--grid-gap-lg);align-items:start}
-.secao-04-titulo{font-family:var(--fonte-titulo);font-size:var(--texto-2xl);font-weight:var(--peso-bold);color:var(--cor-texto);letter-spacing:var(--tracking-titulo);line-height:var(--linha-titulo);margin-bottom:var(--espaco-24)}
 .secao-04-corpo{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
 /* SEÇÃO 05 — PROVA */
 .secao-05{background:var(--cor-fundo-principal);padding-block:var(--secao-padding-v)}
-.secao-05-cabecalho{max-width:var(--largura-texto);margin-inline:auto;text-align:center;margin-bottom:var(--espaco-48)}
-.secao-05-label{margin-bottom:var(--espaco-16)}
-.secao-05-corpo{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo);margin-top:var(--espaco-16)}
-.secao-05-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--grid-gap)}
-.caso-titulo{font-size:var(--texto-lg);font-weight:var(--peso-bold);color:var(--cor-texto);margin-bottom:var(--espaco-4)}
-.caso-subtitulo{font-size:var(--texto-sm);color:var(--cor-confiante);font-weight:var(--peso-medio)}
-.caso-divider{border:none;border-top:1px solid var(--cor-borda-suave);margin:var(--espaco-16) 0}
-.caso-metricas{font-size:var(--texto-xs);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
-.caso-resultado{font-size:var(--texto-sm);color:var(--cor-texto-medio);margin-top:var(--espaco-12)}
-/* SEÇÕES 06 E 07 — RISCO E POSICIONAMENTO */
+.secao-05-corpo{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
+.casos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--cor-borda-suave)}
+.caso-item{padding:var(--espaco-32) var(--espaco-24) var(--espaco-32) 0;border-right:1px solid var(--cor-borda-suave)}
+.caso-item:last-child{border-right:none}
+.caso-titulo{font-weight:var(--peso-bold);font-size:var(--texto-base);color:var(--cor-texto);margin-bottom:var(--espaco-4)}
+.caso-subtitulo{font-size:var(--texto-xs);color:var(--cor-confiante);font-weight:var(--peso-medio);letter-spacing:var(--tracking-label);text-transform:uppercase;margin-bottom:var(--espaco-16)}
+.caso-metricas{font-size:var(--texto-xs);color:var(--cor-texto-label);line-height:var(--linha-corpo);margin-bottom:var(--espaco-12)}
+.caso-resultado{font-size:var(--texto-sm);color:var(--cor-texto-medio)}
+/* SEÇÕES 06 E 07 */
 .secao-06{background:var(--cor-fundo-neutro);padding-block:var(--secao-padding-v)}
-.secao-06-inner{max-width:var(--largura-texto);margin-inline:auto}
 .secao-07{background:var(--cor-fundo-principal);padding-block:var(--secao-padding-v)}
-.secao-07-inner{max-width:var(--largura-texto);margin-inline:auto}
-.secao-texto{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo);margin-top:var(--espaco-24)}
+.secao-texto{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo);max-width:var(--largura-texto)}
 /* SEÇÃO 08 — CTA FINAL */
 .secao-08{background:var(--cor-confiante);padding-block:var(--secao-padding-v);text-align:center}
 .secao-08-inner{max-width:var(--largura-estreita);margin-inline:auto}
@@ -98,19 +104,32 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .footer-lp-contato-wpp{font-size:var(--texto-sm);font-weight:var(--peso-medio);color:var(--cor-texto-inv);text-decoration:none;transition:color var(--transicao)}
 .footer-lp-contato-wpp:hover{color:var(--cor-ambar)}
 .footer-lp-bottom{border-top:1px solid var(--cor-profundo-borda);margin-top:var(--espaco-16);padding-top:var(--espaco-16);text-align:center;font-size:var(--texto-xs);color:var(--cor-texto-inv-suave)}
+/* ANIMAÇÕES DE SCROLL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+.reveal-delay-4{transition-delay:0.4s}
 @media(max-width:900px){
   nav{padding-inline:var(--espaco-16)}
   .nav-links{display:none}
-  .hero-layout{grid-template-columns:1fr}
   .hero-conteudo{max-width:100%}
   .hero-titulo{font-size:var(--texto-hero-mobile)}
   .hero-metricas{gap:var(--espaco-20)}
-  .browser-frame{display:none}
-  .secao-03-grid{grid-template-columns:repeat(2,1fr)}
-  .secao-04-grid{grid-template-columns:1fr}
-  .secao-05-grid{grid-template-columns:1fr}
+  .secao-header{grid-template-columns:1fr}
+  .editorial-grid{grid-template-columns:repeat(2,1fr)}
+  .editorial-item{border-right:none;border-bottom:1px solid var(--cor-borda-suave)}
+  .editorial-item:last-child{border-bottom:none}
+  .casos-grid{grid-template-columns:1fr}
+  .caso-item{border-right:none;border-bottom:1px solid var(--cor-borda-suave)}
+  .caso-item:last-child{border-bottom:none}
+  .entregas-grid{grid-template-columns:1fr}
+  .entrega-item{border-right:none;border-bottom:1px solid var(--cor-profundo-borda)}
+  .entrega-item:last-child{border-bottom:none}
   .footer-lp-top{flex-direction:column;gap:var(--espaco-16);text-align:center}
   .footer-lp-links{flex-wrap:wrap;justify-content:center}
+  .footer-lp-contato{flex-direction:column;text-align:center}
 }
 </style>
 </head>
@@ -164,9 +183,12 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 <!-- SEÇÃO 02 — O PROBLEMA -->
 <section class="secao-02" id="como-funciona">
   <div class="container">
-    <div class="secao-02-inner">
-      <h2 class="secao-02-titulo">A retotalização envolve dados dispersos, cálculos em fases e regras jurídicas específicas.</h2>
-      <p class="secao-02-corpo">Para chegar ao resultado correto, é necessário localizar e filtrar os dados oficiais do TSE, aplicar o Quociente Eleitoral, calcular o Quociente Partidário e distribuir as sobras conforme as ADIs 7.228, 7.263 e 7.325, fase por fase, com precisão técnica. Um processo que, sem a ferramenta adequada, exige horas de trabalho manual e abre margem para erros metodológicos em cada etapa.</p>
+    <div class="secao-header">
+      <div>
+        <p class="secao-header-label">O problema</p>
+        <h2 class="secao-header-titulo">A retotalização envolve dados dispersos, cálculos em fases e regras jurídicas específicas.</h2>
+      </div>
+      <p class="secao-header-desc secao-02-corpo">Para chegar ao resultado correto, é necessário localizar e filtrar os dados oficiais do TSE, aplicar o Quociente Eleitoral, calcular o Quociente Partidário e distribuir as sobras conforme as ADIs 7.228, 7.263 e 7.325, fase por fase. Um processo que, sem a ferramenta adequada, exige horas de trabalho manual e abre margem para erros em cada etapa.</p>
     </div>
   </div>
 </section>
@@ -174,48 +196,37 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 <!-- SEÇÃO 03 — COMO FUNCIONA -->
 <section class="secao-03" id="como-funciona-cards">
   <div class="container">
-    <div class="secao-03-cabecalho">
-      <p class="label secao-03-label">Fluxo de uso</p>
-      <h2 class="secao-titulo">Dos dados do TSE ao resultado em minutos.</h2>
+    <div class="secao-header">
+      <div>
+        <p class="secao-header-label">Fluxo de uso</p>
+        <h2 class="secao-header-titulo">Dos dados do TSE ao resultado em minutos.</h2>
+      </div>
+      <p class="secao-header-desc">Quatro etapas simples. O sistema cuida da complexidade jurídica e matemática.</p>
     </div>
-    <div class="secao-03-grid">
-      <div class="card">
-        <div class="card-numero">01</div>
-        <div class="card-titulo">Selecione o estado e cargo</div>
-        <p class="card-descricao">Ano, UF e cargo nos menus. Os dados do TSE são carregados automaticamente.</p>
+    <div class="editorial-grid">
+      <div class="editorial-item">
+        <span class="editorial-num">[ 1 ]</span>
+        <div class="editorial-titulo">Selecione o estado e cargo</div>
+        <p class="editorial-desc">Ano, UF e cargo nos menus. Os dados do TSE são carregados automaticamente.</p>
       </div>
-      <div class="card">
-        <div class="card-numero">02</div>
-        <div class="card-titulo">Configure a cassação</div>
-        <p class="card-descricao">Escolha o candidato, os votos e a modalidade. O QE é recalculado automaticamente.</p>
+      <div class="editorial-item">
+        <span class="editorial-num">[ 2 ]</span>
+        <div class="editorial-titulo">Configure a cassação</div>
+        <p class="editorial-desc">Escolha o candidato, os votos e a modalidade. O QE é recalculado automaticamente.</p>
       </div>
-      <div class="card">
-        <div class="card-numero">03</div>
-        <div class="card-titulo">Calcule com um clique</div>
-        <p class="card-descricao">O algoritmo de três fases processa a distribuição conforme as ADIs.</p>
+      <div class="editorial-item">
+        <span class="editorial-num">[ 3 ]</span>
+        <div class="editorial-titulo">Calcule com um clique</div>
+        <p class="editorial-desc">O algoritmo de três fases processa a distribuição conforme as ADIs.</p>
       </div>
-      <div class="card">
-        <div class="card-numero">04</div>
-        <div class="card-titulo">Analise e exporte</div>
-        <p class="card-descricao">Tabela de resultados, auditoria D'Hondt e exportação em PDF e CSV.</p>
+      <div class="editorial-item">
+        <span class="editorial-num">[ 4 ]</span>
+        <div class="editorial-titulo">Analise e exporte</div>
+        <p class="editorial-desc">Tabela de resultados, auditoria D'Hondt e exportação em PDF e CSV.</p>
       </div>
     </div>
-    <div class="secao-03-entregas">
-      <p class="label secao-03-entregas-label">O que o sistema entrega</p>
-      <div class="secao-03-entregas-grid">
-        <div class="card">
-          <div class="card-titulo">Relatório técnico</div>
-          <p class="card-descricao">Exportação em PDF com metodologia, QE, fases e resultado por partido. Pronto para juntada em petição.</p>
-        </div>
-        <div class="card">
-          <div class="card-titulo">Planilha de dados</div>
-          <p class="card-descricao">CSV com toda a distribuição de vagas, votos válidos e quocientes partidários por fase.</p>
-        </div>
-        <div class="card">
-          <div class="card-titulo">Modo apresentação</div>
-          <p class="card-descricao">Visualização limpa dos resultados para uso em audiências, sustentações orais e reuniões.</p>
-        </div>
-      </div>
+    <div class="visual-card">
+      <img src="css/hero-screenshot.png" alt="RetotalizaJE — painel de resultados CE 2022">
     </div>
   </div>
 </section>
@@ -223,15 +234,16 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 <!-- SEÇÃO 04 — RESULTADO -->
 <section class="secao-04" id="casos-validados">
   <div class="container">
-    <div class="secao-04-grid">
+    <div class="secao-header">
       <div>
-        <h2 class="secao-04-titulo">Calcule o resultado antes da publicação oficial e oriente o cliente com precisão.</h2>
-        <p class="secao-04-corpo">Entre a decisão judicial e a publicação do resultado pelo Tribunal existe um intervalo relevante. É nesse intervalo que o advogado precisa orientar o cliente, o candidato precisa tomar decisões e o partido precisa se reorganizar. Com o RetotalizaJE, esse intervalo deixa de ser uma zona de incerteza.</p>
+        <p class="secao-header-label">Antes da publicação oficial</p>
+        <h2 class="secao-header-titulo">Calcule o resultado antes do Tribunal e oriente o cliente com precisão.</h2>
       </div>
-      <div class="destaque-ambar">
-        <p class="label" style="color:var(--cor-ambar);margin-bottom:var(--espaco-8)">Caso Ceará · Cassação Heitor Freire · 2022</p>
-        <p>A decisão judicial foi proferida em 21 de maio. A retotalização oficial do TRE foi publicada em 29 de maio. O RetotalizaJE apresentou o resultado correto 8 dias antes, com distribuição de vagas idêntica à publicada oficialmente.</p>
-      </div>
+      <p class="secao-header-desc secao-04-corpo">Entre a decisão judicial e a publicação do resultado pelo Tribunal existe um intervalo relevante. É nesse intervalo que o advogado precisa orientar o cliente, o candidato precisa tomar decisões e o partido precisa se reorganizar. Com o RetotalizaJE, esse intervalo deixa de ser uma zona de incerteza.</p>
+    </div>
+    <div class="destaque-ambar">
+      <p class="label" style="color:var(--cor-ambar);margin-bottom:var(--espaco-8)">Caso Ceará · Cassação Heitor Freire · 2022</p>
+      <p>A decisão judicial foi proferida em 21 de maio. A retotalização oficial do TRE foi publicada em 29 de maio. O RetotalizaJE apresentou o resultado correto 8 dias antes, com distribuição de vagas idêntica à publicada oficialmente.</p>
     </div>
   </div>
 </section>
@@ -239,31 +251,30 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 <!-- SEÇÃO 05 — PROVA -->
 <section class="secao-05">
   <div class="container">
-    <div class="secao-05-cabecalho">
-      <p class="label secao-05-label">Casos validados</p>
-      <h2 class="secao-titulo">Três casos reais. Três resultados confirmados.</h2>
-      <p class="secao-05-corpo">O RetotalizaJE foi validado por confronto direto com resoluções e publicações oficiais de Tribunais Regionais Eleitorais. Os casos do Ceará, do Amapá e do Distrito Federal foram processados pelo sistema e produziram resultado idêntico ao publicado oficialmente. A validação foi realizada sobre os arquivos reais do TSE, não sobre dados sintéticos.</p>
+    <div class="secao-header">
+      <div>
+        <p class="secao-header-label">Casos validados</p>
+        <h2 class="secao-header-titulo">Três casos reais. Três resultados confirmados.</h2>
+      </div>
+      <p class="secao-header-desc secao-05-corpo">Validado por confronto direto com resoluções e publicações oficiais de TREs. Os casos do Ceará, do Amapá e do Distrito Federal produziram resultado idêntico ao publicado oficialmente, sobre arquivos reais do TSE.</p>
     </div>
-    <div class="secao-05-grid">
-      <div class="card">
+    <div class="casos-grid">
+      <div class="caso-item">
         <div class="caso-titulo">Ceará 2022 — Cassação Heitor Freire</div>
         <div class="caso-subtitulo">Deputado Federal</div>
-        <hr class="caso-divider">
-        <div class="caso-metricas"><div>22 vagas · QE 231.084</div><div>Barreira 80%: 183.089</div></div>
+        <div class="caso-metricas">22 vagas · QE 231.084 · Barreira 80%: 183.089</div>
         <p class="caso-resultado">PL +1 (5→6) · UNIÃO −1 (4→3) · Republicanos barrado</p>
       </div>
-      <div class="card">
+      <div class="caso-item">
         <div class="caso-titulo">Amapá 2022 — TRE-AP Res. 620/2025</div>
         <div class="caso-subtitulo">Deputado Federal</div>
-        <hr class="caso-divider">
-        <div class="caso-metricas"><div>8 vagas · QE 52.877</div><div>3 federações</div></div>
+        <div class="caso-metricas">8 vagas · QE 52.877 · 3 federações</div>
         <p class="caso-resultado">F2: PDT 2, PL 1, MDB 1 · F3: PP, Rep., FE Brasil, PSOL/REDE</p>
       </div>
-      <div class="card">
+      <div class="caso-item">
         <div class="caso-titulo">Distrito Federal 2022 — Pós-ADIs</div>
         <div class="caso-subtitulo">Deputado Federal</div>
-        <hr class="caso-divider">
-        <div class="caso-metricas"><div>8 vagas · QE 259.752</div><div>Fase 3 ativada</div></div>
+        <div class="caso-metricas">8 vagas · QE 259.752 · Fase 3 ativada</div>
         <p class="caso-resultado">PSB obteve 1 vaga via Fase 3 sem barreira</p>
       </div>
     </div>
@@ -273,9 +284,12 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 <!-- SEÇÃO 06 — RISCO -->
 <section class="secao-06" id="fundamento">
   <div class="container">
-    <div class="secao-06-inner">
-      <h2 class="secao-titulo">A consequência de um resultado incorreto vai além do erro técnico.</h2>
-      <p class="secao-texto">Uma orientação equivocada sobre o resultado de uma retotalização compromete o planejamento do candidato, a estratégia do partido e a credibilidade profissional do advogado. O cliente toma decisões financeiras, políticas e organizacionais com base na informação que recebe. Um resultado incorreto, ainda que involuntário, gera consequências que se estendem além do processo judicial.</p>
+    <div class="secao-header">
+      <div>
+        <p class="secao-header-label">Consequências</p>
+        <h2 class="secao-header-titulo">A consequência de um resultado incorreto vai além do erro técnico.</h2>
+      </div>
+      <p class="secao-header-desc secao-texto">Uma orientação equivocada compromete o planejamento do candidato, a estratégia do partido e a credibilidade profissional do advogado. O cliente toma decisões financeiras, políticas e organizacionais com base na informação que recebe. Um resultado incorreto gera consequências que se estendem além do processo judicial.</p>
     </div>
   </div>
 </section>
@@ -283,9 +297,28 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 <!-- SEÇÃO 07 — POSICIONAMENTO -->
 <section class="secao-07">
   <div class="container">
-    <div class="secao-07-inner">
-      <h2 class="secao-titulo">Não é um simulador de cenários. É um instrumento de precisão jurídica.</h2>
-      <p class="secao-texto">Simuladores calculam hipóteses. O RetotalizaJE implementa o algoritmo que o STF determinou nas ADIs 7.228, 7.263 e 7.325, as mesmas regras que o Tribunal Regional Eleitoral aplicará. O resultado obtido no sistema não é uma estimativa: é a aplicação direta das normas vigentes, validada contra resoluções publicadas por TREs e dados oficiais do TSE.</p>
+    <div class="secao-header">
+      <div>
+        <p class="secao-header-label">Fundamento jurídico</p>
+        <h2 class="secao-header-titulo">Não é um simulador de cenários. É um instrumento de precisão jurídica.</h2>
+      </div>
+      <p class="secao-header-desc secao-texto">Simuladores calculam hipóteses. O RetotalizaJE implementa o algoritmo que o STF determinou nas ADIs 7.228, 7.263 e 7.325 — as mesmas regras que o TRE aplicará. O resultado não é uma estimativa: é a aplicação direta das normas vigentes, validada contra resoluções publicadas por TREs e dados oficiais do TSE.</p>
+    </div>
+
+    <!-- Entregas do sistema — fundo escuro editorial -->
+    <div class="entregas-grid">
+      <div class="entrega-item">
+        <div class="entrega-titulo">Relatório técnico</div>
+        <p class="entrega-desc">Exportação em PDF com metodologia, QE, fases e resultado por partido. Pronto para juntada em petição.</p>
+      </div>
+      <div class="entrega-item">
+        <div class="entrega-titulo">Planilha de dados</div>
+        <p class="entrega-desc">CSV com toda a distribuição de vagas, votos válidos e quocientes partidários por fase.</p>
+      </div>
+      <div class="entrega-item">
+        <div class="entrega-titulo">Modo apresentação</div>
+        <p class="entrega-desc">Visualização limpa dos resultados para uso em audiências, sustentações orais e reuniões.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -322,5 +355,58 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
     <div class="footer-lp-bottom">© 2025 RetotalizaJE · Ferramenta técnico-jurídica de apoio · Não substitui decisão da Justiça Eleitoral</div>
   </div>
 </footer>
+
+<script>
+(function(){
+  // Elementos individuais com reveal simples
+  var simples = [
+    '.hero-titulo','.hero-corpo','.hero-botoes','.hero-metricas',
+    '.secao-header-label','.secao-header-titulo','.secao-header-desc',
+    '.destaque-ambar',
+    '.secao-08-titulo','.secao-08-corpo','.secao-08 .botao',
+    '.footer-lp-top','.footer-lp-contato'
+  ];
+  // Elementos em grid com delay escalonado
+  var escalonados = [
+    '.hero-metrica-item',
+    '.editorial-item',
+    '.caso-item',
+    '.entrega-item'
+  ];
+
+  simples.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      el.classList.add('reveal');
+    });
+  });
+
+  escalonados.forEach(function(sel){
+    var delays = ['','reveal-delay-1','reveal-delay-2','reveal-delay-3'];
+    document.querySelectorAll(sel).forEach(function(el, i){
+      el.classList.add('reveal', delays[i % 4]);
+    });
+  });
+
+  // Hero entra imediatamente ao carregar
+  ['hero-titulo','hero-corpo','hero-botoes','hero-metricas'].forEach(function(cls, i){
+    var el = document.querySelector('.' + cls);
+    if(el) setTimeout(function(){ el.classList.add('visible'); }, 80 + i * 130);
+  });
+
+  // IntersectionObserver com threshold baixo para disparar cedo
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el){
+    observer.observe(el);
+  });
+})();
+</script>
 </body>
 </html>
