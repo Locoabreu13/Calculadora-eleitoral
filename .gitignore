@@ -70,3 +70,4 @@ node_modules/
 
 # Cache de ZIPs do TSE (arquivos grandes, não devem entrar no repositório)
 cache/
+scripts/supabase_config.py

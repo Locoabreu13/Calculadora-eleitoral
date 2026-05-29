@@ -34,6 +34,18 @@
       ? `data/tse/${ano}_${uf}_${cdMun}_${CARGO_SLUG[cargo] || cargo}.json`
       : `data/tse/${ano}_${uf}_${CARGO_SLUG[cargo] || cargo}.json`;
 
+  // ── Supabase (Vereador 2024) ───────────────────────────────────────────────
+  const SB_URL = 'https://wntdwtccekurhzlbnjpw.supabase.co/rest/v1';
+  const SB_KEY = 'sb_publishable_HNDS6k_B01BJKpgbyvf74Q_xu7Fy1o-';
+
+  async function _sbGet(tabela, params) {
+    const resp = await fetch(`${SB_URL}/${tabela}?${params}`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    });
+    if (!resp.ok) throw new Error(`Supabase ${tabela}: HTTP ${resp.status}`);
+    return resp.json();
+  }
+
   // Apenas anos juridicamente relevantes para retotalização (ADIs 7.228/7.263/7.325)
   const ANOS = [
     { ano: '2022', label: '2022 — Eleições Gerais',     tipo: 'gerais'     },
@@ -209,12 +221,98 @@
   }
 
   function _popularMunicipios(muns) {
-    const sel  = $('tse-municipio');
+    // mantida para compatibilidade com fluxo de JSON local (vereador não-2024)
     const wrap = $('tse-mun-wrap');
-    if (!sel) return;
-    sel.innerHTML = '<option value="">— Selecionar município —</option>' +
-      muns.map(m => `<option value="${m}">${m}</option>`).join('');
     if (wrap) wrap.style.display = muns.length ? '' : 'none';
+  }
+
+  // ── Busca de município via Supabase ────────────────────────────────────────
+  let _buscaTimer = null;
+
+  function _mostrarBuscaMunicipio() {
+    const wrap = $('tse-mun-wrap');
+    const cdmunWrap = $('tse-cdmun-wrap');
+    if (wrap) wrap.style.display = '';
+    if (cdmunWrap) cdmunWrap.style.display = 'none';
+    const input = $('tse-municipio-busca');
+    if (input) { input.value = ''; input.focus(); }
+    const cd = $('tse-municipio-cd');
+    const nm = $('tse-municipio');
+    if (cd) cd.value = '';
+    if (nm) nm.value = '';
+  }
+
+  async function _buscarMunicipios(uf, texto) {
+    if (texto.length < 2) { _fecharLista(); return; }
+    const q = encodeURIComponent(texto.toUpperCase());
+    const rows = await _sbGet('municipios_2024',
+      `uf=eq.${uf}&nm_municipio=ilike.*${q}*&order=nm_municipio&limit=10&select=cd_municipio,nm_municipio`
+    );
+    _renderizarLista(rows);
+  }
+
+  function _renderizarLista(rows) {
+    const lista = $('tse-municipio-lista');
+    if (!lista) return;
+    if (!rows.length) { lista.style.display = 'none'; return; }
+    lista.innerHTML = rows.map(r =>
+      `<li data-cd="${r.cd_municipio}" data-nm="${r.nm_municipio}"
+          style="padding:8px 12px;cursor:pointer;font-size:13px;color:#C8D9EF;
+                 border-bottom:1px solid rgba(255,255,255,.06)"
+          onmouseover="this.style.background='rgba(255,255,255,.08)'"
+          onmouseout="this.style.background=''">${r.nm_municipio}</li>`
+    ).join('');
+    lista.style.display = '';
+  }
+
+  function _fecharLista() {
+    const lista = $('tse-municipio-lista');
+    if (lista) lista.style.display = 'none';
+  }
+
+  async function _carregarMunicipio(cd, nm, uf) {
+    _fecharLista();
+    const input = $('tse-municipio-busca');
+    if (input) input.value = nm;
+    const hdCd = $('tse-municipio-cd');
+    const hdNm = $('tse-municipio');
+    if (hdCd) hdCd.value = cd;
+    if (hdNm) hdNm.value = nm;
+
+    _setStatus('<span class="import-spinner"></span> Carregando dados do município…', 'progresso');
+    const btnCarr = $('btn-tse-carregar');
+    if (btnCarr) btnCarr.disabled = true;
+
+    try {
+      const [rowsPart, rowsCand] = await Promise.all([
+        _sbGet('partidos_2024', `cd_municipio=eq.${cd}&order=votos_nominais.desc`),
+        _sbGet('candidatos_2024', `cd_municipio=eq.${cd}&order=votos.desc`),
+      ]);
+
+      // Reconstrói estrutura igual ao JSON local
+      const candPorBloco = {};
+      for (const c of rowsCand) {
+        (candPorBloco[c.bloco] = candPorBloco[c.bloco] || []).push(
+          { nome: c.nome, votos: c.votos, partido: c.partido }
+        );
+      }
+
+      const partidos = rowsPart.map(p => ({
+        sigla:        p.sigla,
+        nome:         p.nome,
+        nominais:     p.votos_nominais,
+        legenda:      p.votos_legenda,
+        candidatos:   candPorBloco[p.sigla] || [],
+        ...(p.partidos_fed ? { partidos: p.partidos_fed } : {}),
+      }));
+
+      _injetarNoFormulario(partidos, uf, 'Vereador', '2024', nm);
+    } catch (err) {
+      console.error('[TSE Direto Supabase]', err);
+      _setStatus(`❌ ${err.message}`, 'erro');
+    } finally {
+      if (btnCarr) btnCarr.disabled = false;
+    }
   }
 
   function _atualizarBotao() {
@@ -291,6 +389,13 @@
     _anoCorrente   = ano;
     _ufCorrente    = uf;
     _cargoCorrente = cargo;
+
+    // Vereador 2024 → busca por nome via Supabase
+    if (cargo === 'Vereador' && ano === '2024') {
+      _mostrarBuscaMunicipio();
+      _setStatus('🔍 Digite o nome do município para buscar.', 'info');
+      return;
+    }
 
     const btnCarr = $('btn-tse-carregar');
     if (btnCarr) btnCarr.disabled = true;
@@ -471,6 +576,30 @@
 
     const selMun = $('tse-municipio');
     if (selMun) selMun.addEventListener('change', _aoMudarMunicipio);
+
+    // ── Busca de município (Supabase) ──────────────────────────────────
+    const inputBusca = $('tse-municipio-busca');
+    if (inputBusca) {
+      inputBusca.addEventListener('input', () => {
+        clearTimeout(_buscaTimer);
+        const uf   = ($('tse-uf') || {}).value;
+        const txt  = inputBusca.value.trim();
+        _buscaTimer = setTimeout(() => _buscarMunicipios(uf, txt), 280);
+      });
+      inputBusca.addEventListener('blur', () => {
+        setTimeout(_fecharLista, 200);
+      });
+    }
+
+    const lista = $('tse-municipio-lista');
+    if (lista) {
+      lista.addEventListener('mousedown', e => {
+        const li = e.target.closest('li');
+        if (!li) return;
+        const uf = ($('tse-uf') || {}).value;
+        _carregarMunicipio(li.dataset.cd, li.dataset.nm, uf);
+      });
+    }
   }
 
   document.addEventListener('DOMContentLoaded', init);
