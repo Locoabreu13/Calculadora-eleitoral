@@ -698,14 +698,24 @@
 
           <h2>Manual de Uso</h2>
 
+          <div class="alerta info" style="margin-bottom:16px;">
+            <div class="alerta-titulo">🔒 Dados oficiais — somente leitura</div>
+            Os dados importados do TSE (partidos, votos e candidatos) são <strong>bloqueados para edição</strong> após o carregamento, garantindo a fidelidade das informações oficiais. Apenas o número de vagas e os parâmetros de cassação podem ser ajustados.
+          </div>
+
           <h3>1. Carregar os dados</h3>
-          <p>No painel lateral, clique em <strong>⬇ Importar dados do TSE</strong> para abrir os campos de seleção. Escolha o <strong>Ano</strong>, o <strong>Estado (UF)</strong> e o <strong>Cargo</strong> desejado. Clique em <strong>▶ Carregar do TSE</strong> — os partidos e votos são preenchidos automaticamente, sem baixar nenhum arquivo.</p>
+          <p>No painel lateral, clique em <strong>⬇ Importar dados do TSE</strong>. Selecione o <strong>Ano</strong>, o <strong>Estado (UF)</strong> e o <strong>Cargo</strong>:</p>
+          <div class="glossario-item"><span class="termo">Dep. Federal</span><span>Eleições de 2022 — todos os estados. Vagas e candidatos preenchidos automaticamente.</span></div>
+          <div class="glossario-item"><span class="termo">Dep. Estadual</span><span>Eleições de 2022 — todos os estados (exceto DF). Vagas e candidatos preenchidos automaticamente.</span></div>
+          <div class="glossario-item"><span class="termo">Dep. Distrital</span><span>Eleições de 2022 — somente DF. Vagas e candidatos preenchidos automaticamente.</span></div>
+          <div class="glossario-item"><span class="termo">Vereador</span><span>Eleições de 2024 — selecione o estado e digite o nome do município. O sistema busca e carrega os dados automaticamente.</span></div>
+          <p style="margin-top:8px">Clique em <strong>▶ Carregar do TSE</strong> (ou selecione o município, para Vereador). Partidos, votos e candidatos são preenchidos e bloqueados automaticamente.</p>
 
           <h3>2. Conferir as vagas</h3>
-          <p>O campo <strong>Vagas</strong> é preenchido automaticamente com o número oficial de cadeiras para o estado e cargo selecionados (conforme a Resolução TSE 23.669/2021 e o art. 27 da CF). Você pode ajustar manualmente se necessário.</p>
+          <p>O campo <strong>Vagas</strong> é preenchido automaticamente com o número oficial de cadeiras (Res. TSE 23.669/2021, art. 27 da CF e dados do TSE para municípios). Você pode ajustá-lo manualmente se necessário para a simulação.</p>
 
           <h3>3. Configurar uma cassação (opcional)</h3>
-          <p>Clique em <strong>+ Cassação / Anulação</strong> no painel lateral. Preencha o partido, o candidato e a quantidade de votos a anular. Escolha a modalidade:</p>
+          <p>Clique em <strong>+ Cassação / Anulação</strong> no painel lateral. Selecione o partido, o candidato e informe a quantidade de votos a anular. Escolha a modalidade:</p>
           <div class="glossario-item"><span class="termo">Nominal</span><span>Anula somente os votos nominais do candidato.</span></div>
           <div class="glossario-item"><span class="termo">Legenda</span><span>Anula os votos de legenda proporcionais ao candidato.</span></div>
           <div class="glossario-item"><span class="termo">Total</span><span>Anula votos nominais e de legenda juntos.</span></div>
@@ -722,10 +732,10 @@
           <div class="glossario-item"><span class="termo">Relatório</span><span>Texto técnico-jurídico pronto para uso em petições, com todos os parâmetros e resultados do cálculo.</span></div>
 
           <h3>6. Salvar e exportar</h3>
-          <p>Use <strong>💾 Salvar Estudo</strong> para guardar o cálculo completo (parâmetros + resultado) no Dashboard e como arquivo JSON. Use <strong>⬇ CSV</strong> ou <strong>⬇ PDF</strong> para exportar a tabela de resultados.</p>
+          <p>Use <strong>💾 Salvar Estudo</strong> para guardar o cálculo completo no Dashboard e como arquivo JSON. Use <strong>⬇ CSV</strong> ou <strong>⬇ PDF</strong> para exportar a tabela de resultados.</p>
 
           <h3>7. Casos de estudo prontos</h3>
-          <p>O menu <strong>Casos de Estudo</strong> no topo do painel lateral contém casos reais pré-configurados (ex: Ceará 2022, Amapá 2022). Selecione um para carregar os dados automaticamente e explorar o cálculo sem precisar importar nada.</p>
+          <p>O menu <strong>Casos de Estudo</strong> no topo do painel lateral contém casos reais pré-configurados (ex: Ceará 2022, Amapá 2022). Selecione um para carregar os dados automaticamente.</p>
 
         </div>
       </div><!-- #manual-section -->

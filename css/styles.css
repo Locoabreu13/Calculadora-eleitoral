@@ -1303,7 +1303,33 @@ tr.qualificado td:first-child { border-left: 3px solid var(--gold); }
   color: var(--white);
 }
 
-.docs-container { max-width: 820px; padding: 24px; }
+.docs-container { max-width: 820px; padding: 24px 24px 60px; }
+
+/* ── Modo TSE: dados oficiais — somente leitura ──────────────────────────── */
+#btn-adicionar-partido { display: none; }
+
+#lista-partidos.modo-tse .btn-perigo   { display: none; }
+#lista-partidos.modo-tse .btn-secundario { display: none; }
+#lista-partidos.modo-tse .partido-sigla,
+#lista-partidos.modo-tse .partido-nome,
+#lista-partidos.modo-tse .partido-nominais,
+#lista-partidos.modo-tse .partido-legenda,
+#lista-partidos.modo-tse .partido-federacao {
+  pointer-events: none;
+  background: transparent;
+  border-color: rgba(255,255,255,.06);
+  color: var(--text-primary);
+  cursor: default;
+  user-select: text;
+}
+#lista-partidos.modo-tse .candidato-nome,
+#lista-partidos.modo-tse .candidato-votos,
+#lista-partidos.modo-tse .candidato-partido {
+  pointer-events: none;
+  background: transparent;
+  border-color: rgba(255,255,255,.06);
+  cursor: default;
+}
 .docs-container h2 {
   font-family: 'Inter', sans-serif;
   font-size: 16px;

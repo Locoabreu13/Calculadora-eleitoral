@@ -1877,6 +1877,7 @@ async function init() {
       $('input-rotulo').value = '';
       $('input-vagas').value = '';
       $('lista-partidos').innerHTML = '';
+      $('lista-partidos').classList.remove('modo-tse');
       $('lista-cassacoes').innerHTML = '';
       $('erros-formulario').innerHTML = '';
       contadorPartido = 0;

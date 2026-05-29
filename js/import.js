@@ -385,9 +385,9 @@ function preencherCamposComDadosTSE(partidos, candidatos) {
     throw new Error('_UI não disponível. Verifique que ui.js carregou antes de import.js.');
   }
 
-  // Limpar lista atual
+  // Limpar lista atual e ativar modo somente-leitura (dados oficiais TSE)
   const lista = $('lista-partidos');
-  if (lista) lista.innerHTML = '';
+  if (lista) { lista.innerHTML = ''; lista.classList.add('modo-tse'); }
 
   // Ordenar por total de votos desc
   const sorted = [...partidos].sort(
