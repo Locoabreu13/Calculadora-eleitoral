@@ -49,17 +49,19 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .secao-header-desc--inv{color:var(--cor-texto-inv-medio)}
 /* FLUXO CARD — visão geral */
 .fluxo-card{display:flex;align-items:stretch;background:var(--cor-profundo);border-radius:var(--raio-xl);overflow:hidden;margin-bottom:var(--espaco-48)}
-.fluxo-etapa{flex:1;padding:var(--espaco-24);border-right:1px solid var(--cor-profundo-borda);display:flex;flex-direction:column;gap:var(--espaco-6)}
+.fluxo-etapa{flex:1;padding:var(--espaco-24);border-right:1px solid var(--cor-profundo-borda);display:flex;flex-direction:column;gap:var(--espaco-8)}
 .fluxo-etapa:last-child{border-right:none}
 .fluxo-n{font-size:var(--texto-xs);letter-spacing:var(--tracking-label);color:var(--cor-ambar);font-weight:var(--peso-bold)}
 .fluxo-t{font-size:var(--texto-sm);font-weight:var(--peso-medio);color:var(--cor-texto-inv)}
 .fluxo-d{font-size:var(--texto-xs);color:var(--cor-texto-inv-suave);line-height:var(--linha-corpo)}
-/* STEPS GRID 2x2 */
-.steps-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--grid-gap)}
-.step-card{background:var(--cor-fundo-card);border:1px solid var(--cor-borda-suave);border-radius:var(--raio-xl);padding:var(--espaco-24)}
+/* STEPS LIST — 4 cards individuais full-width */
+.steps-list{display:flex;flex-direction:column;gap:var(--grid-gap)}
+.step-card-full{background:var(--cor-fundo-card);border:1px solid var(--cor-borda-suave);border-radius:var(--raio-xl);display:flex;gap:var(--espaco-32);padding:var(--espaco-32);align-items:flex-start}
+.step-card-full-text{width:260px;flex-shrink:0;padding-top:var(--espaco-4)}
+.step-card-full-sml{flex:1;background:var(--cor-profundo);border-radius:var(--raio-lg);padding:var(--espaco-20) var(--espaco-24);min-height:280px;position:relative;overflow:hidden}
 .step-card-n{font-size:var(--texto-xs);letter-spacing:var(--tracking-label);color:var(--cor-texto-label);margin-bottom:var(--espaco-12)}
 .step-card-t{font-weight:var(--peso-bold);font-size:var(--texto-base);color:var(--cor-texto);margin-bottom:var(--espaco-8)}
-.step-card-d{font-size:var(--texto-sm);color:var(--cor-texto-suave);margin-bottom:var(--espaco-20);line-height:var(--linha-corpo)}
+.step-card-d{font-size:var(--texto-sm);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
 /* MOCKUP GRANDE */
 .sml{background:var(--cor-profundo);border-radius:var(--raio-lg);padding:var(--espaco-20);height:240px;overflow:hidden;position:relative}
 .sml-row{display:flex;gap:var(--espaco-12);align-items:flex-end;margin-bottom:var(--espaco-12)}
@@ -148,6 +150,21 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 @keyframes smPb1{0%,29%{width:0}52%{width:100%}100%{width:100%}}
 @keyframes smPb2{0%,42%{width:0}65%{width:100%}100%{width:100%}}
 @keyframes smPb3{0%,53%{width:0}70%{width:100%}100%{width:100%}}
+/* STEP 4 — keyframes 10s */
+@keyframes s4Head{0%,4%{opacity:0;transform:translateY(4px)}8%,82%{opacity:1;transform:none}88%,100%{opacity:0;transform:translateY(-2px)}}
+@keyframes s4RowA{0%,10%{opacity:0;transform:translateY(4px)}14%,82%{opacity:1;transform:none}88%,100%{opacity:0}}
+@keyframes s4RowB{0%,14%{opacity:0;transform:translateY(4px)}18%,82%{opacity:1;transform:none}88%,100%{opacity:0}}
+@keyframes s4RowC{0%,18%{opacity:0;transform:translateY(4px)}22%,82%{opacity:1;transform:none}88%,100%{opacity:0}}
+@keyframes s4ExpLbl{0%,22%{opacity:0}26%,82%{opacity:1}88%,100%{opacity:0}}
+@keyframes s4PdfBtn{0%,24%{opacity:0;transform:translateY(3px)}28%,82%{opacity:1;transform:none}88%,100%{opacity:0}}
+@keyframes s4PdfPb{0%,28%{width:0}42%{width:100%}100%{width:100%}}
+@keyframes s4PdfOk{0%,40%{opacity:0}44%,82%{opacity:1}88%,100%{opacity:0}}
+@keyframes s4CsvBtn{0%,44%{opacity:0;transform:translateY(3px)}48%,82%{opacity:1;transform:none}88%,100%{opacity:0}}
+@keyframes s4CsvPb{0%,48%{width:0}60%{width:100%}100%{width:100%}}
+@keyframes s4CsvOk{0%,58%{opacity:0}62%,82%{opacity:1}88%,100%{opacity:0}}
+@keyframes s4AprBtn{0%,63%{opacity:0;transform:translateY(3px)}67%,82%{opacity:1;transform:none}88%,100%{opacity:0}}
+@keyframes s4AprPb{0%,67%{width:0}80%{width:100%}100%{width:100%}}
+@keyframes s4AprOk{0%,78%{opacity:0}82%,88%{opacity:1}88%,100%{opacity:0}}
 .smA{animation:smA 7s ease infinite}
 .smB{animation:smB 7s ease infinite}
 .smC{animation:smC 7s ease infinite}
@@ -158,6 +175,20 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .smPb1{animation:smPb1 7s ease infinite}
 .smPb2{animation:smPb2 7s ease infinite}
 .smPb3{animation:smPb3 7s ease infinite}
+.s4Head{animation:s4Head 10s ease infinite}
+.s4RowA{animation:s4RowA 10s ease infinite}
+.s4RowB{animation:s4RowB 10s ease infinite}
+.s4RowC{animation:s4RowC 10s ease infinite}
+.s4ExpLbl{animation:s4ExpLbl 10s ease infinite}
+.s4PdfBtn{animation:s4PdfBtn 10s ease infinite}
+.s4PdfPb{animation:s4PdfPb 10s ease infinite}
+.s4PdfOk{animation:s4PdfOk 10s ease infinite}
+.s4CsvBtn{animation:s4CsvBtn 10s ease infinite}
+.s4CsvPb{animation:s4CsvPb 10s ease infinite}
+.s4CsvOk{animation:s4CsvOk 10s ease infinite}
+.s4AprBtn{animation:s4AprBtn 10s ease infinite}
+.s4AprPb{animation:s4AprPb 10s ease infinite}
+.s4AprOk{animation:s4AprOk 10s ease infinite}
 /* ANIMAÇÕES DE SCROLL */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -175,7 +206,8 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   .fluxo-card{flex-direction:column}
   .fluxo-etapa{border-right:none;border-bottom:1px solid var(--cor-profundo-borda)}
   .fluxo-etapa:last-child{border-bottom:none}
-  .steps-grid{grid-template-columns:1fr}
+  .step-card-full{flex-direction:column}
+  .step-card-full-text{width:100%}
   .casos-grid{grid-template-columns:1fr}
   .caso-item{border-right:none;border-bottom:1px solid var(--cor-borda-suave)}
   .caso-item:last-child{border-bottom:none}
@@ -283,145 +315,193 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
       </div>
     </div>
 
-    <!-- Cards de etapa com animações -->
-    <div class="steps-grid">
+    <!-- Cards de etapa — individuais full-width -->
+    <div class="steps-list">
 
       <!-- STEP 1 — SELEÇÃO -->
-      <div class="step-card">
-        <div class="step-card-n">[ 1 ]</div>
-        <div class="step-card-t">Selecione o estado e cargo</div>
-        <p class="step-card-d">Escolha o ano, o estado e o cargo. Os dados oficiais do TSE são importados automaticamente.</p>
-        <div class="sml">
-          <div class="smA">
+      <div class="step-card-full">
+        <div class="step-card-full-text">
+          <div class="step-card-n">[ 1 ]</div>
+          <div class="step-card-t">Selecione o estado e cargo</div>
+          <p class="step-card-d">Escolha o ano, o estado e o cargo. Os dados oficiais do TSE são importados automaticamente via integração com o repositório do TSE.</p>
+        </div>
+        <div class="step-card-full-sml">
+          <div class="smA" style="margin-bottom:var(--espaco-12)">
             <div class="sml-row">
               <div class="sml-col">
-                <span class="sml-lbl">Ano</span>
+                <span class="sml-lbl">Eleição</span>
                 <div class="sml-field sml-field-sel">2022</div>
               </div>
               <div class="sml-col">
                 <span class="sml-lbl">Estado (UF)</span>
-                <div class="sml-field sml-field-sel">CE</div>
+                <div class="sml-field sml-field-sel" style="min-width:80px">CE — Ceará</div>
                 <div class="sml-dropdown smDrop">
-                  <div class="sml-dd-item">AC</div>
-                  <div class="sml-dd-item">BA</div>
-                  <div class="sml-dd-item sml-dd-hl">CE ✓</div>
-                  <div class="sml-dd-item">DF</div>
-                  <div class="sml-dd-item">MG</div>
+                  <div class="sml-dd-item">AC — Acre</div>
+                  <div class="sml-dd-item">BA — Bahia</div>
+                  <div class="sml-dd-item sml-dd-hl">CE — Ceará ✓</div>
+                  <div class="sml-dd-item">DF — Distrito Federal</div>
+                  <div class="sml-dd-item">MG — Minas Gerais</div>
                 </div>
               </div>
               <div class="sml-col">
                 <span class="sml-lbl">Cargo</span>
-                <div class="sml-field sml-field-sel">Dep. Federal</div>
+                <div class="sml-field sml-field-sel">Deputado Federal</div>
+              </div>
+              <div class="sml-col">
+                <span class="sml-lbl">Vagas</span>
+                <div class="sml-field">22</div>
               </div>
             </div>
           </div>
           <div class="smBtn">
-            <div class="sml-btn">Carregar dados do TSE</div>
+            <div class="sml-btn">↓ Carregar dados do TSE</div>
           </div>
-          <div class="smD">
-            <div class="sml-ok">✓ 28 partidos carregados · 22 vagas · QE 231.084</div>
+          <div class="smD" style="margin-top:var(--espaco-12)">
+            <div class="sml-ok">✓ 28 partidos · 22 vagas · 5.083.860 votos válidos · QE 231.084</div>
+            <div style="margin-top:var(--espaco-8);display:flex;gap:var(--espaco-8);flex-wrap:wrap">
+              <div class="sml-field" style="font-size:10px">PT 522.110</div>
+              <div class="sml-field" style="font-size:10px">PL 511.308</div>
+              <div class="sml-field" style="font-size:10px">UNIÃO 476.204</div>
+              <div class="sml-field" style="font-size:10px">MDB 389.027</div>
+              <div class="sml-field" style="font-size:10px;color:var(--cor-texto-inv-suave)">+24 partidos</div>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- STEP 2 — CASSAÇÃO -->
-      <div class="step-card">
-        <div class="step-card-n">[ 2 ]</div>
-        <div class="step-card-t">Configure a cassação</div>
-        <p class="step-card-d">Informe o partido, o candidato, o total de votos a anular e a modalidade de cassação.</p>
-        <div class="sml">
+      <div class="step-card-full">
+        <div class="step-card-full-text">
+          <div class="step-card-n">[ 2 ]</div>
+          <div class="step-card-t">Configure a cassação</div>
+          <p class="step-card-d">Informe o partido, o candidato, o total de votos a anular e a modalidade de cassação. O sistema recalcula o Quociente Eleitoral automaticamente.</p>
+        </div>
+        <div class="step-card-full-sml">
           <div class="smA">
             <div class="sml-frow">
               <span class="sml-lbl-i">Partido</span>
-              <div class="sml-field sml-field-sel">UNIÃO</div>
+              <div class="sml-field sml-field-sel" style="min-width:120px">UNIÃO Brasil</div>
             </div>
           </div>
           <div class="smB">
             <div class="sml-frow">
               <span class="sml-lbl-i">Candidato</span>
-              <div class="sml-field">Heitor Freire</div>
+              <div class="sml-field" style="min-width:140px">Heitor Freire</div>
             </div>
           </div>
           <div class="smC">
             <div class="sml-frow">
-              <span class="sml-lbl-i">Votos</span>
+              <span class="sml-lbl-i">Votos anulados</span>
               <div class="sml-field">48.888</div>
             </div>
           </div>
           <div class="smD">
             <div class="sml-frow">
               <span class="sml-lbl-i">Modalidade</span>
-              <div class="sml-field sml-field-sel">Total</div>
+              <div class="sml-field sml-field-sel">Anular nominais — sem reatribuição</div>
             </div>
           </div>
           <div class="smE">
+            <div style="height:1px;background:var(--cor-profundo-borda);margin:var(--espaco-12) 0"></div>
             <div class="sml-frow">
-              <span class="sml-lbl-i">Novo QE</span>
-              <div class="sml-field">182.506</div>
-              <span style="font-size:10px;color:var(--cor-texto-inv-suave)">recalculado ↻</span>
+              <span class="sml-lbl-i">QE original</span>
+              <div class="sml-field">231.084</div>
+              <span style="font-size:10px;color:var(--cor-texto-inv-suave)">→</span>
+              <div class="sml-field" style="color:#4ade80">182.506</div>
+              <span style="font-size:10px;color:#4ade80">recalculado ✓</span>
             </div>
           </div>
         </div>
       </div>
 
       <!-- STEP 3 — CALCULAR -->
-      <div class="step-card">
-        <div class="step-card-n">[ 3 ]</div>
-        <div class="step-card-t">Calcule com um clique</div>
-        <p class="step-card-d">O algoritmo processa as três fases da distribuição proporcional conforme as ADIs do STF.</p>
-        <div class="sml">
+      <div class="step-card-full">
+        <div class="step-card-full-text">
+          <div class="step-card-n">[ 3 ]</div>
+          <div class="step-card-t">Calcule com um clique</div>
+          <p class="step-card-d">O algoritmo executa as três fases da distribuição proporcional conforme as ADIs 7.228, 7.263 e 7.325 do STF.</p>
+        </div>
+        <div class="step-card-full-sml">
           <div class="smA">
-            <div class="sml-info">QE <b>231.084</b> &nbsp;·&nbsp; Vagas <b>22</b> &nbsp;·&nbsp; Barreira 80% <b>183.089</b></div>
+            <div class="sml-info" style="margin-bottom:var(--espaco-16)">
+              QE <b>182.506</b> &nbsp;·&nbsp; Vagas <b>22</b> &nbsp;·&nbsp; Barreira 80% <b>146.004</b> &nbsp;·&nbsp; Partidos <b>28</b>
+            </div>
           </div>
           <div class="smBtn">
-            <div class="sml-btn">Calcular →</div>
+            <div class="sml-btn">Calcular retotalização →</div>
           </div>
-          <div class="smC">
+          <div class="smC" style="margin-top:var(--espaco-16)">
             <div class="sml-pname">Fase 1 — Distribuição por quociente eleitoral</div>
             <div class="sml-ptrack"><div class="sml-pfill smPb1"></div></div>
             <div class="sml-pname">Fase 2 — Distribuição de sobras (D'Hondt)</div>
             <div class="sml-ptrack"><div class="sml-pfill smPb2"></div></div>
-            <div class="sml-pname">Fase 3 — Verificação de barreira legal</div>
+            <div class="sml-pname">Fase 3 — Verificação de barreira legal (80% do QE)</div>
             <div class="sml-ptrack"><div class="sml-pfill smPb3"></div></div>
           </div>
-          <div class="smE">
-            <div class="sml-ok">✓ Concluído · 3 fases · 22 vagas redistribuídas</div>
+          <div class="smE" style="margin-top:var(--espaco-12)">
+            <div class="sml-ok">✓ Concluído · 3 fases processadas · 22 vagas redistribuídas · 1 alteração identificada</div>
           </div>
         </div>
       </div>
 
-      <!-- STEP 4 — RESULTADO -->
-      <div class="step-card">
-        <div class="step-card-n">[ 4 ]</div>
-        <div class="step-card-t">Analise e exporte</div>
-        <p class="step-card-d">Tabela completa com variação por partido, auditoria D'Hondt e exportação em PDF e CSV.</p>
-        <div class="sml">
-          <div class="smA">
+      <!-- STEP 4 — ANALISE E EXPORTE -->
+      <div class="step-card-full">
+        <div class="step-card-full-text">
+          <div class="step-card-n">[ 4 ]</div>
+          <div class="step-card-t">Analise e exporte</div>
+          <p class="step-card-d">Tabela completa com variação por partido. Exporte o relatório técnico em PDF, a planilha de dados em CSV ou ative o Modo Apresentação.</p>
+        </div>
+        <div class="step-card-full-sml">
+          <!-- Tabela de resultados -->
+          <div class="s4Head">
             <div class="sml-th">
-              <span>Partido</span><span>F1</span><span>F2</span><span>Total</span><span>Variação</span>
+              <span>Partido</span><span>F1</span><span>F2</span><span>F3</span><span>Total</span><span>Δ Vagas</span>
             </div>
           </div>
-          <div class="smB">
+          <div class="s4RowA">
             <div class="sml-tr sml-row-up">
-              <span>PL</span><span>4</span><span>2</span><span>6</span><span class="sml-up">+1 ↑</span>
+              <span>PL</span><span>4</span><span>1</span><span>1</span><span>6</span><span class="sml-up">+1 ↑</span>
             </div>
           </div>
-          <div class="smC">
+          <div class="s4RowB">
             <div class="sml-tr sml-row-dn">
-              <span>UNIÃO</span><span>3</span><span>0</span><span>3</span><span class="sml-dn">−1 ↓</span>
+              <span>UNIÃO Brasil</span><span>3</span><span>0</span><span>0</span><span>3</span><span class="sml-dn">−1 ↓</span>
             </div>
           </div>
-          <div class="smD">
+          <div class="s4RowC">
             <div class="sml-tr">
-              <span>MDB</span><span>3</span><span>0</span><span>3</span><span>—</span>
+              <span>MDB</span><span>3</span><span>0</span><span>0</span><span>3</span><span>—</span>
             </div>
             <div class="sml-tr">
-              <span>PDT</span><span>2</span><span>1</span><span>3</span><span>—</span>
+              <span>Republicanos</span><span>0</span><span>0</span><span>0</span><span>0</span><span class="sml-bar">barrado</span>
             </div>
           </div>
-          <div class="smE">
-            <div class="sml-tr">
-              <span>Republicanos</span><span>0</span><span>0</span><span>0</span><span class="sml-bar">barrado</span>
+          <!-- Seção de exportação -->
+          <div class="s4ExpLbl" style="margin-top:var(--espaco-16);padding-top:var(--espaco-12);border-top:1px solid var(--cor-profundo-borda)">
+            <span style="font-size:9px;color:var(--cor-texto-inv-suave);text-transform:uppercase;letter-spacing:.08em">Exportar resultado</span>
+          </div>
+          <!-- PDF -->
+          <div class="s4PdfBtn" style="margin-top:var(--espaco-8)">
+            <div style="display:flex;align-items:center;gap:var(--espaco-8)">
+              <div class="sml-field" style="font-size:10px;min-width:140px">↓ Relatório técnico (PDF)</div>
+              <div class="sml-ptrack" style="flex:1"><div class="sml-pfill s4PdfPb"></div></div>
+              <div class="s4PdfOk" style="font-size:10px;color:#4ade80;white-space:nowrap">✓ gerado</div>
+            </div>
+          </div>
+          <!-- CSV -->
+          <div class="s4CsvBtn" style="margin-top:var(--espaco-8)">
+            <div style="display:flex;align-items:center;gap:var(--espaco-8)">
+              <div class="sml-field" style="font-size:10px;min-width:140px">↓ Planilha de dados (CSV)</div>
+              <div class="sml-ptrack" style="flex:1"><div class="sml-pfill s4CsvPb"></div></div>
+              <div class="s4CsvOk" style="font-size:10px;color:#4ade80;white-space:nowrap">✓ exportada</div>
+            </div>
+          </div>
+          <!-- Apresentação -->
+          <div class="s4AprBtn" style="margin-top:var(--espaco-8)">
+            <div style="display:flex;align-items:center;gap:var(--espaco-8)">
+              <div class="sml-field" style="font-size:10px;min-width:140px">↗ Modo Apresentação</div>
+              <div class="sml-ptrack" style="flex:1"><div class="sml-pfill s4AprPb"></div></div>
+              <div class="s4AprOk" style="font-size:10px;color:var(--cor-ambar);white-space:nowrap">✓ ativado</div>
             </div>
           </div>
         </div>
@@ -570,7 +650,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   // Elementos em grid com delay escalonado
   var escalonados = [
     '.hero-metrica-item',
-    '.step-card',
+    '.step-card-full',
     '.caso-item',
     '.entrega-item'
   ];
