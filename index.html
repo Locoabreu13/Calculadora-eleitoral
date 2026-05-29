@@ -150,6 +150,12 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 @keyframes smPb1{0%,29%{width:0}52%{width:100%}100%{width:100%}}
 @keyframes smPb2{0%,42%{width:0}65%{width:100%}100%{width:100%}}
 @keyframes smPb3{0%,53%{width:0}70%{width:100%}100%{width:100%}}
+/* STEP 1 — keyframes 14s, seleção sequencial */
+@keyframes s1YearDrop{0%,3%{opacity:0;transform:scaleY(0)}7%,16%{opacity:1;transform:scaleY(1)}19%,100%{opacity:0;transform:scaleY(0)}}
+@keyframes s1UfDrop{0%,24%{opacity:0;transform:scaleY(0)}28%,37%{opacity:1;transform:scaleY(1)}40%,100%{opacity:0;transform:scaleY(0)}}
+@keyframes s1CargoDrop{0%,45%{opacity:0;transform:scaleY(0)}49%,58%{opacity:1;transform:scaleY(1)}61%,100%{opacity:0;transform:scaleY(0)}}
+@keyframes s1Btn{0%,63%{opacity:0;transform:translateY(4px)}66%,72%{opacity:1;transform:translateY(0) scale(1)}74%{transform:translateY(0) scale(.91)}76%,84%{transform:translateY(0) scale(1);opacity:1}88%,100%{opacity:0}}
+@keyframes s1Status{0%,75%{opacity:0;transform:translateY(4px)}78%,84%{opacity:1;transform:none}88%,100%{opacity:0}}
 /* STEP 4 — keyframes 10s */
 @keyframes s4Head{0%,4%{opacity:0;transform:translateY(4px)}8%,82%{opacity:1;transform:none}88%,100%{opacity:0;transform:translateY(-2px)}}
 @keyframes s4RowA{0%,10%{opacity:0;transform:translateY(4px)}14%,82%{opacity:1;transform:none}88%,100%{opacity:0}}
@@ -189,6 +195,11 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .s4AprBtn{animation:s4AprBtn 10s ease infinite}
 .s4AprPb{animation:s4AprPb 10s ease infinite}
 .s4AprOk{animation:s4AprOk 10s ease infinite}
+.s1YearDrop{animation:s1YearDrop 14s ease infinite;transform-origin:top}
+.s1UfDrop{animation:s1UfDrop 14s ease infinite;transform-origin:top}
+.s1CargoDrop{animation:s1CargoDrop 14s ease infinite;transform-origin:top}
+.s1Btn{animation:s1Btn 14s ease infinite}
+.s1Status{animation:s1Status 14s ease infinite}
 /* ANIMAÇÕES DE SCROLL */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -326,37 +337,53 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
           <p class="step-card-d">Escolha o ano, o estado e o cargo. Os dados oficiais do TSE são importados automaticamente via integração com o repositório do TSE.</p>
         </div>
         <div class="step-card-full-sml">
-          <div class="smA" style="margin-bottom:var(--espaco-12)">
-            <div class="sml-row">
-              <div class="sml-col">
-                <span class="sml-lbl">Eleição</span>
-                <div class="sml-field sml-field-sel">2022</div>
-              </div>
-              <div class="sml-col">
-                <span class="sml-lbl">Estado (UF)</span>
-                <div class="sml-field sml-field-sel" style="min-width:80px">CE — Ceará</div>
-                <div class="sml-dropdown smDrop">
-                  <div class="sml-dd-item">AC — Acre</div>
-                  <div class="sml-dd-item">BA — Bahia</div>
-                  <div class="sml-dd-item sml-dd-hl">CE — Ceará ✓</div>
-                  <div class="sml-dd-item">DF — Distrito Federal</div>
-                  <div class="sml-dd-item">MG — Minas Gerais</div>
-                </div>
-              </div>
-              <div class="sml-col">
-                <span class="sml-lbl">Cargo</span>
-                <div class="sml-field sml-field-sel">Deputado Federal</div>
-              </div>
-              <div class="sml-col">
-                <span class="sml-lbl">Vagas</span>
-                <div class="sml-field">22</div>
+          <!-- 3 campos sempre visíveis; dropdowns abrem em sequência -->
+          <div class="sml-row" style="margin-bottom:var(--espaco-20);align-items:flex-start">
+            <!-- ANO -->
+            <div class="sml-col">
+              <span class="sml-lbl">Eleição</span>
+              <div class="sml-field sml-field-sel">2022</div>
+              <div class="sml-dropdown s1YearDrop">
+                <div class="sml-dd-item">2018</div>
+                <div class="sml-dd-item">2020</div>
+                <div class="sml-dd-item sml-dd-hl">2022 ✓</div>
               </div>
             </div>
+            <!-- ESTADO -->
+            <div class="sml-col">
+              <span class="sml-lbl">Estado (UF)</span>
+              <div class="sml-field sml-field-sel" style="min-width:96px">CE — Ceará</div>
+              <div class="sml-dropdown s1UfDrop">
+                <div class="sml-dd-item">AC — Acre</div>
+                <div class="sml-dd-item">BA — Bahia</div>
+                <div class="sml-dd-item sml-dd-hl">CE — Ceará ✓</div>
+                <div class="sml-dd-item">DF — Distrito Federal</div>
+                <div class="sml-dd-item">MG — Minas Gerais</div>
+              </div>
+            </div>
+            <!-- CARGO -->
+            <div class="sml-col">
+              <span class="sml-lbl">Cargo</span>
+              <div class="sml-field sml-field-sel" style="min-width:118px">Deputado Federal</div>
+              <div class="sml-dropdown s1CargoDrop">
+                <div class="sml-dd-item">Deputado Estadual</div>
+                <div class="sml-dd-item sml-dd-hl">Deputado Federal ✓</div>
+                <div class="sml-dd-item">Senador</div>
+                <div class="sml-dd-item">Vereador</div>
+              </div>
+            </div>
+            <!-- VAGAS (preenchido automaticamente) -->
+            <div class="sml-col">
+              <span class="sml-lbl">Vagas</span>
+              <div class="sml-field">22</div>
+            </div>
           </div>
-          <div class="smBtn">
+          <!-- Botão aparece após as seleções -->
+          <div class="s1Btn">
             <div class="sml-btn">↓ Carregar dados do TSE</div>
           </div>
-          <div class="smD" style="margin-top:var(--espaco-12)">
+          <!-- Status após carregamento -->
+          <div class="s1Status" style="margin-top:var(--espaco-12)">
             <div class="sml-ok">✓ 28 partidos · 22 vagas · 5.083.860 votos válidos · QE 231.084</div>
             <div style="margin-top:var(--espaco-8);display:flex;gap:var(--espaco-8);flex-wrap:wrap">
               <div class="sml-field" style="font-size:10px">PT 522.110</div>
