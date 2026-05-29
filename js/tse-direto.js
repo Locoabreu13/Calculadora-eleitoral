@@ -254,7 +254,11 @@
   function _renderizarLista(rows) {
     const lista = $('tse-municipio-lista');
     if (!lista) return;
-    if (!rows.length) { lista.style.display = 'none'; return; }
+    if (!rows.length) {
+      lista.innerHTML = '<li style="padding:8px 12px;font-size:13px;color:#8BA3C7;font-style:italic">Nenhum município encontrado</li>';
+      lista.style.display = '';
+      return;
+    }
     lista.innerHTML = rows.map(r =>
       `<li data-cd="${r.cd_municipio}" data-nm="${r.nm_municipio}"
           style="padding:8px 12px;cursor:pointer;font-size:13px;color:#C8D9EF;
