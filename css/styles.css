@@ -4374,3 +4374,93 @@ button:focus:not(:focus-visible) { outline: none; }
   flex-shrink: 0;
 }
 
+
+
+/* ══════════════════════════════════════════════════════════════
+   CALCULADORA — redesign visual alinhado à landing page
+   ══════════════════════════════════════════════════════════════ */
+
+/* Topbar */
+.topbar { background: var(--cor-profundo); border-bottom: 1px solid var(--cor-profundo-borda); height: var(--navbar-altura); padding: 0 var(--espaco-32); }
+.topbar-icon { background: var(--cor-ambar); border-radius: var(--raio-md); }
+.topbar-icon svg { fill: var(--cor-profundo); }
+.topbar-title { font-family: var(--fonte-titulo); font-size: 17px; font-weight: var(--peso-bold); color: var(--cor-texto-inv); letter-spacing: var(--tracking-titulo); }
+.topbar-sub { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-inv-suave); text-transform: uppercase; letter-spacing: var(--tracking-label); }
+.topbar-adi-badge { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-ambar); background: rgba(212,160,23,.1); border: 1px solid rgba(212,160,23,.25); border-radius: var(--raio-sm); }
+.topbar-version { font-family: var(--fonte-corpo); color: var(--cor-texto-inv-suave); }
+.topbar-docs-btn { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-inv-suave); background: rgba(255,255,255,.05); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-sm); }
+.topbar-docs-btn:hover { background: rgba(255,255,255,.1); color: var(--cor-texto-inv); }
+.topbar-dash-btn { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-inv-suave); background: rgba(255,255,255,.05); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-sm); }
+.topbar-dash-btn:hover { background: rgba(255,255,255,.1); color: var(--cor-texto-inv); }
+
+/* Sidebar */
+.sidebar { background: var(--cor-profundo); border-right: 1px solid var(--cor-profundo-borda); }
+.sidebar-section { border-bottom: 1px solid var(--cor-profundo-borda); padding: var(--espaco-16); }
+.sidebar-label { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-ambar); letter-spacing: var(--tracking-label); }
+.field-label { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-inv-medio); }
+.field-input, .field-select { font-family: var(--fonte-corpo); font-size: var(--texto-sm); background: rgba(255,255,255,.05); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-md); color: var(--cor-texto-inv); }
+.field-input:focus, .field-select:focus { border-color: rgba(212,160,23,.5); background: rgba(255,255,255,.08); }
+.field-input-num { font-family: var(--fonte-corpo); font-size: 18px; background: rgba(255,255,255,.05); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-md); color: var(--cor-ambar); }
+.field-input-num:focus { border-color: rgba(212,160,23,.5); }
+
+/* Fluxo de trabalho (steps) */
+.sf-step { border: 1px solid var(--cor-profundo-borda); }
+.sf-step.sf-active { border-color: var(--cor-ambar); }
+.sf-num { color: var(--cor-ambar); font-family: var(--fonte-corpo); }
+.sf-label { font-family: var(--fonte-corpo); color: var(--cor-texto-inv-suave); }
+.sf-step.sf-active .sf-label { color: var(--cor-texto-inv); }
+.sf-connector { background: var(--cor-profundo-borda); }
+
+/* Partido / cassação cards */
+.partido-card { background: rgba(255,255,255,.04); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-lg); }
+.partido-field-label, .cass-field-label { font-family: var(--fonte-corpo); color: var(--cor-ambar); }
+.cassacao-row { background: rgba(255,255,255,.04); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-lg); }
+.cass-preview { color: var(--cor-ambar); background: rgba(212,160,23,.08); border-left: 3px solid rgba(212,160,23,.5); }
+.pcard-footer { border-top: 1px solid var(--cor-profundo-borda); }
+.pcard-footer-btn { font-family: var(--fonte-corpo); border: 1px solid var(--cor-profundo-borda); color: var(--cor-texto-inv-suave); }
+.pcard-footer-btn:hover { color: var(--cor-texto-inv); background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.2); }
+
+/* Botão Calcular — azul como CTA da landing */
+.btn-calcular { background: var(--cor-confiante); color: var(--cor-texto-inv); font-family: var(--fonte-corpo); font-weight: var(--peso-medio); font-size: var(--texto-sm); border-radius: var(--raio-md); letter-spacing: .01em; }
+.btn-calcular:hover { background: var(--cor-confiante-hover); }
+.btn-calcular:disabled { background: var(--cor-confiante); opacity: .4; }
+
+/* Botões laterais */
+.btn-sidebar-add { font-family: var(--fonte-corpo); border: 1px dashed var(--cor-profundo-borda); color: var(--cor-texto-inv-suave); background: transparent; border-radius: var(--raio-md); }
+.btn-sidebar-add:hover { background: rgba(255,255,255,.06); color: var(--cor-texto-inv); }
+.btn-sidebar-clear { font-family: var(--fonte-corpo); border: 1px solid var(--cor-profundo-borda); color: var(--cor-texto-inv-suave); border-radius: var(--raio-md); }
+.btn-sidebar-clear:hover { background: rgba(255,255,255,.05); color: var(--cor-texto-inv); }
+.sidebar .btn-secundario { font-family: var(--fonte-corpo); background: rgba(255,255,255,.05); color: var(--cor-texto-inv-suave); border: 1px solid var(--cor-profundo-borda); }
+.sidebar .btn-secundario:hover { background: rgba(255,255,255,.09); color: var(--cor-texto-inv); }
+
+/* Importe TSE */
+.import-header { border-bottom: none; }
+.import-toggle-btn { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-ambar); background: rgba(212,160,23,.08); border: 1px solid rgba(212,160,23,.2); border-radius: var(--raio-md); }
+.import-toggle-btn:hover { background: rgba(212,160,23,.14); }
+.import-filter-label { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-inv-suave); }
+.import-filter-select { font-family: var(--fonte-corpo); background: rgba(255,255,255,.05); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-md); color: var(--cor-texto-inv); }
+.import-btn-processar { background: var(--cor-confiante); font-family: var(--fonte-corpo); border-radius: var(--raio-md); }
+.import-btn-processar:hover { background: var(--cor-confiante-hover); }
+.import-badge { font-family: var(--fonte-corpo); }
+
+/* Main content — fundo claro */
+.main-content { background: var(--cor-fundo-principal); }
+
+/* Welcome screen */
+.welcome-screen { max-width: 700px; }
+.welcome-icon { background: var(--cor-ambar); border-radius: var(--raio-lg); }
+.welcome-icon svg { stroke: var(--cor-profundo); }
+.welcome-title { font-family: var(--fonte-titulo); font-size: var(--texto-2xl); font-weight: var(--peso-bold); color: var(--cor-texto); letter-spacing: var(--tracking-titulo); }
+.welcome-sub { font-family: var(--fonte-corpo); font-size: var(--texto-sm); color: var(--cor-texto-suave); }
+.welcome-section-label { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-label); text-transform: uppercase; letter-spacing: var(--tracking-label); }
+.welcome-card { background: var(--cor-fundo-card); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-xl); }
+.welcome-card:hover { border-color: var(--cor-borda); box-shadow: 0 6px 24px rgba(12,29,48,.08); transform: translateY(-2px); }
+.welcome-card-uf { background: var(--cor-profundo); color: var(--cor-ambar); font-family: var(--fonte-titulo); border-radius: var(--raio-md); }
+.welcome-card-title { font-family: var(--fonte-corpo); font-size: var(--texto-sm); font-weight: var(--peso-medio); color: var(--cor-texto); }
+.welcome-card-desc { font-family: var(--fonte-corpo); color: var(--cor-texto-suave); }
+.welcome-card-arrow { color: var(--cor-confiante); }
+.welcome-step-num { background: var(--cor-profundo); color: var(--cor-ambar); font-family: var(--fonte-titulo); border-radius: var(--raio-md); }
+.welcome-step-text { font-family: var(--fonte-corpo); color: var(--cor-texto-suave); }
+.welcome-step-text strong { color: var(--cor-texto); }
+.welcome-howto { border-top: 1px solid var(--cor-borda-suave); }
+
