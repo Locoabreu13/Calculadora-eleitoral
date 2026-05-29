@@ -381,9 +381,10 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   });
 
   escalonados.forEach(function(sel){
-    var delays = ['','reveal-delay-1','reveal-delay-2','reveal-delay-3'];
+    var delays = ['reveal-delay-1','reveal-delay-2','reveal-delay-3','reveal-delay-4'];
     document.querySelectorAll(sel).forEach(function(el, i){
-      el.classList.add('reveal', delays[i % 4]);
+      el.classList.add('reveal');
+      if(i > 0) el.classList.add(delays[(i - 1) % 4]);
     });
   });
 
