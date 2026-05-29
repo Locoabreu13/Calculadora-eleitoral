@@ -1,0 +1,254 @@
+:root {
+
+
+  /* ----------------------------------------------------------
+     CORES — Paleta "Advogado Destemido"
+     ----------------------------------------------------------
+
+     Regra: nunca use um código de cor diretamente no site.
+     Sempre use o nome da variável (ex: var(--cor-profundo)).
+     Isso garante consistência em toda a página.
+  ---------------------------------------------------------- */
+
+  /* Fundos escuros — navbar, hero, footer */
+  --cor-profundo:        #0C1D30;
+  --cor-profundo-meio:   #1E3347;
+  --cor-profundo-borda:  #2C4A63;
+
+  /* Azul de ação — botões principais, links, CTAs */
+  --cor-confiante:       #1A56DB;
+  --cor-confiante-hover: #1445B8;
+  --cor-confiante-claro: #EBF2FF;
+
+  /* Âmbar — "JE" no wordmark, métricas, destaques */
+  --cor-ambar:           #D4A017;
+  --cor-ambar-claro:     #FDF3D8;
+
+  /* Fundos claros — seções alternadas */
+  --cor-fundo-principal: #F7F9FC;
+  --cor-fundo-neutro:    #EEF2F7;
+  --cor-fundo-card:      #FFFFFF;
+
+  /* Texto sobre fundos claros */
+  --cor-texto:           #0C1D30;
+  --cor-texto-medio:     #374151;
+  --cor-texto-suave:     #64748B;
+  --cor-texto-label:     #94A3B8;
+
+  /* Texto sobre fundos escuros */
+  --cor-texto-inv:       #F7F9FC;
+  --cor-texto-inv-medio: #7A8FA0;
+  --cor-texto-inv-suave: #3A5A78;
+
+  /* Bordas */
+  --cor-borda:           #CBD5E1;
+  --cor-borda-suave:     #E2E8F0;
+
+
+  /* ----------------------------------------------------------
+     TIPOGRAFIA
+     ----------------------------------------------------------
+
+     Syne:    títulos — geométrica, precisa, memorável
+     DM Sans: corpo  — humanista, legível, moderna
+  ---------------------------------------------------------- */
+
+  --fonte-titulo:  'Syne', sans-serif;
+  --fonte-corpo:   'DM Sans', sans-serif;
+
+  /* Pesos */
+  --peso-normal:   400;
+  --peso-medio:    500;
+  --peso-bold:     700;
+  --peso-black:    800;
+
+  /* Escala de tamanhos — use sempre estas variáveis */
+  --texto-xs:    0.6875rem;  /*  11px — labels, badges */
+  --texto-sm:    0.8125rem;  /*  13px — texto de apoio */
+  --texto-base:  1rem;       /*  16px — corpo principal */
+  --texto-lg:    1.125rem;   /*  18px — subtítulos */
+  --texto-xl:    1.375rem;   /*  22px — títulos de card */
+  --texto-2xl:   1.75rem;    /*  28px — títulos de seção */
+  --texto-3xl:   2.25rem;    /*  36px — títulos grandes */
+  --texto-hero:  3rem;       /*  48px — hero desktop */
+  --texto-hero-mobile: 2rem; /*  32px — hero mobile */
+
+  /* Altura de linha */
+  --linha-titulo:   1.15;
+  --linha-corpo:    1.7;
+  --linha-compacta: 1.4;
+
+  /* Espaçamento entre letras */
+  --tracking-titulo: -0.03em;   /* títulos Syne ficam mais elegantes */
+  --tracking-label:   0.08em;   /* labels em caixa alta */
+
+
+  /* ----------------------------------------------------------
+     ESPAÇAMENTO — escala consistente
+     ----------------------------------------------------------
+
+     Sempre use múltiplos de 4px.
+     --espaco-4  =  4px  (mínimo entre elementos)
+     --espaco-8  =  8px  (gap interno de componentes)
+     --espaco-16 = 16px  (padding de cards)
+     --espaco-24 = 24px  (gap entre componentes)
+     --espaco-48 = 48px  (padding vertical de seções)
+     --espaco-96 = 96px  (padding vertical de seções grandes)
+  ---------------------------------------------------------- */
+
+  --espaco-4:   0.25rem;
+  --espaco-8:   0.5rem;
+  --espaco-12:  0.75rem;
+  --espaco-16:  1rem;
+  --espaco-20:  1.25rem;
+  --espaco-24:  1.5rem;
+  --espaco-32:  2rem;
+  --espaco-40:  2.5rem;
+  --espaco-48:  3rem;
+  --espaco-64:  4rem;
+  --espaco-80:  5rem;
+  --espaco-96:  6rem;
+  --espaco-128: 8rem;
+
+  /* Padding vertical padrão de cada seção da landing page */
+  --secao-padding-v:       var(--espaco-96);
+  --secao-padding-v-medio: var(--espaco-64);
+  --secao-padding-v-pequeno: var(--espaco-48);
+
+  /* Largura máxima do conteúdo — centralizado */
+  --largura-max:    1200px;
+  --largura-texto:   680px;
+  --largura-estreita: 520px;
+
+
+  /* ----------------------------------------------------------
+     BORDAS E CANTOS
+  ---------------------------------------------------------- */
+
+  --raio-sm:   4px;
+  --raio-md:   8px;
+  --raio-lg:   12px;
+  --raio-xl:   16px;
+  --raio-pill: 999px;
+
+  /* Espessura padrão de bordas */
+  --borda: 1px solid var(--cor-borda);
+  --borda-suave: 1px solid var(--cor-borda-suave);
+  --borda-escura: 1px solid var(--cor-profundo-borda);
+
+
+  /* ----------------------------------------------------------
+     SOMBRAS
+     ----------------------------------------------------------
+     Identidade visual limpa e precisa — sem sombras decorativas.
+     Única exceção: anel de foco para acessibilidade.
+  ---------------------------------------------------------- */
+
+  --sombra-nenhuma: none;
+  --sombra-foco:    0 0 0 3px rgba(26, 86, 219, 0.35);
+
+
+  /* ----------------------------------------------------------
+     TRANSIÇÕES
+  ---------------------------------------------------------- */
+
+  --transicao:       150ms ease;
+  --transicao-media: 250ms ease;
+  --transicao-lenta: 350ms ease;
+
+
+  /* ----------------------------------------------------------
+     NAVBAR — alturas fixas
+  ---------------------------------------------------------- */
+
+  --navbar-altura: 64px;
+  --navbar-fundo:  var(--cor-profundo);
+
+
+  /* ----------------------------------------------------------
+     WORDMARK — instrução de uso do JE em âmbar
+     ----------------------------------------------------------
+     Ao renderizar o nome da marca, sempre usar:
+     <span class="wordmark">
+       <span class="wordmark-base">Retotaliza</span>
+       <span class="wordmark-je">JE</span>
+     </span>
+  ---------------------------------------------------------- */
+
+  --wordmark-fonte:      var(--fonte-titulo);
+  --wordmark-peso:       var(--peso-bold);
+  --wordmark-cor-base:   var(--cor-texto-inv);
+  --wordmark-cor-je:     var(--cor-ambar);
+
+  /* Sobre fundo claro */
+  --wordmark-cor-base-claro: var(--cor-profundo);
+  --wordmark-cor-je-claro:   var(--cor-ambar);
+
+
+  /* ----------------------------------------------------------
+     BOTÕES
+  ---------------------------------------------------------- */
+
+  /* Primário — ação principal */
+  --botao-fundo:         var(--cor-confiante);
+  --botao-fundo-hover:   var(--cor-confiante-hover);
+  --botao-texto:         var(--cor-texto-inv);
+  --botao-raio:          var(--raio-md);
+  --botao-padding:       0.625rem 1.5rem;
+  --botao-fonte:         var(--fonte-corpo);
+  --botao-peso:          var(--peso-medio);
+  --botao-tamanho:       var(--texto-sm);
+
+  /* Secundário — ação de apoio */
+  --botao-sec-fundo:     transparent;
+  --botao-sec-borda:     var(--borda-escura);
+  --botao-sec-texto:     var(--cor-texto-inv);
+
+  /* Secundário sobre fundo claro */
+  --botao-sec-claro-borda: var(--borda);
+  --botao-sec-claro-texto: var(--cor-texto);
+
+
+  /* ----------------------------------------------------------
+     DESTAQUE ÂMBAR — bloco de caso validado (Seção 3)
+  ---------------------------------------------------------- */
+
+  --destaque-borda-esq:  3px solid var(--cor-ambar);
+  --destaque-fundo:      var(--cor-ambar-claro);
+  --destaque-padding:    var(--espaco-16) var(--espaco-20);
+
+
+  /* ----------------------------------------------------------
+     CARDS DE CASOS (Seção 4 — Prova)
+  ---------------------------------------------------------- */
+
+  --card-fundo:    var(--cor-fundo-card);
+  --card-borda:    var(--borda-suave);
+  --card-raio:     var(--raio-lg);
+  --card-padding:  var(--espaco-24);
+
+
+  /* ----------------------------------------------------------
+     GRID — layout das seções
+  ---------------------------------------------------------- */
+
+  --grid-gap:     var(--espaco-24);
+  --grid-gap-lg:  var(--espaco-32);
+
+
+  /* ----------------------------------------------------------
+     ALTERNÂNCIA DE FUNDOS — sequência das seções
+     ----------------------------------------------------------
+     Navbar:          var(--cor-profundo)         escuro
+     Seção 01 Hero:   var(--cor-profundo)         escuro
+     Seção 02:        var(--cor-fundo-neutro)     neutro
+     Seção 03:        var(--cor-fundo-principal)  claro
+     Seção 04:        var(--cor-fundo-neutro)     neutro
+     Seção 05:        var(--cor-fundo-principal)  claro
+     Seção 06:        var(--cor-fundo-neutro)     neutro
+     Seção 07:        var(--cor-fundo-principal)  claro
+     Seção 08 CTA:    var(--cor-confiante)        azul
+     Footer:          var(--cor-profundo)         escuro
+  ---------------------------------------------------------- */
+
+}
