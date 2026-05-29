@@ -11,6 +11,26 @@ import { doc, setDoc, getDocFromServer, serverTimestamp } from "https://www.gsta
 
 const googleProvider = new GoogleAuthProvider();
 
+// Notificação por e-mail via EmailJS quando novo usuário se cadastra
+async function notificarCadastro(email) {
+  try {
+    const agora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+    await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        service_id:      'RetotalizaJE',
+        template_id:     'template_3ufd0xs',
+        user_id:         'HFnAf7EsVdqnh3pHA',
+        template_params: { email, horario: agora }
+      })
+    });
+    console.log('[EmailJS] Notificação enviada para', email);
+  } catch(e) {
+    console.warn('[EmailJS] Falha ao notificar:', e);
+  }
+}
+
 // Cria documento apenas se não existir — ativo: false por padrão até liberação manual.
 async function garantirPerfil(user) {
   const ref = doc(db, "users", user.uid);
@@ -21,6 +41,8 @@ async function garantirPerfil(user) {
       ativo: false,
       createdAt: serverTimestamp()
     });
+    // Notifica apenas no primeiro cadastro (documento recém-criado)
+    await notificarCadastro(user.email);
   }
 }
 
