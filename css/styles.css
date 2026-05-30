@@ -4491,3 +4491,34 @@ button:focus:not(:focus-visible) { outline: none; }
   overflow-y: auto;
 }
 
+
+/* ══════════════════════════════════════════════════════════════
+   WELCOME SCREEN — redesign estilo dashboard
+   ══════════════════════════════════════════════════════════════ */
+.empty-state { display:flex; align-items:flex-start; justify-content:center; width:100%; padding:48px 40px; overflow-y:auto; }
+.welcome-screen { width:100%; max-width:760px; }
+
+.welcome-header { display:flex; align-items:center; gap:20px; margin-bottom:40px; padding-bottom:32px; border-bottom:1px solid var(--cor-borda-suave); }
+.welcome-icon { width:52px; height:52px; background:var(--cor-profundo); border-radius:var(--raio-lg); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.welcome-icon svg { stroke:var(--cor-ambar); }
+.welcome-title { font-family:var(--fonte-titulo); font-size:28px; font-weight:800; color:var(--cor-texto); letter-spacing:var(--tracking-titulo); line-height:1.1; margin:0 0 4px; }
+.welcome-sub { font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-suave); margin:0; }
+
+.welcome-section-label { font-family:var(--fonte-corpo); font-size:var(--texto-xs); font-weight:600; color:var(--cor-texto-label); text-transform:uppercase; letter-spacing:var(--tracking-label); margin-bottom:14px; }
+
+.welcome-quickstart { margin-bottom:36px; }
+.welcome-cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.welcome-card { display:flex; align-items:center; gap:16px; background:var(--cor-fundo-card); border:1px solid var(--cor-borda-suave); border-radius:var(--raio-xl); padding:20px; cursor:pointer; transition:all .18s ease; text-align:left; width:100%; }
+.welcome-card:hover { border-color:var(--cor-ambar); box-shadow:0 4px 20px rgba(212,160,23,.1); transform:translateY(-2px); }
+.welcome-card-uf { width:44px; height:44px; background:var(--cor-profundo); color:var(--cor-ambar); font-family:var(--fonte-titulo); font-size:15px; font-weight:800; border-radius:var(--raio-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.welcome-card-title { font-family:var(--fonte-corpo); font-size:var(--texto-sm); font-weight:600; color:var(--cor-texto); margin-bottom:4px; }
+.welcome-card-desc { font-family:var(--fonte-corpo); font-size:var(--texto-xs); color:var(--cor-texto-suave); line-height:1.4; }
+.welcome-card-arrow { font-size:18px; color:var(--cor-confiante); flex-shrink:0; opacity:.5; transition:opacity .18s; }
+.welcome-card:hover .welcome-card-arrow { opacity:1; }
+
+.welcome-howto { border-top:1px solid var(--cor-borda-suave); padding-top:32px; }
+.welcome-steps-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.welcome-step { background:var(--cor-fundo-card); border:1px solid var(--cor-borda-suave); border-radius:var(--raio-xl); padding:20px; display:flex; flex-direction:column; gap:12px; }
+.welcome-step-num { width:32px; height:32px; background:var(--cor-profundo); color:var(--cor-ambar); font-family:var(--fonte-titulo); font-size:14px; font-weight:800; border-radius:var(--raio-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.welcome-step-text { font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-suave); line-height:1.5; }
+.welcome-step-text strong { color:var(--cor-texto); font-weight:600; }
