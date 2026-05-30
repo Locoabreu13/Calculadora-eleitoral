@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=16" />
+  <link rel="stylesheet" href="css/styles.css?v=17" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -121,26 +121,13 @@
       <!-- ── INÍCIO ──────────────────────────────────────────────── -->
       <div class="dash-sec dash-sec-active" id="dsec-home">
 
-        <div class="dash-welcome-bar">
+        <!-- Page header com botão de ação no topo -->
+        <div class="dash-page-header">
           <div>
-            <h1 class="dash-greeting">Olá, <span class="dash-first-name">—</span> 👋</h1>
+            <h1 class="dash-greeting">Olá, <span class="dash-first-name">—</span></h1>
             <p class="dash-greeting-sub">Sistema RetotalizaJE · art. 109 CE</p>
           </div>
-        </div>
-
-        <!-- Hero: Novo Cálculo -->
-        <div class="dash-hero" id="dash-hero-calc">
-          <div class="dash-hero-left">
-            <div class="dash-hero-play">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-            <div>
-              <div class="dash-hero-sup">Iniciar agora</div>
-              <div class="dash-hero-title">Novo Cálculo</div>
-              <div class="dash-hero-desc">Retotalização proporcional · art. 109 CE · ADIs 7.228/7.263/7.325 STF</div>
-            </div>
-          </div>
-          <svg class="dash-hero-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="22" height="22"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <button class="dash-btn-novo" id="dash-hero-calc">+ Novo Cálculo</button>
         </div>
 
         <!-- Cards secundários -->
@@ -174,7 +161,7 @@
       <div class="dash-sec" id="dsec-estudos">
         <div class="dash-sec-head">
           <h2 class="dash-sec-title">Meus Estudos</h2>
-          <p class="dash-sec-sub">Cálculos salvos via <strong>💾 Salvar Estudo</strong> na calculadora. Armazenados localmente neste navegador.</p>
+          <p class="dash-sec-sub">Cálculos salvos via <strong>Salvar Estudo</strong> na calculadora. Armazenados localmente neste navegador.</p>
         </div>
         <div id="dash-estudos-list" class="dash-estudos-list"></div>
       </div>

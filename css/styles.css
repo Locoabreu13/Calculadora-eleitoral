@@ -4588,3 +4588,10 @@ button:focus:not(:focus-visible) { outline: none; }
 .btn-google { font-family: var(--fonte-corpo); font-size: var(--texto-sm); color: var(--cor-texto-inv-medio); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-md); background: rgba(255,255,255,.04); }
 .btn-google:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); color: var(--cor-texto-inv); }
 .auth-erro { font-family: var(--fonte-corpo); }
+
+/* ══════════════════════════════════════════════════════════════
+   DASHBOARD — page header com botão no topo
+   ══════════════════════════════════════════════════════════════ */
+.dash-page-header { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin-bottom:40px; padding-bottom:28px; border-bottom:1px solid var(--cor-borda-suave); }
+.dash-btn-novo { flex-shrink:0; font-family:var(--fonte-corpo); font-size:var(--texto-sm); font-weight:var(--peso-medio); color:var(--cor-texto-inv); background:var(--cor-confiante); border:none; border-radius:var(--raio-md); padding:10px 20px; cursor:pointer; transition:background var(--transicao); }
+.dash-btn-novo:hover { background:var(--cor-confiante-hover); }
