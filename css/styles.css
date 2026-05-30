@@ -4566,3 +4566,25 @@ button:focus:not(:focus-visible) { outline: none; }
 .tabela-scroll td.right { text-align:right; font-variant-numeric:tabular-nums; }
 .tabela-scroll tbody tr:last-child td { border-bottom:none; }
 .tabela-scroll tbody tr:hover { background:rgba(0,0,0,.02); }
+
+/* ══════════════════════════════════════════════════════════════
+   AUTH — redesign com tokens DESIGN.md
+   ══════════════════════════════════════════════════════════════ */
+#tela-auth { background: var(--cor-profundo); }
+.auth-container { background: var(--cor-profundo-meio); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-xl); box-shadow: 0 8px 40px rgba(0,0,0,.35); }
+.auth-container h1 { font-family: var(--fonte-titulo); font-size: 1.4rem; font-weight: var(--peso-bold); color: var(--cor-texto-inv); letter-spacing: var(--tracking-titulo); }
+.auth-subtitle { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-inv-medio); letter-spacing: var(--tracking-label); }
+.auth-tabs { background: rgba(255,255,255,.04); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-md); }
+.tab-btn { font-family: var(--fonte-corpo); font-size: var(--texto-sm); color: var(--cor-texto-inv-suave); border-radius: var(--raio-sm); }
+.tab-btn:hover { color: var(--cor-texto-inv); }
+.tab-btn.active { background: var(--cor-confiante); color: var(--cor-texto-inv); box-shadow: 0 2px 8px rgba(26,86,219,.35); }
+.auth-input { font-family: var(--fonte-corpo); font-size: var(--texto-sm); color: var(--cor-texto-inv); background: rgba(255,255,255,.05); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-md); }
+.auth-input::placeholder { color: var(--cor-texto-inv-suave); }
+.auth-input:focus { border-color: rgba(26,86,219,.55); background: rgba(255,255,255,.08); box-shadow: var(--sombra-foco); }
+.btn-primary { font-family: var(--fonte-corpo); font-size: var(--texto-sm); font-weight: var(--peso-bold); background: var(--cor-confiante); border-radius: var(--raio-md); box-shadow: 0 4px 14px rgba(26,86,219,.35); letter-spacing:.02em; }
+.btn-primary:hover { background: var(--cor-confiante-hover); }
+.auth-separator { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-inv-suave); }
+.auth-separator::before, .auth-separator::after { background: var(--cor-profundo-borda); }
+.btn-google { font-family: var(--fonte-corpo); font-size: var(--texto-sm); color: var(--cor-texto-inv-medio); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-md); background: rgba(255,255,255,.04); }
+.btn-google:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); color: var(--cor-texto-inv); }
+.auth-erro { font-family: var(--fonte-corpo); }
