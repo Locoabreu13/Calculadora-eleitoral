@@ -4464,3 +4464,30 @@ button:focus:not(:focus-visible) { outline: none; }
 .welcome-step-text strong { color: var(--cor-texto); }
 .welcome-howto { border-top: 1px solid var(--cor-borda-suave); }
 
+/* ══════════════════════════════════════════════════════════════
+   CALCULADORA — layout bipartido: sidebar fixa + main claro
+   ══════════════════════════════════════════════════════════════ */
+
+/* Antes dos resultados: sidebar fixa 400px (não mais 100% da tela) */
+.app-body:not(.tem-resultados) .sidebar {
+  width: 400px;
+  min-width: 400px;
+  border-right: 1px solid var(--cor-profundo-borda);
+  overflow-y: auto;
+}
+
+/* Partidos voltam para coluna única dentro da sidebar de 400px */
+.app-body:not(.tem-resultados) #lista-partidos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Main content aparece sempre com fundo claro */
+.app-body:not(.tem-resultados) .main-content {
+  display: flex;
+  flex: 1;
+  background: var(--cor-fundo-principal);
+  overflow-y: auto;
+}
+
