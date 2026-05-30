@@ -3459,6 +3459,34 @@ button:focus:not(:focus-visible) { outline: none; }
 }
 .dash-sair-btn:hover { background: rgba(255,255,255,.09); color: rgba(255,255,255,.7); }
 
+/* Badge de créditos na topbar */
+.dash-creditos-badge {
+  display: flex; align-items: center; gap: 4px;
+  padding: 5px 10px;
+  background: var(--cor-ambar-claro);
+  border: 1px solid var(--cor-ambar);
+  border-radius: var(--raio-pill);
+  font-family: var(--fonte-corpo); font-size: var(--texto-xs);
+  font-weight: var(--peso-medio); color: var(--cor-ambar);
+  white-space: nowrap; cursor: default;
+}
+.dash-creditos-badge.zerado {
+  background: #FEE2E2; border-color: #FCA5A5; color: #DC2626;
+}
+
+/* Toast de retorno de pagamento */
+.pagamento-toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  padding: 14px 24px; border-radius: var(--raio-lg);
+  font-family: var(--fonte-corpo); font-size: var(--texto-sm); font-weight: var(--peso-medio);
+  box-shadow: 0 8px 32px rgba(0,0,0,.18); z-index: 9999;
+  animation: toastIn .3s ease;
+}
+.pagamento-toast.sucesso { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
+.pagamento-toast.falha   { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+.pagamento-toast.pendente{ background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; }
+@keyframes toastIn { from { opacity:0; transform: translateX(-50%) translateY(12px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
+
 /* ── MAIN ───────────────────────────────────────────── */
 .dash-main {
   flex: 1;
@@ -3479,11 +3507,12 @@ button:focus:not(:focus-visible) { outline: none; }
   flex-wrap: wrap;
 }
 .dash-greeting {
-  font-size: 1.85rem;
-  font-weight: 700;
-  color: #E8EEF7;
-  margin: 0 0 5px;
-  letter-spacing: -0.02em;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1A2B40;
+  margin: 0 0 4px;
+  line-height: 1.4;
 }
 .dash-first-name { color: #FCD34D; }
 .dash-greeting-sub {
@@ -3584,14 +3613,14 @@ button:focus:not(:focus-visible) { outline: none; }
   margin-bottom: 28px;
 }
 .dash-card {
-  background: #1A2F4A;
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: 14px;
-  padding: 22px 20px 18px;
+  background: var(--cor-fundo-neutro);
+  border: 1px solid var(--cor-borda-suave);
+  border-radius: var(--raio-xl);
+  padding: var(--espaco-24);
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--espaco-8);
   position: relative;
   overflow: hidden;
   transition: transform .2s, border-color .2s, box-shadow .2s;
@@ -3953,7 +3982,7 @@ button:focus:not(:focus-visible) { outline: none; }
 
 /* Saudação */
 .dash-welcome-bar { margin-bottom: var(--espaco-40); }
-.dash-greeting { font-family: var(--fonte-titulo); font-size: var(--texto-3xl); font-weight: var(--peso-black); color: var(--cor-texto); letter-spacing: var(--tracking-titulo); line-height: var(--linha-titulo); }
+.dash-greeting { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; color: #1A2B40; line-height: 1.4; }
 .dash-first-name { color: var(--cor-ambar); }
 .dash-greeting-sub { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-label); text-transform: uppercase; letter-spacing: var(--tracking-label); margin-top: var(--espaco-8); }
 
@@ -3969,8 +3998,8 @@ button:focus:not(:focus-visible) { outline: none; }
 .dash-hero:hover .dash-hero-arrow { color: var(--cor-ambar); transform: translateX(4px); }
 
 /* Cards secundários — brancos como step-cards da landing */
-.dash-cards-grid { gap: var(--grid-gap); margin-bottom: var(--espaco-24); }
-.dash-card { background: var(--cor-fundo-card); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-xl); padding: var(--espaco-24); gap: var(--espaco-8); }
+.dash-cards-grid { grid-template-columns: repeat(3,1fr); gap: var(--grid-gap); margin-bottom: var(--espaco-24); }
+.dash-card { background: var(--cor-fundo-neutro); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-xl); padding: var(--espaco-24); gap: var(--espaco-8); }
 .dash-card::before { display: none; }
 .dash-card:hover { transform: translateY(-2px); border-color: var(--cor-borda); box-shadow: 0 6px 24px rgba(12,29,48,.08); }
 .dash-card-ico { color: var(--cor-texto-label); margin-bottom: 0; }
@@ -4613,3 +4642,7 @@ button:focus:not(:focus-visible) { outline: none; }
 /* JE âmbar na saudação */
 .dash-first-name-je { color:var(--cor-ambar); }
 .dash-first-name { display:none; }
+
+/* Dashboard — fundo neutro (não cansa a leitura) */
+.dash-main { background: var(--cor-fundo-neutro); }
+.dash-sec  { background: var(--cor-fundo-neutro); }

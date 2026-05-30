@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=18" />
+  <link rel="stylesheet" href="css/styles.css?v=23" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -110,6 +110,9 @@
             <span class="dash-user-email-sm usuario-email"></span>
           </div>
         </div>
+        <div class="dash-creditos-badge" id="dash-creditos-badge" title="Cálculos disponíveis">
+          <span id="dash-creditos-num">—</span> créditos
+        </div>
         <button class="dash-sair-btn" onclick="fazerLogout()">Sair</button>
       </div>
 
@@ -143,6 +146,12 @@
             <div class="dash-card-title">Manual de Uso</div>
             <div class="dash-card-desc">Documentação técnico-jurídica</div>
             <div class="dash-card-foot">ADIs 7.228/7.263/7.325</div>
+          </div>
+          <div class="dash-card dash-card-gold" id="dash-card-como">
+            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <div class="dash-card-title">Como Funciona</div>
+            <div class="dash-card-desc">Base jurídica e método de cálculo</div>
+            <div class="dash-card-foot">art. 109 CE · STF</div>
           </div>
         </div>
 
@@ -1148,8 +1157,70 @@
     import { cadastrarEmail, loginEmail, loginGoogle, logout } from "./js/auth.js?v=9";
     import { iniciarPaywall } from "./js/paywall.js?v=9";
     import { auth } from "./js/firebase-init.js?v=9";
+    import { ouvirCreditos, pararOuvirCreditos, iniciarPagamento } from "./js/pagamentos.js";
 
     iniciarPaywall();
+
+    // ── Créditos na topbar ───────────────────────────────────────────────
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        ouvirCreditos(user.uid, (n) => {
+          const badge = document.getElementById('dash-creditos-badge');
+          const num   = document.getElementById('dash-creditos-num');
+          if (!badge || !num) return;
+          num.textContent = n >= 9999 ? '∞' : n;
+          badge.classList.toggle('zerado', n === 0);
+        });
+        _verificarRetornoPagamento();
+      } else {
+        pararOuvirCreditos();
+      }
+    });
+
+    // ── Toast ao voltar do Mercado Pago ──────────────────────────────────
+    function _verificarRetornoPagamento() {
+      const params = new URLSearchParams(window.location.search);
+      const status = params.get('pagamento');
+      if (!status) return;
+      const msgs = {
+        sucesso:  { txt: 'Pagamento aprovado! Seus créditos foram adicionados.', cls: 'sucesso' },
+        falha:    { txt: 'Pagamento não concluído. Tente novamente.', cls: 'falha' },
+        pendente: { txt: 'Pagamento pendente. Você será notificado quando aprovado.', cls: 'pendente' },
+      };
+      const m = msgs[status];
+      if (!m) return;
+      const toast = document.createElement('div');
+      toast.className = 'pagamento-toast ' + m.cls;
+      toast.textContent = m.txt;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 6000);
+      // Remove o parâmetro da URL sem recarregar
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
+    // ── Botões de plano na landing (redirecionam para app + pagamento) ───
+    window.contratarPlano = async (planoId) => {
+      const user = auth.currentUser;
+      if (!user) {
+        alert('Faça login para contratar um plano.');
+        return;
+      }
+      await iniciarPagamento(planoId);
+    };
+
+    // ── Detecta ?plano= na URL e dispara pagamento após login ────────────
+    (function _verificarPlanoParam() {
+      const planoId = new URLSearchParams(window.location.search).get('plano');
+      if (!planoId) return;
+      // Remove da URL imediatamente para não re-disparar num reload
+      window.history.replaceState({}, '', window.location.pathname);
+      // Aguarda autenticação estar pronta
+      const unsub = auth.onAuthStateChanged(async (user) => {
+        unsub();
+        if (!user) return; // usuário não logado — não faz nada
+        await iniciarPagamento(planoId);
+      });
+    })();
 
     window.fazerLogin = async () => {
       const email = document.getElementById("login-email").value;
@@ -1204,6 +1275,7 @@
       document.getElementById('dash-hero-calc').addEventListener('click', dashGoCalc);
       document.getElementById('dash-card-estudos').addEventListener('click', () => _dashGo('estudos'));
       document.getElementById('dash-card-manual').addEventListener('click', () => _dashGo('manual'));
+      document.getElementById('dash-card-como').addEventListener('click', () => _dashGo('docs'));
 
       const veBtn = document.querySelector('.dash-ver-todos');
       if (veBtn) veBtn.addEventListener('click', () => _dashGo('estudos'));

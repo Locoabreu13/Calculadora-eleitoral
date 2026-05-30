@@ -122,6 +122,34 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .secao-06{background:var(--cor-fundo-neutro);padding-block:var(--secao-padding-v)}
 .secao-07{background:var(--cor-fundo-principal);padding-block:var(--secao-padding-v)}
 .secao-texto{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo);max-width:var(--largura-texto)}
+/* SEÇÃO PREÇOS */
+.secao-precos{background:var(--cor-fundo-neutro);padding-block:var(--secao-padding-v)}
+.precos-header{text-align:center;margin-bottom:var(--espaco-40)}
+.precos-titulo{font-family:var(--fonte-titulo);font-weight:var(--peso-bold);font-size:var(--texto-2xl);color:var(--cor-texto);letter-spacing:var(--tracking-titulo);line-height:var(--linha-titulo);margin-bottom:var(--espaco-8)}
+.precos-sub{font-family:var(--fonte-corpo);font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
+.precos-banner{display:flex;align-items:center;gap:var(--espaco-8);background:var(--cor-confiante-claro);border:1px solid #C3D9FF;border-radius:var(--raio-md);padding:12px 20px;margin-bottom:var(--espaco-32);font-family:var(--fonte-corpo);font-size:var(--texto-sm);color:var(--cor-confiante)}
+.precos-banner strong{font-weight:var(--peso-bold)}
+.precos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--grid-gap);margin-bottom:var(--grid-gap)}
+.preco-card{background:var(--cor-fundo-card);border:1px solid var(--cor-borda-suave);border-radius:var(--raio-xl);padding:var(--espaco-24);display:flex;flex-direction:column;gap:var(--espaco-8);position:relative}
+.preco-card--destaque{border-color:var(--cor-confiante);box-shadow:0 0 0 1px var(--cor-confiante)}
+.preco-badge{display:inline-flex;align-items:center;background:var(--cor-confiante-claro);color:var(--cor-confiante);font-family:var(--fonte-corpo);font-size:var(--texto-xs);font-weight:var(--peso-medio);padding:4px 10px;border-radius:var(--raio-pill);margin-bottom:var(--espaco-4);width:fit-content}
+.preco-nome{font-family:var(--fonte-corpo);font-size:var(--texto-sm);color:var(--cor-texto-label);font-weight:var(--peso-medio)}
+.preco-valor{font-family:'DM Sans',sans-serif;font-size:var(--texto-3xl);font-weight:800;color:var(--cor-texto);line-height:1;margin:var(--espaco-4) 0}
+.preco-qtd{font-family:var(--fonte-corpo);font-size:var(--texto-sm);color:var(--cor-texto-suave);margin-bottom:var(--espaco-12)}
+.preco-divisor{height:1px;background:var(--cor-borda-suave);margin:var(--espaco-4) 0}
+.preco-por{font-family:var(--fonte-corpo);font-size:var(--texto-xs);color:var(--cor-texto-label)}
+.preco-economia{font-family:var(--fonte-corpo);font-size:var(--texto-xs);color:var(--cor-confiante);font-weight:var(--peso-medio)}
+.preco-btn{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:auto;padding:var(--botao-padding);background:transparent;border:var(--borda);border-radius:var(--botao-raio);color:var(--cor-texto);font-family:var(--botao-fonte);font-size:var(--botao-tamanho);font-weight:var(--botao-peso);text-decoration:none;transition:background var(--transicao),border-color var(--transicao)}
+.preco-btn:hover{background:var(--cor-fundo-neutro);text-decoration:none}
+.preco-card--destaque .preco-btn{background:var(--botao-fundo);border-color:var(--botao-fundo);color:var(--botao-texto)}
+.preco-card--destaque .preco-btn:hover{background:var(--botao-fundo-hover);border-color:var(--botao-fundo-hover)}
+.preco-card-ciclo{background:var(--cor-fundo-card);border:1px solid var(--cor-borda-suave);border-radius:var(--raio-xl);padding:var(--espaco-24);display:flex;align-items:center;gap:var(--espaco-24)}
+.preco-ciclo-ico{flex-shrink:0;color:var(--cor-texto-label)}
+.preco-ciclo-info{flex:1}
+.preco-ciclo-nome{font-family:var(--fonte-corpo);font-size:var(--texto-base);font-weight:var(--peso-bold);color:var(--cor-texto);margin-bottom:2px}
+.preco-ciclo-desc{font-family:var(--fonte-corpo);font-size:var(--texto-sm);color:var(--cor-texto-suave)}
+.preco-ciclo-direita{display:flex;flex-direction:column;align-items:flex-end;gap:var(--espaco-8);flex-shrink:0}
+.preco-ciclo-valor{font-family:'DM Sans',sans-serif;font-size:var(--texto-2xl);font-weight:800;color:var(--cor-texto)}
 /* SEÇÃO 08 — CTA FINAL */
 .secao-08{background:var(--cor-confiante);padding-block:var(--secao-padding-v);text-align:center}
 .secao-08-inner{max-width:var(--largura-estreita);margin-inline:auto}
@@ -695,13 +723,60 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   </div>
 </section>
 
-<!-- SEÇÃO 08 — CTA FINAL -->
-<section class="secao-08">
+<!-- SEÇÃO PREÇOS -->
+<section class="secao-precos">
   <div class="container">
-    <div class="secao-08-inner">
-      <h2 class="secao-08-titulo">Pronto para calcular com precisão jurídica?</h2>
-      <p class="secao-08-corpo">Dados oficiais do TSE. Algoritmo validado pelo STF. Resultado antes da publicação oficial.</p>
-      <a href="app.html" class="botao botao--inv">Calcular agora →</a>
+    <div class="precos-header">
+      <h2 class="precos-titulo">Pronto para calcular? Veja os preços e planos disponíveis</h2>
+      <p class="precos-sub">Escolha o plano ideal para seu volume de trabalho</p>
+    </div>
+    <div class="precos-banner">
+      <span><strong>1 cálculo completo grátis</strong> · para todo novo usuário, sem cartão</span>
+    </div>
+
+    <!-- 3 cards -->
+    <div class="precos-grid">
+      <div class="preco-card">
+        <div class="preco-nome">Unitário</div>
+        <div class="preco-valor">R$ 197</div>
+        <div class="preco-qtd">1 cálculo</div>
+        <div class="preco-divisor"></div>
+        <div class="preco-por">R$ 197 por cálculo</div>
+        <a href="app.html?plano=unitario" class="preco-btn">Contratar ↗</a>
+      </div>
+
+      <div class="preco-card preco-card--destaque">
+        <div class="preco-badge">mais popular</div>
+        <div class="preco-nome">Pack 5</div>
+        <div class="preco-valor">R$ 790</div>
+        <div class="preco-qtd">5 cálculos</div>
+        <div class="preco-divisor"></div>
+        <div class="preco-por">R$ 158 por cálculo</div>
+        <div class="preco-economia">economia de 20%</div>
+        <a href="app.html?plano=pack5" class="preco-btn">Contratar ↗</a>
+      </div>
+
+      <div class="preco-card">
+        <div class="preco-nome">Pack 10</div>
+        <div class="preco-valor">R$ 1.490</div>
+        <div class="preco-qtd">10 cálculos</div>
+        <div class="preco-divisor"></div>
+        <div class="preco-por">R$ 149 por cálculo</div>
+        <div class="preco-economia">economia de 24%</div>
+        <a href="app.html?plano=pack10" class="preco-btn">Contratar ↗</a>
+      </div>
+    </div>
+
+    <!-- Card ciclo eleitoral -->
+    <div class="preco-card-ciclo">
+      <div class="preco-ciclo-info">
+        <div class="preco-ciclo-nome">Ciclo eleitoral 2026</div>
+        <div class="preco-ciclo-desc">cálculos ilimitados durante toda a campanha</div>
+      </div>
+      <div class="preco-ciclo-direita">
+        <div class="preco-ciclo-valor">R$ 2.490</div>
+        <a href="app.html?plano=ciclo2026" class="preco-btn">Ver detalhes ↗</a>
+      </div>
     </div>
   </div>
 </section>
