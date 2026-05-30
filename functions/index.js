@@ -8,11 +8,34 @@ const db = admin.firestore();
 
 // ─── Planos disponíveis ────────────────────────────────────────────────────
 const PLANOS = {
-  unitario: { nome: 'Unitário',          creditos: 1,   preco: 197.00 },
-  pack5:    { nome: 'Pack 5',            creditos: 5,   preco: 790.00 },
-  pack10:   { nome: 'Pack 10',           creditos: 10,  preco: 1490.00 },
-  ciclo2026:{ nome: 'Ciclo Eleitoral 2026', creditos: 9999, preco: 2490.00 },
+  unitario:  { nome: 'Unitário',               creditos: 1,    preco: 197.00  },
+  pack5:     { nome: 'Pack 5',                 creditos: 5,    preco: 790.00  },
+  pack10:    { nome: 'Pack 10',                creditos: 10,   preco: 1490.00 },
+  ciclo2026: { nome: 'Ciclo Eleitoral 2026',   creditos: 9999, preco: 2490.00 },
 };
+
+// ─── Helper: credita usuário (usado por processarPagamento e webhookMP) ────
+async function _creditarUsuario(uid, planoId, paymentId, plano) {
+  const pagRef  = db.collection('pagamentos').doc(paymentId);
+  const pagSnap = await pagRef.get();
+  if (pagSnap.exists) return; // idempotência
+
+  const batch = db.batch();
+  batch.set(pagRef, {
+    uid, planoId,
+    creditos: plano.creditos,
+    valor: plano.preco,
+    status: 'approved',
+    processadoEm: admin.firestore.FieldValue.serverTimestamp(),
+  });
+  batch.set(
+    db.collection('usuarios').doc(uid),
+    { creditos: admin.firestore.FieldValue.increment(plano.creditos), plano: planoId },
+    { merge: true }
+  );
+  await batch.commit();
+  console.log('Creditado: uid=' + uid + ' plano=' + planoId + ' creditos=' + plano.creditos);
+}
 
 // ─── Notificação de novo cadastro ──────────────────────────────────────────
 exports.notificarNovoCadastro = functions
@@ -22,7 +45,6 @@ exports.notificarNovoCadastro = functions
     const email = user.email || 'sem-email';
     const uid   = user.uid   || '';
 
-    // Cria documento do usuário no Firestore com 1 crédito grátis
     await db.collection('usuarios').doc(uid).set({
       email,
       creditos: 1,
@@ -30,7 +52,6 @@ exports.notificarNovoCadastro = functions
       criadoEm: admin.firestore.FieldValue.serverTimestamp(),
     }, { merge: true });
 
-    // Envia e-mail de aviso ao admin
     const t = nodemailer.createTransport({
       service: 'gmail',
       auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_PASSWORD },
@@ -47,11 +68,10 @@ exports.notificarNovoCadastro = functions
     }
   });
 
-// ─── Criar preferência de pagamento no Mercado Pago ───────────────────────
+// ─── Criar preferência (retorna preferenceId para o Checkout Brick) ────────
 exports.criarPagamento = functions
   .runWith({ secrets: ['MP_ACCESS_TOKEN'] })
   .https.onCall(async (data, context) => {
-    // Exige autenticação
     if (!context.auth) {
       throw new functions.https.HttpsError('unauthenticated', 'Faça login primeiro.');
     }
@@ -78,77 +98,90 @@ exports.criarPagamento = functions
         }],
         payer: { email },
         external_reference: uid + '|' + planoId,
-        back_urls: {
-          success: 'https://retotalizaje.com.br/app.html?pagamento=sucesso',
-          failure: 'https://retotalizaje.com.br/app.html?pagamento=falha',
-          pending: 'https://retotalizaje.com.br/app.html?pagamento=pendente',
-        },
-        auto_return: 'approved',
         notification_url: 'https://us-central1-calculadora-eleitoral-60f59.cloudfunctions.net/webhookMP',
       },
     });
 
-    return { url: result.init_point };
+    return {
+      preferenceId: result.id,
+      amount: plano.preco,
+      nome: plano.nome,
+    };
   });
 
-// ─── Webhook do Mercado Pago ───────────────────────────────────────────────
+// ─── Processar pagamento (chamado pelo Checkout Brick via onSubmit) ─────────
+exports.processarPagamento = functions
+  .runWith({ secrets: ['MP_ACCESS_TOKEN'] })
+  .https.onCall(async (data, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError('unauthenticated', 'Faça login primeiro.');
+    }
+
+    const { planoId, formData } = data;
+    const plano = PLANOS[planoId];
+    if (!plano) {
+      throw new functions.https.HttpsError('invalid-argument', 'Plano inválido.');
+    }
+
+    const uid   = context.auth.uid;
+    const email = context.auth.token.email || '';
+
+    const mp      = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
+    const payment = new Payment(mp);
+
+    const paymentBody = {
+      transaction_amount: plano.preco,
+      description: 'RetotalizaJE — ' + plano.nome,
+      payment_method_id: formData.payment_method_id,
+      external_reference: uid + '|' + planoId,
+      payer: {
+        email: formData.payer?.email || email,
+        identification: formData.payer?.identification,
+      },
+    };
+
+    // Campos exclusivos de cartão
+    if (formData.token) {
+      paymentBody.token        = formData.token;
+      paymentBody.issuer_id    = formData.issuer_id;
+      paymentBody.installments = formData.installments || 1;
+    }
+
+    const result = await payment.create({ body: paymentBody });
+
+    // Cartão aprovado na hora → credita imediatamente
+    if (result.status === 'approved') {
+      await _creditarUsuario(uid, planoId, String(result.id), plano);
+    }
+
+    return {
+      status:        result.status,
+      statusDetail:  result.status_detail,
+      paymentId:     result.id,
+      // PIX: contém o QR code (o Brick exibe automaticamente)
+      pointOfInteraction: result.point_of_interaction || null,
+    };
+  });
+
+// ─── Webhook do Mercado Pago (PIX e boleto confirmados depois) ─────────────
 exports.webhookMP = functions
   .runWith({ secrets: ['MP_ACCESS_TOKEN'] })
   .https.onRequest(async (req, res) => {
-    // MP envia POST com o evento
     const { type, data } = req.body;
-
-    if (type !== 'payment') {
-      return res.status(200).send('ok');
-    }
+    if (type !== 'payment') return res.status(200).send('ok');
 
     try {
       const mp      = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
       const payment = new Payment(mp);
       const pag     = await payment.get({ id: data.id });
 
-      // Só processa pagamentos aprovados
-      if (pag.status !== 'approved') {
-        return res.status(200).send('status: ' + pag.status);
-      }
+      if (pag.status !== 'approved') return res.status(200).send('status: ' + pag.status);
 
-      // external_reference = "uid|planoId"
       const [uid, planoId] = (pag.external_reference || '').split('|');
       const plano = PLANOS[planoId];
-      if (!uid || !plano) {
-        return res.status(400).send('referencia invalida');
-      }
+      if (!uid || !plano) return res.status(400).send('referencia invalida');
 
-      const paymentId = String(pag.id);
-      const pagRef    = db.collection('pagamentos').doc(paymentId);
-      const pagSnap   = await pagRef.get();
-
-      // Idempotência — não processa o mesmo pagamento duas vezes
-      if (pagSnap.exists) {
-        return res.status(200).send('ja processado');
-      }
-
-      // Registra o pagamento e credita o usuário atomicamente
-      const batch = db.batch();
-
-      batch.set(pagRef, {
-        uid,
-        planoId,
-        creditos: plano.creditos,
-        valor: plano.preco,
-        status: 'approved',
-        processadoEm: admin.firestore.FieldValue.serverTimestamp(),
-      });
-
-      batch.set(
-        db.collection('usuarios').doc(uid),
-        { creditos: admin.firestore.FieldValue.increment(plano.creditos), plano: planoId },
-        { merge: true }
-      );
-
-      await batch.commit();
-      console.log('Creditado: uid=' + uid + ' plano=' + planoId + ' creditos=' + plano.creditos);
-
+      await _creditarUsuario(uid, planoId, String(pag.id), plano);
       return res.status(200).send('ok');
     } catch (e) {
       console.error('Erro no webhook:', e);

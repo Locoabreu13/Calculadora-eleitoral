@@ -4646,3 +4646,24 @@ button:focus:not(:focus-visible) { outline: none; }
 /* Dashboard — fundo neutro (não cansa a leitura) */
 .dash-main { background: var(--cor-fundo-neutro); }
 .dash-sec  { background: var(--cor-fundo-neutro); }
+
+/* ══ MODAL CHECKOUT MERCADO PAGO ══════════════════════════════════════════ */
+#mp-modal { display:none; position:fixed; inset:0; z-index:10000; align-items:center; justify-content:center; }
+.mp-modal-overlay { position:absolute; inset:0; background:rgba(12,29,48,.65); backdrop-filter:blur(4px); }
+.mp-modal-box { position:relative; background:#fff; border-radius:var(--raio-xl); box-shadow:0 24px 64px rgba(12,29,48,.22); width:100%; max-width:480px; max-height:90vh; overflow-y:auto; padding:var(--espaco-32); margin:16px; z-index:1; }
+.mp-modal-fechar { position:absolute; top:16px; right:16px; background:none; border:none; font-size:18px; color:var(--cor-texto-label); cursor:pointer; line-height:1; padding:4px 8px; border-radius:var(--raio-sm); transition:background var(--transicao); }
+.mp-modal-fechar:hover { background:var(--cor-fundo-neutro); color:var(--cor-texto); }
+.mp-modal-header { margin-bottom:var(--espaco-24); padding-bottom:var(--espaco-16); border-bottom:1px solid var(--cor-borda-suave); }
+.mp-modal-plano { font-family:var(--fonte-corpo); font-size:var(--texto-xs); font-weight:var(--peso-medio); color:var(--cor-texto-label); text-transform:uppercase; letter-spacing:var(--tracking-label); margin-bottom:4px; }
+.mp-modal-valor { font-family:var(--fonte-titulo); font-size:var(--texto-2xl); font-weight:var(--peso-black); color:var(--cor-texto); }
+.mp-modal-loading { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--espaco-16); padding:var(--espaco-48) 0; color:var(--cor-texto-label); font-family:var(--fonte-corpo); font-size:var(--texto-sm); }
+.mp-spinner { width:32px; height:32px; border:3px solid var(--cor-borda-suave); border-top-color:var(--cor-confiante); border-radius:50%; animation:spin .7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.mp-resultado { display:flex; flex-direction:column; align-items:center; text-align:center; padding:var(--espaco-40) var(--espaco-24); gap:var(--espaco-16); }
+.mp-resultado-ico { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:700; }
+.mp-resultado--sucesso .mp-resultado-ico { background:#D1FAE5; color:#065F46; }
+.mp-resultado--pendente .mp-resultado-ico { background:#FEF3C7; color:#92400E; }
+.mp-resultado--falha    .mp-resultado-ico { background:#FEE2E2; color:#991B1B; }
+.mp-resultado-msg { font-family:var(--fonte-corpo); font-size:var(--texto-base); color:var(--cor-texto); line-height:var(--linha-corpo); max-width:320px; }
+.mp-resultado-btn { margin-top:var(--espaco-8); padding:var(--botao-padding); background:var(--botao-fundo); color:var(--botao-texto); border:none; border-radius:var(--botao-raio); font-family:var(--botao-fonte); font-size:var(--botao-tamanho); font-weight:var(--botao-peso); cursor:pointer; transition:background var(--transicao); }
+.mp-resultado-btn:hover { background:var(--botao-fundo-hover); }
