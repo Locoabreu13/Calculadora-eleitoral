@@ -4825,3 +4825,121 @@ button:focus:not(:focus-visible) { outline: none; }
   font-family: var(--fonte-corpo); font-size: var(--texto-sm);
   color: var(--cor-texto-suave); margin-bottom: var(--espaco-8);
 }
+
+/* ══════════════════════════════════════════════════════════════
+   MODAL DE PLANOS (todos os planos ao comprar créditos)
+   ══════════════════════════════════════════════════════════════ */
+.planos-modal {
+  position: fixed; inset: 0; z-index: 10500;
+  display: flex; align-items: center; justify-content: center;
+}
+.planos-modal-overlay {
+  position: absolute; inset: 0;
+  background: rgba(12,29,48,.6); backdrop-filter: blur(4px);
+}
+.planos-modal-box {
+  position: relative; z-index: 1;
+  background: var(--cor-fundo-card);
+  border-radius: var(--raio-xl);
+  box-shadow: 0 24px 64px rgba(12,29,48,.2);
+  width: 100%; max-width: 640px; margin: 16px;
+  padding: var(--espaco-32);
+  max-height: 90vh; overflow-y: auto;
+}
+.planos-modal-fechar {
+  position: absolute; top: 16px; right: 16px;
+  background: none; border: none; font-size: 18px;
+  color: var(--cor-texto-label); cursor: pointer;
+  padding: 4px 8px; border-radius: var(--raio-sm);
+  transition: background var(--transicao);
+}
+.planos-modal-fechar:hover { background: var(--cor-fundo-neutro); }
+.planos-modal-titulo {
+  font-family: var(--fonte-titulo); font-size: var(--texto-xl);
+  font-weight: var(--peso-bold); color: var(--cor-texto);
+  margin-bottom: 4px;
+}
+.planos-modal-sub {
+  font-family: var(--fonte-corpo); font-size: var(--texto-sm);
+  color: var(--cor-texto-suave); margin-bottom: var(--espaco-24);
+}
+
+/* Grid 3 cards */
+.planos-modal-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 12px;
+  margin-bottom: 12px;
+}
+.planos-mc {
+  background: var(--cor-fundo-neutro);
+  border: 1px solid var(--cor-borda-suave);
+  border-radius: var(--raio-lg);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 4px;
+  cursor: pointer; transition: border-color var(--transicao), box-shadow var(--transicao);
+}
+.planos-mc:hover { border-color: var(--cor-confiante); box-shadow: 0 4px 16px rgba(12,29,48,.08); }
+.planos-mc--destaque {
+  border-color: var(--cor-confiante);
+  background: var(--cor-confiante-claro);
+}
+.planos-mc-badge {
+  font-family: var(--fonte-corpo); font-size: 10px; font-weight: var(--peso-bold);
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--cor-confiante); margin-bottom: 4px;
+}
+.planos-mc-nome {
+  font-family: var(--fonte-corpo); font-size: var(--texto-sm);
+  font-weight: var(--peso-medio); color: var(--cor-texto-suave);
+}
+.planos-mc-valor {
+  font-family: 'DM Sans', sans-serif; font-size: 1.6rem; font-weight: 800;
+  color: var(--cor-texto); line-height: 1.1; margin: 4px 0;
+}
+.planos-mc-qtd {
+  font-family: var(--fonte-corpo); font-size: var(--texto-sm);
+  color: var(--cor-texto-suave); margin-bottom: 4px;
+}
+.planos-mc-por {
+  font-family: var(--fonte-corpo); font-size: var(--texto-xs);
+  color: var(--cor-texto-label); margin-bottom: 8px; flex: 1;
+}
+.planos-mc-por strong { color: var(--cor-ambar); }
+.planos-mc-btn {
+  width: 100%; padding: 9px;
+  background: var(--cor-fundo-card); border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-md);
+  font-family: var(--fonte-corpo); font-size: var(--texto-sm);
+  font-weight: var(--peso-medio); color: var(--cor-texto);
+  cursor: pointer; transition: background var(--transicao), color var(--transicao);
+}
+.planos-mc-btn:hover { background: var(--cor-confiante); border-color: var(--cor-confiante); color: #fff; }
+.planos-mc-btn--dest { background: var(--cor-confiante); border-color: var(--cor-confiante); color: #fff; }
+.planos-mc-btn--dest:hover { background: var(--cor-confiante-hover); }
+
+/* Card Ciclo (full-width) */
+.planos-mc-ciclo {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: var(--cor-fundo-neutro);
+  border: 1px solid var(--cor-borda-suave);
+  border-radius: var(--raio-lg); padding: 16px 20px;
+  cursor: pointer; transition: border-color var(--transicao), box-shadow var(--transicao);
+}
+.planos-mc-ciclo:hover { border-color: var(--cor-confiante); box-shadow: 0 4px 16px rgba(12,29,48,.08); }
+.planos-mc-ciclo-nome {
+  font-family: var(--fonte-corpo); font-size: var(--texto-base);
+  font-weight: var(--peso-bold); color: var(--cor-texto);
+}
+.planos-mc-ciclo-desc {
+  font-family: var(--fonte-corpo); font-size: var(--texto-sm); color: var(--cor-texto-suave);
+}
+.planos-mc-ciclo-dir { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.planos-mc-ciclo-valor {
+  font-family: 'DM Sans', sans-serif; font-size: 1.4rem; font-weight: 800;
+  color: var(--cor-texto); white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .planos-modal-grid { grid-template-columns: 1fr; }
+  .planos-mc-ciclo { flex-direction: column; align-items: flex-start; }
+  .planos-mc-ciclo-dir { width: 100%; }
+  .planos-mc-ciclo-dir .planos-mc-btn { flex: 1; }
+}
