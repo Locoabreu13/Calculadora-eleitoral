@@ -33,12 +33,12 @@
   --cor-texto:           #0C1D30;
   --cor-texto-medio:     #374151;
   --cor-texto-suave:     #64748B;
-  --cor-texto-label:     #94A3B8;
+  --cor-texto-label:     #64748B;
 
   /* Texto sobre fundos escuros */
   --cor-texto-inv:       #F7F9FC;
   --cor-texto-inv-medio: #7A8FA0;
-  --cor-texto-inv-suave: #3A5A78;
+  --cor-texto-inv-suave: #7E97AC;
 
   /* Bordas */
   --cor-borda:           #CBD5E1;

@@ -32,14 +32,14 @@
         <button class="tab-btn" onclick="alternarTab('cadastro')">Criar conta</button>
       </div>
       <div id="form-login">
-        <input type="email" id="login-email" placeholder="E-mail" class="auth-input">
-        <input type="password" id="login-senha" placeholder="Senha" class="auth-input">
+        <input type="email" id="login-email" placeholder="E-mail" class="auth-input" aria-label="E-mail">
+        <input type="password" id="login-senha" placeholder="Senha" class="auth-input" aria-label="Senha">
         <button onclick="fazerLogin()" class="btn-primary">Entrar</button>
         <p id="login-erro" class="auth-erro"></p>
       </div>
       <div id="form-cadastro" style="display:none">
-        <input type="email" id="cad-email" placeholder="E-mail" class="auth-input">
-        <input type="password" id="cad-senha" placeholder="Senha (mín. 6 caracteres)" class="auth-input">
+        <input type="email" id="cad-email" placeholder="E-mail" class="auth-input" aria-label="E-mail">
+        <input type="password" id="cad-senha" placeholder="Senha (mín. 6 caracteres)" class="auth-input" aria-label="Senha">
         <button onclick="fazerCadastro()" class="btn-primary">Criar conta</button>
         <p id="cad-erro" class="auth-erro"></p>
       </div>
@@ -130,20 +130,20 @@
       <!-- Nav -->
       <nav class="dash-nav" id="dash-nav">
         <button class="dash-nav-item active" data-sec="home">
-          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
           <span>Início</span>
         </button>
         <button class="dash-nav-item" data-sec="calc">
-          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
           <span>Novo Cálculo</span>
         </button>
         <button class="dash-nav-item" data-sec="estudos">
-          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
+          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
           <span>Meus Estudos</span>
           <span class="dash-nav-cnt" id="dash-nav-cnt"></span>
         </button>
         <button class="dash-nav-item" data-sec="manual">
-          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
+          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
           <span>Manual de Uso</span>
         </button>
       </nav>
@@ -169,8 +169,8 @@
           <button class="senha-modal-fechar" onclick="fecharSenhaModal()">✕</button>
           <h3 class="senha-modal-titulo">Alterar Senha</h3>
           <p class="senha-modal-sub">Digite sua nova senha abaixo.</p>
-          <input type="password" id="senha-nova" placeholder="Nova senha (mín. 6 caracteres)" class="auth-input" />
-          <input type="password" id="senha-confirmar" placeholder="Confirmar nova senha" class="auth-input" />
+          <input type="password" id="senha-nova" placeholder="Nova senha (mín. 6 caracteres)" class="auth-input" aria-label="Nova senha" />
+          <input type="password" id="senha-confirmar" placeholder="Confirmar nova senha" class="auth-input" aria-label="Confirmar nova senha" />
           <p id="senha-modal-erro" class="auth-erro"></p>
           <button class="btn-primary" id="senha-modal-btn">Salvar nova senha</button>
         </div>
@@ -196,25 +196,25 @@
         <!-- Cards secundários -->
         <div class="dash-cards-grid">
           <div class="dash-card dash-card-teal" id="dash-card-estudos">
-            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
             <div class="dash-card-title">Meus Estudos</div>
             <div class="dash-card-desc">Cálculos salvos neste navegador</div>
             <div class="dash-card-foot" id="dash-card-cnt">— estudos</div>
           </div>
           <div class="dash-card dash-card-blue" id="dash-card-manual">
-            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
             <div class="dash-card-title">Manual de Uso</div>
             <div class="dash-card-desc">Documentação técnico-jurídica</div>
             <div class="dash-card-foot">ADIs 7.228/7.263/7.325</div>
           </div>
           <div class="dash-card dash-card-gold" id="dash-card-como">
-            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
             <div class="dash-card-title">Como Funciona</div>
             <div class="dash-card-desc">Base jurídica e método de cálculo</div>
             <div class="dash-card-foot">art. 109 CE · STF</div>
           </div>
           <div class="dash-card dash-card-compra" id="dash-card-compra">
-            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
             <div class="dash-card-title">Comprar Créditos</div>
             <div class="dash-card-desc">Adquira mais cálculos no seu plano</div>
             <div class="dash-card-foot" id="dash-card-saldo">— créditos disponíveis</div>
@@ -471,7 +471,7 @@
 
           <div class="welcome-header">
             <div class="welcome-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30" aria-hidden="true">
                 <rect x="2" y="3" width="20" height="14" rx="2"/>
                 <path d="M8 21h8M12 17v4"/>
                 <path d="M7 8h3M7 11.5h2M14 8l2 2.5-2 2.5"/>
@@ -782,9 +782,6 @@
 
           <h3>6. Salvar e exportar</h3>
           <p>Use <strong>💾 Salvar Estudo</strong> para guardar o cálculo completo no Dashboard e como arquivo JSON. Use <strong>⬇ CSV</strong> ou <strong>⬇ PDF</strong> para exportar a tabela de resultados.</p>
-
-          <h3>7. Casos de estudo prontos</h3>
-          <p>O menu <strong>Casos de Estudo</strong> no topo do painel lateral contém casos reais pré-configurados (ex: Ceará 2022, Amapá 2022). Selecione um para carregar os dados automaticamente.</p>
 
         </div>
       </div><!-- #manual-section -->

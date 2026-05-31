@@ -29,7 +29,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 body{overflow-x:hidden}
-p{text-align:justify}
+p{text-align:left}
 nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(--navbar-altura);display:flex;align-items:center;justify-content:space-between;padding-inline:var(--espaco-48);border-bottom:1px solid var(--cor-profundo-borda)}
 .nav-links{display:flex;align-items:center;gap:var(--espaco-32)}
 .nav-links a{color:var(--cor-texto-inv-suave);font-size:var(--texto-sm);text-decoration:none;transition:color var(--transicao)}
@@ -160,13 +160,6 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .preco-ciclo-desc{font-family:var(--fonte-corpo);font-size:var(--texto-sm);color:var(--cor-texto-suave)}
 .preco-ciclo-direita{display:flex;flex-direction:column;align-items:flex-end;gap:var(--espaco-8);flex-shrink:0}
 .preco-ciclo-valor{font-family:'DM Sans',sans-serif;font-size:var(--texto-2xl);font-weight:800;color:var(--cor-texto)}
-/* SEÇÃO 08 · CTA FINAL */
-.secao-08{background:var(--cor-confiante);padding-block:var(--secao-padding-v);text-align:center}
-.secao-08-inner{max-width:var(--largura-estreita);margin-inline:auto}
-.secao-08-titulo{font-family:var(--fonte-titulo);font-weight:var(--peso-black);color:var(--cor-texto-inv);letter-spacing:var(--tracking-titulo);font-size:var(--texto-2xl);line-height:var(--linha-titulo);margin-bottom:var(--espaco-16)}
-.secao-08-corpo{color:var(--cor-texto-inv);opacity:.75;font-size:var(--texto-base);margin-bottom:var(--espaco-32)}
-.botao--inv{background:var(--cor-texto-inv);color:var(--cor-confiante)}
-.botao--inv:hover{background:var(--cor-fundo-neutro);text-decoration:none}
 /* FOOTER */
 .footer-lp{background:var(--cor-profundo);padding-block:var(--secao-padding-v-pequeno)}
 .footer-lp-top{display:flex;justify-content:space-between;align-items:center;gap:var(--espaco-24)}
@@ -312,7 +305,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
     <span class="wordmark-base">Retotaliza</span><span class="wordmark-je">JE</span>
   </a>
   <div class="nav-links">
-    <a href="#como-funciona">Como funciona</a>
+    <a href="#como-funciona-cards">Como funciona</a>
     <a href="#casos-validados">Casos validados</a>
     <a href="#fundamento">Fundamento jurídico</a>
     <a href="https://wa.me/5561992774443" target="_blank" rel="noopener" class="nav-wpp">Fale conosco</a>
@@ -800,7 +793,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
         <span class="wordmark-base">Retotaliza</span><span class="wordmark-je">JE</span>
       </a>
       <nav class="footer-lp-links">
-        <a href="#como-funciona">Como funciona</a>
+        <a href="#como-funciona-cards">Como funciona</a>
         <a href="#casos-validados">Casos validados</a>
         <a href="#fundamento">Fundamento jurídico</a>
       </nav>
@@ -817,7 +810,6 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
     '.hero-titulo','.hero-corpo','.hero-botoes','.hero-metricas',
     '.secao-header-label','.secao-header-titulo','.secao-header-desc',
     '.destaque-ambar',
-    '.secao-08-titulo','.secao-08-corpo','.secao-08 .botao',
     '.footer-lp-top','.footer-lp-contato'
   ];
   // Elementos em grid com delay escalonado
