@@ -8,9 +8,9 @@
 /* ── Design Tokens — Sistema RetotalizaJE ────────────────────── */
 :root {
   /* ── Core palette ────────────────────────────────────────────── */
-  --navy:          #0F1C2E;
-  --navy-mid:      #1A2F4A;
-  --navy-light:    #2A4A6B;
+  --navy:          var(--cor-profundo);
+  --navy-mid:      var(--cor-profundo-meio);
+  --navy-light:    var(--cor-profundo-borda);
   --navy-border:   rgba(255,255,255,0.10);
   --gold:          #F59E0B;
   --gold-light:    #FCD34D;
