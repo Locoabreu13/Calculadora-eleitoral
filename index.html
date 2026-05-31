@@ -36,6 +36,14 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .nav-links a:hover{color:var(--cor-texto-inv)}
 .nav-wpp{color:var(--cor-texto-inv-suave)!important}
 .nav-wpp:hover{color:var(--cor-texto-inv)!important}
+/* MENU MOBILE · hambúrguer (visível só em ≤900px via @media) */
+.nav-mobile-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;padding:0;background:transparent;border:1px solid var(--cor-profundo-borda);border-radius:var(--raio-md);color:var(--cor-texto-inv);font-size:var(--texto-xl);line-height:1;cursor:pointer;transition:background var(--transicao),border-color var(--transicao)}
+.nav-mobile-btn:hover{background:var(--cor-profundo-meio)}
+.nav-mobile-btn:focus-visible{outline:2px solid var(--cor-confiante);outline-offset:2px}
+#mobile-menu{display:none;position:fixed;top:var(--navbar-altura);left:0;right:0;z-index:99;flex-direction:column;background:var(--cor-profundo);border-bottom:1px solid var(--cor-profundo-borda);padding:var(--espaco-8) var(--espaco-16) var(--espaco-16)}
+#mobile-menu a{color:var(--cor-texto-inv-suave);font-family:var(--fonte-corpo);font-size:var(--texto-base);text-decoration:none;padding:var(--espaco-12) var(--espaco-8);border-bottom:1px solid var(--cor-profundo-borda);transition:color var(--transicao)}
+#mobile-menu a:last-child{border-bottom:none}
+#mobile-menu a:hover{color:var(--cor-texto-inv)}
 /* SEÇÃO 01 · HERO */
 .hero-secao{background:var(--cor-profundo);padding-block:var(--secao-padding-v)}
 .hero-conteudo{max-width:var(--largura-texto);margin-inline:auto;text-align:center}
@@ -277,6 +285,8 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 @media(max-width:900px){
   nav{padding-inline:var(--espaco-16)}
   .nav-links{display:none}
+  .nav-mobile-btn{display:flex;margin-left:auto;margin-right:var(--espaco-12)}
+  #mobile-menu.open{display:flex}
   .hero-conteudo{max-width:100%}
   .hero-titulo{font-size:var(--texto-hero-mobile)}
   .hero-metricas{gap:var(--espaco-20)}
@@ -310,8 +320,17 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
     <a href="#fundamento">Fundamento jurídico</a>
     <a href="https://wa.me/5561992774443" target="_blank" rel="noopener" class="nav-wpp">Fale conosco</a>
   </div>
+  <button id="mobile-menu-btn" class="nav-mobile-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
   <a href="app.html" class="botao">Acessar sistema</a>
 </nav>
+
+<!-- Menu mobile (drawer abaixo da navbar; visível só em ≤900px) -->
+<div id="mobile-menu">
+  <a href="#como-funciona-cards">Como funciona</a>
+  <a href="#casos-validados">Casos validados</a>
+  <a href="#fundamento">Fundamento jurídico</a>
+  <a href="https://wa.me/5561992774443" target="_blank" rel="noopener">Fale conosco</a>
+</div>
 
 <!-- SEÇÃO 01 · HERO -->
 <section class="hero-secao">
@@ -852,6 +871,36 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 
   document.querySelectorAll('.reveal').forEach(function(el){
     observer.observe(el);
+  });
+})();
+</script>
+<script>
+(function(){
+  var btn  = document.getElementById('mobile-menu-btn');
+  var menu = document.getElementById('mobile-menu');
+  if(!btn || !menu) return;
+
+  function abrir(){
+    menu.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+  function fechar(){
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  btn.addEventListener('click', function(){
+    menu.classList.contains('open') ? fechar() : abrir();
+  });
+
+  // Fecha ao clicar em qualquer link do menu
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', fechar);
+  });
+
+  // Fecha ao pressionar Escape
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') fechar();
   });
 })();
 </script>
