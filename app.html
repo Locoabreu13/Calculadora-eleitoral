@@ -142,10 +142,6 @@
           <span>Meus Estudos</span>
           <span class="dash-nav-cnt" id="dash-nav-cnt"></span>
         </button>
-        <button class="dash-nav-item" data-sec="manual">
-          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
-          <span>Manual de Uso</span>
-        </button>
       </nav>
 
       <!-- User chip -->
@@ -201,18 +197,6 @@
             <div class="dash-card-desc">Cálculos salvos neste navegador</div>
             <div class="dash-card-foot" id="dash-card-cnt">— estudos</div>
           </div>
-          <div class="dash-card dash-card-blue" id="dash-card-manual" role="button" tabindex="0">
-            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-            <div class="dash-card-title">Manual de Uso</div>
-            <div class="dash-card-desc">Documentação técnico-jurídica</div>
-            <div class="dash-card-foot">ADIs 7.228/7.263/7.325</div>
-          </div>
-          <div class="dash-card dash-card-gold" id="dash-card-como" role="button" tabindex="0">
-            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-            <div class="dash-card-title">Como Funciona</div>
-            <div class="dash-card-desc">Base jurídica e método de cálculo</div>
-            <div class="dash-card-foot">art. 109 CE · STF</div>
-          </div>
           <div class="dash-card dash-card-compra" id="dash-card-compra" role="button" tabindex="0">
             <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
             <div class="dash-card-title">Comprar Créditos</div>
@@ -239,25 +223,6 @@
           <p class="dash-sec-sub">Cálculos salvos via <strong>Salvar Estudo</strong> na calculadora. Armazenados localmente neste navegador.</p>
         </div>
         <div id="dash-estudos-list" class="dash-estudos-list"></div>
-      </div>
-
-
-      <!-- ── MANUAL DE USO ───────────────────────────────────────── -->
-      <div class="dash-sec" id="dsec-manual">
-        <div class="dash-sec-head">
-          <h2 class="dash-sec-title">Manual de Uso</h2>
-          <p class="dash-sec-sub">Documentação técnico-jurídica do sistema</p>
-        </div>
-        <div id="dash-manual-wrap" class="dash-manual-wrap"></div>
-      </div>
-
-      <!-- ── COMO FUNCIONA (documentação jurídica) ───────────────── -->
-      <div class="dash-sec" id="dsec-docs">
-        <div class="dash-sec-head">
-          <h2 class="dash-sec-title">Como Funciona</h2>
-          <p class="dash-sec-sub">Base jurídica e método de cálculo</p>
-        </div>
-        <div id="dash-docs-wrap" class="dash-manual-wrap"></div>
       </div>
 
     </main>
@@ -862,7 +827,7 @@
 <script src="js/engine.js?v=8"></script>
 <script src="js/presets.js?v=5"></script>
 <script src="js/export.js?v=9"></script>
-<script src="js/ui.js?v=17"></script>
+<script src="js/ui.js?v=18"></script>
 <script src="js/import.js?v=2"></script>
   <!-- Filtrador 2024 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
@@ -1530,8 +1495,6 @@
       });
       document.getElementById('dash-hero-calc').addEventListener('click', dashGoCalc);
       document.getElementById('dash-card-estudos').addEventListener('click', () => _dashGo('estudos'));
-      document.getElementById('dash-card-manual').addEventListener('click', () => _dashGo('manual'));
-      document.getElementById('dash-card-como').addEventListener('click', () => _dashGo('docs'));
       document.getElementById('dash-card-compra').addEventListener('click', () => window._mostrarModalPlanos());
 
       const veBtn = document.querySelector('.dash-ver-todos');
@@ -1564,8 +1527,6 @@
       if (navEl) navEl.classList.add('active');
       document.querySelector('.dash-main').scrollTop = 0;
       if (sec === 'estudos') _dashRenderEstudos();
-      if (sec === 'manual') _dashRenderManual();
-      if (sec === 'docs') _dashRenderDocs();
     }
 
     function dashGoCalc() {
@@ -1627,20 +1588,6 @@
           </div>
         </div>
       `).join('');
-    }
-
-    function _dashRenderManual() {
-      const wrap = document.getElementById('dash-manual-wrap');
-      if (!wrap || wrap.dataset.loaded) return;
-      const src = document.querySelector('#manual-section .docs-container');
-      if (src) { wrap.innerHTML = src.innerHTML; wrap.dataset.loaded = '1'; }
-    }
-
-    function _dashRenderDocs() {
-      const wrap = document.getElementById('dash-docs-wrap');
-      if (!wrap || wrap.dataset.loaded) return;
-      const src = document.querySelector('#docs-section .docs-container');
-      if (src) { wrap.innerHTML = src.innerHTML; wrap.dataset.loaded = '1'; }
     }
 
     window.dashDlEstudo = function(i) {
