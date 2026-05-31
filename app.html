@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=24" />
+  <link rel="stylesheet" href="css/styles.css?v=25" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -1161,19 +1161,63 @@
 
     iniciarPaywall();
 
-    // ── Créditos na topbar ───────────────────────────────────────────────
+    // ── Créditos na topbar + ponte para ui.js ───────────────────────────
     auth.onAuthStateChanged((user) => {
       if (user) {
         ouvirCreditos(user.uid, (n) => {
+          // Atualiza badge
           const badge = document.getElementById('dash-creditos-badge');
           const num   = document.getElementById('dash-creditos-num');
-          if (!badge || !num) return;
-          num.textContent = n >= 9999 ? '∞' : n;
-          badge.classList.toggle('zerado', n === 0);
+          if (badge && num) {
+            num.textContent = n >= 9999 ? '∞' : n;
+            badge.classList.toggle('zerado', n === 0);
+          }
+          // Expõe valor para ui.js (script clássico)
+          window._creditosDisponiveis = n;
         });
+
+        // Consome 1 crédito — chamado por ui.js após cálculo
+        window._consumirCreditoAtual = async () => {
+          const u = auth.currentUser;
+          if (u) await consumirCredito(u.uid);
+        };
+
+        // Modal "sem créditos" — chamado por ui.js quando tenta calcular sem saldo
+        window._mostrarModalSemCreditos = () => {
+          let modal = document.getElementById('sem-creditos-modal');
+          if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'sem-creditos-modal';
+            modal.innerHTML = `
+              <div class="sc-overlay" onclick="document.getElementById('sem-creditos-modal').style.display='none';document.body.style.overflow=''"></div>
+              <div class="sc-box">
+                <div class="sc-ico">🔒</div>
+                <h3 class="sc-titulo">Créditos esgotados</h3>
+                <p class="sc-desc">Você utilizou todos os seus cálculos disponíveis. Adquira um plano para continuar.</p>
+                <div class="sc-planos">
+                  <button class="sc-btn sc-btn--sec" onclick="document.getElementById('sem-creditos-modal').style.display='none';document.body.style.overflow=''">Cancelar</button>
+                  <button class="sc-btn sc-btn--prim" id="sc-btn-pack5">Pack 5 — R$ 790</button>
+                  <button class="sc-btn sc-btn--ghost" id="sc-btn-outros">Ver todos os planos ↗</button>
+                </div>
+              </div>`;
+            document.body.appendChild(modal);
+            document.getElementById('sc-btn-pack5').addEventListener('click', () => {
+              modal.style.display = 'none';
+              document.body.style.overflow = '';
+              iniciarPagamento('pack5');
+            });
+            document.getElementById('sc-btn-outros').addEventListener('click', () => {
+              window.location.href = 'index.html#planos';
+            });
+          }
+          modal.style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+        };
+
         _verificarRetornoPagamento();
       } else {
         pararOuvirCreditos();
+        window._creditosDisponiveis = undefined;
       }
     });
 

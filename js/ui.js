@@ -410,6 +410,13 @@ function lerFormulario() {
 // ─── Cálculo e renderização ─────────────────────────────────────────────────────
 
 function executarCalculo() {
+  // ── Verificação de créditos ──────────────────────────────────────────────
+  if (typeof window._creditosDisponiveis !== 'undefined' && window._creditosDisponiveis <= 0) {
+    if (typeof window._mostrarModalSemCreditos === 'function') window._mostrarModalSemCreditos();
+    return;
+  }
+  // ────────────────────────────────────────────────────────────────────────
+
   // Validação em tempo real: bloqueia se houver campos inválidos
   if (!validarTudo()) {
     const erroBox = $('erros-formulario');
@@ -492,6 +499,10 @@ function executarCalculo() {
 
   Estado.cenario = cenario;
   Estado.resultado = ElectoralEngine.calcular(cenario);
+
+  // ── Consome 1 crédito após cálculo concluído ─────────────────────────
+  if (typeof window._consumirCreditoAtual === 'function') window._consumirCreditoAtual();
+  // ────────────────────────────────────────────────────────────────────
 
   // Salvar no localStorage
   localStorage.setItem('ultimo_calculo', JSON.stringify({ cenario, timestamp: Date.now() }));

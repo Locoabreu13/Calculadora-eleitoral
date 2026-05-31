@@ -4667,3 +4667,19 @@ button:focus:not(:focus-visible) { outline: none; }
 .mp-resultado-msg { font-family:var(--fonte-corpo); font-size:var(--texto-base); color:var(--cor-texto); line-height:var(--linha-corpo); max-width:320px; }
 .mp-resultado-btn { margin-top:var(--espaco-8); padding:var(--botao-padding); background:var(--botao-fundo); color:var(--botao-texto); border:none; border-radius:var(--botao-raio); font-family:var(--botao-fonte); font-size:var(--botao-tamanho); font-weight:var(--botao-peso); cursor:pointer; transition:background var(--transicao); }
 .mp-resultado-btn:hover { background:var(--botao-fundo-hover); }
+
+/* ══ MODAL SEM CRÉDITOS ══════════════════════════════════════════════════ */
+#sem-creditos-modal { display:none; position:fixed; inset:0; z-index:10001; align-items:center; justify-content:center; }
+.sc-overlay { position:absolute; inset:0; background:rgba(12,29,48,.65); backdrop-filter:blur(4px); }
+.sc-box { position:relative; background:#fff; border-radius:var(--raio-xl); box-shadow:0 24px 64px rgba(12,29,48,.22); width:100%; max-width:400px; padding:var(--espaco-40) var(--espaco-32); margin:16px; z-index:1; text-align:center; }
+.sc-ico { font-size:40px; margin-bottom:var(--espaco-16); }
+.sc-titulo { font-family:var(--fonte-titulo); font-size:var(--texto-xl); font-weight:var(--peso-bold); color:var(--cor-texto); margin-bottom:var(--espaco-12); }
+.sc-desc { font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-suave); line-height:var(--linha-corpo); margin-bottom:var(--espaco-24); }
+.sc-planos { display:flex; flex-direction:column; gap:var(--espaco-8); }
+.sc-btn { padding:12px 20px; border-radius:var(--botao-raio); font-family:var(--botao-fonte); font-size:var(--botao-tamanho); font-weight:var(--botao-peso); cursor:pointer; transition:background var(--transicao),border-color var(--transicao); border:none; }
+.sc-btn--prim { background:var(--botao-fundo); color:var(--botao-texto); }
+.sc-btn--prim:hover { background:var(--botao-fundo-hover); }
+.sc-btn--sec { background:var(--cor-fundo-neutro); color:var(--cor-texto); }
+.sc-btn--sec:hover { background:var(--cor-borda-suave); }
+.sc-btn--ghost { background:none; color:var(--cor-confiante); font-size:var(--texto-xs); padding:8px; }
+.sc-btn--ghost:hover { text-decoration:underline; }
