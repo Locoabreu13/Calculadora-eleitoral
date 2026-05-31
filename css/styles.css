@@ -16,7 +16,7 @@
   --gold-light:    #FCD34D;
   --teal:          #10B981;
   --teal-light:    #34D399;
-  --slate:         #F1F5F9;
+  --slate:         var(--cor-fundo-neutro);
   --slate-mid:     var(--cor-borda-suave);
   --slate-dark:    var(--cor-borda);
   --text-main:     var(--cor-texto);
@@ -32,7 +32,7 @@
   --accent-green:  #10B981;
   --accent-amber:  var(--cor-ambar);
   --accent-red:    #EF4444;
-  --surface-light: #F1F5F9;
+  --surface-light: var(--cor-fundo-neutro);
 
   /* ── Legacy aliases (JS-generated classes reference these) ───── */
   --cor-primaria:       var(--navy);
