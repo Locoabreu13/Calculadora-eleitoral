@@ -1847,6 +1847,7 @@ async function carregarPresetUI(id) {
 
 async function popularSelectPresets() {
   const sel = $('select-preset');
+  if (!sel) return;
   sel.innerHTML = '<option value="">— Selecionar caso de estudo —</option>';
   const todos = await Presets.todosPresets();
   Estado.presets = todos;
@@ -1878,7 +1879,7 @@ async function init() {
 
   // Presets
   await popularSelectPresets();
-  $('select-preset').addEventListener('change', e => carregarPresetUI(e.target.value));
+  $('select-preset')?.addEventListener('change', e => carregarPresetUI(e.target.value));
 
   // Botões de ação
   $('btn-adicionar-partido').addEventListener('click', () => adicionarPartidoUI());
