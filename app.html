@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=27" />
+  <link rel="stylesheet" href="css/styles.css?v=28" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -142,16 +142,55 @@
 
       <!-- User chip -->
       <div class="dash-sidebar-footer">
-        <div class="dash-user-chip">
+        <div class="dash-user-chip" id="dash-user-chip" onclick="abrirPerfilDropdown(event)" title="Meu perfil" style="cursor:pointer;">
           <div class="dash-avatar" id="dash-avatar">?</div>
           <div class="dash-user-detail">
             <span class="dash-user-email-sm usuario-email"></span>
           </div>
         </div>
-        <div class="dash-creditos-badge" id="dash-creditos-badge" title="Cálculos disponíveis">
+        <div class="dash-creditos-badge" id="dash-creditos-badge" onclick="abrirPerfilDropdown(event)" title="Créditos disponíveis — clique para ver perfil" style="cursor:pointer;">
           <span id="dash-creditos-num">—</span> créditos
         </div>
         <button class="dash-sair-btn" onclick="fazerLogout()">Sair</button>
+      </div>
+
+      <!-- Dropdown de perfil -->
+      <div id="perfil-dropdown" class="perfil-dropdown" style="display:none;">
+        <div class="perfil-drop-header">
+          <div class="perfil-drop-avatar" id="perfil-drop-avatar">?</div>
+          <div>
+            <div class="perfil-drop-email usuario-email"></div>
+            <div class="perfil-drop-saldo"><span id="perfil-drop-num">—</span> crédito(s) disponível(is)</div>
+          </div>
+        </div>
+        <div class="perfil-drop-divider"></div>
+        <button class="perfil-drop-item" id="perfil-btn-senha">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+          Alterar senha
+        </button>
+        <button class="perfil-drop-item perfil-drop-item--compra" id="perfil-btn-creditos">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
+          Comprar créditos
+        </button>
+        <div class="perfil-drop-divider"></div>
+        <button class="perfil-drop-item perfil-drop-item--sair" onclick="fazerLogout()">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+          Sair da conta
+        </button>
+      </div>
+
+      <!-- Modal: Alterar Senha -->
+      <div id="senha-modal" class="senha-modal" style="display:none;">
+        <div class="senha-modal-overlay" onclick="fecharSenhaModal()"></div>
+        <div class="senha-modal-box">
+          <button class="senha-modal-fechar" onclick="fecharSenhaModal()">✕</button>
+          <h3 class="senha-modal-titulo">Alterar Senha</h3>
+          <p class="senha-modal-sub">Digite sua nova senha abaixo.</p>
+          <input type="password" id="senha-nova" placeholder="Nova senha (mín. 6 caracteres)" class="auth-input" />
+          <input type="password" id="senha-confirmar" placeholder="Confirmar nova senha" class="auth-input" />
+          <p id="senha-modal-erro" class="auth-erro"></p>
+          <button class="btn-primary" id="senha-modal-btn">Salvar nova senha</button>
+        </div>
       </div>
 
     </aside>
@@ -190,6 +229,12 @@
             <div class="dash-card-title">Como Funciona</div>
             <div class="dash-card-desc">Base jurídica e método de cálculo</div>
             <div class="dash-card-foot">art. 109 CE · STF</div>
+          </div>
+          <div class="dash-card dash-card-compra" id="dash-card-compra">
+            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            <div class="dash-card-title">Comprar Créditos</div>
+            <div class="dash-card-desc">Adquira mais cálculos no seu plano</div>
+            <div class="dash-card-foot" id="dash-card-saldo">— créditos disponíveis</div>
           </div>
         </div>
 
@@ -1192,10 +1237,11 @@
 })();
 </script>
 <script type="module">
-    import { cadastrarEmail, loginEmail, loginGoogle, logout } from "./js/auth.js?v=9";
+    import { cadastrarEmail, loginEmail, loginGoogle, logout, observarAuth } from "./js/auth.js?v=9";
     import { iniciarPaywall } from "./js/paywall.js?v=9";
     import { auth } from "./js/firebase-init.js?v=9";
-    import { ouvirCreditos, pararOuvirCreditos, iniciarPagamento } from "./js/pagamentos.js";
+    import { ouvirCreditos, pararOuvirCreditos, iniciarPagamento, consumirCredito } from "./js/pagamentos.js";
+    import { updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     iniciarPaywall();
 
@@ -1203,14 +1249,18 @@
     auth.onAuthStateChanged((user) => {
       if (user) {
         ouvirCreditos(user.uid, (n) => {
-          // Atualiza badge
+          // Atualiza badge topbar
+          const num = document.getElementById('dash-creditos-num');
           const badge = document.getElementById('dash-creditos-badge');
-          const num   = document.getElementById('dash-creditos-num');
-          if (badge && num) {
-            num.textContent = n >= 9999 ? '∞' : n;
-            badge.classList.toggle('zerado', n === 0);
-          }
-          // Expõe valor para ui.js (script clássico)
+          if (num) num.textContent = n >= 9999 ? '∞' : n;
+          if (badge) badge.classList.toggle('zerado', n === 0);
+          // Atualiza dropdown de perfil
+          const pdNum = document.getElementById('perfil-drop-num');
+          if (pdNum) pdNum.textContent = n >= 9999 ? '∞' : n;
+          // Atualiza rodapé do 4º card
+          const saldo = document.getElementById('dash-card-saldo');
+          if (saldo) saldo.textContent = (n >= 9999 ? '∞' : n) + ' crédito(s) disponível(is)';
+          // Expõe para ui.js
           window._creditosDisponiveis = n;
         });
 
@@ -1323,6 +1373,80 @@
     };
     window.fazerLoginGoogle = async () => { try { await loginGoogle(); } catch(e) { console.error(e); } };
     window.fazerLogout = () => logout();
+
+    // ── Perfil: dropdown ─────────────────────────────────────────────────────
+    window.abrirPerfilDropdown = (e) => {
+      e.stopPropagation();
+      const dd = document.getElementById('perfil-dropdown');
+      if (!dd) return;
+      const isOpen = dd.style.display !== 'none';
+      dd.style.display = isOpen ? 'none' : 'block';
+      if (!isOpen) {
+        // Fecha ao clicar fora
+        setTimeout(() => {
+          document.addEventListener('click', function fechar() {
+            dd.style.display = 'none';
+            document.removeEventListener('click', fechar);
+          }, { once: true });
+        }, 0);
+      }
+    };
+
+    // Conecta botões do dropdown quando DOM estiver pronto
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnSenha    = document.getElementById('perfil-btn-senha');
+      const btnCreditos = document.getElementById('perfil-btn-creditos');
+      if (btnSenha) btnSenha.addEventListener('click', () => {
+        document.getElementById('perfil-dropdown').style.display = 'none';
+        document.getElementById('senha-modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+      if (btnCreditos) btnCreditos.addEventListener('click', () => {
+        document.getElementById('perfil-dropdown').style.display = 'none';
+        // Abre modal de planos se usuário já no dashboard (tela-compra não está visível)
+        const telaCompra = document.getElementById('tela-compra');
+        if (telaCompra && telaCompra.style.display !== 'none') return;
+        window._mostrarModalSemCreditos
+          ? window._mostrarModalSemCreditos()
+          : iniciarPagamento('pack5');
+      });
+      // Botão salvar senha
+      const btnSalvarSenha = document.getElementById('senha-modal-btn');
+      if (btnSalvarSenha) btnSalvarSenha.addEventListener('click', async () => {
+        const novaSenha = document.getElementById('senha-nova').value;
+        const confirmar = document.getElementById('senha-confirmar').value;
+        const errEl     = document.getElementById('senha-modal-erro');
+        errEl.textContent = '';
+        if (novaSenha.length < 6) { errEl.textContent = 'Senha deve ter pelo menos 6 caracteres.'; return; }
+        if (novaSenha !== confirmar) { errEl.textContent = 'As senhas não coincidem.'; return; }
+        try {
+          const user = auth.currentUser;
+          if (!user) throw new Error('Sessão expirada. Faça login novamente.');
+          await updatePassword(user, novaSenha);
+          fecharSenhaModal();
+          const toast = document.createElement('div');
+          toast.className = 'pagamento-toast sucesso';
+          toast.textContent = 'Senha alterada com sucesso!';
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 5000);
+        } catch(e) {
+          if (e.code === 'auth/requires-recent-login') {
+            errEl.textContent = 'Por segurança, faça logout e login novamente para alterar a senha.';
+          } else {
+            errEl.textContent = e.message || 'Erro ao alterar senha.';
+          }
+        }
+      });
+    });
+
+    window.fecharSenhaModal = () => {
+      document.getElementById('senha-modal').style.display = 'none';
+      document.body.style.overflow = '';
+      document.getElementById('senha-nova').value = '';
+      document.getElementById('senha-confirmar').value = '';
+      document.getElementById('senha-modal-erro').textContent = '';
+    };
+
     window.alternarTab = (tab) => {
       document.getElementById("form-login").style.display    = tab === "login"    ? "" : "none";
       document.getElementById("form-cadastro").style.display = tab === "cadastro" ? "" : "none";
@@ -1347,6 +1471,8 @@
       document.querySelectorAll('.dash-first-name').forEach(el => el.textContent = nome);
       const av = document.getElementById('dash-avatar');
       if (av) av.textContent = nome.charAt(0).toUpperCase();
+      const pdAv = document.getElementById('perfil-drop-avatar');
+      if (pdAv) pdAv.textContent = nome.charAt(0).toUpperCase();
 
       const cnt = _dashEstudos().length;
       const cntEl = document.getElementById('dash-nav-cnt');
@@ -1363,6 +1489,7 @@
       document.getElementById('dash-card-estudos').addEventListener('click', () => _dashGo('estudos'));
       document.getElementById('dash-card-manual').addEventListener('click', () => _dashGo('manual'));
       document.getElementById('dash-card-como').addEventListener('click', () => _dashGo('docs'));
+      document.getElementById('dash-card-compra').addEventListener('click', () => iniciarPagamento('pack5'));
 
       const veBtn = document.querySelector('.dash-ver-todos');
       if (veBtn) veBtn.addEventListener('click', () => _dashGo('estudos'));

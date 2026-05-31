@@ -3608,7 +3608,7 @@ button:focus:not(:focus-visible) { outline: none; }
 /* Cards grid */
 .dash-cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   margin-bottom: 28px;
 }
@@ -3998,7 +3998,8 @@ button:focus:not(:focus-visible) { outline: none; }
 .dash-hero:hover .dash-hero-arrow { color: var(--cor-ambar); transform: translateX(4px); }
 
 /* Cards secundários — brancos como step-cards da landing */
-.dash-cards-grid { grid-template-columns: repeat(3,1fr); gap: var(--grid-gap); margin-bottom: var(--espaco-24); }
+.dash-cards-grid { grid-template-columns: repeat(2,1fr); gap: var(--grid-gap); margin-bottom: var(--espaco-24); }
+.dash-card-compra::before { background: linear-gradient(90deg,#6366F1,#818CF8); }
 .dash-card { background: var(--cor-fundo-neutro); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-xl); padding: var(--espaco-24); gap: var(--espaco-8); }
 .dash-card::before { display: none; }
 .dash-card:hover { transform: translateY(-2px); border-color: var(--cor-borda); box-shadow: 0 6px 24px rgba(12,29,48,.08); }
@@ -4714,3 +4715,104 @@ button:focus:not(:focus-visible) { outline: none; }
 .compra-sair { background:none; border:none; color:var(--cor-texto-inv-suave); font-family:var(--fonte-corpo); font-size:var(--texto-sm); cursor:pointer; text-decoration:underline; }
 .compra-sair:hover { color:var(--cor-texto-inv-medio); }
 @media(max-width:640px) { .compra-grid { grid-template-columns:1fr; } }
+
+/* ══════════════════════════════════════════════════════════════
+   DROPDOWN DE PERFIL
+   ══════════════════════════════════════════════════════════════ */
+.perfil-dropdown {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  width: 260px;
+  background: var(--cor-fundo-card);
+  border: 1px solid var(--cor-borda-suave);
+  border-radius: var(--raio-xl);
+  box-shadow: 0 12px 40px rgba(12,29,48,.14);
+  z-index: 2000;
+  overflow: hidden;
+  animation: fadeInUp .15s ease;
+}
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(6px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.perfil-drop-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 16px 12px;
+}
+.perfil-drop-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--cor-confiante);
+  color: #fff; font-family: var(--fonte-corpo);
+  font-weight: var(--peso-bold); font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.perfil-drop-email {
+  font-family: var(--fonte-corpo); font-size: var(--texto-sm);
+  font-weight: var(--peso-medio); color: var(--cor-texto);
+  word-break: break-all;
+}
+.perfil-drop-saldo {
+  font-family: var(--fonte-corpo); font-size: var(--texto-xs);
+  color: var(--cor-texto-suave); margin-top: 2px;
+}
+.perfil-drop-divider {
+  height: 1px; background: var(--cor-borda-suave); margin: 0;
+}
+.perfil-drop-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 11px 16px;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--fonte-corpo); font-size: var(--texto-sm);
+  color: var(--cor-texto-medio); text-align: left;
+  transition: background var(--transicao), color var(--transicao);
+}
+.perfil-drop-item:hover { background: var(--cor-fundo-neutro); color: var(--cor-texto); }
+.perfil-drop-item svg { flex-shrink: 0; color: var(--cor-texto-label); }
+.perfil-drop-item:hover svg { color: var(--cor-texto-suave); }
+.perfil-drop-item--compra { color: var(--cor-confiante); }
+.perfil-drop-item--compra svg { color: var(--cor-confiante); }
+.perfil-drop-item--compra:hover { background: var(--cor-confiante-claro); color: var(--cor-confiante-hover); }
+.perfil-drop-item--sair { color: #DC2626; }
+.perfil-drop-item--sair svg { color: #DC2626; }
+.perfil-drop-item--sair:hover { background: #FEF2F2; }
+/* Posicionamento relativo no sidebar footer para o dropdown funcionar */
+.dash-sidebar-footer { position: relative; }
+
+/* ══════════════════════════════════════════════════════════════
+   MODAL ALTERAR SENHA
+   ══════════════════════════════════════════════════════════════ */
+.senha-modal {
+  position: fixed; inset: 0; z-index: 10500;
+  display: flex; align-items: center; justify-content: center;
+}
+.senha-modal-overlay {
+  position: absolute; inset: 0;
+  background: rgba(12,29,48,.55); backdrop-filter: blur(4px);
+}
+.senha-modal-box {
+  position: relative; z-index: 1;
+  background: var(--cor-fundo-card);
+  border-radius: var(--raio-xl);
+  box-shadow: 0 24px 64px rgba(12,29,48,.2);
+  width: 100%; max-width: 400px; margin: 16px;
+  padding: var(--espaco-32);
+  display: flex; flex-direction: column; gap: var(--espaco-12);
+}
+.senha-modal-fechar {
+  position: absolute; top: 16px; right: 16px;
+  background: none; border: none; font-size: 18px;
+  color: var(--cor-texto-label); cursor: pointer;
+  padding: 4px 8px; border-radius: var(--raio-sm);
+  transition: background var(--transicao);
+}
+.senha-modal-fechar:hover { background: var(--cor-fundo-neutro); }
+.senha-modal-titulo {
+  font-family: var(--fonte-titulo); font-size: var(--texto-xl);
+  font-weight: var(--peso-bold); color: var(--cor-texto);
+}
+.senha-modal-sub {
+  font-family: var(--fonte-corpo); font-size: var(--texto-sm);
+  color: var(--cor-texto-suave); margin-bottom: var(--espaco-8);
+}
