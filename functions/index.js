@@ -106,7 +106,7 @@ exports.criarPagamento = functions
     const uid   = context.auth.uid;
     const email = context.auth.token.email || '';
 
-    const mp = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
+    const mp = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN.trim() });
     const preference = new Preference(mp);
 
     const result = await preference.create({
@@ -147,7 +147,7 @@ exports.processarPagamento = functions
     const uid   = context.auth.uid;
     const email = context.auth.token.email || '';
 
-    const mp      = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
+    const mp      = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN.trim() });
     const payment = new Payment(mp);
 
     const paymentBody = {
@@ -192,7 +192,7 @@ exports.webhookMP = functions
     if (type !== 'payment') return res.status(200).send('ok');
 
     try {
-      const mp      = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
+      const mp      = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN.trim() });
       const payment = new Payment(mp);
       const pag     = await payment.get({ id: data.id });
 

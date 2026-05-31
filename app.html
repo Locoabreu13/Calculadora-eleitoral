@@ -154,31 +154,6 @@
         <button class="dash-sair-btn" onclick="fazerLogout()">Sair</button>
       </div>
 
-      <!-- Dropdown de perfil -->
-      <div id="perfil-dropdown" class="perfil-dropdown" style="display:none;">
-        <div class="perfil-drop-header">
-          <div class="perfil-drop-avatar" id="perfil-drop-avatar">?</div>
-          <div>
-            <div class="perfil-drop-email usuario-email"></div>
-            <div class="perfil-drop-saldo"><span id="perfil-drop-num">—</span> crédito(s) disponível(is)</div>
-          </div>
-        </div>
-        <div class="perfil-drop-divider"></div>
-        <button class="perfil-drop-item" id="perfil-btn-senha">
-          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
-          Alterar senha
-        </button>
-        <button class="perfil-drop-item perfil-drop-item--compra" id="perfil-btn-creditos">
-          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
-          Comprar créditos
-        </button>
-        <div class="perfil-drop-divider"></div>
-        <button class="perfil-drop-item perfil-drop-item--sair" onclick="fazerLogout()">
-          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
-          Sair da conta
-        </button>
-      </div>
-
       <!-- Modal: Alterar Senha -->
       <div id="senha-modal" class="senha-modal" style="display:none;">
         <div class="senha-modal-overlay" onclick="fecharSenhaModal()"></div>
@@ -1374,22 +1349,36 @@
     window.fazerLoginGoogle = async () => { try { await loginGoogle(); } catch(e) { console.error(e); } };
     window.fazerLogout = () => logout();
 
-    // ── Perfil: dropdown ─────────────────────────────────────────────────────
+    // ── Perfil: dropdown (posicionamento fixed via getBoundingClientRect) ────
     window.abrirPerfilDropdown = (e) => {
       e.stopPropagation();
       const dd = document.getElementById('perfil-dropdown');
       if (!dd) return;
       const isOpen = dd.style.display !== 'none';
-      dd.style.display = isOpen ? 'none' : 'block';
-      if (!isOpen) {
-        // Fecha ao clicar fora
-        setTimeout(() => {
-          document.addEventListener('click', function fechar() {
-            dd.style.display = 'none';
-            document.removeEventListener('click', fechar);
-          }, { once: true });
-        }, 0);
-      }
+      if (isOpen) { dd.style.display = 'none'; return; }
+
+      // Posiciona abaixo do elemento clicado
+      const rect = e.currentTarget.getBoundingClientRect();
+      dd.style.display = 'block';
+      dd.style.position = 'fixed';
+      dd.style.zIndex   = '99999';
+
+      // Alinha à direita do elemento, abaixo dele
+      const ddW = dd.offsetWidth || 260;
+      let left = rect.right - ddW;
+      if (left < 8) left = 8;
+      dd.style.top  = (rect.bottom + 6) + 'px';
+      dd.style.left = left + 'px';
+      dd.style.right = 'auto';
+      dd.style.bottom = 'auto';
+
+      // Fecha ao clicar fora
+      setTimeout(() => {
+        document.addEventListener('click', function fechar() {
+          dd.style.display = 'none';
+          document.removeEventListener('click', fechar);
+        }, { once: true });
+      }, 0);
     };
 
     // Conecta botões do dropdown quando DOM estiver pronto
@@ -1616,5 +1605,31 @@
     };
   </script>
   </div>
+
+  <!-- ═══ DROPDOWN DE PERFIL (body-level para evitar overflow-clip) ═══════ -->
+  <div id="perfil-dropdown" class="perfil-dropdown" style="display:none;">
+    <div class="perfil-drop-header">
+      <div class="perfil-drop-avatar" id="perfil-drop-avatar">?</div>
+      <div>
+        <div class="perfil-drop-email usuario-email"></div>
+        <div class="perfil-drop-saldo"><span id="perfil-drop-num">—</span> crédito(s) disponível(is)</div>
+      </div>
+    </div>
+    <div class="perfil-drop-divider"></div>
+    <button class="perfil-drop-item" id="perfil-btn-senha">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+      Alterar senha
+    </button>
+    <button class="perfil-drop-item perfil-drop-item--compra" id="perfil-btn-creditos">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
+      Comprar créditos
+    </button>
+    <div class="perfil-drop-divider"></div>
+    <button class="perfil-drop-item perfil-drop-item--sair" onclick="fazerLogout()">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+      Sair da conta
+    </button>
+  </div>
+
 </body>
 </html>

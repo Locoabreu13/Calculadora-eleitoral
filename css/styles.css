@@ -4648,6 +4648,19 @@ button:focus:not(:focus-visible) { outline: none; }
 .dash-main { background: var(--cor-fundo-neutro); }
 .dash-sec  { background: var(--cor-fundo-neutro); }
 
+/* Cards preenchem a tela — seção home em coluna com cards se expandindo */
+#dsec-home {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 56px); /* desconta topbar */
+}
+.dash-cards-grid {
+  flex: 1;
+}
+.dash-card {
+  min-height: 160px;
+}
+
 /* ══ MODAL CHECKOUT MERCADO PAGO ══════════════════════════════════════════ */
 #mp-modal { display:none; position:fixed; inset:0; z-index:10000; align-items:center; justify-content:center; }
 .mp-modal-overlay { position:absolute; inset:0; background:rgba(12,29,48,.65); backdrop-filter:blur(4px); }
@@ -4720,9 +4733,7 @@ button:focus:not(:focus-visible) { outline: none; }
    DROPDOWN DE PERFIL
    ══════════════════════════════════════════════════════════════ */
 .perfil-dropdown {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  right: 0;
+  position: fixed;
   width: 260px;
   background: var(--cor-fundo-card);
   border: 1px solid var(--cor-borda-suave);
@@ -4777,8 +4788,6 @@ button:focus:not(:focus-visible) { outline: none; }
 .perfil-drop-item--sair { color: #DC2626; }
 .perfil-drop-item--sair svg { color: #DC2626; }
 .perfil-drop-item--sair:hover { background: #FEF2F2; }
-/* Posicionamento relativo no sidebar footer para o dropdown funcionar */
-.dash-sidebar-footer { position: relative; }
 
 /* ══════════════════════════════════════════════════════════════
    MODAL ALTERAR SENHA
