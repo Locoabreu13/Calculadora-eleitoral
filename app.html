@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=32" />
+  <link rel="stylesheet" href="css/styles.css?v=33" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -249,6 +249,15 @@
           <p class="dash-sec-sub">Documentação técnico-jurídica do sistema</p>
         </div>
         <div id="dash-manual-wrap" class="dash-manual-wrap"></div>
+      </div>
+
+      <!-- ── COMO FUNCIONA (documentação jurídica) ───────────────── -->
+      <div class="dash-sec" id="dsec-docs">
+        <div class="dash-sec-head">
+          <h2 class="dash-sec-title">Como Funciona</h2>
+          <p class="dash-sec-sub">Base jurídica e método de cálculo</p>
+        </div>
+        <div id="dash-docs-wrap" class="dash-manual-wrap"></div>
       </div>
 
     </main>
@@ -853,7 +862,7 @@
 <script src="js/engine.js?v=8"></script>
 <script src="js/presets.js?v=5"></script>
 <script src="js/export.js?v=9"></script>
-<script src="js/ui.js?v=16"></script>
+<script src="js/ui.js?v=17"></script>
 <script src="js/import.js?v=2"></script>
   <!-- Filtrador 2024 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
@@ -1556,6 +1565,7 @@
       document.querySelector('.dash-main').scrollTop = 0;
       if (sec === 'estudos') _dashRenderEstudos();
       if (sec === 'manual') _dashRenderManual();
+      if (sec === 'docs') _dashRenderDocs();
     }
 
     function dashGoCalc() {
@@ -1621,6 +1631,13 @@
 
     function _dashRenderManual() {
       const wrap = document.getElementById('dash-manual-wrap');
+      if (!wrap || wrap.dataset.loaded) return;
+      const src = document.querySelector('#manual-section .docs-container');
+      if (src) { wrap.innerHTML = src.innerHTML; wrap.dataset.loaded = '1'; }
+    }
+
+    function _dashRenderDocs() {
+      const wrap = document.getElementById('dash-docs-wrap');
       if (!wrap || wrap.dataset.loaded) return;
       const src = document.querySelector('#docs-section .docs-container');
       if (src) { wrap.innerHTML = src.innerHTML; wrap.dataset.loaded = '1'; }
