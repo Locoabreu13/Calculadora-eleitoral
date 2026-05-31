@@ -61,7 +61,7 @@
     </div>
 
     <div class="compra-grid">
-      <div class="compra-card" onclick="window._comprarPlano('unitario')">
+      <div class="compra-card" role="button" tabindex="0" onclick="window._comprarPlano('unitario')">
         <div class="compra-card-nome">Unitário</div>
         <div class="compra-card-valor">R$ 197</div>
         <div class="compra-card-qtd">1 cálculo</div>
@@ -70,7 +70,7 @@
         <div class="compra-card-btn">Contratar ↗</div>
       </div>
 
-      <div class="compra-card compra-card--destaque" onclick="window._comprarPlano('pack5')">
+      <div class="compra-card compra-card--destaque" role="button" tabindex="0" onclick="window._comprarPlano('pack5')">
         <div class="compra-card-badge">mais popular</div>
         <div class="compra-card-nome">Pack 5</div>
         <div class="compra-card-valor">R$ 790</div>
@@ -81,7 +81,7 @@
         <div class="compra-card-btn">Contratar ↗</div>
       </div>
 
-      <div class="compra-card" onclick="window._comprarPlano('pack10')">
+      <div class="compra-card" role="button" tabindex="0" onclick="window._comprarPlano('pack10')">
         <div class="compra-card-nome">Pack 10</div>
         <div class="compra-card-valor">R$ 1.490</div>
         <div class="compra-card-qtd">10 cálculos</div>
@@ -92,7 +92,7 @@
       </div>
     </div>
 
-    <div class="compra-ciclo" onclick="window._comprarPlano('ciclo2026')">
+    <div class="compra-ciclo" role="button" tabindex="0" onclick="window._comprarPlano('ciclo2026')">
       <div class="compra-ciclo-info">
         <div class="compra-ciclo-nome">Ciclo eleitoral 2026</div>
         <div class="compra-ciclo-desc">cálculos ilimitados durante toda a campanha</div>
@@ -150,13 +150,13 @@
 
       <!-- User chip -->
       <div class="dash-sidebar-footer">
-        <div class="dash-user-chip" id="dash-user-chip" onclick="abrirPerfilDropdown(event)" title="Meu perfil" style="cursor:pointer;">
+        <div class="dash-user-chip" id="dash-user-chip" role="button" tabindex="0" onclick="abrirPerfilDropdown(event)" title="Meu perfil" style="cursor:pointer;">
           <div class="dash-avatar" id="dash-avatar">?</div>
           <div class="dash-user-detail">
             <span class="dash-user-email-sm usuario-email"></span>
           </div>
         </div>
-        <div class="dash-creditos-badge" id="dash-creditos-badge" onclick="abrirPerfilDropdown(event)" title="Créditos disponíveis — clique para ver perfil" style="cursor:pointer;">
+        <div class="dash-creditos-badge" id="dash-creditos-badge" role="button" tabindex="0" onclick="abrirPerfilDropdown(event)" title="Créditos disponíveis — clique para ver perfil" style="cursor:pointer;">
           <span id="dash-creditos-num">—</span> créditos
         </div>
         <button class="dash-sair-btn" onclick="fazerLogout()">Sair</button>
@@ -195,25 +195,25 @@
 
         <!-- Cards secundários -->
         <div class="dash-cards-grid">
-          <div class="dash-card dash-card-teal" id="dash-card-estudos">
+          <div class="dash-card dash-card-teal" id="dash-card-estudos" role="button" tabindex="0">
             <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
             <div class="dash-card-title">Meus Estudos</div>
             <div class="dash-card-desc">Cálculos salvos neste navegador</div>
             <div class="dash-card-foot" id="dash-card-cnt">— estudos</div>
           </div>
-          <div class="dash-card dash-card-blue" id="dash-card-manual">
+          <div class="dash-card dash-card-blue" id="dash-card-manual" role="button" tabindex="0">
             <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
             <div class="dash-card-title">Manual de Uso</div>
             <div class="dash-card-desc">Documentação técnico-jurídica</div>
             <div class="dash-card-foot">ADIs 7.228/7.263/7.325</div>
           </div>
-          <div class="dash-card dash-card-gold" id="dash-card-como">
+          <div class="dash-card dash-card-gold" id="dash-card-como" role="button" tabindex="0">
             <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
             <div class="dash-card-title">Como Funciona</div>
             <div class="dash-card-desc">Base jurídica e método de cálculo</div>
             <div class="dash-card-foot">art. 109 CE · STF</div>
           </div>
-          <div class="dash-card dash-card-compra" id="dash-card-compra">
+          <div class="dash-card dash-card-compra" id="dash-card-compra" role="button" tabindex="0">
             <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
             <div class="dash-card-title">Comprar Créditos</div>
             <div class="dash-card-desc">Adquira mais cálculos no seu plano</div>
@@ -1170,6 +1170,22 @@
     if (sidebar) sidebar.scrollTop = 0;
   };
 
+})();
+</script>
+<script>
+/* Acessibilidade: aciona por teclado elementos role="button" não-nativos.
+   Enter ou Espaço disparam o mesmo handler de clique (onclick/addEventListener)
+   já existente, sem alterá-los. */
+(function () {
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+    var el = e.target;
+    if (!el || typeof el.getAttribute !== 'function') return;
+    if (el.getAttribute('role') !== 'button') return;
+    if (el.tagName === 'BUTTON' || el.tagName === 'A') return;
+    e.preventDefault();   // evita scroll da página ao usar Espaço
+    el.click();
+  });
 })();
 </script>
 <script type="module">
