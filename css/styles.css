@@ -4531,7 +4531,7 @@ button:focus:not(:focus-visible) { outline: none; }
 .welcome-header { display:flex; align-items:center; gap:20px; margin-bottom:40px; padding-bottom:32px; border-bottom:1px solid var(--cor-borda-suave); }
 .welcome-icon { width:52px; height:52px; background:var(--cor-profundo); border-radius:var(--raio-lg); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .welcome-icon svg { stroke:var(--cor-ambar); }
-.welcome-title { font-family:var(--fonte-titulo); font-size:28px; font-weight:800; color:var(--cor-texto); letter-spacing:var(--tracking-titulo); line-height:1.1; margin:0 0 4px; }
+.welcome-title { font-family:var(--fonte-titulo); font-size:20px; font-weight:800; color:var(--cor-texto); letter-spacing:0.01em; line-height:1.2; margin:0 0 4px; }
 .welcome-sub { font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-suave); margin:0; }
 
 .welcome-section-label { font-family:var(--fonte-corpo); font-size:var(--texto-xs); font-weight:600; color:var(--cor-texto-label); text-transform:uppercase; letter-spacing:var(--tracking-label); margin-bottom:14px; }
@@ -4549,7 +4549,7 @@ button:focus:not(:focus-visible) { outline: none; }
 .welcome-howto { border-top:1px solid var(--cor-borda-suave); padding-top:32px; }
 .welcome-steps-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
 .welcome-step { background:var(--cor-fundo-card); border:1px solid var(--cor-borda-suave); border-radius:var(--raio-xl); padding:20px; display:flex; flex-direction:column; gap:12px; }
-.welcome-step-num { width:32px; height:32px; background:var(--cor-profundo); color:var(--cor-ambar); font-family:var(--fonte-titulo); font-size:14px; font-weight:800; border-radius:var(--raio-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.welcome-step-num { width:32px; height:32px; background:var(--cor-profundo); color:var(--cor-ambar); font-family:'DM Sans',sans-serif; font-size:16px; font-weight:700; border-radius:var(--raio-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .welcome-step-text { font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-suave); line-height:1.5; }
 .welcome-step-text strong { color:var(--cor-texto); font-weight:600; }
 
