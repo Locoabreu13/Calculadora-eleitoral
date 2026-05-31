@@ -17,7 +17,7 @@
   --teal:          #10B981;
   --teal-light:    #34D399;
   --slate:         #F1F5F9;
-  --slate-mid:     #E2E8F0;
+  --slate-mid:     var(--cor-borda-suave);
   --slate-dark:    #CBD5E1;
   --text-main:     #0F172A;
   --text-muted:    #475569;
