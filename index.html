@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RetotalizaJE — Calculadora de Retotalização Eleitoral Proporcional</title>
+<title>RetotalizaJE | Calculadora de Retotalização Eleitoral Proporcional</title>
 <meta name="description" content="Sistema técnico-jurídico de retotalização eleitoral proporcional. Implementa fielmente o art. 109 do Código Eleitoral e as ADIs 7.228, 7.263 e 7.325 do STF. Para advogados eleitorais, TREs e pesquisadores.">
 <meta name="keywords" content="retotalização eleitoral, calculadora eleitoral, art. 109 Código Eleitoral, ADI 7228, ADI 7263, ADI 7325, distribuição de vagas, quociente eleitoral, D'Hondt, deputado federal, deputado estadual, vereador, cassação eleitoral, direito eleitoral">
-<meta name="author" content="Luiz Henrique Pimentel — Sociedade Individual de Advocacia">
+<meta name="author" content="Luiz Henrique Pimentel · Sociedade Individual de Advocacia">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://retotalizaje.com.br/">
-<meta property="og:title" content="RetotalizaJE — Calculadora de Retotalização Eleitoral">
+<meta property="og:title" content="RetotalizaJE | Calculadora de Retotalização Eleitoral">
 <meta property="og:description" content="Retotalização proporcional conforme art. 109 do Código Eleitoral e ADIs 7.228/7.263/7.325 STF. Dados oficiais do TSE, exportação em PDF e CSV.">
 <meta property="og:url" content="https://retotalizaje.com.br/">
 <meta property="og:type" content="website">
@@ -26,7 +26,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .nav-links{display:flex;align-items:center;gap:var(--espaco-32)}
 .nav-links a{color:var(--cor-texto-inv-suave);font-size:var(--texto-sm);text-decoration:none;transition:color var(--transicao)}
 .nav-links a:hover{color:var(--cor-texto-inv)}
-/* SEÇÃO 01 — HERO */
+/* SEÇÃO 01 · HERO */
 .hero-secao{background:var(--cor-profundo);padding-block:var(--secao-padding-v)}
 .hero-conteudo{max-width:var(--largura-texto);margin-inline:auto;text-align:center}
 .hero-titulo{font-family:var(--fonte-titulo);font-size:var(--texto-3xl);font-weight:var(--peso-black);color:var(--cor-texto-inv);letter-spacing:var(--tracking-titulo);line-height:var(--linha-titulo);margin-top:var(--espaco-16);margin-bottom:var(--espaco-20)}
@@ -40,21 +40,21 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .hero-metricas{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--espaco-16);border-top:1px solid var(--cor-profundo-borda);padding-top:var(--espaco-32);max-width:var(--largura-texto);margin-inline:auto;text-align:left}
 .hero-metrica-item{display:flex;flex-direction:column;gap:var(--espaco-4)}
 .hero-metrica-numero{font-family:var(--fonte-titulo);font-weight:var(--peso-black);font-size:var(--texto-2xl);color:var(--cor-ambar);line-height:1}
-/* PADRÃO EDITORIAL — cabeçalho assimétrico usado nas seções */
+/* PADRÃO EDITORIAL · cabeçalho assimétrico usado nas seções */
 .secao-header{display:grid;grid-template-columns:1fr 1fr;gap:var(--grid-gap-lg);align-items:end;margin-bottom:var(--espaco-64)}
 .secao-header-label{font-size:var(--texto-xs);letter-spacing:var(--tracking-label);color:var(--cor-texto-label);text-transform:uppercase;margin-bottom:var(--espaco-16)}
 .secao-header-titulo{font-family:var(--fonte-titulo);font-size:var(--texto-2xl);font-weight:var(--peso-bold);color:var(--cor-texto);letter-spacing:var(--tracking-titulo);line-height:var(--linha-titulo)}
 .secao-header-titulo--inv{color:var(--cor-texto-inv)}
 .secao-header-desc{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo);align-self:end}
 .secao-header-desc--inv{color:var(--cor-texto-inv-medio)}
-/* FLUXO CARD — visão geral */
+/* FLUXO CARD · visão geral */
 .fluxo-card{display:flex;align-items:stretch;background:var(--cor-profundo);border-radius:var(--raio-xl);overflow:hidden;margin-bottom:var(--espaco-48)}
 .fluxo-etapa{flex:1;padding:var(--espaco-24);border-right:1px solid var(--cor-profundo-borda);display:flex;flex-direction:column;gap:var(--espaco-8)}
 .fluxo-etapa:last-child{border-right:none}
 .fluxo-n{font-size:var(--texto-xs);letter-spacing:var(--tracking-label);color:var(--cor-ambar);font-weight:var(--peso-bold)}
 .fluxo-t{font-size:var(--texto-sm);font-weight:var(--peso-medio);color:var(--cor-texto-inv)}
 .fluxo-d{font-size:var(--texto-xs);color:var(--cor-texto-inv-suave);line-height:var(--linha-corpo)}
-/* STEPS LIST — 4 cards individuais full-width */
+/* STEPS LIST · 4 cards individuais full-width */
 .steps-list{display:flex;flex-direction:column;gap:var(--grid-gap)}
 .step-card-full{background:var(--cor-fundo-card);border:1px solid var(--cor-borda-suave);border-radius:var(--raio-xl);display:flex;gap:var(--espaco-32);padding:var(--espaco-32);align-items:flex-start}
 .step-card-full-text{width:260px;flex-shrink:0;padding-top:var(--espaco-4)}
@@ -92,21 +92,21 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .sml-dropdown{position:absolute;top:100%;left:0;right:0;min-width:80px;background:var(--cor-profundo-meio);border:1px solid var(--cor-profundo-borda);border-radius:4px;z-index:10;margin-top:2px;overflow:hidden;transform-origin:top}
 .sml-dd-item{padding:4px 10px;font-size:10px;color:var(--cor-texto-inv-suave)}
 .sml-dd-hl{color:var(--cor-confiante)!important;background:rgba(26,86,219,.18)}
-/* ENTREGAS — 3 colunas editoriais */
+/* ENTREGAS · 3 colunas editoriais */
 .entregas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--cor-profundo-borda);margin-top:var(--espaco-48)}
 .entrega-item{padding:var(--espaco-32) var(--espaco-24) var(--espaco-32) 0;border-right:1px solid var(--cor-profundo-borda)}
 .entrega-item:last-child{border-right:none}
 .entrega-titulo{font-weight:var(--peso-bold);font-size:var(--texto-base);color:var(--cor-texto);margin-bottom:var(--espaco-8)}
 .entrega-desc{font-size:var(--texto-sm);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
-/* SEÇÃO 02 — O PROBLEMA */
+/* SEÇÃO 02 · O PROBLEMA */
 .secao-02{background:var(--cor-fundo-neutro);padding-block:var(--secao-padding-v)}
 .secao-02-corpo{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
-/* SEÇÃO 03 — COMO FUNCIONA */
+/* SEÇÃO 03 · COMO FUNCIONA */
 .secao-03{background:var(--cor-fundo-principal);padding-block:var(--secao-padding-v)}
-/* SEÇÃO 04 — RESULTADO */
+/* SEÇÃO 04 · RESULTADO */
 .secao-04{background:var(--cor-fundo-neutro);padding-block:var(--secao-padding-v)}
 .secao-04-corpo{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
-/* SEÇÃO 05 — PROVA */
+/* SEÇÃO 05 · PROVA */
 .secao-05{background:var(--cor-fundo-principal);padding-block:var(--secao-padding-v)}
 .secao-05-corpo{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
 .casos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--cor-borda-suave)}
@@ -150,7 +150,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .preco-ciclo-desc{font-family:var(--fonte-corpo);font-size:var(--texto-sm);color:var(--cor-texto-suave)}
 .preco-ciclo-direita{display:flex;flex-direction:column;align-items:flex-end;gap:var(--espaco-8);flex-shrink:0}
 .preco-ciclo-valor{font-family:'DM Sans',sans-serif;font-size:var(--texto-2xl);font-weight:800;color:var(--cor-texto)}
-/* SEÇÃO 08 — CTA FINAL */
+/* SEÇÃO 08 · CTA FINAL */
 .secao-08{background:var(--cor-confiante);padding-block:var(--secao-padding-v);text-align:center}
 .secao-08-inner{max-width:var(--largura-estreita);margin-inline:auto}
 .secao-08-titulo{font-family:var(--fonte-titulo);font-weight:var(--peso-black);color:var(--cor-texto-inv);letter-spacing:var(--tracking-titulo);font-size:var(--texto-2xl);line-height:var(--linha-titulo);margin-bottom:var(--espaco-16)}
@@ -169,7 +169,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .footer-lp-contato-wpp{font-size:var(--texto-sm);font-weight:var(--peso-medio);color:var(--cor-texto-inv);text-decoration:none;transition:color var(--transicao)}
 .footer-lp-contato-wpp:hover{color:var(--cor-ambar)}
 .footer-lp-bottom{border-top:1px solid var(--cor-profundo-borda);margin-top:var(--espaco-16);padding-top:var(--espaco-16);text-align:center;font-size:var(--texto-xs);color:var(--cor-texto-inv-suave)}
-/* KEYFRAMES — ciclo 7s */
+/* KEYFRAMES · ciclo 7s */
 @keyframes smA{0%,4%{opacity:0;transform:translateY(5px)}8%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
 @keyframes smB{0%,13%{opacity:0;transform:translateY(5px)}17%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
 @keyframes smC{0%,22%{opacity:0;transform:translateY(5px)}26%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
@@ -180,13 +180,13 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 @keyframes smPb1{0%,29%{width:0}52%{width:100%}100%{width:100%}}
 @keyframes smPb2{0%,42%{width:0}65%{width:100%}100%{width:100%}}
 @keyframes smPb3{0%,53%{width:0}70%{width:100%}100%{width:100%}}
-/* STEP 1 — keyframes 14s, seleção sequencial */
+/* STEP 1 · keyframes 14s, seleção sequencial */
 @keyframes s1YearDrop{0%,3%{opacity:0;transform:scaleY(0)}7%,16%{opacity:1;transform:scaleY(1)}19%,100%{opacity:0;transform:scaleY(0)}}
 @keyframes s1UfDrop{0%,24%{opacity:0;transform:scaleY(0)}28%,37%{opacity:1;transform:scaleY(1)}40%,100%{opacity:0;transform:scaleY(0)}}
 @keyframes s1CargoDrop{0%,45%{opacity:0;transform:scaleY(0)}49%,58%{opacity:1;transform:scaleY(1)}61%,100%{opacity:0;transform:scaleY(0)}}
 @keyframes s1Btn{0%,63%{opacity:0;transform:translateY(4px)}66%,72%{opacity:1;transform:translateY(0) scale(1)}74%{transform:translateY(0) scale(.91)}76%,84%{transform:translateY(0) scale(1);opacity:1}88%,100%{opacity:0}}
 @keyframes s1Status{0%,75%{opacity:0;transform:translateY(4px)}78%,84%{opacity:1;transform:none}88%,100%{opacity:0}}
-/* STEP 2 — keyframes 14s, preenchimento sequencial */
+/* STEP 2 · keyframes 14s, preenchimento sequencial */
 @keyframes s2Parti{0%,2%{opacity:0;transform:translateY(4px)}5%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
 @keyframes s2PartiDrop{0%,4%{opacity:0;transform:scaleY(0)}7%,14%{opacity:1;transform:scaleY(1)}17%,100%{opacity:0;transform:scaleY(0)}}
 @keyframes s2Cand{0%,19%{opacity:0;transform:translateY(4px)}23%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
@@ -194,7 +194,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 @keyframes s2Modal{0%,37%{opacity:0;transform:translateY(4px)}41%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
 @keyframes s2ModalDrop{0%,38%{opacity:0;transform:scaleY(0)}42%,52%{opacity:1;transform:scaleY(1)}55%,100%{opacity:0;transform:scaleY(0)}}
 @keyframes s2QE{0%,57%{opacity:0;transform:translateY(4px)}61%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-/* STEP 3 — keyframes 14s, cálculo por fases */
+/* STEP 3 · keyframes 14s, cálculo por fases */
 @keyframes s3Info{0%,4%{opacity:0;transform:translateY(4px)}8%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
 @keyframes s3Btn{0%,11%{opacity:0;transform:translateY(4px)}14%,18%{opacity:1;transform:translateY(0) scale(1)}20%{transform:translateY(0) scale(.91)}22%,80%{transform:translateY(0) scale(1);opacity:1}84%,100%{opacity:0}}
 @keyframes s3F1{0%,21%{opacity:0;transform:translateY(3px)}24%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
@@ -204,7 +204,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 @keyframes s3F3{0%,51%{opacity:0;transform:translateY(3px)}54%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
 @keyframes s3Pb3{0%,54%{width:0}68%{width:100%}100%{width:100%}}
 @keyframes s3Ok{0%,66%{opacity:0;transform:translateY(3px)}69%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-/* STEP 4 — keyframes 14s, tabela → exportações sequenciais */
+/* STEP 4 · keyframes 14s, tabela → exportações sequenciais */
 @keyframes s4Head{0%,3%{opacity:0;transform:translateY(4px)}6%,82%{opacity:1;transform:none}86%,100%{opacity:0}}
 @keyframes s4RowA{0%,7%{opacity:0;transform:translateY(4px)}10%,82%{opacity:1;transform:none}86%,100%{opacity:0}}
 @keyframes s4RowB{0%,12%{opacity:0;transform:translateY(4px)}15%,82%{opacity:1;transform:none}86%,100%{opacity:0}}
@@ -309,7 +309,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   <a href="app.html" class="botao">Acessar sistema</a>
 </nav>
 
-<!-- SEÇÃO 01 — HERO -->
+<!-- SEÇÃO 01 · HERO -->
 <section class="hero-secao">
   <div class="container">
     <div class="hero-conteudo">
@@ -342,7 +342,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   </div>
 </section>
 
-<!-- SEÇÃO 02 — O PROBLEMA -->
+<!-- SEÇÃO 02 · O PROBLEMA -->
 <section class="secao-02" id="como-funciona">
   <div class="container">
     <div class="secao-header">
@@ -355,7 +355,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   </div>
 </section>
 
-<!-- SEÇÃO 03 — COMO FUNCIONA -->
+<!-- SEÇÃO 03 · COMO FUNCIONA -->
 <section class="secao-03" id="como-funciona-cards">
   <div class="container">
     <div class="secao-header">
@@ -386,10 +386,10 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
       </div>
     </div>
 
-    <!-- Cards de etapa — individuais full-width -->
+    <!-- Cards de etapa · individuais full-width -->
     <div class="steps-list">
 
-      <!-- STEP 1 — SELEÇÃO -->
+      <!-- STEP 1 · SELEÇÃO -->
       <div class="step-card-full">
         <div class="step-card-full-text">
           <div class="step-card-n">[ 1 ]</div>
@@ -412,13 +412,13 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
             <!-- ESTADO -->
             <div class="sml-col">
               <span class="sml-lbl">Estado (UF)</span>
-              <div class="sml-field sml-field-sel" style="min-width:96px">CE — Ceará</div>
+              <div class="sml-field sml-field-sel" style="min-width:96px">CE · Ceará</div>
               <div class="sml-dropdown s1UfDrop">
-                <div class="sml-dd-item">AC — Acre</div>
-                <div class="sml-dd-item">BA — Bahia</div>
-                <div class="sml-dd-item sml-dd-hl">CE — Ceará ✓</div>
-                <div class="sml-dd-item">DF — Distrito Federal</div>
-                <div class="sml-dd-item">MG — Minas Gerais</div>
+                <div class="sml-dd-item">AC · Acre</div>
+                <div class="sml-dd-item">BA · Bahia</div>
+                <div class="sml-dd-item sml-dd-hl">CE · Ceará ✓</div>
+                <div class="sml-dd-item">DF · Distrito Federal</div>
+                <div class="sml-dd-item">MG · Minas Gerais</div>
               </div>
             </div>
             <!-- CARGO -->
@@ -456,7 +456,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
         </div>
       </div>
 
-      <!-- STEP 2 — CASSAÇÃO -->
+      <!-- STEP 2 · CASSAÇÃO -->
       <div class="step-card-full">
         <div class="step-card-full-text">
           <div class="step-card-n">[ 2 ]</div>
@@ -499,11 +499,11 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
             <div class="sml-frow" style="align-items:flex-start">
               <span class="sml-lbl-i" style="padding-top:6px">Modalidade</span>
               <div class="sml-col">
-                <div class="sml-field sml-field-sel" style="min-width:200px">Anular nominais — sem reatribuição</div>
+                <div class="sml-field sml-field-sel" style="min-width:200px">Anular nominais · sem reatribuição</div>
                 <div class="sml-dropdown s2ModalDrop">
                   <div class="sml-dd-item">Anular legenda</div>
-                  <div class="sml-dd-item sml-dd-hl">Anular nominais — sem reatribuição ✓</div>
-                  <div class="sml-dd-item">Anular nominais — com reatribuição</div>
+                  <div class="sml-dd-item sml-dd-hl">Anular nominais · sem reatribuição ✓</div>
+                  <div class="sml-dd-item">Anular nominais · com reatribuição</div>
                 </div>
               </div>
             </div>
@@ -522,7 +522,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
         </div>
       </div>
 
-      <!-- STEP 3 — CALCULAR -->
+      <!-- STEP 3 · CALCULAR -->
       <div class="step-card-full">
         <div class="step-card-full-text">
           <div class="step-card-n">[ 3 ]</div>
@@ -540,17 +540,17 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
           </div>
           <!-- Fase 1 -->
           <div class="s3F1" style="margin-bottom:var(--espaco-12)">
-            <div class="sml-pname">Fase 1 — Distribuição por quociente eleitoral</div>
+            <div class="sml-pname">Fase 1 · Distribuição por quociente eleitoral</div>
             <div class="sml-ptrack"><div class="sml-pfill s3Pb1"></div></div>
           </div>
           <!-- Fase 2 -->
           <div class="s3F2" style="margin-bottom:var(--espaco-12)">
-            <div class="sml-pname">Fase 2 — Distribuição de sobras (D'Hondt)</div>
+            <div class="sml-pname">Fase 2 · Distribuição de sobras (D'Hondt)</div>
             <div class="sml-ptrack"><div class="sml-pfill s3Pb2"></div></div>
           </div>
           <!-- Fase 3 -->
           <div class="s3F3" style="margin-bottom:var(--espaco-12)">
-            <div class="sml-pname">Fase 3 — Verificação de barreira legal (80% do QE)</div>
+            <div class="sml-pname">Fase 3 · Verificação de barreira legal (80% do QE)</div>
             <div class="sml-ptrack"><div class="sml-pfill s3Pb3"></div></div>
           </div>
           <!-- Concluído -->
@@ -560,7 +560,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
         </div>
       </div>
 
-      <!-- STEP 4 — ANALISE E EXPORTE -->
+      <!-- STEP 4 · ANALISE E EXPORTE -->
       <div class="step-card-full">
         <div class="step-card-full-text">
           <div class="step-card-n">[ 4 ]</div>
@@ -643,7 +643,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   </div>
 </section>
 
-<!-- SEÇÃO 04 — RESULTADO -->
+<!-- SEÇÃO 04 · RESULTADO -->
 <section class="secao-04" id="casos-validados">
   <div class="container">
     <div class="secao-header">
@@ -654,13 +654,13 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
       <p class="secao-header-desc secao-04-corpo">Obtenha o resultado antes da divulgação oficial e tome decisões com segurança. Após uma decisão judicial, há um intervalo até que o Tribunal publique a retotalização. Nesse período, advogados, candidatos e partidos precisam se organizar. O RetotalizaJE elimina a incerteza ao calcular imediatamente a nova distribuição de vagas.</p>
     </div>
     <div class="destaque-ambar">
-      <p class="label" style="color:var(--cor-ambar);margin-bottom:var(--espaco-8)">Exemplo real — Ceará 2022</p>
+      <p class="label" style="color:var(--cor-ambar);margin-bottom:var(--espaco-8)">Exemplo real · Ceará 2022</p>
       <p>A cassação do deputado Heitor Freire foi julgada em 21 de maio, mas o TRE só publicou a retotalização em 29 de maio. O RetotalizaJE calculou o resultado final oito dias antes, com a mesma distribuição de vagas que veio a ser oficializada.</p>
     </div>
   </div>
 </section>
 
-<!-- SEÇÃO 05 — PROVA -->
+<!-- SEÇÃO 05 · PROVA -->
 <section class="secao-05">
   <div class="container">
     <div class="secao-header">
@@ -672,21 +672,21 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
     </div>
     <div class="casos-grid">
       <div class="caso-item">
-        <div class="caso-titulo">Ceará 2022 — Cassação Heitor Freire</div>
+        <div class="caso-titulo">Ceará 2022 · Cassação Heitor Freire</div>
         <div class="caso-subtitulo">Deputado Federal</div>
         <div class="caso-metricas">22 vagas · QE 231.084 · Barreira 80%: 183.089</div>
         <p class="caso-resultado">PL +1 (5→6) · UNIÃO −1 (4→3) · Republicanos barrado</p>
         <a href="pdfs/caso_ce.pdf" target="_blank" rel="noopener" class="caso-pdf">↗ Veja a análise feita pelo sistema</a>
       </div>
       <div class="caso-item">
-        <div class="caso-titulo">Amapá 2022 — TRE-AP Res. 620/2025</div>
+        <div class="caso-titulo">Amapá 2022 · TRE-AP Res. 620/2025</div>
         <div class="caso-subtitulo">Deputado Federal</div>
         <div class="caso-metricas">8 vagas · QE 52.877 · 3 federações</div>
         <p class="caso-resultado">F2: PDT 2, PL 1, MDB 1 · F3: PP, Rep., FE Brasil, PSOL/REDE</p>
         <a href="pdfs/caso_ap.pdf" target="_blank" rel="noopener" class="caso-pdf">↗ Veja a análise feita pelo sistema</a>
       </div>
       <div class="caso-item">
-        <div class="caso-titulo">Distrito Federal 2022 — Pós-ADIs</div>
+        <div class="caso-titulo">Distrito Federal 2022 · Pós-ADIs</div>
         <div class="caso-subtitulo">Deputado Federal</div>
         <div class="caso-metricas">8 vagas · QE 259.752 · Fase 3 ativada</div>
         <p class="caso-resultado">PSB obteve 1 vaga via Fase 3 sem barreira</p>
@@ -696,7 +696,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   </div>
 </section>
 
-<!-- SEÇÃO 06 — RISCO -->
+<!-- SEÇÃO 06 · RISCO -->
 <section class="secao-06" id="fundamento">
   <div class="container">
     <div class="secao-header">
@@ -709,7 +709,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   </div>
 </section>
 
-<!-- SEÇÃO 07 — POSICIONAMENTO -->
+<!-- SEÇÃO 07 · POSICIONAMENTO -->
 <section class="secao-07">
   <div class="container">
     <div class="secao-header">
@@ -717,7 +717,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
         <p class="secao-header-label">Fundamento jurídico</p>
         <h2 class="secao-header-titulo">Não é um simulador de cenários. É um instrumento de precisão jurídica.</h2>
       </div>
-      <p class="secao-header-desc secao-texto">O RetotalizaJE não cria suposições — aplica o algoritmo estabelecido pelo STF nas ADIs 7.228, 7.263 e 7.325, exatamente como os tribunais farão. Os resultados refletem a aplicação das normas vigentes, validados com resoluções dos TREs e dados oficiais do TSE. Assim, você obtém o mesmo cálculo que será adotado pela Justiça Eleitoral.</p>
+      <p class="secao-header-desc secao-texto">O RetotalizaJE não cria suposições, aplica o algoritmo estabelecido pelo STF nas ADIs 7.228, 7.263 e 7.325, exatamente como os tribunais farão. Os resultados refletem a aplicação das normas vigentes, validados com resoluções dos TREs e dados oficiais do TSE. Assim, você obtém o mesmo cálculo que será adotado pela Justiça Eleitoral.</p>
     </div>
 
   </div>
@@ -796,7 +796,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
       <span class="footer-lp-legal">Art. 109 CE · ADIs 7.228/7.263/7.325 · STF 2025</span>
     </div>
     <div class="footer-lp-contato">
-      <span class="footer-lp-contato-nome">Luiz Henrique Pimentel — Sociedade Individual de Advocacia</span>
+      <span class="footer-lp-contato-nome">Luiz Henrique Pimentel · Sociedade Individual de Advocacia</span>
       <a href="https://wa.me/5561992774443" target="_blank" rel="noopener" class="footer-lp-contato-wpp">WhatsApp (61) 99277-4443</a>
     </div>
     <div class="footer-lp-bottom">© 2025 RetotalizaJE · Ferramenta técnico-jurídica de apoio · Não substitui decisão da Justiça Eleitoral</div>
