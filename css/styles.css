@@ -4687,8 +4687,8 @@ button:focus:not(:focus-visible) { outline: none; }
 /* ══ TELA DE COMPRA (paywall pré-acesso) ══════════════════════════════════ */
 .compra-page { min-height:100vh; background:var(--cor-profundo); display:flex; flex-direction:column; align-items:center; padding:48px 24px; }
 .compra-header { text-align:center; margin-bottom:32px; }
-.compra-logo { font-family:var(--fonte-titulo); font-size:1.6rem; font-weight:var(--peso-black); color:var(--cor-texto-inv); margin-bottom:8px; }
-.compra-sub { font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-inv-medio); }
+.compra-logo { font-family:var(--fonte-titulo); font-size:1.6rem; font-weight:var(--peso-black); color:var(--cor-texto-inv); display:block; margin-bottom:10px; }
+.compra-sub { font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-inv-medio); display:block; }
 .compra-banner { display:flex; align-items:center; gap:8px; background:var(--cor-profundo-meio); border:1px solid var(--cor-profundo-borda); border-radius:var(--raio-md); padding:10px 18px; margin-bottom:28px; font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-inv-medio); text-align:center; }
 .compra-banner strong { color:var(--cor-ambar); }
 .compra-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; width:100%; max-width:760px; margin-bottom:16px; }

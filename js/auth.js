@@ -31,14 +31,14 @@ async function notificarCadastro(email) {
   }
 }
 
-// Cria documento apenas se não existir — ativo: false por padrão até liberação manual.
+// Cria documento apenas se não existir — ativo: true imediato (controle por créditos).
 async function garantirPerfil(user) {
   const ref = doc(db, "users", user.uid);
   const snap = await getDocFromServer(ref);
   if (!snap.exists()) {
     await setDoc(ref, {
       email: user.email,
-      ativo: false,
+      ativo: true,
       createdAt: serverTimestamp()
     });
     // Notifica apenas no primeiro cadastro (documento recém-criado)
