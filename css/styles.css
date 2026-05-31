@@ -22,13 +22,13 @@
   --text-main:     var(--cor-texto);
   --text-muted:    var(--cor-texto-medio);
   --text-hint:     var(--cor-texto-label);
-  --f1-color:      #3B82F6;
+  --f1-color:      var(--cor-confiante);
   --f2-color:      #10B981;
   --f3-color:      #F59E0B;
   --white:         var(--cor-fundo-card);
 
   /* ── Extended accent tokens ──────────────────────────────────── */
-  --accent-blue:   #3B82F6;
+  --accent-blue:   var(--cor-confiante);
   --accent-green:  #10B981;
   --accent-amber:  #F59E0B;
   --accent-red:    #EF4444;
