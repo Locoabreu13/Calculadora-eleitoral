@@ -4683,3 +4683,34 @@ button:focus:not(:focus-visible) { outline: none; }
 .sc-btn--sec:hover { background:var(--cor-borda-suave); }
 .sc-btn--ghost { background:none; color:var(--cor-confiante); font-size:var(--texto-xs); padding:8px; }
 .sc-btn--ghost:hover { text-decoration:underline; }
+
+/* ══ TELA DE COMPRA (paywall pré-acesso) ══════════════════════════════════ */
+.compra-page { min-height:100vh; background:var(--cor-profundo); display:flex; flex-direction:column; align-items:center; padding:48px 24px; }
+.compra-header { text-align:center; margin-bottom:32px; }
+.compra-logo { font-family:var(--fonte-titulo); font-size:1.6rem; font-weight:var(--peso-black); color:var(--cor-texto-inv); margin-bottom:8px; }
+.compra-sub { font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-inv-medio); }
+.compra-banner { display:flex; align-items:center; gap:8px; background:var(--cor-profundo-meio); border:1px solid var(--cor-profundo-borda); border-radius:var(--raio-md); padding:10px 18px; margin-bottom:28px; font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-inv-medio); text-align:center; }
+.compra-banner strong { color:var(--cor-ambar); }
+.compra-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; width:100%; max-width:760px; margin-bottom:16px; }
+.compra-card { background:var(--cor-profundo-meio); border:1px solid var(--cor-profundo-borda); border-radius:var(--raio-xl); padding:22px 20px; display:flex; flex-direction:column; gap:6px; cursor:pointer; transition:border-color var(--transicao),transform .15s; }
+.compra-card:hover { border-color:var(--cor-confiante); transform:translateY(-2px); }
+.compra-card--destaque { border-color:var(--cor-confiante); box-shadow:0 0 0 1px var(--cor-confiante); }
+.compra-card-badge { display:inline-flex; background:var(--cor-confiante-claro); color:var(--cor-confiante); font-family:var(--fonte-corpo); font-size:11px; font-weight:var(--peso-medio); padding:3px 10px; border-radius:var(--raio-pill); width:fit-content; margin-bottom:2px; }
+.compra-card-nome { font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-inv-medio); font-weight:var(--peso-medio); }
+.compra-card-valor { font-family:'DM Sans',sans-serif; font-size:2rem; font-weight:800; color:var(--cor-texto-inv); line-height:1; margin:4px 0; }
+.compra-card-qtd { font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-inv-medio); margin-bottom:8px; }
+.compra-card-div { height:1px; background:var(--cor-profundo-borda); margin:4px 0; }
+.compra-card-por { font-family:var(--fonte-corpo); font-size:var(--texto-xs); color:var(--cor-texto-inv-medio); }
+.compra-card-eco { font-family:var(--fonte-corpo); font-size:var(--texto-xs); color:var(--cor-ambar); font-weight:var(--peso-medio); }
+.compra-card-btn { margin-top:auto; padding:10px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:var(--raio-md); color:var(--cor-texto-inv); font-family:var(--fonte-corpo); font-size:var(--texto-sm); font-weight:var(--peso-medio); text-align:center; }
+.compra-card--destaque .compra-card-btn { background:var(--cor-confiante); border-color:var(--cor-confiante); }
+.compra-ciclo { width:100%; max-width:760px; background:var(--cor-profundo-meio); border:1px solid var(--cor-profundo-borda); border-radius:var(--raio-xl); padding:20px 24px; display:flex; align-items:center; gap:24px; cursor:pointer; transition:border-color var(--transicao); margin-bottom:32px; }
+.compra-ciclo:hover { border-color:var(--cor-confiante); }
+.compra-ciclo-info { flex:1; }
+.compra-ciclo-nome { font-family:var(--fonte-corpo); font-size:var(--texto-base); font-weight:var(--peso-bold); color:var(--cor-texto-inv); }
+.compra-ciclo-desc { font-family:var(--fonte-corpo); font-size:var(--texto-sm); color:var(--cor-texto-inv-medio); }
+.compra-ciclo-dir { display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+.compra-ciclo-valor { font-family:'DM Sans',sans-serif; font-size:1.5rem; font-weight:800; color:var(--cor-texto-inv); }
+.compra-sair { background:none; border:none; color:var(--cor-texto-inv-suave); font-family:var(--fonte-corpo); font-size:var(--texto-sm); cursor:pointer; text-decoration:underline; }
+.compra-sair:hover { color:var(--cor-texto-inv-medio); }
+@media(max-width:640px) { .compra-grid { grid-template-columns:1fr; } }

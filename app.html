@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=25" />
+  <link rel="stylesheet" href="css/styles.css?v=26" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -42,22 +42,60 @@
 
 <!-- TELA: Aguardando aprovação -->
 <div id="tela-compra" style="display:none">
-  <div class="auth-container">
-    <h1>Sistema Retotaliza<span class="title-je">JE</span></h1>
-    <p class="auth-subtitle">Art. 109 CE · ADIs 7.228/7.263/7.325 STF</p>
-    <div style="margin-top:32px;text-align:center">
-      <div style="font-size:48px;margin-bottom:16px">⏳</div>
-      <h2 style="font-size:20px;font-weight:700;color:#fff;margin-bottom:12px">Cadastro recebido!</h2>
-      <p style="color:#6B84A3;font-size:14px;line-height:1.7;max-width:340px;margin:0 auto 24px">
-        Seu acesso está sendo analisado.<br>
-        Você receberá um contato assim que for liberado.
-      </p>
-      <p style="color:#3A5070;font-size:12px;margin-bottom:28px">
-        Dúvidas? Entre em contato pelo WhatsApp:<br>
-        <a href="https://wa.me/5561992774443" target="_blank" style="color:#F5A623;text-decoration:none">(61) 99277-4443</a>
-      </p>
-      <button onclick="fazerLogout()" class="btn-primary" style="width:100%">Sair</button>
+  <div class="compra-page">
+    <div class="compra-header">
+      <h1 class="compra-logo">Retotaliza<span class="title-je">JE</span></h1>
+      <p class="compra-sub">Escolha um plano para começar a calcular</p>
     </div>
+
+    <div class="compra-banner">
+      <strong>1 cálculo completo grátis</strong> · para todo novo usuário, sem cartão
+    </div>
+
+    <div class="compra-grid">
+      <div class="compra-card" onclick="window._comprarPlano('unitario')">
+        <div class="compra-card-nome">Unitário</div>
+        <div class="compra-card-valor">R$ 197</div>
+        <div class="compra-card-qtd">1 cálculo</div>
+        <div class="compra-card-div"></div>
+        <div class="compra-card-por">R$ 197 por cálculo</div>
+        <div class="compra-card-btn">Contratar ↗</div>
+      </div>
+
+      <div class="compra-card compra-card--destaque" onclick="window._comprarPlano('pack5')">
+        <div class="compra-card-badge">mais popular</div>
+        <div class="compra-card-nome">Pack 5</div>
+        <div class="compra-card-valor">R$ 790</div>
+        <div class="compra-card-qtd">5 cálculos</div>
+        <div class="compra-card-div"></div>
+        <div class="compra-card-por">R$ 158 por cálculo</div>
+        <div class="compra-card-eco">economia de 20%</div>
+        <div class="compra-card-btn">Contratar ↗</div>
+      </div>
+
+      <div class="compra-card" onclick="window._comprarPlano('pack10')">
+        <div class="compra-card-nome">Pack 10</div>
+        <div class="compra-card-valor">R$ 1.490</div>
+        <div class="compra-card-qtd">10 cálculos</div>
+        <div class="compra-card-div"></div>
+        <div class="compra-card-por">R$ 149 por cálculo</div>
+        <div class="compra-card-eco">economia de 24%</div>
+        <div class="compra-card-btn">Contratar ↗</div>
+      </div>
+    </div>
+
+    <div class="compra-ciclo" onclick="window._comprarPlano('ciclo2026')">
+      <div class="compra-ciclo-info">
+        <div class="compra-ciclo-nome">Ciclo eleitoral 2026</div>
+        <div class="compra-ciclo-desc">cálculos ilimitados durante toda a campanha</div>
+      </div>
+      <div class="compra-ciclo-dir">
+        <div class="compra-ciclo-valor">R$ 2.490</div>
+        <div class="compra-card-btn">Ver detalhes ↗</div>
+      </div>
+    </div>
+
+    <button onclick="fazerLogout()" class="compra-sair">Sair da conta</button>
   </div>
 </div>
 
@@ -1243,6 +1281,11 @@
     }
 
     // ── Botões de plano na landing (redirecionam para app + pagamento) ───
+    // Chamado pelos cards da tela-compra (paywall)
+    window._comprarPlano = async (planoId) => {
+      await iniciarPagamento(planoId);
+    };
+
     window.contratarPlano = async (planoId) => {
       const user = auth.currentUser;
       if (!user) {

@@ -21,6 +21,8 @@ async function _creditarUsuario(uid, planoId, paymentId, plano) {
   if (pagSnap.exists) return; // idempotência
 
   const batch = db.batch();
+
+  // Registra o pagamento
   batch.set(pagRef, {
     uid, planoId,
     creditos: plano.creditos,
@@ -28,11 +30,21 @@ async function _creditarUsuario(uid, planoId, paymentId, plano) {
     status: 'approved',
     processadoEm: admin.firestore.FieldValue.serverTimestamp(),
   });
+
+  // Credita na coleção 'usuarios' (créditos do sistema)
   batch.set(
     db.collection('usuarios').doc(uid),
     { creditos: admin.firestore.FieldValue.increment(plano.creditos), plano: planoId },
     { merge: true }
   );
+
+  // Libera acesso na coleção 'users' (verificada pelo paywall)
+  batch.set(
+    db.collection('users').doc(uid),
+    { ativo: true, plano: planoId, atualizadoEm: admin.firestore.FieldValue.serverTimestamp() },
+    { merge: true }
+  );
+
   await batch.commit();
   console.log('Creditado: uid=' + uid + ' plano=' + planoId + ' creditos=' + plano.creditos);
 }
@@ -45,12 +57,21 @@ exports.notificarNovoCadastro = functions
     const email = user.email || 'sem-email';
     const uid   = user.uid   || '';
 
-    await db.collection('usuarios').doc(uid).set({
-      email,
-      creditos: 1,
-      plano: 'gratis',
+    const batch = db.batch();
+
+    // Cria perfil com 1 crédito grátis
+    batch.set(db.collection('usuarios').doc(uid), {
+      email, creditos: 1, plano: 'gratis',
       criadoEm: admin.firestore.FieldValue.serverTimestamp(),
     }, { merge: true });
+
+    // Libera acesso imediato (paywall)
+    batch.set(db.collection('users').doc(uid), {
+      ativo: true, email,
+      criadoEm: admin.firestore.FieldValue.serverTimestamp(),
+    }, { merge: true });
+
+    await batch.commit();
 
     const t = nodemailer.createTransport({
       service: 'gmail',
