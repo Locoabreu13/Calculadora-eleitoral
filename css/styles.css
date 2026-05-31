@@ -12,7 +12,7 @@
   --navy-mid:      var(--cor-profundo-meio);
   --navy-light:    var(--cor-profundo-borda);
   --navy-border:   rgba(255,255,255,0.10);
-  --gold:          #F59E0B;
+  --gold:          var(--cor-ambar);
   --gold-light:    #FCD34D;
   --teal:          #10B981;
   --teal-light:    #34D399;
@@ -24,13 +24,13 @@
   --text-hint:     var(--cor-texto-label);
   --f1-color:      var(--cor-confiante);
   --f2-color:      #10B981;
-  --f3-color:      #F59E0B;
+  --f3-color:      var(--cor-ambar);
   --white:         var(--cor-fundo-card);
 
   /* ── Extended accent tokens ──────────────────────────────────── */
   --accent-blue:   var(--cor-confiante);
   --accent-green:  #10B981;
-  --accent-amber:  #F59E0B;
+  --accent-amber:  var(--cor-ambar);
   --accent-red:    #EF4444;
   --surface-light: #F1F5F9;
 
