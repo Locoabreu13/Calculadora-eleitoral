@@ -4033,6 +4033,43 @@ button:focus:not(:focus-visible) { outline: none; }
 .dash-estudo-ico { background: var(--cor-confiante-claro); color: var(--cor-confiante); font-family: var(--fonte-corpo); border-radius: var(--raio-md); }
 .dash-estudo-nome { font-family: var(--fonte-corpo); font-size: var(--texto-sm); font-weight: var(--peso-medio); color: var(--cor-texto); }
 
+/* ── Dashboard home — redesign: métricas, grid e painel de créditos ── */
+.dash-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--grid-gap); margin-bottom: var(--espaco-24); }
+.dash-metric { background: var(--cor-fundo-card); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-xl); padding: var(--espaco-20) var(--espaco-24); display: flex; flex-direction: column; gap: var(--espaco-4); position: relative; overflow: hidden; }
+.dash-metric::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; }
+.dash-metric--blue::before { background: var(--cor-confiante); }
+.dash-metric--teal::before { background: #10B981; }
+.dash-metric--gold::before { background: var(--cor-ambar); }
+.dash-metric-num { font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--cor-texto); line-height: 1.05; }
+.dash-metric-num--sm { font-size: var(--texto-base); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dash-metric-lbl { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-label); }
+
+.dash-home-grid { display: grid; grid-template-columns: 1fr 300px; gap: var(--grid-gap); align-items: start; }
+.dash-side { display: flex; flex-direction: column; gap: var(--espaco-16); }
+.dash-plan { background: var(--cor-profundo); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-xl); padding: var(--espaco-24); }
+.dash-plan-lbl { font-family: var(--fonte-corpo); font-size: var(--texto-xs); text-transform: uppercase; letter-spacing: var(--tracking-label); color: var(--cor-ambar); margin-bottom: var(--espaco-12); }
+.dash-plan-num { font-family: 'JetBrains Mono', monospace; font-size: 2.6rem; font-weight: 700; color: var(--cor-texto-inv); line-height: 1; margin-bottom: var(--espaco-16); }
+.dash-progress { height: 8px; background: var(--cor-profundo-borda); border-radius: var(--raio-pill); overflow: hidden; margin-bottom: var(--espaco-8); }
+.dash-progress-bar { height: 100%; background: var(--cor-confiante); border-radius: var(--raio-pill); transition: width var(--transicao-media); }
+.dash-plan-sub { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-inv-medio); margin-bottom: var(--espaco-16); }
+.dash-plan-btn { width: 100%; }
+.dash-quick { display: flex; flex-direction: column; gap: var(--espaco-8); }
+.dash-quick-item { text-align: left; background: var(--cor-fundo-card); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-lg); padding: var(--espaco-12) var(--espaco-16); color: var(--cor-texto); font-family: var(--fonte-corpo); font-size: var(--texto-sm); cursor: pointer; transition: border-color var(--transicao), background var(--transicao); }
+.dash-quick-item:hover { border-color: var(--cor-borda); background: var(--cor-fundo-neutro); }
+
+.dash-saudacao-nome { color: var(--cor-ambar); font-weight: 700; }
+
+/* Badge da fase predominante nos estudos recentes (cores de fase do sistema) */
+.dash-rec-fase { font-family: var(--fonte-corpo); font-size: var(--texto-xs); font-weight: var(--peso-bold); padding: 3px 9px; border-radius: var(--raio-pill); flex-shrink: 0; }
+.dash-rec-fase.fase-f1 { color: var(--cor-confiante); background: var(--cor-confiante-claro); }
+.dash-rec-fase.fase-f2 { color: #0E7A5F; background: rgba(16,185,129,.12); }
+.dash-rec-fase.fase-f3 { color: var(--cor-ambar); background: var(--cor-ambar-claro); }
+
+@media (max-width: 860px) {
+  .dash-metrics { grid-template-columns: 1fr; }
+  .dash-home-grid { grid-template-columns: 1fr; }
+}
+
 /* ══════════════════════════════════════════════════════════════
    RELATÓRIO TÉCNICO
    ══════════════════════════════════════════════════════════════ */

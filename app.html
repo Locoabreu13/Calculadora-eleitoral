@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=33" />
+  <link rel="stylesheet" href="css/styles.css?v=34" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -180,38 +180,54 @@
       <!-- ── INÍCIO ──────────────────────────────────────────────── -->
       <div class="dash-sec dash-sec-active" id="dsec-home">
 
-        <!-- Page header com botão de ação no topo -->
+        <!-- Hero: saudação + ação -->
         <div class="dash-page-header">
           <div>
-            <h1 class="dash-greeting">Seja bem-vindo ao Sistema Retotaliza<span class="dash-first-name-je">JE</span></h1>
+            <h1 class="dash-greeting">Olá, <span class="dash-saudacao-nome" id="dash-saudacao-nome">Usuário</span> 👋</h1>
             <p class="dash-greeting-sub">art. 109 CE · ADIs 7.228/7.263/7.325 STF</p>
           </div>
           <button class="dash-btn-novo" id="dash-hero-calc">+ Novo Cálculo</button>
         </div>
 
-        <!-- Cards secundários -->
-        <div class="dash-cards-grid">
-          <div class="dash-card dash-card-teal" id="dash-card-estudos" role="button" tabindex="0">
-            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-            <div class="dash-card-title">Meus Estudos</div>
-            <div class="dash-card-desc">Cálculos salvos neste navegador</div>
-            <div class="dash-card-foot" id="dash-card-cnt">— estudos</div>
+        <!-- Métricas -->
+        <div class="dash-metrics">
+          <div class="dash-metric dash-metric--blue">
+            <span class="dash-metric-num" id="dash-metric-creditos">—</span>
+            <span class="dash-metric-lbl">créditos disponíveis</span>
           </div>
-          <div class="dash-card dash-card-compra" id="dash-card-compra" role="button" tabindex="0">
-            <svg class="dash-card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-            <div class="dash-card-title">Comprar Créditos</div>
-            <div class="dash-card-desc">Adquira mais cálculos no seu plano</div>
-            <div class="dash-card-foot" id="dash-card-saldo">— créditos disponíveis</div>
+          <div class="dash-metric dash-metric--teal">
+            <span class="dash-metric-num" id="dash-metric-estudos">0</span>
+            <span class="dash-metric-lbl">estudos neste navegador</span>
+          </div>
+          <div class="dash-metric dash-metric--gold">
+            <span class="dash-metric-num dash-metric-num--sm" id="dash-metric-ultimo">nenhum ainda</span>
+            <span class="dash-metric-lbl" id="dash-metric-ultimo-lbl">último cálculo</span>
           </div>
         </div>
 
-        <!-- Recentes -->
-        <div class="dash-block">
-          <div class="dash-block-top">
-            <span class="dash-block-title">Estudos Recentes</span>
-            <button class="dash-ver-todos" data-sec="estudos">Ver todos →</button>
+        <!-- Grid: estudos recentes + painel de créditos -->
+        <div class="dash-home-grid">
+          <div class="dash-block">
+            <div class="dash-block-top">
+              <span class="dash-block-title">Estudos Recentes</span>
+              <button class="dash-ver-todos" data-sec="estudos">Ver todos →</button>
+            </div>
+            <div id="dash-recentes" class="dash-recentes"></div>
           </div>
-          <div id="dash-recentes" class="dash-recentes"></div>
+
+          <aside class="dash-side">
+            <div class="dash-plan">
+              <div class="dash-plan-lbl">Seus créditos</div>
+              <div class="dash-plan-num" id="dash-plan-num">—</div>
+              <div class="dash-progress"><div class="dash-progress-bar" id="dash-plan-bar" style="width:0%"></div></div>
+              <div class="dash-plan-sub" id="dash-plan-sub">saldo disponível</div>
+              <button class="dash-btn-novo dash-plan-btn" id="dash-plan-comprar">Comprar mais créditos</button>
+            </div>
+            <div class="dash-quick">
+              <button class="dash-quick-item" id="dash-quick-novo">▶ Novo cálculo</button>
+              <button class="dash-quick-item" id="dash-quick-estudos">📂 Meus estudos</button>
+            </div>
+          </aside>
         </div>
 
       </div>
@@ -827,7 +843,7 @@
 <script src="js/engine.js?v=8"></script>
 <script src="js/presets.js?v=5"></script>
 <script src="js/export.js?v=9"></script>
-<script src="js/ui.js?v=18"></script>
+<script src="js/ui.js?v=19"></script>
 <script src="js/import.js?v=2"></script>
   <!-- Filtrador 2024 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
@@ -1183,9 +1199,16 @@
           // Atualiza dropdown de perfil
           const pdNum = document.getElementById('perfil-drop-num');
           if (pdNum) pdNum.textContent = n >= 9999 ? '∞' : n;
-          // Atualiza rodapé do 4º card
-          const saldo = document.getElementById('dash-card-saldo');
-          if (saldo) saldo.textContent = (n >= 9999 ? '∞' : n) + ' crédito(s) disponível(is)';
+          // Métrica + painel de créditos do dashboard
+          const disp = n >= 9999 ? '∞' : n;
+          const mCred = document.getElementById('dash-metric-creditos');
+          if (mCred) mCred.textContent = disp;
+          const planNum = document.getElementById('dash-plan-num');
+          if (planNum) planNum.textContent = disp;
+          const planBar = document.getElementById('dash-plan-bar');
+          if (planBar) planBar.style.width = (n >= 9999 ? 100 : Math.max(4, Math.min(100, (n / 10) * 100))) + '%';
+          const planSub = document.getElementById('dash-plan-sub');
+          if (planSub) planSub.textContent = n >= 9999 ? 'plano ilimitado' : (n === 0 ? 'sem créditos — adquira um plano' : 'saldo disponível');
           // Expõe para ui.js
           window._creditosDisponiveis = n;
         });
@@ -1482,24 +1505,27 @@
       const pdAv = document.getElementById('perfil-drop-avatar');
       if (pdAv) pdAv.textContent = nome.charAt(0).toUpperCase();
 
-      const cnt = _dashEstudos().length;
       const cntEl = document.getElementById('dash-nav-cnt');
-      if (cntEl) cntEl.textContent = cnt || '';
-      const cardCnt = document.getElementById('dash-card-cnt');
-      if (cardCnt) cardCnt.textContent = cnt === 0 ? 'Nenhum salvo' : cnt + ' estudo(s)';
+      if (cntEl) cntEl.textContent = _dashEstudos().length || '';
+
+      const nomeEl = document.getElementById('dash-saudacao-nome');
+      if (nomeEl) nomeEl.textContent = nome;
 
       document.getElementById('dash-nav').addEventListener('click', function(e) {
         const btn = e.target.closest('[data-sec]');
         if (!btn) return;
         _dashGo(btn.dataset.sec);
       });
-      document.getElementById('dash-hero-calc').addEventListener('click', dashGoCalc);
-      document.getElementById('dash-card-estudos').addEventListener('click', () => _dashGo('estudos'));
-      document.getElementById('dash-card-compra').addEventListener('click', () => window._mostrarModalPlanos());
+      const _wire = (id, fn) => { const el = document.getElementById(id); if (el) el.addEventListener('click', fn); };
+      _wire('dash-hero-calc',     dashGoCalc);
+      _wire('dash-quick-novo',    dashGoCalc);
+      _wire('dash-quick-estudos', () => _dashGo('estudos'));
+      _wire('dash-plan-comprar',  () => window._mostrarModalPlanos());
 
       const veBtn = document.querySelector('.dash-ver-todos');
       if (veBtn) veBtn.addEventListener('click', () => _dashGo('estudos'));
 
+      _dashFillMetrics();
       _dashRenderRecentes();
 
       window.__dashUid = user.uid;
@@ -1546,6 +1572,40 @@
       return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
 
+    function _haDias(iso) {
+      const d = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+      if (isNaN(d)) return ''; if (d <= 0) return 'hoje'; if (d === 1) return 'ontem'; return 'há ' + d + ' dias';
+    }
+
+    // Fase com mais cadeiras atribuídas no resultado (campos do engine via export.js: qp/sobrasF2/sobrasF3)
+    function _fasePredominante(resultado) {
+      if (!resultado || !Array.isArray(resultado.partidos)) return null;
+      let f1 = 0, f2 = 0, f3 = 0;
+      resultado.partidos.forEach(p => { f1 += (p.qp || 0); f2 += (p.sobrasF2 || 0); f3 += (p.sobrasF3 || 0); });
+      const max = Math.max(f1, f2, f3);
+      if (max <= 0) return null;
+      if (f3 === max) return 'F3';
+      if (f2 === max) return 'F2';
+      return 'F1';
+    }
+
+    function _dashFillMetrics() {
+      const arr = _dashEstudos();
+      const mE = document.getElementById('dash-metric-estudos');
+      if (mE) mE.textContent = arr.length;
+      const mU  = document.getElementById('dash-metric-ultimo');
+      const mUl = document.getElementById('dash-metric-ultimo-lbl');
+      if (mU) {
+        if (!arr.length) {
+          mU.textContent = 'nenhum ainda';
+          if (mUl) mUl.textContent = 'último cálculo';
+        } else {
+          mU.textContent = arr[0].parametros?.rotulo || 'Cálculo sem nome';
+          if (mUl) { const t = _haDias(arr[0].savedAt); mUl.textContent = (t ? t + ' · ' : '') + 'último cálculo'; }
+        }
+      }
+    }
+
     function _dashRenderRecentes() {
       const arr = _dashEstudos().slice(0, 3);
       const el = document.getElementById('dash-recentes');
@@ -1554,16 +1614,20 @@
         el.innerHTML = '<div class="dash-empty">Nenhum estudo salvo ainda. Use <strong>💾 Salvar Estudo</strong> na calculadora.</div>';
         return;
       }
-      el.innerHTML = arr.map((e, i) => `
+      el.innerHTML = arr.map((e, i) => {
+        const fase = _fasePredominante(e.resultado);
+        const badge = fase ? `<span class="dash-rec-fase fase-${fase.toLowerCase()}">${fase}</span>` : '';
+        return `
         <div class="dash-rec-item">
           <div class="dash-rec-badge">JE</div>
           <div class="dash-rec-info">
-            <div class="dash-rec-rotulo">${_h(e.parametros?.rotulo || 'Sem rótulo')}</div>
+            <div class="dash-rec-rotulo">${_h(e.parametros?.rotulo || 'Cálculo sem nome')}</div>
             <div class="dash-rec-meta">${e.parametros?.vagas || 0} vagas · ${e.parametros?.partidos?.length || 0} partidos · ${new Date(e.savedAt || Date.now()).toLocaleDateString('pt-BR')}</div>
           </div>
+          ${badge}
           <button class="dash-rec-dl" onclick="dashDlEstudo(${i})" title="Baixar JSON">⬇</button>
-        </div>
-      `).join('');
+        </div>`;
+      }).join('');
     }
 
     function _dashRenderEstudos() {
@@ -1607,10 +1671,9 @@
       localStorage.setItem('rje_estudos', JSON.stringify(arr));
       _dashRenderEstudos();
       _dashRenderRecentes();
+      _dashFillMetrics();
       const cntEl = document.getElementById('dash-nav-cnt');
       if (cntEl) cntEl.textContent = arr.length || '';
-      const cardCnt = document.getElementById('dash-card-cnt');
-      if (cardCnt) cardCnt.textContent = arr.length === 0 ? 'Nenhum salvo' : arr.length + ' estudo(s)';
     };
   </script>
   </div>
