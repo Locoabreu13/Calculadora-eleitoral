@@ -18,14 +18,14 @@
   --teal-light:    #34D399;
   --slate:         #F1F5F9;
   --slate-mid:     var(--cor-borda-suave);
-  --slate-dark:    #CBD5E1;
-  --text-main:     #0F172A;
-  --text-muted:    #475569;
-  --text-hint:     #94A3B8;
+  --slate-dark:    var(--cor-borda);
+  --text-main:     var(--cor-texto);
+  --text-muted:    var(--cor-texto-medio);
+  --text-hint:     var(--cor-texto-label);
   --f1-color:      #3B82F6;
   --f2-color:      #10B981;
   --f3-color:      #F59E0B;
-  --white:         #ffffff;
+  --white:         var(--cor-fundo-card);
 
   /* ── Extended accent tokens ──────────────────────────────────── */
   --accent-blue:   #3B82F6;
@@ -39,9 +39,7 @@
   --cor-primaria-clara: var(--navy-mid);
   --cor-acento:         var(--gold);
   --cor-fundo:          var(--slate);
-  --cor-fundo-card:     var(--white);
-  --cor-borda:          var(--slate-mid);
-  --cor-texto:          var(--text-main);
+  /* --cor-fundo-card, --cor-borda e --cor-texto agora vêm do tokens-vars.css (fonte única) */
   --cor-texto-fraco:    var(--text-muted);
   --cor-eleito:         #065F46;
   --cor-eleito-fundo:   #ECFDF5;
