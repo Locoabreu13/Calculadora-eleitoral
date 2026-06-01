@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=35" />
+  <link rel="stylesheet" href="css/styles.css?v=36" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -452,6 +452,12 @@
 
     </aside><!-- .sidebar -->
 
+    <!-- ── DIVISOR ARRASTÁVEL (redimensiona a sidebar) ───────────────────────── -->
+    <div id="sidebar-resizer" class="sidebar-resizer"
+         role="separator" aria-orientation="vertical" tabindex="0"
+         aria-label="Arraste para redimensionar o painel de dados (duplo clique para o padrão)"
+         title="Arraste para redimensionar · duplo clique = padrão"></div>
+
     <!-- ── MAIN CONTENT ──────────────────────────────────────────────────────── -->
     <main class="main-content" role="main" aria-label="Resultados da distribuição">
 
@@ -853,6 +859,7 @@
 <script src="js/filtrador2024.js?v=1"></script>
 <script src="js/tse-direto.js?v=7"></script>
 <script src="js/runner.js?v=1"></script>
+<script src="js/sidebar-resize.js?v=1" defer></script>
 
 <!-- ═══ SCRIPTS INLINE ══════════════════════════════════════════════════════════ -->
 <script>
