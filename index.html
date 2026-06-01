@@ -110,16 +110,18 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .sml-dropdown{position:absolute;top:100%;left:0;right:0;min-width:80px;background:var(--cor-profundo-meio);border:1px solid var(--cor-profundo-borda);border-radius:4px;z-index:10;margin-top:2px;overflow:hidden;transform-origin:top}
 .sml-dd-item{padding:4px 10px;font-size:10px;color:var(--cor-texto-inv-suave)}
 .sml-dd-hl{color:var(--cor-confiante)!important;background:rgba(26,86,219,.18)}
-/* ============ MOCKUP · monitor (FOTO REAL) na mesa de madeira — Fluxo de uso ============ */
-.cpu-stage{margin-top:var(--espaco-48)}
-.cpu-frame{position:relative;width:min(58rem,100%);margin-inline:auto;overflow:hidden;border-radius:10px}
-.cpu-fixed{position:absolute;top:0;left:0;width:780px;height:770px;transform-origin:top left}/* escala via JS (fitCpuMock) */
-.cpu-photo{width:780px;height:770px;display:block}
-/* tela animada encaixada na perspectiva do monitor da foto (retângulo 451×384) */
-.cpu-screen{position:absolute;top:0;left:0;width:451px;height:384px;transform-origin:0 0;transform:matrix3d(1.008073,-0.061829,0,0.00000217,0.012328,1.018497,0,0.0000349,0,0,1,0,202,146,0,1);overflow:hidden;background:var(--cor-profundo)}
-.cpu-screen::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(118deg,rgba(255,255,255,.07) 0%,rgba(255,255,255,0) 34%)}
+/* ============ MOCKUP · monitor na mesa de madeira (Fluxo de uso) ============ */
+.cpu-stage{position:relative;display:flex;flex-direction:column;align-items:center;margin-top:var(--espaco-48)}
+.monitor{position:relative;width:min(42rem,100%);background:linear-gradient(180deg,#262b33 0%,#13161b 100%);border-radius:16px;padding:14px 14px 18px;box-shadow:0 26px 60px -22px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.05)}
+.monitor-screen{position:relative;aspect-ratio:16/10;border-radius:7px;overflow:hidden;background:var(--cor-profundo);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),inset 0 2px 26px rgba(0,0,0,.55)}
+.monitor-led{position:absolute;left:50%;bottom:6px;width:5px;height:5px;border-radius:50%;background:var(--cor-confiante);transform:translateX(-50%);opacity:.65;box-shadow:0 0 6px var(--cor-confiante)}
+.monitor-neck{width:48px;height:34px;margin-top:-1px;background:linear-gradient(180deg,#1d222a,#14171d);clip-path:polygon(32% 0,68% 0,80% 100%,20% 100%)}
+.monitor-base{position:relative;width:170px;height:13px;border-radius:0 0 12px 12px/0 0 16px 16px;background:linear-gradient(180deg,#1d222a,#0f1218)}
+.monitor-base::after{content:"";position:absolute;left:-22%;right:-22%;bottom:-8px;height:16px;border-radius:50%;background:rgba(0,0,0,.32);filter:blur(7px);z-index:-1}
+.cpu-desk{position:relative;width:min(58rem,100%);height:50px;margin-top:-5px;border-radius:9px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 1px,transparent 1px 78px),linear-gradient(180deg,#835632 0%,#6d4727 46%,#583820 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 16px 34px -18px rgba(0,0,0,.55)}
+.cpu-desk::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;border-radius:9px 9px 0 0;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0))}
 /* janela / tela */
-.scr-top{display:flex;align-items:center;gap:6px;height:24px;padding:0 12px;background:rgba(0,0,0,.3);border-bottom:1px solid rgba(255,255,255,.06)}
+.scr-top{display:flex;align-items:center;gap:6px;height:24px;padding:0 12px;background:rgba(0,0,0,.28);border-bottom:1px solid rgba(255,255,255,.06)}
 .scr-dot{width:8px;height:8px;border-radius:50%}
 .scr-title{margin-left:8px;font-size:9px;letter-spacing:.08em;color:var(--cor-texto-inv-suave);text-transform:uppercase}
 .scr-body{position:absolute;inset:24px 0 0 0}
@@ -442,11 +444,8 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 
     <!-- Mockup · monitor na mesa de madeira: a tela executa o fluxo -->
     <div class="cpu-stage" aria-hidden="true">
-      <div class="cpu-frame">
-       <div class="cpu-fixed">
-        <img class="cpu-photo" src="img/mockup-mesa.jpg" width="780" height="770"
-             alt="Monitor sobre uma mesa de madeira mostrando o RetotalizaJE em uso" loading="lazy" decoding="async">
-        <div class="cpu-screen">
+      <div class="monitor">
+        <div class="monitor-screen">
           <div class="scr-top">
             <span class="scr-dot" style="background:#ef5f57"></span>
             <span class="scr-dot" style="background:#febc2e"></span>
@@ -496,9 +495,9 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
               <div class="scn-step">Passo 04 · Analisar e exportar</div>
               <div class="sml-th"><span>Partido</span><span>F1</span><span>F2</span><span>F3</span><span>Total</span><span>Δ</span></div>
               <div class="sml-tr sml-row-up"><span>PL</span><span>4</span><span>1</span><span>1</span><span>6</span><span class="sml-up">+1 ↑</span></div>
-              <div class="sml-tr sml-row-dn"><span>UNIÃO</span><span>3</span><span>0</span><span>0</span><span>3</span><span class="sml-dn">−1 ↓</span></div>
+              <div class="sml-tr sml-row-dn"><span>UNIÃO Brasil</span><span>3</span><span>0</span><span>0</span><span>3</span><span class="sml-dn">−1 ↓</span></div>
               <div class="sml-tr"><span>MDB</span><span>3</span><span>0</span><span>0</span><span>3</span><span>—</span></div>
-              <div class="sml-tr"><span>REPUB.</span><span>0</span><span>0</span><span>0</span><span>0</span><span class="sml-bar">barrado</span></div>
+              <div class="sml-tr"><span>Republicanos</span><span>0</span><span>0</span><span>0</span><span>0</span><span class="sml-bar">barrado</span></div>
               <div style="display:flex;gap:var(--espaco-8);margin-top:var(--espaco-12);flex-wrap:wrap">
                 <div class="sml-field" style="font-size:10px">↓ Relatório PDF</div>
                 <div class="sml-field" style="font-size:10px">↓ Planilha CSV</div>
@@ -506,11 +505,14 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
               </div>
             </div>
 
-          </div><!-- .scr-body -->
-        </div><!-- .cpu-screen -->
-       </div><!-- .cpu-fixed -->
-      </div><!-- .cpu-frame -->
-    </div><!-- .cpu-stage -->
+          </div>
+          <span class="monitor-led"></span>
+        </div>
+      </div>
+      <div class="monitor-neck"></div>
+      <div class="monitor-base"></div>
+      <div class="cpu-desk"></div>
+    </div>
 
     <!-- Entregas do sistema -->
     <div class="entregas-grid" style="border-top-color:var(--cor-borda-suave)">
@@ -766,27 +768,6 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape') fechar();
   });
-})();
-</script>
-
-<!-- Dimensiona o mockup do monitor (palco fixo 780×770 -> escala p/ a largura) -->
-<script>
-(function(){
-  function fitCpuMock(){
-    document.querySelectorAll('.cpu-frame').forEach(function(f){
-      var w = f.clientWidth;
-      if(!w) return;
-      var s = w / 780;
-      var fx = f.querySelector('.cpu-fixed');
-      if(fx) fx.style.transform = 'scale(' + s + ')';
-      f.style.height = (770 * s) + 'px';
-    });
-  }
-  window.fitCpuMock = fitCpuMock;
-  window.addEventListener('resize', fitCpuMock);
-  window.addEventListener('load', fitCpuMock);
-  document.addEventListener('DOMContentLoaded', fitCpuMock);
-  fitCpuMock();
 })();
 </script>
 </body>
