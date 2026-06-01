@@ -209,3 +209,34 @@ exports.webhookMP = functions
       return res.status(500).send('erro');
     }
   });
+
+// ─── Consumir 1 crédito por cálculo (AUTORITATIVO — fonte da verdade) ───────
+// Verifica e desconta 1 crédito de forma atômica no servidor. Como roda com o
+// Admin SDK, ignora as regras do Firestore (que bloqueiam o cliente de mexer
+// no próprio saldo). Recusa o cálculo quando o saldo é 0.
+exports.consumirCalculo = functions
+  .https.onCall(async (data, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError('unauthenticated', 'Faça login primeiro.');
+    }
+
+    const uid = context.auth.uid;
+    const ref = db.collection('usuarios').doc(uid);
+
+    const novoSaldo = await db.runTransaction(async (tx) => {
+      const snap  = await tx.get(ref);
+      const saldo = snap.exists ? (snap.data().creditos || 0) : 0;
+      if (saldo >= 9999) return saldo;   // plano ilimitado: não desconta
+      if (saldo <= 0)    return null;    // sem créditos
+      tx.update(ref, {
+        creditos: admin.firestore.FieldValue.increment(-1),
+        ultimoCalculoEm: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      return saldo - 1;
+    });
+
+    if (novoSaldo === null) {
+      return { ok: false, motivo: 'sem_creditos', creditos: 0 };
+    }
+    return { ok: true, creditos: novoSaldo };
+  });

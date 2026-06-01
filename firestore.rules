@@ -1,0 +1,40 @@
+rules_version = '2';
+
+// ⚠️ REGRAS RECOMENDADAS (referência / opcional).
+// O Admin SDK das Cloud Functions IGNORA estas regras (por isso a function
+// consumirCalculo consegue descontar o crédito mesmo com o cliente bloqueado).
+//
+// Estas regras garantem que o NAVEGADOR nunca altere o próprio saldo de
+// créditos (anti-fraude). Antes de publicar, compare com as regras atuais
+// no Console do Firebase — publicar SOBRESCREVE as regras existentes.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Saldo de créditos do sistema: o usuário só LÊ o próprio.
+    // Escrita SOMENTE pelo servidor (Admin SDK) — cliente nunca grava.
+    match /usuarios/{uid} {
+      allow read:  if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Perfil de acesso (paywall). O cliente cria/atualiza o próprio doc
+    // (auth.js garantirPerfil). 'ativo' aqui é só o acesso gratuito ao app;
+    // o gate de pagamento é o saldo em /usuarios (que o cliente não grava).
+    match /users/{uid} {
+      allow read:           if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid;
+      allow delete:         if false;
+    }
+
+    // Registros de pagamento: somente servidor.
+    match /pagamentos/{paymentId} {
+      allow read, write: if false;
+    }
+
+    // Tudo o mais: negado por padrão.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -409,13 +409,8 @@ function lerFormulario() {
 
 // ─── Cálculo e renderização ─────────────────────────────────────────────────────
 
-function executarCalculo() {
-  // ── Verificação de créditos ──────────────────────────────────────────────
-  if (typeof window._creditosDisponiveis !== 'undefined' && window._creditosDisponiveis <= 0) {
-    if (typeof window._mostrarModalSemCreditos === 'function') window._mostrarModalSemCreditos();
-    return;
-  }
-  // ────────────────────────────────────────────────────────────────────────
+async function executarCalculo() {
+  // (Créditos são verificados/consumidos no SERVIDOR, após a validação — ver abaixo.)
 
   // Validação em tempo real: bloqueia se houver campos inválidos
   if (!validarTudo()) {
@@ -483,6 +478,32 @@ function executarCalculo() {
     return;
   }
 
+  // ── Autorização de crédito (SERVIDOR desconta 1; recusa se sem saldo) ──────
+  // O servidor é a fonte da verdade. Só calcula se autorizado.
+  let _autorizado = null; // null = função do servidor indisponível (fallback)
+  if (typeof window._autorizarCalculo === 'function') {
+    try {
+      _autorizado = await window._autorizarCalculo(); // { ok, creditos, motivo? }
+    } catch (e) {
+      console.warn('[Créditos] Função do servidor indisponível (ainda não publicada?):', e);
+      _autorizado = null;
+    }
+  }
+  if (_autorizado) {
+    if (!_autorizado.ok) {
+      if (typeof window._mostrarModalSemCreditos === 'function') window._mostrarModalSemCreditos();
+      return;
+    }
+  } else {
+    // Fallback enquanto a Cloud Function não estiver publicada: checagem local antiga.
+    if (typeof window._creditosDisponiveis !== 'undefined' && window._creditosDisponiveis <= 0) {
+      if (typeof window._mostrarModalSemCreditos === 'function') window._mostrarModalSemCreditos();
+      return;
+    }
+    if (typeof window._consumirCreditoAtual === 'function') window._consumirCreditoAtual();
+  }
+  // ──────────────────────────────────────────────────────────────────────────
+
   // Calcular cenário original para comparação
   if (cenario.cassacoes && cenario.cassacoes.length > 0) {
     // Cassação: original é o mesmo cenário sem as cassações
@@ -500,9 +521,7 @@ function executarCalculo() {
   Estado.cenario = cenario;
   Estado.resultado = ElectoralEngine.calcular(cenario);
 
-  // ── Consome 1 crédito após cálculo concluído ─────────────────────────
-  if (typeof window._consumirCreditoAtual === 'function') window._consumirCreditoAtual();
-  // ────────────────────────────────────────────────────────────────────
+  // (O crédito já foi descontado no servidor, antes do cálculo — ver acima.)
 
   // Salvar no localStorage
   localStorage.setItem('ultimo_calculo', JSON.stringify({ cenario, timestamp: Date.now() }));

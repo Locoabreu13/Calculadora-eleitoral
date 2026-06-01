@@ -33,6 +33,15 @@ export async function consumirCredito(uid) {
   await updateDoc(doc(db, 'usuarios', uid), { creditos: increment(-1) });
 }
 
+// ─── Autoriza e consome 1 crédito por cálculo (servidor = fonte da verdade) ──
+// Chama a Cloud Function consumirCalculo, que verifica e desconta de forma
+// atômica no backend. Retorna { ok, creditos, motivo? }. ok=false => sem saldo.
+export async function autorizarCalculo() {
+  const fn = httpsCallable(functions, 'consumirCalculo');
+  const { data } = await fn();
+  return data;
+}
+
 // ─── Carrega o SDK do Mercado Pago uma vez ─────────────────────────────────
 let _mpSDKPromise = null;
 function _carregarSDK() {

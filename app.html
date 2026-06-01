@@ -853,7 +853,7 @@
 <script src="js/engine.js?v=8"></script>
 <script src="js/presets.js?v=5"></script>
 <script src="js/export.js?v=9"></script>
-<script src="js/ui.js?v=19"></script>
+<script src="js/ui.js?v=20"></script>
 <script src="js/import.js?v=2"></script>
   <!-- Filtrador 2024 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
@@ -1193,8 +1193,11 @@
     import { cadastrarEmail, loginEmail, loginGoogle, logout, observarAuth } from "./js/auth.js?v=9";
     import { iniciarPaywall } from "./js/paywall.js?v=9";
     import { auth } from "./js/firebase-init.js?v=9";
-    import { ouvirCreditos, pararOuvirCreditos, iniciarPagamento, consumirCredito } from "./js/pagamentos.js";
+    import { ouvirCreditos, pararOuvirCreditos, iniciarPagamento, consumirCredito, autorizarCalculo } from "./js/pagamentos.js?v=2";
     import { updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    // Ponte p/ ui.js: autorização/consumo de crédito feito no SERVIDOR (fonte da verdade)
+    window._autorizarCalculo = autorizarCalculo;
 
     iniciarPaywall();
 
