@@ -110,6 +110,31 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .sml-dropdown{position:absolute;top:100%;left:0;right:0;min-width:80px;background:var(--cor-profundo-meio);border:1px solid var(--cor-profundo-borda);border-radius:4px;z-index:10;margin-top:2px;overflow:hidden;transform-origin:top}
 .sml-dd-item{padding:4px 10px;font-size:10px;color:var(--cor-texto-inv-suave)}
 .sml-dd-hl{color:var(--cor-confiante)!important;background:rgba(26,86,219,.18)}
+/* ============ MOCKUP · monitor na mesa de madeira (Fluxo de uso) ============ */
+.cpu-stage{position:relative;display:flex;flex-direction:column;align-items:center;margin-top:var(--espaco-48)}
+.monitor{position:relative;width:min(42rem,100%);background:linear-gradient(180deg,#262b33 0%,#13161b 100%);border-radius:16px;padding:14px 14px 18px;box-shadow:0 26px 60px -22px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.05)}
+.monitor-screen{position:relative;aspect-ratio:16/10;border-radius:7px;overflow:hidden;background:var(--cor-profundo);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),inset 0 2px 26px rgba(0,0,0,.55)}
+.monitor-led{position:absolute;left:50%;bottom:6px;width:5px;height:5px;border-radius:50%;background:var(--cor-confiante);transform:translateX(-50%);opacity:.65;box-shadow:0 0 6px var(--cor-confiante)}
+.monitor-neck{width:48px;height:34px;margin-top:-1px;background:linear-gradient(180deg,#1d222a,#14171d);clip-path:polygon(32% 0,68% 0,80% 100%,20% 100%)}
+.monitor-base{position:relative;width:170px;height:13px;border-radius:0 0 12px 12px/0 0 16px 16px;background:linear-gradient(180deg,#1d222a,#0f1218)}
+.monitor-base::after{content:"";position:absolute;left:-22%;right:-22%;bottom:-8px;height:16px;border-radius:50%;background:rgba(0,0,0,.32);filter:blur(7px);z-index:-1}
+.cpu-desk{position:relative;width:min(58rem,100%);height:50px;margin-top:-5px;border-radius:9px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 1px,transparent 1px 78px),linear-gradient(180deg,#835632 0%,#6d4727 46%,#583820 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 16px 34px -18px rgba(0,0,0,.55)}
+.cpu-desk::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;border-radius:9px 9px 0 0;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0))}
+/* janela / tela */
+.scr-top{display:flex;align-items:center;gap:6px;height:24px;padding:0 12px;background:rgba(0,0,0,.28);border-bottom:1px solid rgba(255,255,255,.06)}
+.scr-dot{width:8px;height:8px;border-radius:50%}
+.scr-title{margin-left:8px;font-size:9px;letter-spacing:.08em;color:var(--cor-texto-inv-suave);text-transform:uppercase}
+.scr-body{position:absolute;inset:24px 0 0 0}
+.cpu-scene{position:absolute;inset:0;padding:16px 18px;opacity:0;animation:cpuScene 18s ease-in-out infinite both}
+.cpu-s1{animation-delay:0s}.cpu-s2{animation-delay:4.5s}.cpu-s3{animation-delay:9s}.cpu-s4{animation-delay:13.5s}
+.scn-step{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--cor-ambar);margin-bottom:12px;font-weight:var(--peso-bold)}
+.cpu-click{animation:cpuClick 2.6s ease-in-out infinite}
+.cpu-fill{width:0;animation:cpuFill 2.6s ease-in-out infinite}
+.cpu-fill.pf2{animation-delay:.28s}.cpu-fill.pf3{animation-delay:.56s}
+@keyframes cpuScene{0%{opacity:0;transform:translateY(9px)}2.5%,21%{opacity:1;transform:none}25%,100%{opacity:0;transform:translateY(-7px)}}
+@keyframes cpuClick{0%,42%,100%{transform:none}50%{transform:scale(.94)}58%{transform:scale(1)}}
+@keyframes cpuFill{0%{width:0}55%{width:100%}100%{width:100%}}
+@media (prefers-reduced-motion:reduce){.cpu-scene{animation:none;opacity:0}.cpu-s4{opacity:1}.cpu-click{animation:none}.cpu-fill{animation:none;width:100%}}
 /* ENTREGAS · 3 colunas editoriais */
 .entregas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--cor-profundo-borda);margin-top:var(--espaco-48)}
 .entrega-item{padding:var(--espaco-32) var(--espaco-24) var(--espaco-32) 0;border-right:1px solid var(--cor-profundo-borda)}
@@ -417,243 +442,76 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
       </div>
     </div>
 
-    <!-- Cards de etapa · individuais full-width -->
-    <div class="steps-list">
+    <!-- Mockup · monitor na mesa de madeira: a tela executa o fluxo -->
+    <div class="cpu-stage" aria-hidden="true">
+      <div class="monitor">
+        <div class="monitor-screen">
+          <div class="scr-top">
+            <span class="scr-dot" style="background:#ef5f57"></span>
+            <span class="scr-dot" style="background:#febc2e"></span>
+            <span class="scr-dot" style="background:#28c840"></span>
+            <span class="scr-title">RetotalizaJE</span>
+          </div>
+          <div class="scr-body">
 
-      <!-- STEP 1 · SELEÇÃO -->
-      <div class="step-card-full">
-        <div class="step-card-full-text">
-          <div class="step-card-n">[ 1 ]</div>
-          <div class="step-card-t">Selecione o estado e cargo</div>
-          <p class="step-card-d">Escolha o ano da eleição, o estado (UF) e o cargo em disputa. O sistema carregará automaticamente os dados oficiais do TSE.</p>
-        </div>
-        <div class="step-card-full-sml">
-          <!-- 3 campos sempre visíveis; dropdowns abrem em sequência -->
-          <div class="sml-row" style="margin-bottom:var(--espaco-20);align-items:flex-start">
-            <!-- ANO -->
-            <div class="sml-col">
-              <span class="sml-lbl">Eleição</span>
-              <div class="sml-field sml-field-sel">2022</div>
-              <div class="sml-dropdown s1YearDrop">
-                <div class="sml-dd-item">2018</div>
-                <div class="sml-dd-item">2020</div>
-                <div class="sml-dd-item sml-dd-hl">2022 ✓</div>
+            <!-- CENA 1 · selecionar -->
+            <div class="cpu-scene cpu-s1">
+              <div class="scn-step">Passo 01 · Selecionar estado e cargo</div>
+              <div class="sml-row" style="align-items:flex-start;gap:var(--espaco-12)">
+                <div class="sml-col"><span class="sml-lbl">Eleição</span><div class="sml-field sml-field-sel">2022</div></div>
+                <div class="sml-col"><span class="sml-lbl">Estado</span><div class="sml-field sml-field-sel">CE · Ceará</div></div>
+                <div class="sml-col"><span class="sml-lbl">Cargo</span><div class="sml-field sml-field-sel">Dep. Federal</div></div>
+                <div class="sml-col"><span class="sml-lbl">Vagas</span><div class="sml-field">22</div></div>
+              </div>
+              <div class="sml-btn cpu-click" style="margin-top:var(--espaco-16)">↓ Carregar dados do TSE</div>
+              <div class="sml-ok" style="margin-top:var(--espaco-12)">✓ 28 partidos · 5.083.860 votos válidos · QE 231.084</div>
+            </div>
+
+            <!-- CENA 2 · cassação -->
+            <div class="cpu-scene cpu-s2">
+              <div class="scn-step">Passo 02 · Configurar a cassação</div>
+              <div class="sml-frow"><span class="sml-lbl-i">Partido</span><div class="sml-field sml-field-sel">UNIÃO Brasil</div></div>
+              <div class="sml-frow" style="margin-top:var(--espaco-8)"><span class="sml-lbl-i">Candidato</span><div class="sml-field">Heitor Freire</div></div>
+              <div class="sml-frow" style="margin-top:var(--espaco-8)"><span class="sml-lbl-i">Votos anulados</span><div class="sml-field">48.888</div></div>
+              <div class="sml-frow" style="margin-top:var(--espaco-8)"><span class="sml-lbl-i">Modalidade</span><div class="sml-field sml-field-sel">Anular nominais · sem reatribuição</div></div>
+              <div class="sml-frow" style="margin-top:var(--espaco-12)"><span class="sml-lbl-i">QE</span><div class="sml-field">231.084</div><span style="font-size:10px;color:var(--cor-texto-inv-suave)">→</span><div class="sml-field" style="color:#4ade80">182.506</div><span style="font-size:10px;color:#4ade80">recalculado ✓</span></div>
+            </div>
+
+            <!-- CENA 3 · calcular -->
+            <div class="cpu-scene cpu-s3">
+              <div class="scn-step">Passo 03 · Calcular com um clique</div>
+              <div class="sml-info" style="margin-bottom:var(--espaco-12)">QE <b>182.506</b> · Vagas <b>22</b> · Barreira 80% <b>146.004</b></div>
+              <div class="sml-btn cpu-click" style="margin-bottom:var(--espaco-16)">Calcular retotalização →</div>
+              <div class="sml-pname">Fase 1 · Quociente eleitoral</div>
+              <div class="sml-ptrack"><div class="sml-pfill cpu-fill pf1"></div></div>
+              <div class="sml-pname" style="margin-top:var(--espaco-8)">Fase 2 · Sobras (D'Hondt)</div>
+              <div class="sml-ptrack"><div class="sml-pfill cpu-fill pf2"></div></div>
+              <div class="sml-pname" style="margin-top:var(--espaco-8)">Fase 3 · Barreira legal (80% do QE)</div>
+              <div class="sml-ptrack"><div class="sml-pfill cpu-fill pf3"></div></div>
+            </div>
+
+            <!-- CENA 4 · resultado -->
+            <div class="cpu-scene cpu-s4">
+              <div class="scn-step">Passo 04 · Analisar e exportar</div>
+              <div class="sml-th"><span>Partido</span><span>F1</span><span>F2</span><span>F3</span><span>Total</span><span>Δ</span></div>
+              <div class="sml-tr sml-row-up"><span>PL</span><span>4</span><span>1</span><span>1</span><span>6</span><span class="sml-up">+1 ↑</span></div>
+              <div class="sml-tr sml-row-dn"><span>UNIÃO Brasil</span><span>3</span><span>0</span><span>0</span><span>3</span><span class="sml-dn">−1 ↓</span></div>
+              <div class="sml-tr"><span>MDB</span><span>3</span><span>0</span><span>0</span><span>3</span><span>—</span></div>
+              <div class="sml-tr"><span>Republicanos</span><span>0</span><span>0</span><span>0</span><span>0</span><span class="sml-bar">barrado</span></div>
+              <div style="display:flex;gap:var(--espaco-8);margin-top:var(--espaco-12);flex-wrap:wrap">
+                <div class="sml-field" style="font-size:10px">↓ Relatório PDF</div>
+                <div class="sml-field" style="font-size:10px">↓ Planilha CSV</div>
+                <div class="sml-field" style="font-size:10px;color:var(--cor-ambar)">↗ Apresentação</div>
               </div>
             </div>
-            <!-- ESTADO -->
-            <div class="sml-col">
-              <span class="sml-lbl">Estado (UF)</span>
-              <div class="sml-field sml-field-sel" style="min-width:96px">CE · Ceará</div>
-              <div class="sml-dropdown s1UfDrop">
-                <div class="sml-dd-item">AC · Acre</div>
-                <div class="sml-dd-item">BA · Bahia</div>
-                <div class="sml-dd-item sml-dd-hl">CE · Ceará ✓</div>
-                <div class="sml-dd-item">DF · Distrito Federal</div>
-                <div class="sml-dd-item">MG · Minas Gerais</div>
-              </div>
-            </div>
-            <!-- CARGO -->
-            <div class="sml-col">
-              <span class="sml-lbl">Cargo</span>
-              <div class="sml-field sml-field-sel" style="min-width:118px">Deputado Federal</div>
-              <div class="sml-dropdown s1CargoDrop">
-                <div class="sml-dd-item">Deputado Estadual</div>
-                <div class="sml-dd-item sml-dd-hl">Deputado Federal ✓</div>
-                <div class="sml-dd-item">Senador</div>
-                <div class="sml-dd-item">Vereador</div>
-              </div>
-            </div>
-            <!-- VAGAS (preenchido automaticamente) -->
-            <div class="sml-col">
-              <span class="sml-lbl">Vagas</span>
-              <div class="sml-field">22</div>
-            </div>
+
           </div>
-          <!-- Botão aparece após as seleções -->
-          <div class="s1Btn">
-            <div class="sml-btn">↓ Carregar dados do TSE</div>
-          </div>
-          <!-- Status após carregamento -->
-          <div class="s1Status" style="margin-top:var(--espaco-12)">
-            <div class="sml-ok">✓ 28 partidos · 22 vagas · 5.083.860 votos válidos · QE 231.084</div>
-            <div style="margin-top:var(--espaco-8);display:flex;gap:var(--espaco-8);flex-wrap:wrap">
-              <div class="sml-field" style="font-size:10px">PT 522.110</div>
-              <div class="sml-field" style="font-size:10px">PL 511.308</div>
-              <div class="sml-field" style="font-size:10px">UNIÃO 476.204</div>
-              <div class="sml-field" style="font-size:10px">MDB 389.027</div>
-              <div class="sml-field" style="font-size:10px;color:var(--cor-texto-inv-suave)">+24 partidos</div>
-            </div>
-          </div>
+          <span class="monitor-led"></span>
         </div>
       </div>
-
-      <!-- STEP 2 · CASSAÇÃO -->
-      <div class="step-card-full">
-        <div class="step-card-full-text">
-          <div class="step-card-n">[ 2 ]</div>
-          <div class="step-card-t">Configure a cassação</div>
-          <p class="step-card-d">Indique o partido ou o candidato cuja cassação deseja simular. O sistema assumirá os demais dados e recalculará automaticamente a distribuição.</p>
-        </div>
-        <div class="step-card-full-sml">
-          <!-- Partido com dropdown -->
-          <div class="s2Parti" style="margin-bottom:var(--espaco-10)">
-            <div class="sml-frow" style="align-items:flex-start">
-              <span class="sml-lbl-i" style="padding-top:6px">Partido</span>
-              <div class="sml-col">
-                <div class="sml-field sml-field-sel" style="min-width:130px">UNIÃO Brasil</div>
-                <div class="sml-dropdown s2PartiDrop">
-                  <div class="sml-dd-item">MDB</div>
-                  <div class="sml-dd-item">PDT</div>
-                  <div class="sml-dd-item">PL</div>
-                  <div class="sml-dd-item">PT</div>
-                  <div class="sml-dd-item sml-dd-hl">UNIÃO Brasil ✓</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Candidato -->
-          <div class="s2Cand" style="margin-bottom:var(--espaco-10)">
-            <div class="sml-frow">
-              <span class="sml-lbl-i">Candidato</span>
-              <div class="sml-field" style="min-width:140px">Heitor Freire</div>
-            </div>
-          </div>
-          <!-- Votos -->
-          <div class="s2Votos" style="margin-bottom:var(--espaco-10)">
-            <div class="sml-frow">
-              <span class="sml-lbl-i">Votos anulados</span>
-              <div class="sml-field">48.888</div>
-            </div>
-          </div>
-          <!-- Modalidade com dropdown -->
-          <div class="s2Modal" style="margin-bottom:var(--espaco-10)">
-            <div class="sml-frow" style="align-items:flex-start">
-              <span class="sml-lbl-i" style="padding-top:6px">Modalidade</span>
-              <div class="sml-col">
-                <div class="sml-field sml-field-sel" style="min-width:200px">Anular nominais · sem reatribuição</div>
-                <div class="sml-dropdown s2ModalDrop">
-                  <div class="sml-dd-item">Anular legenda</div>
-                  <div class="sml-dd-item sml-dd-hl">Anular nominais · sem reatribuição ✓</div>
-                  <div class="sml-dd-item">Anular nominais · com reatribuição</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- QE recalculado -->
-          <div class="s2QE">
-            <div style="height:1px;background:var(--cor-profundo-borda);margin:var(--espaco-12) 0"></div>
-            <div class="sml-frow">
-              <span class="sml-lbl-i">QE</span>
-              <div class="sml-field">231.084</div>
-              <span style="font-size:10px;color:var(--cor-texto-inv-suave)">→</span>
-              <div class="sml-field" style="color:#4ade80">182.506</div>
-              <span style="font-size:10px;color:#4ade80">recalculado ✓</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- STEP 3 · CALCULAR -->
-      <div class="step-card-full">
-        <div class="step-card-full-text">
-          <div class="step-card-n">[ 3 ]</div>
-          <div class="step-card-t">Calcule com um clique</div>
-          <p class="step-card-d">Com um clique, o algoritmo executa as três fases da retotalização determinadas nas ADIs 7.228, 7.263 e 7.325 do STF, redistribuindo as vagas.</p>
-        </div>
-        <div class="step-card-full-sml">
-          <!-- Painel de parâmetros -->
-          <div class="s3Info" style="margin-bottom:var(--espaco-16)">
-            <div class="sml-info">QE <b>182.506</b> &nbsp;·&nbsp; Vagas <b>22</b> &nbsp;·&nbsp; Barreira 80% <b>146.004</b> &nbsp;·&nbsp; Partidos <b>28</b></div>
-          </div>
-          <!-- Botão com efeito de clique -->
-          <div class="s3Btn" style="margin-bottom:var(--espaco-20)">
-            <div class="sml-btn">Calcular retotalização →</div>
-          </div>
-          <!-- Fase 1 -->
-          <div class="s3F1" style="margin-bottom:var(--espaco-12)">
-            <div class="sml-pname">Fase 1 · Distribuição por quociente eleitoral</div>
-            <div class="sml-ptrack"><div class="sml-pfill s3Pb1"></div></div>
-          </div>
-          <!-- Fase 2 -->
-          <div class="s3F2" style="margin-bottom:var(--espaco-12)">
-            <div class="sml-pname">Fase 2 · Distribuição de sobras (D'Hondt)</div>
-            <div class="sml-ptrack"><div class="sml-pfill s3Pb2"></div></div>
-          </div>
-          <!-- Fase 3 -->
-          <div class="s3F3" style="margin-bottom:var(--espaco-12)">
-            <div class="sml-pname">Fase 3 · Verificação de barreira legal (80% do QE)</div>
-            <div class="sml-ptrack"><div class="sml-pfill s3Pb3"></div></div>
-          </div>
-          <!-- Concluído -->
-          <div class="s3Ok">
-            <div class="sml-ok">✓ Concluído · 3 fases processadas · 22 vagas redistribuídas · 1 alteração identificada</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- STEP 4 · ANALISE E EXPORTE -->
-      <div class="step-card-full">
-        <div class="step-card-full-text">
-          <div class="step-card-n">[ 4 ]</div>
-          <div class="step-card-t">Analise e exporte</div>
-          <p class="step-card-d">Após calcular, o sistema exibe uma tabela com as vagas atribuídas a cada partido. Você pode analisar os dados na tela e, se desejar, baixar um relatório em PDF, exportar a planilha em CSV ou usar o modo apresentação para mostrar os resultados em reuniões.</p>
-        </div>
-        <div class="step-card-full-sml">
-          <!-- Tabela de resultados -->
-          <div class="s4Head">
-            <div class="sml-th">
-              <span>Partido</span><span>F1</span><span>F2</span><span>F3</span><span>Total</span><span>Δ Vagas</span>
-            </div>
-          </div>
-          <div class="s4RowA">
-            <div class="sml-tr sml-row-up">
-              <span>PL</span><span>4</span><span>1</span><span>1</span><span>6</span><span class="sml-up">+1 ↑</span>
-            </div>
-          </div>
-          <div class="s4RowB">
-            <div class="sml-tr sml-row-dn">
-              <span>UNIÃO Brasil</span><span>3</span><span>0</span><span>0</span><span>3</span><span class="sml-dn">−1 ↓</span>
-            </div>
-          </div>
-          <div class="s4RowC">
-            <div class="sml-tr">
-              <span>MDB</span><span>3</span><span>0</span><span>0</span><span>3</span><span>—</span>
-            </div>
-            <div class="sml-tr">
-              <span>Republicanos</span><span>0</span><span>0</span><span>0</span><span>0</span><span class="sml-bar">barrado</span>
-            </div>
-          </div>
-          <!-- Seção de exportação -->
-          <div class="s4ExpLbl" style="margin-top:var(--espaco-16);padding-top:var(--espaco-12);border-top:1px solid var(--cor-profundo-borda)">
-            <span style="font-size:9px;color:var(--cor-texto-inv-suave);text-transform:uppercase;letter-spacing:.08em">Exportar resultado</span>
-          </div>
-          <!-- PDF -->
-          <div class="s4PdfBtn" style="margin-top:var(--espaco-8)">
-            <div style="display:flex;align-items:center;gap:var(--espaco-8)">
-              <div class="sml-field" style="font-size:10px;min-width:140px">↓ Relatório técnico (PDF)</div>
-              <div class="sml-ptrack" style="flex:1"><div class="sml-pfill s4PdfPb"></div></div>
-              <div class="s4PdfOk" style="font-size:10px;color:#4ade80;white-space:nowrap">✓ gerado</div>
-            </div>
-          </div>
-          <!-- CSV -->
-          <div class="s4CsvBtn" style="margin-top:var(--espaco-8)">
-            <div style="display:flex;align-items:center;gap:var(--espaco-8)">
-              <div class="sml-field" style="font-size:10px;min-width:140px">↓ Planilha de dados (CSV)</div>
-              <div class="sml-ptrack" style="flex:1"><div class="sml-pfill s4CsvPb"></div></div>
-              <div class="s4CsvOk" style="font-size:10px;color:#4ade80;white-space:nowrap">✓ exportada</div>
-            </div>
-          </div>
-          <!-- Apresentação -->
-          <div class="s4AprBtn" style="margin-top:var(--espaco-8)">
-            <div style="display:flex;align-items:center;gap:var(--espaco-8)">
-              <div class="sml-field" style="font-size:10px;min-width:140px">↗ Modo Apresentação</div>
-              <div class="sml-ptrack" style="flex:1"><div class="sml-pfill s4AprPb"></div></div>
-              <div class="s4AprOk" style="font-size:10px;color:var(--cor-ambar);white-space:nowrap">✓ ativado</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <div class="monitor-neck"></div>
+      <div class="monitor-base"></div>
+      <div class="cpu-desk"></div>
     </div>
 
     <!-- Entregas do sistema -->
