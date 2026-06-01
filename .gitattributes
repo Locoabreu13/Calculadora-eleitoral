@@ -1,0 +1,19 @@
+# Padroniza o fim-de-linha (LF) para parar o "ruído" de CRLF vs LF no git.
+# NÃO altera conteúdo, lógica nem dados — só o caractere invisível de fim-de-linha.
+* text=auto eol=lf
+
+# Scripts do Windows precisam manter CRLF
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.vbs text eol=crlf
+
+# Binários: nunca normalizar
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.pdf  binary
+*.zip  binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
