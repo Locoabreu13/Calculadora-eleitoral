@@ -5083,3 +5083,34 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 @media (max-width: 900px) {
   .sidebar-resizer { display: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   FIX (jun/2026) — calculadora: corte horizontal pós-Calcular
+   e rolagem das gavetas (Manual / Como Funciona) até o fim
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 1) Nunca rolar/cortar na horizontal: a área de resultados não estica.
+   As tabelas largas têm o próprio scroll (.tabela-scroll). */
+.main-content,
+.app-body.tem-resultados .main-content { overflow-x: hidden; }
+
+.result-sections, .result-panel, .audit-panel, .compare-panel,
+.relatorio-panel { min-width: 0; max-width: 100%; }
+.tabela-scroll { max-width: 100%; overflow-x: auto; }
+
+/* O divisor da sidebar não faz sentido neste app de "duas telas"
+   (dados em tela cheia → resultados em tela cheia): ocultar. */
+.sidebar-resizer { display: none; }
+
+/* 2) Gaveta lateral (Manual / Como Funciona): rolar até o final.
+   Padrão à prova de falhas: a SEÇÃO não rola; quem rola é o conteúdo,
+   com min-height:0 para o flex permitir a rolagem completa. */
+.docs-section { overflow: hidden; }
+.docs-section .drawer-bar { position: static; }
+.docs-section .docs-container {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
