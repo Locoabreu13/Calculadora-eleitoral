@@ -145,9 +145,9 @@
   --secao-padding-v-medio: var(--espaco-64);
   --secao-padding-v-pequeno: var(--espaco-48);
 
-  /* Largura máxima do conteúdo — centralizado */
-  --largura-max:    1200px;
-  --largura-texto:   680px;
+  /* Largura máxima do conteúdo — centralizado (fluido: preenche telas grandes) */
+  --largura-max:    min(2100px, 95vw);
+  --largura-texto:   42.5rem;
   --largura-estreita: 520px;
 
 
@@ -295,7 +295,9 @@
 }
 
 html {
-  font-size: 16px;
+  /* Fonte-raiz fluida: escala texto + espaçamentos (tokens em rem) de 13" a 27".
+     ~15px em tablet pequeno · 16px a ~1024px · ~18px a 1366px · ~24px a 2560px */
+  font-size: clamp(15px, 0.52vw + 10.7px, 24px);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
 }

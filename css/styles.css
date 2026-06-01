@@ -4978,3 +4978,55 @@ button:focus:not(:focus-visible) { outline: none; }
   .planos-mc-ciclo-dir { width: 100%; }
   .planos-mc-ciclo-dir .planos-mc-btn { flex: 1; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVIDADE 13" → 27"  (bloco adicionado — escalar/preencher)
+   - Libera larguras travadas que deixavam espaço vazio
+   - Tablet (≤1200px): sidebar mais estreita, sem aperto
+   - Telas grandes (≥1680px e ≥2200px): escala texto/espaçamento
+   Não altera nenhuma regra acima; tudo aqui sobrescreve por ordem.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 1) Liberar caps internos que geram espaço vazio em telas grandes */
+.dash-sec        { max-width: min(1600px, 100%); }
+.docs-container  { max-width: 1100px; }
+.welcome-screen  { max-width: 900px; }
+
+/* 2) Tablet 13" (paisagem ~1024–1366px): mantém lado-a-lado, sem aperto */
+@media (min-width: 901px) and (max-width: 1200px) {
+  .sidebar       { width: 300px; min-width: 300px; }
+  .main-content  { padding: 18px; }
+  .dash-sec      { padding: 28px 28px; }
+  .docs-container{ padding: 20px 20px 48px; }
+}
+
+/* 3) Telas grandes — degrau 1 (≥1680px) */
+@media (min-width: 1680px) {
+  body                  { font-size: 15px; }
+  .sidebar              { width: 400px; min-width: 400px; }
+  .main-content         { padding: 32px 40px; gap: 20px; }
+  .field-label          { font-size: 12px; }
+  .field-input, .field-select { font-size: 13px; }
+  .result-panel-title   { font-size: 17px; }
+  .result-panel-hint    { font-size: 11px; }
+  .result-panel table td { font-size: 14px; padding: 13px 16px; }
+  .result-panel table th { font-size: 11px; padding: 12px 16px; }
+  .audit-panel-title    { font-size: 15px; }
+  .docs-container p, .docs-container li { font-size: 14px; }
+  .dash-sec             { padding: 48px 56px; }
+}
+
+/* 4) Telas grandes — degrau 2 (≥2200px, monitores 27") */
+@media (min-width: 2200px) {
+  body                  { font-size: 16px; }
+  .sidebar              { width: 460px; min-width: 460px; }
+  .main-content         { padding: 40px 56px; gap: 24px; }
+  .field-label          { font-size: 13px; }
+  .field-input, .field-select { font-size: 14px; }
+  .result-panel-title   { font-size: 19px; }
+  .result-panel table td { font-size: 15px; padding: 15px 18px; }
+  .result-panel table th { font-size: 12px; padding: 14px 18px; }
+  .docs-container, .dash-sec { max-width: min(1900px, 100%); }
+  .docs-container p, .docs-container li { font-size: 15px; }
+  .dash-sec             { padding: 56px 72px; }
+}

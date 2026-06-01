@@ -282,6 +282,12 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
 .reveal-delay-2{transition-delay:0.2s}
 .reveal-delay-3{transition-delay:0.3s}
 .reveal-delay-4{transition-delay:0.4s}
+/* TABLET intermediário (13" retrato e similares): grids de 3/4 colunas viram 2 */
+@media(min-width:901px) and (max-width:1180px){
+  .hero-entregas{grid-template-columns:repeat(2,1fr)}
+  .hero-metricas{grid-template-columns:repeat(2,1fr);row-gap:var(--espaco-24)}
+  .precos-grid{grid-template-columns:repeat(2,1fr)}
+}
 @media(max-width:900px){
   nav{padding-inline:var(--espaco-16)}
   .nav-links{display:none}
@@ -289,7 +295,9 @@ nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(
   #mobile-menu.open{display:flex}
   .hero-conteudo{max-width:100%}
   .hero-titulo{font-size:var(--texto-hero-mobile)}
-  .hero-metricas{gap:var(--espaco-20)}
+  .hero-entregas{grid-template-columns:1fr}
+  .hero-metricas{grid-template-columns:repeat(2,1fr);gap:var(--espaco-20)}
+  .precos-grid{grid-template-columns:1fr}
   .secao-header{grid-template-columns:1fr}
   .fluxo-card{flex-direction:column}
   .fluxo-etapa{border-right:none;border-bottom:1px solid var(--cor-profundo-borda)}
