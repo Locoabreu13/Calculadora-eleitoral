@@ -5392,6 +5392,15 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   align-self: flex-end;
   margin-bottom: 0;
 }
+/* Partido/Candidato/Votos menores; Modalidade cresce para ler sem clicar */
+.app-body:not(.tem-resultados) .cassacao-row .cass-field-group {
+  flex: 0 1 150px;
+  min-width: 110px;
+}
+.app-body:not(.tem-resultados) .cassacao-row .cass-field-modal {
+  flex: 1 1 280px;
+  min-width: 240px;
+}
 .app-body:not(.tem-resultados) .cassacao-row select option { background: var(--cor-fundo-card); color: var(--cor-texto); }
 .app-body:not(.tem-resultados) .cass-votos { color: #B07D0A !important; }
 .app-body:not(.tem-resultados) .cass-preview {
