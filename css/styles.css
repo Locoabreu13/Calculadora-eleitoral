@@ -5241,3 +5241,127 @@ body.resizing-x { cursor: col-resize; user-select: none; }
     display: block;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   TELA DE ENTRADA — PALETA CLARA "GELO" (harmoniza com a landing)
+   Re-tematiza o painel de entrada (navy → gelo, texto escuro, inputs
+   claros). Escopo: .app-body:not(.tem-resultados) — nos resultados o
+   painel fica oculto, então nada mais é afetado. Layout inalterado.
+   ══════════════════════════════════════════════════════════════ */
+
+/* Fundo do painel + fundo ao redor */
+.app-body:not(.tem-resultados) { background: var(--cor-fundo-neutro); }
+.app-body:not(.tem-resultados) .sidebar { background: var(--cor-fundo-neutro); }
+
+/* Bordas (seções e fluxo) */
+.app-body:not(.tem-resultados) .sidebar-section,
+.app-body:not(.tem-resultados) .sidebar-flow { border-color: var(--cor-borda-suave); }
+
+/* Rótulos */
+.app-body:not(.tem-resultados) .sidebar-label { color: var(--cor-confiante); }
+.app-body:not(.tem-resultados) .sidebar-label-optional { color: var(--cor-texto-suave); }
+.app-body:not(.tem-resultados) .field-label { color: var(--cor-texto-medio); }
+
+/* Inputs de texto e selects */
+.app-body:not(.tem-resultados) .field-input,
+.app-body:not(.tem-resultados) .field-select,
+.app-body:not(.tem-resultados) .field-input-num {
+  background: var(--cor-fundo-card);
+  border-color: var(--cor-borda);
+  color: var(--cor-texto);
+}
+.app-body:not(.tem-resultados) .field-input::placeholder,
+.app-body:not(.tem-resultados) .field-input-num::placeholder { color: var(--cor-texto-label); }
+.app-body:not(.tem-resultados) .field-input:focus,
+.app-body:not(.tem-resultados) .field-select:focus,
+.app-body:not(.tem-resultados) .field-input-num:focus { border-color: var(--cor-confiante); }
+.app-body:not(.tem-resultados) .field-select option { background: var(--cor-fundo-card); color: var(--cor-texto); }
+
+/* Stepper (3 passos) — inativos claros; ativo âmbar; concluído teal */
+.app-body:not(.tem-resultados) .sf-num {
+  background: var(--cor-fundo-card);
+  border-color: var(--cor-borda);
+  color: var(--cor-texto-suave);
+}
+.app-body:not(.tem-resultados) .sf-label { color: var(--cor-texto-medio); }
+.app-body:not(.tem-resultados) .sf-desc  { color: var(--cor-texto-suave); }
+.app-body:not(.tem-resultados) .sf-connector { background: var(--cor-borda); }
+.app-body:not(.tem-resultados) .sf-step.sf-active .sf-num {
+  background: var(--cor-ambar); border-color: var(--cor-ambar); color: var(--cor-profundo);
+}
+.app-body:not(.tem-resultados) .sf-step.sf-active .sf-label { color: #B07D0A; }
+.app-body:not(.tem-resultados) .sf-step.sf-active .sf-desc  { color: var(--cor-texto-medio); }
+.app-body:not(.tem-resultados) .sf-step.sf-done .sf-num {
+  background: #0F766E; border-color: #0F766E; color: #fff;
+}
+.app-body:not(.tem-resultados) .sf-step.sf-done .sf-label { color: #0F766E; }
+
+/* Cartões de partido */
+.app-body:not(.tem-resultados) .partido-card {
+  background: var(--cor-fundo-card);
+  border-color: var(--cor-borda-suave);
+}
+.app-body:not(.tem-resultados) .partido-card input {
+  background: var(--cor-fundo-card) !important;
+  border-color: var(--cor-borda) !important;
+  color: var(--cor-texto);
+}
+.app-body:not(.tem-resultados) .partido-card input::placeholder { color: var(--cor-texto-label); }
+.app-body:not(.tem-resultados) .partido-card .partido-sigla { color: var(--cor-texto); }
+.app-body:not(.tem-resultados) .partido-card .partido-nominais,
+.app-body:not(.tem-resultados) .partido-card .partido-legenda { color: #B07D0A; }
+.app-body:not(.tem-resultados) .pcard-footer { border-top-color: var(--cor-borda-suave); }
+.app-body:not(.tem-resultados) .pcard-footer-btn { color: var(--cor-texto-suave); border-color: var(--cor-borda); }
+
+/* Toggle (candidatos) dentro dos cartões */
+.app-body:not(.tem-resultados) .toggle-row { background: var(--cor-fundo-card); border-color: var(--cor-borda-suave); }
+.app-body:not(.tem-resultados) .toggle-row:hover { background: var(--cor-fundo-neutro); }
+.app-body:not(.tem-resultados) .toggle-box { border-color: var(--cor-borda); color: var(--cor-ambar); }
+.app-body:not(.tem-resultados) .toggle-text-title { color: var(--cor-texto-medio); }
+.app-body:not(.tem-resultados) .toggle-text-desc  { color: var(--cor-texto-suave); }
+
+/* Cassação / Anulação */
+.app-body:not(.tem-resultados) .cass-field-label { color: var(--cor-texto-suave); }
+.app-body:not(.tem-resultados) .cassacao-row input,
+.app-body:not(.tem-resultados) .cassacao-row select {
+  background: var(--cor-fundo-card) !important;
+  border-color: var(--cor-borda) !important;
+  color: var(--cor-texto) !important;
+}
+.app-body:not(.tem-resultados) .cassacao-row select option { background: var(--cor-fundo-card); color: var(--cor-texto); }
+.app-body:not(.tem-resultados) .cass-votos { color: #B07D0A !important; }
+.app-body:not(.tem-resultados) .cass-preview {
+  color: var(--cor-texto-medio);
+  background: var(--cor-ambar-claro);
+  border-left-color: var(--cor-ambar);
+}
+
+/* Botões secundários (adicionar / limpar) */
+.app-body:not(.tem-resultados) .btn-sidebar-add {
+  background: var(--cor-fundo-card); border-color: var(--cor-borda); color: var(--cor-texto-suave);
+}
+.app-body:not(.tem-resultados) .btn-sidebar-add:hover { background: var(--cor-fundo-neutro); color: var(--cor-texto-medio); }
+.app-body:not(.tem-resultados) .btn-sidebar-clear { border-color: var(--cor-borda); color: var(--cor-texto-suave); }
+.app-body:not(.tem-resultados) .btn-sidebar-clear:hover { background: var(--cor-fundo-neutro); color: var(--cor-texto-medio); }
+/* (Calcular permanece âmbar com texto navy — legível sobre o gelo) */
+
+/* Importar do TSE — acento teal escuro legível sobre fundo claro */
+.app-body:not(.tem-resultados) .import-toggle-btn {
+  background: rgba(15,118,110,0.08); border-color: rgba(15,118,110,0.30); color: #0F766E;
+}
+.app-body:not(.tem-resultados) .import-toggle-btn:hover { background: rgba(15,118,110,0.14); color: #0F766E; }
+.app-body:not(.tem-resultados) .import-toggle-btn[aria-expanded="true"] { background: rgba(15,118,110,0.12); border-color: rgba(15,118,110,0.40); color: #0F766E; }
+.app-body:not(.tem-resultados) .import-filter-label { color: var(--cor-texto-suave); }
+.app-body:not(.tem-resultados) .import-filter-select {
+  background: var(--cor-fundo-card); border-color: var(--cor-borda); color: var(--cor-texto);
+}
+.app-body:not(.tem-resultados) .import-filter-select:focus { border-color: #0F766E; }
+.app-body:not(.tem-resultados) .import-filter-select option { background: var(--cor-fundo-card); color: var(--cor-texto); }
+.app-body:not(.tem-resultados) .import-btn-processar {
+  background: rgba(15,118,110,0.12); border-color: rgba(15,118,110,0.35); color: #0F766E;
+}
+.app-body:not(.tem-resultados) .import-btn-processar:hover { background: rgba(15,118,110,0.20); border-color: rgba(15,118,110,0.5); }
+.app-body:not(.tem-resultados) .import-status.progresso { color: var(--cor-texto-suave); }
+.app-body:not(.tem-resultados) #tse-municipio-lista {
+  background: var(--cor-fundo-card) !important; border-color: var(--cor-borda) !important;
+}
