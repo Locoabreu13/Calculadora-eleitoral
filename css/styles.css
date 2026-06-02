@@ -5123,17 +5123,18 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 /* Descrição dos passos só aparece no painel central */
 .sf-desc { display: none; }
 
-/* Sem resultados: centraliza o painel azul sobre fundo claro.
-   Sem forma de cartão — apenas a calculadora centralizada na página. */
+/* Sem resultados: a calculadora ocupa a largura toda da página, distribuída
+   proporcionalmente. Fundo navy de ponta a ponta — sem faixas brancas. */
 .app-body:not(.tem-resultados) {
   justify-content: center;
-  background: var(--cor-fundo-neutro);
+  background: var(--navy);
 }
 
-/* O painel azul vira o conteúdo principal, centralizado e em altura cheia */
+/* O painel azul preenche a largura (cap suave em telas gigantes, sem
+   faixa branca — o fundo lateral tambem e navy, ficando imperceptivel) */
 .app-body:not(.tem-resultados) .sidebar {
   width: 100%;
-  max-width: 880px;
+  max-width: 1600px;
   min-width: 0;
   margin: 0 auto;
   border-right: none;
@@ -5183,8 +5184,53 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 }
 .app-body:not(.tem-resultados) .sidebar-actions { padding: 24px 28px 28px; }
 
-/* No painel largo, mobile mantém comportamento de coluna única já existente */
+/* ── DISTRIBUIÇÃO PROPORCIONAL: conteúdo preenche a largura ────── */
+
+/* Parâmetros do Pleito: Rótulo + Vagas lado a lado */
+.app-body:not(.tem-resultados) .sidebar-section:has(#input-rotulo) {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 4px 20px;
+}
+.app-body:not(.tem-resultados) .sidebar-section:has(#input-rotulo) .sidebar-label {
+  grid-column: 1 / -1;
+}
+
+/* Importar do TSE: Ano / UF / Cargo lado a lado; botão e status ocupam a linha */
+.app-body:not(.tem-resultados) #import-panel-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px 16px;
+  align-items: end;
+}
+.app-body:not(.tem-resultados) #import-panel-auto > #btn-tse-carregar,
+.app-body:not(.tem-resultados) #import-panel-auto > #tse-direto-status,
+.app-body:not(.tem-resultados) #import-panel-auto > #tse-mun-wrap,
+.app-body:not(.tem-resultados) #import-panel-auto > #tse-cdmun-wrap {
+  grid-column: 1 / -1;
+}
+
+/* Partidos e Federações: grade de cartões que preenche a largura */
+.app-body:not(.tem-resultados) #lista-partidos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 10px;
+}
+
+/* Cassação / Anulação: também em grade */
+.app-body:not(.tem-resultados) #lista-cassacoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 10px;
+}
+
+/* No painel largo, mobile volta a coluna única */
 @media (max-width: 900px) {
-  .app-body:not(.tem-resultados) { background: transparent; }
   .app-body:not(.tem-resultados) .sidebar { max-width: none; }
+  .app-body:not(.tem-resultados) .sidebar-section:has(#input-rotulo),
+  .app-body:not(.tem-resultados) #import-panel-auto,
+  .app-body:not(.tem-resultados) #lista-partidos,
+  .app-body:not(.tem-resultados) #lista-cassacoes {
+    display: block;
+  }
 }
