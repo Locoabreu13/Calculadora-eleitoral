@@ -4651,6 +4651,13 @@ button:focus:not(:focus-visible) { outline: none; }
 .auth-separator { font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-inv-suave); }
 .auth-separator::before, .auth-separator::after { background: var(--cor-profundo-borda); }
 .btn-google { font-family: var(--fonte-corpo); font-size: var(--texto-sm); color: var(--cor-texto-inv-medio); border: 1px solid var(--cor-profundo-borda); border-radius: var(--raio-md); background: rgba(255,255,255,.04); }
+/* Cadastro: aceite de termos + medidor de força da senha (tela escura) */
+.auth-check { display: flex; gap: 8px; align-items: flex-start; margin: 4px 0 12px; text-align: left; font-family: var(--fonte-corpo); font-size: var(--texto-xs); color: var(--cor-texto-inv-medio); line-height: 1.45; }
+.auth-check input { margin-top: 2px; flex-shrink: 0; accent-color: var(--cor-confiante); }
+.auth-check a { color: #60A5FA; text-decoration: underline; }
+.auth-check a:hover { color: #93C5FD; }
+.auth-strength { height: 4px; border-radius: var(--raio-pill); background: rgba(255,255,255,.08); overflow: hidden; margin: -4px 0 10px; }
+.auth-strength span { display: block; height: 100%; width: 0; border-radius: var(--raio-pill); transition: width .2s, background .2s; }
 .btn-google:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); color: var(--cor-texto-inv); }
 .auth-erro { font-family: var(--fonte-corpo); }
 

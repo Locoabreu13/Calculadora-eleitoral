@@ -32,23 +32,27 @@ async function notificarCadastro(email) {
 }
 
 // Cria documento apenas se não existir — ativo: true imediato (controle por créditos).
-async function garantirPerfil(user) {
+// `dados` (opcional): { nome, cpf, consentimento } — gravados no cadastro por e-mail.
+async function garantirPerfil(user, dados = {}) {
   const ref = doc(db, "users", user.uid);
   const snap = await getDocFromServer(ref);
   if (!snap.exists()) {
     await setDoc(ref, {
       email: user.email,
       ativo: true,
-      createdAt: serverTimestamp()
+      createdAt: serverTimestamp(),
+      ...(dados.nome          ? { nome: dados.nome }                   : {}),
+      ...(dados.cpf           ? { cpf: dados.cpf }                     : {}),
+      ...(dados.consentimento ? { consentimento: dados.consentimento } : {}),
     });
     // Notifica apenas no primeiro cadastro (documento recém-criado)
     await notificarCadastro(user.email);
   }
 }
 
-export async function cadastrarEmail(email, senha) {
+export async function cadastrarEmail(email, senha, dados = {}) {
   const cred = await createUserWithEmailAndPassword(auth, email, senha);
-  await garantirPerfil(cred.user);
+  await garantirPerfil(cred.user, dados);
   return cred.user;
 }
 

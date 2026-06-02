@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=39" />
+  <link rel="stylesheet" href="css/styles.css?v=40" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -38,8 +38,16 @@
         <p id="login-erro" class="auth-erro"></p>
       </div>
       <div id="form-cadastro" style="display:none">
-        <input type="email" id="cad-email" placeholder="E-mail" class="auth-input" aria-label="E-mail">
-        <input type="password" id="cad-senha" placeholder="Senha (mín. 6 caracteres)" class="auth-input" aria-label="Senha">
+        <input type="text" id="cad-nome" placeholder="Nome completo" class="auth-input" aria-label="Nome completo" autocomplete="name">
+        <input type="email" id="cad-email" placeholder="E-mail" class="auth-input" aria-label="E-mail" autocomplete="email">
+        <input type="text" id="cad-cpf" placeholder="CPF" class="auth-input" aria-label="CPF" inputmode="numeric" maxlength="14" autocomplete="off">
+        <input type="password" id="cad-senha" placeholder="Senha (mín. 8 caracteres)" class="auth-input" aria-label="Senha" autocomplete="new-password">
+        <div id="cad-senha-forca" class="auth-strength" aria-hidden="true"><span></span></div>
+        <input type="password" id="cad-senha2" placeholder="Confirmar senha" class="auth-input" aria-label="Confirmar senha" autocomplete="new-password">
+        <label class="auth-check">
+          <input type="checkbox" id="cad-termos">
+          <span>Li e aceito os <a href="termos.html" target="_blank" rel="noopener">Termos de Uso</a> e a <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span>
+        </label>
         <button onclick="fazerCadastro()" class="btn-primary">Criar conta</button>
         <p id="cad-erro" class="auth-erro"></p>
       </div>
@@ -1190,7 +1198,7 @@
 })();
 </script>
 <script type="module">
-    import { cadastrarEmail, loginEmail, loginGoogle, logout, observarAuth } from "./js/auth.js?v=9";
+    import { cadastrarEmail, loginEmail, loginGoogle, logout, observarAuth } from "./js/auth.js?v=10";
     import { iniciarPaywall } from "./js/paywall.js?v=9";
     import { auth } from "./js/firebase-init.js?v=9";
     import { ouvirCreditos, pararOuvirCreditos, iniciarPagamento, consumirCredito, autorizarCalculo } from "./js/pagamentos.js?v=2";
@@ -1401,12 +1409,73 @@
       try { await loginEmail(email, senha); }
       catch(e) { document.getElementById("login-erro").textContent = traduzirErro(e.code); }
     };
+    // ── Validações de cadastro ──────────────────────────────────────────
+    function _soDigitos(s) { return (s || '').replace(/\D/g, ''); }
+    function _formatarCPF(s) {
+      const d = _soDigitos(s).slice(0, 11);
+      return d
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    }
+    function _cpfValido(cpf) {
+      const c = _soDigitos(cpf);
+      if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false;
+      let s = 0; for (let i = 0; i < 9; i++) s += parseInt(c[i], 10) * (10 - i);
+      let d1 = (s * 10) % 11; if (d1 === 10) d1 = 0; if (d1 !== parseInt(c[9], 10)) return false;
+      s = 0; for (let i = 0; i < 10; i++) s += parseInt(c[i], 10) * (11 - i);
+      let d2 = (s * 10) % 11; if (d2 === 10) d2 = 0; return d2 === parseInt(c[10], 10);
+    }
+    function _forcaSenha(p) {
+      let n = 0;
+      if (p.length >= 8) n++;
+      if (/[A-Z]/.test(p) && /[a-z]/.test(p)) n++;
+      if (/\d/.test(p)) n++;
+      if (/[^A-Za-z0-9]/.test(p)) n++;
+      return Math.min(n, 4);
+    }
+
     window.fazerCadastro = async () => {
-      const email = document.getElementById("cad-email").value;
-      const senha = document.getElementById("cad-senha").value;
-      try { await cadastrarEmail(email, senha); }
-      catch(e) { document.getElementById("cad-erro").textContent = traduzirErro(e.code); }
+      const erroEl = document.getElementById("cad-erro");
+      erroEl.textContent = '';
+      const nome   = document.getElementById("cad-nome").value.trim();
+      const email  = document.getElementById("cad-email").value.trim();
+      const cpf    = document.getElementById("cad-cpf").value;
+      const senha  = document.getElementById("cad-senha").value;
+      const senha2 = document.getElementById("cad-senha2").value;
+      const termos = document.getElementById("cad-termos").checked;
+
+      if (nome.length < 3)      { erroEl.textContent = 'Informe seu nome completo.'; return; }
+      if (!_cpfValido(cpf))     { erroEl.textContent = 'CPF inválido. Confira os números digitados.'; return; }
+      if (senha.length < 8)     { erroEl.textContent = 'A senha deve ter pelo menos 8 caracteres.'; return; }
+      if (senha !== senha2)     { erroEl.textContent = 'As senhas não coincidem.'; return; }
+      if (!termos)              { erroEl.textContent = 'É preciso aceitar os Termos de Uso e a Política de Privacidade.'; return; }
+
+      try {
+        await cadastrarEmail(email, senha, {
+          nome,
+          cpf: _soDigitos(cpf),
+          consentimento: { termos: true, versao: 'v1-2026-06', em: new Date().toISOString() }
+        });
+      } catch(e) { erroEl.textContent = traduzirErro(e.code); }
     };
+
+    // Máscara de CPF + medidor de força da senha
+    document.addEventListener('DOMContentLoaded', () => {
+      const cpfEl = document.getElementById('cad-cpf');
+      if (cpfEl) cpfEl.addEventListener('input', () => { cpfEl.value = _formatarCPF(cpfEl.value); });
+      const senhaEl = document.getElementById('cad-senha');
+      const forcaEl = document.getElementById('cad-senha-forca');
+      if (senhaEl && forcaEl) {
+        const bar = forcaEl.querySelector('span');
+        const cores = ['#EF4444', '#EF4444', '#D4A017', '#10B981', '#10B981'];
+        senhaEl.addEventListener('input', () => {
+          const n = _forcaSenha(senhaEl.value);
+          bar.style.width = (senhaEl.value ? (n / 4) * 100 : 0) + '%';
+          bar.style.background = cores[n];
+        });
+      }
+    });
     window.fazerLoginGoogle = async () => { try { await loginGoogle(); } catch(e) { console.error(e); } };
     window.fazerLogout = () => logout();
 
