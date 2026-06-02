@@ -5233,7 +5233,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 /* Partidos e Federações: grade de cartões que preenche a largura */
 .app-body:not(.tem-resultados) #lista-partidos {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: 10px;
 }
 
@@ -5311,8 +5311,9 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 
 /* Cartões de partido */
 .app-body:not(.tem-resultados) .partido-card {
-  background: var(--cor-fundo-card);
+  background: #F8FAFD;
   border-color: var(--cor-borda-suave);
+  box-shadow: 0 1px 4px rgba(12, 29, 48, 0.05);
 }
 .app-body:not(.tem-resultados) .partido-card input {
   background: var(--cor-fundo-card) !important;
