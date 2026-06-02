@@ -5234,11 +5234,15 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   grid-column: 1 / -1;
 }
 
-/* "Partidos e Federações": oculta na tela inicial ENQUANTO a lista está
-   vazia; reaparece sozinha quando o TSE carrega os partidos (cada partido
-   vira um .partido-card dentro de #lista-partidos, deixando de ser :empty). */
-.app-body:not(.tem-resultados) .sidebar-section:has(#lista-partidos:empty) {
+/* "Partidos e Federações": oculta na tela inicial e só aparece DEPOIS de
+   clicar em "Carregar do TSE" — momento em que o import.js adiciona a
+   classe .modo-tse ao #lista-partidos. (Sem isso, um card vazio inicial
+   mantinha a seção visível.) */
+.app-body:not(.tem-resultados) .sidebar-section:has(#lista-partidos) {
   display: none;
+}
+.app-body:not(.tem-resultados) .sidebar-section:has(#lista-partidos.modo-tse) {
+  display: block;
 }
 
 /* Partidos e Federações: grade de cartões que preenche a largura */
