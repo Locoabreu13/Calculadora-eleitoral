@@ -5255,7 +5255,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 /* Cassação / Anulação: também em grade */
 .app-body:not(.tem-resultados) #lista-cassacoes {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
   gap: 10px;
 }
 
@@ -5379,6 +5379,18 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   background: var(--cor-fundo-card) !important;
   border-color: var(--cor-borda) !important;
   color: var(--cor-texto) !important;
+  height: 44px;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+/* Botão × (remover) alinhado à linha das caixas (mesma altura) */
+.app-body:not(.tem-resultados) .cass-btn-rem {
+  height: 44px;
+  min-width: 44px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  align-self: flex-end;
+  margin-bottom: 0;
 }
 .app-body:not(.tem-resultados) .cassacao-row select option { background: var(--cor-fundo-card); color: var(--cor-texto); }
 .app-body:not(.tem-resultados) .cass-votos { color: #B07D0A !important; }
