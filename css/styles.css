@@ -5210,10 +5210,10 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   grid-column: 1 / -1;
 }
 
-/* "Partidos e Federações": oculta na tela inicial (de entrada de dados).
-   O #lista-partidos permanece no DOM, apenas escondido, para o JS e o
-   cálculo continuarem funcionando — os partidos do TSE entram nele. */
-.app-body:not(.tem-resultados) .sidebar-section:has(#lista-partidos) {
+/* "Partidos e Federações": oculta na tela inicial ENQUANTO a lista está
+   vazia; reaparece sozinha quando o TSE carrega os partidos (cada partido
+   vira um .partido-card dentro de #lista-partidos, deixando de ser :empty). */
+.app-body:not(.tem-resultados) .sidebar-section:has(#lista-partidos:empty) {
   display: none;
 }
 
