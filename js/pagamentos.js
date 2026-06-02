@@ -42,6 +42,19 @@ export async function autorizarCalculo() {
   return data;
 }
 
+// ─── Libera o crédito grátis (servidor confere unicidade do CPF) ───────────
+// Idempotente e seguro: sem CPF (ex.: login Google) o servidor não concede nada.
+export async function ativarCreditoGratis() {
+  try {
+    const fn = httpsCallable(functions, 'ativarCreditoGratis');
+    const { data } = await fn();
+    return data;
+  } catch (e) {
+    console.warn('[ativarCreditoGratis] falhou:', e);
+    return { concedido: false, motivo: 'erro' };
+  }
+}
+
 // ─── Carrega o SDK do Mercado Pago uma vez ─────────────────────────────────
 let _mpSDKPromise = null;
 function _carregarSDK() {

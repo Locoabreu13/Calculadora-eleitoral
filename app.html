@@ -1201,7 +1201,7 @@
     import { cadastrarEmail, loginEmail, loginGoogle, logout, observarAuth } from "./js/auth.js?v=10";
     import { iniciarPaywall } from "./js/paywall.js?v=9";
     import { auth } from "./js/firebase-init.js?v=9";
-    import { ouvirCreditos, pararOuvirCreditos, iniciarPagamento, consumirCredito, autorizarCalculo } from "./js/pagamentos.js?v=2";
+    import { ouvirCreditos, pararOuvirCreditos, iniciarPagamento, consumirCredito, autorizarCalculo, ativarCreditoGratis } from "./js/pagamentos.js?v=3";
     import { updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     // Ponte p/ ui.js: autorização/consumo de crédito feito no SERVIDOR (fonte da verdade)
@@ -1406,7 +1406,7 @@
     window.fazerLogin = async () => {
       const email = document.getElementById("login-email").value;
       const senha = document.getElementById("login-senha").value;
-      try { await loginEmail(email, senha); }
+      try { await loginEmail(email, senha); ativarCreditoGratis(); }
       catch(e) { document.getElementById("login-erro").textContent = traduzirErro(e.code); }
     };
     // ── Validações de cadastro ──────────────────────────────────────────
@@ -1457,6 +1457,8 @@
           cpf: _soDigitos(cpf),
           consentimento: { termos: true, versao: 'v1-2026-06', em: new Date().toISOString() }
         });
+        // Libera o crédito grátis no servidor (só se o CPF for inédito)
+        await ativarCreditoGratis();
       } catch(e) { erroEl.textContent = traduzirErro(e.code); }
     };
 

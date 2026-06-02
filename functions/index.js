@@ -57,11 +57,18 @@ exports.notificarNovoCadastro = functions
     const email = user.email || 'sem-email';
     const uid   = user.uid   || '';
 
+    // Google já recebe o grátis aqui (conta Google é difícil de criar em massa).
+    // Cadastro por e-mail recebe 0 aqui; o grátis é liberado por ativarCreditoGratis
+    // somente após conferir que o CPF ainda não usou o benefício (anti-fraude).
+    const isGoogle = (user.providerData || []).some(p => p && p.providerId === 'google.com');
+    const creditosIniciais = isGoogle ? 1 : 0;
+
     const batch = db.batch();
 
-    // Cria perfil com 1 crédito grátis
+    // Cria perfil com o crédito inicial conforme o provedor
     batch.set(db.collection('usuarios').doc(uid), {
-      email, creditos: 1, plano: 'gratis',
+      email, creditos: creditosIniciais, plano: 'gratis',
+      ...(isGoogle ? { gratisConcedido: true } : {}),
       criadoEm: admin.firestore.FieldValue.serverTimestamp(),
     }, { merge: true });
 
@@ -87,6 +94,45 @@ exports.notificarNovoCadastro = functions
     } catch (e) {
       console.error('Erro ao enviar e-mail:', e);
     }
+  });
+
+// ─── Libera o crédito grátis só para CPF inédito (anti-fraude) ─────────────
+// Chamada pelo cliente após o cadastro por e-mail (quando o CPF já foi gravado).
+// Idempotente: nunca concede duas vezes ao mesmo usuário.
+exports.ativarCreditoGratis = functions
+  .https.onCall(async (data, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError('unauthenticated', 'Faça login primeiro.');
+    }
+    const uid = context.auth.uid;
+
+    const userSnap = await db.collection('users').doc(uid).get();
+    const cpf = userSnap.exists ? String(userSnap.data().cpf || '').replace(/\D/g, '') : '';
+    if (!cpf) return { concedido: false, motivo: 'sem_cpf' };  // ex.: login Google
+
+    const usuarioRef = db.collection('usuarios').doc(uid);
+    const cpfRef     = db.collection('cpfs_gratis').doc(cpf);
+
+    return await db.runTransaction(async (tx) => {
+      const usuarioSnap = await tx.get(usuarioRef);
+      if (usuarioSnap.exists && usuarioSnap.data().gratisConcedido === true) {
+        return { concedido: false, motivo: 'ja_concedido' };
+      }
+      const cpfSnap = await tx.get(cpfRef);
+      if (cpfSnap.exists) {
+        // CPF já usou o grátis em outra conta — marca para não tentar de novo
+        tx.set(usuarioRef, { gratisConcedido: true, gratisBloqueado: true }, { merge: true });
+        return { concedido: false, motivo: 'cpf_ja_usou' };
+      }
+      // CPF inédito — concede 1 crédito e registra o CPF
+      tx.set(cpfRef, { uid, em: admin.firestore.FieldValue.serverTimestamp() });
+      tx.set(usuarioRef, {
+        creditos: admin.firestore.FieldValue.increment(1),
+        gratisConcedido: true,
+        plano: 'gratis',
+      }, { merge: true });
+      return { concedido: true };
+    });
   });
 
 // ─── Criar preferência (retorna preferenceId para o Checkout Brick) ────────
