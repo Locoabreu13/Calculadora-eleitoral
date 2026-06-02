@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=41" />
+  <link rel="stylesheet" href="css/styles.css?v=42" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -303,21 +303,24 @@
     <!-- ── SIDEBAR ──────────────────────────────────────────────────────────── -->
     <aside class="sidebar" role="complementary" aria-label="Painel de entrada de dados">
 
-      <!-- Fluxo de trabalho -->
+      <!-- Fluxo de trabalho (3 passos em destaque) -->
       <div class="sidebar-flow" aria-label="Passos do cálculo">
         <div class="sf-step sf-active" id="sf-1">
           <div class="sf-num">1</div>
           <div class="sf-label">Carregar</div>
+          <div class="sf-desc">Selecione estado, cargo e ano e importe os dados do TSE</div>
         </div>
         <div class="sf-connector"></div>
         <div class="sf-step" id="sf-2">
           <div class="sf-num">2</div>
           <div class="sf-label">Cassação</div>
+          <div class="sf-desc">Informe os votos a anular — opcional</div>
         </div>
         <div class="sf-connector"></div>
         <div class="sf-step" id="sf-3">
           <div class="sf-num">3</div>
           <div class="sf-label">Calcular</div>
+          <div class="sf-desc">Veja a distribuição com as fases F1, F2 e F3</div>
         </div>
       </div>
 
@@ -470,45 +473,6 @@
 
     <!-- ── MAIN CONTENT ──────────────────────────────────────────────────────── -->
     <main class="main-content" role="main" aria-label="Resultados da distribuição">
-
-      <!-- Tela de boas-vindas (visível quando não há resultados) -->
-      <div class="empty-state">
-        <div class="welcome-screen">
-
-          <div class="welcome-header">
-            <div class="welcome-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="30" height="30" aria-hidden="true">
-                <rect x="2" y="3" width="20" height="14" rx="2"/>
-                <path d="M8 21h8M12 17v4"/>
-                <path d="M7 8h3M7 11.5h2M14 8l2 2.5-2 2.5"/>
-              </svg>
-            </div>
-            <div>
-              <h2 class="welcome-title">Calculadora Retotaliza<span style="color:var(--cor-ambar)">JE</span></h2>
-              <p class="welcome-sub">Retotalização proporcional · art. 109 CE · ADIs 7.228/7.263/7.325 STF</p>
-            </div>
-          </div>
-
-          <div class="welcome-howto">
-            <div class="welcome-section-label">Como usar</div>
-            <div class="welcome-steps-grid">
-              <div class="welcome-step">
-                <div class="welcome-step-num">1</div>
-                <div class="welcome-step-text">Selecione o <strong>Estado, cargo e ano</strong> na barra lateral e clique em <strong>▶ Carregar do TSE</strong></div>
-              </div>
-              <div class="welcome-step">
-                <div class="welcome-step-num">2</div>
-                <div class="welcome-step-text">Adicione <strong>cassações ou anulações</strong> de votos em "Cassação / Anulação" — ou pule esta etapa</div>
-              </div>
-              <div class="welcome-step">
-                <div class="welcome-step-num">3</div>
-                <div class="welcome-step-text">Clique em <strong>▶ Calcular Distribuição</strong> e veja o resultado com as fases F1, F2 e F3 detalhadas</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
 
       <!-- Result sections (shown by CSS :has() when results exist) -->
       <div class="result-sections">
