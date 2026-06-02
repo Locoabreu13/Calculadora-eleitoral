@@ -5190,6 +5190,17 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 }
 .app-body:not(.tem-resultados) .sidebar-actions { padding: 24px 28px 28px; }
 
+/* ── ALTERNÂNCIA SUAVE DE TOM ENTRE AS 6 ETAPAS ───────────────────
+   Dois tons claros (A = gelo mais cool, B = quase branco) se alternam
+   para a pessoa identificar cada etapa. Partidos fica no tom A (mais
+   escuro) para os cards off-white continuarem se destacando. */
+.app-body:not(.tem-resultados) .sidebar-flow                          { background: #F6F9FD; }  /* 1 · 3 passos      (B) */
+.app-body:not(.tem-resultados) .sidebar-section:has(#input-rotulo)    { background: #E9EEF6; }  /* 2 · Parâmetros    (A) */
+.app-body:not(.tem-resultados) #import-section                        { background: #F6F9FD; }  /* 3 · Importar TSE  (B) */
+.app-body:not(.tem-resultados) .sidebar-section:has(#lista-partidos)  { background: #E9EEF6; }  /* 4 · Partidos      (A) */
+.app-body:not(.tem-resultados) .sidebar-section:has(#lista-cassacoes) { background: #F6F9FD; }  /* 5 · Cassação      (B) */
+.app-body:not(.tem-resultados) .sidebar-actions                       { background: #E9EEF6; }  /* 6 · Ações         (A) */
+
 /* ── DISTRIBUIÇÃO PROPORCIONAL: conteúdo preenche a largura ────── */
 
 /* Parâmetros do Pleito: Rótulo + Vagas lado a lado */
