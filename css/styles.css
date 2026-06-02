@@ -67,7 +67,12 @@ body {
 #app {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc(100vh - 28px);
+  max-width: 1280px;
+  margin: 14px auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(15, 28, 46, 0.20);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -163,7 +168,7 @@ body {
   border-right: 1px solid var(--navy-border);
   padding: 0 0 16px;
   overflow-y: auto;
-  height: calc(100vh - 52px - 40px);
+  height: calc(100vh - 28px - 52px - 40px);
 }
 
 .sidebar-section {
@@ -627,7 +632,7 @@ input.valido   { border-color: #27ae60 !important; box-shadow: 0 0 0 2px rgba(39
   flex-direction: column;
   gap: 16px;
   overflow-y: auto;
-  height: calc(100vh - 52px - 40px);
+  height: calc(100vh - 28px - 52px - 40px);
   min-width: 0;
 }
 
@@ -2113,7 +2118,7 @@ body.modo-apresentacao #apres-sair { display: inline-flex; align-items: center; 
 /* ── Responsivo ──────────────────────────────────────────────── */
 @media (max-width: 900px) {
   body { overflow: auto; height: auto; }
-  #app { height: auto; }
+  #app { height: auto; max-width: none; margin: 0; border-radius: 0; box-shadow: none; }
   .app-body { flex-direction: column; }
   .sidebar { width: 100%; min-width: unset; height: auto; position: static; overflow-y: visible; }
   .main-content { height: auto; overflow-y: visible; }
@@ -4324,7 +4329,7 @@ button:focus:not(:focus-visible) { outline: none; }
 .app-body.tem-resultados .main-content {
   display: flex;
   flex: 1;
-  height: calc(100vh - 52px - 40px);
+  height: calc(100vh - 28px - 52px - 40px);
   overflow-y: auto;
   animation: fadeInRight 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
