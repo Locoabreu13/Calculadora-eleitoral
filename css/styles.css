@@ -5201,6 +5201,13 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 .app-body:not(.tem-resultados) .sidebar-section:has(#input-rotulo) .sidebar-label {
   grid-column: 1 / -1;
 }
+/* Rótulo e Vagas: mesma altura e cantos arredondados */
+.app-body:not(.tem-resultados) .sidebar-section:has(#input-rotulo) .field-input,
+.app-body:not(.tem-resultados) .sidebar-section:has(#input-rotulo) .field-input-num {
+  height: 46px;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
 
 /* Importar do TSE: Ano / UF / Cargo lado a lado; botão e status ocupam a linha */
 .app-body:not(.tem-resultados) #import-panel-auto {
