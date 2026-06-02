@@ -5417,3 +5417,34 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 .app-body:not(.tem-resultados) #tse-municipio-lista {
   background: var(--cor-fundo-card) !important; border-color: var(--cor-borda) !important;
 }
+
+/* ── LEGIBILIDADE no painel claro: textos que eram brancos ──────── */
+
+/* Badge "Dados TSE importados" (era texto branco sobre fundo claro) */
+.app-body:not(.tem-resultados) .import-badge {
+  background: rgba(15,118,110,0.08);
+  border-color: rgba(15,118,110,0.25);
+}
+.app-body:not(.tem-resultados) .import-badge-linha1 { color: #0F766E; }
+.app-body:not(.tem-resultados) .import-badge-linha2 { color: var(--cor-texto-medio); }
+.app-body:not(.tem-resultados) .import-badge-linha3 { color: var(--cor-texto-suave); }
+
+/* Status de importação (caso apareça no painel claro) */
+.app-body:not(.tem-resultados) .import-status.ok {
+  color: #0F766E; background: rgba(15,118,110,0.08); border-color: rgba(15,118,110,0.20);
+}
+.app-body:not(.tem-resultados) .import-status.aviso { color: #B07D0A; }
+
+/* Valores dos partidos carregados do TSE (modo-tse forçava branco via #id) */
+.app-body:not(.tem-resultados) #lista-partidos.modo-tse .partido-sigla,
+.app-body:not(.tem-resultados) #lista-partidos.modo-tse .partido-nome,
+.app-body:not(.tem-resultados) #lista-partidos.modo-tse .partido-federacao,
+.app-body:not(.tem-resultados) #lista-partidos.modo-tse .candidato-nome,
+.app-body:not(.tem-resultados) #lista-partidos.modo-tse .candidato-partido {
+  color: var(--cor-texto);
+}
+.app-body:not(.tem-resultados) #lista-partidos.modo-tse .partido-nominais,
+.app-body:not(.tem-resultados) #lista-partidos.modo-tse .partido-legenda,
+.app-body:not(.tem-resultados) #lista-partidos.modo-tse .candidato-votos {
+  color: #B07D0A;
+}
