@@ -5331,6 +5331,29 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   border-color: var(--cor-borda) !important;
   color: var(--cor-texto);
 }
+/* Campos e botões do card uniformes: mesma altura e cantos arredondados
+   (alvo: cabeçalho + federação; não afeta a sublista de candidatos) */
+.app-body:not(.tem-resultados) .partido-card-header input,
+.app-body:not(.tem-resultados) .partido-federacao {
+  height: 44px;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+.app-body:not(.tem-resultados) .pcard-remover .btn-perigo {
+  height: 44px;
+  min-width: 44px;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+.app-body:not(.tem-resultados) .pcard-footer-btn {
+  height: 44px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+}
 .app-body:not(.tem-resultados) .partido-card input::placeholder { color: var(--cor-texto-label); }
 .app-body:not(.tem-resultados) .partido-card .partido-sigla { color: var(--cor-texto); }
 .app-body:not(.tem-resultados) .partido-card .partido-nominais,
