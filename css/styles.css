@@ -5383,7 +5383,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   border-radius: 12px;
   box-sizing: border-box;
 }
-/* Botão × (remover) alinhado à linha das caixas (mesma altura) */
+/* Botão × (remover) alinhado à linha das caixas (mesma altura) com o × centralizado */
 .app-body:not(.tem-resultados) .cass-btn-rem {
   height: 44px;
   min-width: 44px;
@@ -5391,6 +5391,10 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   box-sizing: border-box;
   align-self: flex-end;
   margin-bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 /* Partido/Candidato/Votos menores; Modalidade cresce para ler sem clicar */
 .app-body:not(.tem-resultados) .cassacao-row .cass-field-group {
