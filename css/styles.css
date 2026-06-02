@@ -5145,10 +5145,16 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 
 /* ── 3 PASSOS EM DESTAQUE ─────────────────────────────────────── */
 .app-body:not(.tem-resultados) .sidebar-flow {
-  align-items: flex-start;
+  align-items: stretch;
   padding: 30px 28px 26px;
 }
-.app-body:not(.tem-resultados) .sf-step        { gap: 8px; opacity: 0.6; }
+.app-body:not(.tem-resultados) .sf-step {
+  gap: 8px;
+  opacity: 0.6;
+  border-radius: 16px;
+  padding: 22px 16px;
+  justify-content: flex-start;
+}
 .app-body:not(.tem-resultados) .sf-step.sf-active { opacity: 1; }
 .app-body:not(.tem-resultados) .sf-step.sf-done   { opacity: 0.9; }
 .app-body:not(.tem-resultados) .sf-num {
@@ -5173,7 +5179,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 }
 .app-body:not(.tem-resultados) .sf-step.sf-active .sf-desc { color: rgba(255,255,255,0.62); }
 .app-body:not(.tem-resultados) .sf-connector {
-  width: 48px; margin-bottom: 0; margin-top: 21px; align-self: flex-start;
+  width: 48px; margin-bottom: 0; margin-top: 44px; align-self: flex-start;
 }
 
 /* ── SEÇÕES EM DESTAQUE: cabeçalhos maiores e mais respiro ─────── */
