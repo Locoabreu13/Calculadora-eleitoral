@@ -5361,11 +5361,11 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 /* Importar do TSE — acento teal escuro legível sobre fundo claro */
 /* "Importar dados do TSE": paleta âmbar/laranja da marca + texto centralizado */
 .app-body:not(.tem-resultados) .import-toggle-btn {
-  background: rgba(212,160,23,0.10); border-color: rgba(212,160,23,0.32); color: #B07D0A;
+  background: rgba(212,160,23,0.12); border-color: rgba(212,160,23,0.35); color: #B07D0A;
   justify-content: center; text-align: center;
 }
-.app-body:not(.tem-resultados) .import-toggle-btn:hover { background: rgba(212,160,23,0.16); color: #B07D0A; }
-.app-body:not(.tem-resultados) .import-toggle-btn[aria-expanded="true"] { background: rgba(212,160,23,0.14); border-color: rgba(212,160,23,0.40); color: #B07D0A; }
+.app-body:not(.tem-resultados) .import-toggle-btn:hover { background: rgba(212,160,23,0.20); border-color: rgba(212,160,23,0.5); color: #B07D0A; }
+.app-body:not(.tem-resultados) .import-toggle-btn[aria-expanded="true"] { background: rgba(212,160,23,0.12); border-color: rgba(212,160,23,0.35); color: #B07D0A; }
 .app-body:not(.tem-resultados) .import-filter-label { color: var(--cor-texto-suave); }
 .app-body:not(.tem-resultados) .import-filter-select {
   background: var(--cor-fundo-card); border-color: var(--cor-borda); color: var(--cor-texto);
