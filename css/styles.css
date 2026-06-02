@@ -67,12 +67,7 @@ body {
 #app {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 28px);
-  max-width: 1280px;
-  margin: 14px auto;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 12px 48px rgba(15, 28, 46, 0.20);
+  height: 100vh;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -168,7 +163,7 @@ body {
   border-right: 1px solid var(--navy-border);
   padding: 0 0 16px;
   overflow-y: auto;
-  height: calc(100vh - 28px - 52px - 40px);
+  height: calc(100vh - 52px - 40px);
 }
 
 .sidebar-section {
@@ -632,7 +627,7 @@ input.valido   { border-color: #27ae60 !important; box-shadow: 0 0 0 2px rgba(39
   flex-direction: column;
   gap: 16px;
   overflow-y: auto;
-  height: calc(100vh - 28px - 52px - 40px);
+  height: calc(100vh - 52px - 40px);
   min-width: 0;
 }
 
@@ -2118,7 +2113,7 @@ body.modo-apresentacao #apres-sair { display: inline-flex; align-items: center; 
 /* ── Responsivo ──────────────────────────────────────────────── */
 @media (max-width: 900px) {
   body { overflow: auto; height: auto; }
-  #app { height: auto; max-width: none; margin: 0; border-radius: 0; box-shadow: none; }
+  #app { height: auto; }
   .app-body { flex-direction: column; }
   .sidebar { width: 100%; min-width: unset; height: auto; position: static; overflow-y: visible; }
   .main-content { height: auto; overflow-y: visible; }
@@ -4329,7 +4324,7 @@ button:focus:not(:focus-visible) { outline: none; }
 .app-body.tem-resultados .main-content {
   display: flex;
   flex: 1;
-  height: calc(100vh - 28px - 52px - 40px);
+  height: calc(100vh - 52px - 40px);
   overflow-y: auto;
   animation: fadeInRight 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
@@ -5128,26 +5123,20 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 /* Descrição dos passos só aparece no painel central */
 .sf-desc { display: none; }
 
-/* Sem resultados: centraliza o painel sobre fundo claro, com rolagem */
+/* Sem resultados: centraliza o painel azul sobre fundo claro.
+   Sem forma de cartão — apenas a calculadora centralizada na página. */
 .app-body:not(.tem-resultados) {
   justify-content: center;
-  align-items: flex-start;
-  overflow-y: auto;
   background: var(--cor-fundo-neutro);
-  padding: 36px 24px 64px;
 }
 
-/* O painel azul vira o conteúdo principal (cartão centralizado) */
+/* O painel azul vira o conteúdo principal, centralizado e em altura cheia */
 .app-body:not(.tem-resultados) .sidebar {
   width: 100%;
   max-width: 880px;
   min-width: 0;
   margin: 0 auto;
-  height: auto;
-  overflow: visible;
-  border: 1px solid var(--navy-border);
-  border-radius: 18px;
-  box-shadow: 0 18px 56px rgba(15, 28, 46, 0.30);
+  border-right: none;
 }
 
 /* Esconde a área de resultados enquanto não há cálculo */
@@ -5157,7 +5146,6 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 .app-body:not(.tem-resultados) .sidebar-flow {
   align-items: flex-start;
   padding: 30px 28px 26px;
-  border-radius: 18px 18px 0 0;
 }
 .app-body:not(.tem-resultados) .sf-step        { gap: 8px; opacity: 0.6; }
 .app-body:not(.tem-resultados) .sf-step.sf-active { opacity: 1; }
@@ -5197,8 +5185,6 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 
 /* No painel largo, mobile mantém comportamento de coluna única já existente */
 @media (max-width: 900px) {
-  .app-body:not(.tem-resultados) { padding: 0; background: transparent; }
-  .app-body:not(.tem-resultados) .sidebar {
-    max-width: none; border-radius: 0; border: none; box-shadow: none;
-  }
+  .app-body:not(.tem-resultados) { background: transparent; }
+  .app-body:not(.tem-resultados) .sidebar { max-width: none; }
 }
