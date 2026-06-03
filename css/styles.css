@@ -5130,13 +5130,13 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   background: var(--navy);
 }
 
-/* O painel azul preenche a largura (cap suave em telas gigantes, sem
-   faixa branca — o fundo lateral tambem e navy, ficando imperceptivel) */
+/* O painel preenche 100% da largura em qualquer tela (sem trava de
+   largura, para nao sobrar margem em monitores grandes/4K). */
 .app-body:not(.tem-resultados) .sidebar {
   width: 100%;
-  max-width: 1600px;
+  max-width: none;
   min-width: 0;
-  margin: 0 auto;
+  margin: 0;
   border-right: none;
 }
 
