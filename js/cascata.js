@@ -55,9 +55,47 @@ export function calcularTempoTV() {
   return criarResultadoPendente();
 }
 
-export function calcularFEFC() {
-  // TODO: preencher a formula apos validacao contra dado oficial do TSE.
-  return criarResultadoPendente();
+export function calcularFEFC(_base, _cenarioRetotalizado, dadosReferencia, cenario, categoria) {
+  const fefc = dadosReferencia && dadosReferencia.fefc;
+
+  if (!fefc || fefc.poolCadeiras == null) {
+    return criarResultadoPendente();
+  }
+
+  const unidadeCadeira = fefc.poolCadeiras / fefc.totalCadeiras;
+  const unidadeSenador = fefc.poolSenado / fefc.totalSenadores;
+  const deltaCadeiras = cenario && cenario.deltaCadeirasPorPartido;
+
+  if (!deltaCadeiras || typeof deltaCadeiras !== "object") {
+    return {
+      ...criarResultadoPendente(),
+      observacao: "delta de cadeiras nao informado"
+    };
+  }
+
+  const porPartido = {};
+  let temDelta35Pendente = false;
+
+  for (const [sigla, variacao] of Object.entries(deltaCadeiras)) {
+    const delta2 = 0;
+    const delta48 = unidadeCadeira * variacao;
+    const delta15 = 0;
+    const delta35 = categoria === "cassacao_sem_perda_votos" ? 0 : null;
+    const deltaTotal = delta35 === null ? null : delta2 + delta35 + delta48 + delta15;
+
+    if (delta35 === null) {
+      temDelta35Pendente = true;
+    }
+
+    porPartido[sigla] = { delta2, delta35, delta48, delta15, deltaTotal };
+  }
+
+  return {
+    status: temDelta35Pendente ? "parcial_35_pendente" : "validado",
+    unidadeCadeira,
+    unidadeSenador,
+    porPartido
+  };
 }
 
 export function calcularClausula() {
