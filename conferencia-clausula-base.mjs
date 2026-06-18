@@ -173,3 +173,46 @@ console.log(`Script   (${cumpriramNoScript.length} entes): ${cumpriramNoScript.j
 console.log("");
 console.log("Nota: grafias podem diferir (ex: PCdoB vs 'PC do B'; UNIAO vs UNIAO com acento).");
 console.log("Conferir os 12 entes manualmente pela correspondencia de partidos/federacoes.");
+
+// --- Exportar linha de base para insercao em dadosReferencia ---
+const mapeamentoSiglaParaEntidade = {};
+for (const [nomeFed, fed] of Object.entries(FEDERACOES_2022)) {
+  for (const membro of fed.membros) {
+    mapeamentoSiglaParaEntidade[membro] = nomeFed;
+  }
+  mapeamentoSiglaParaEntidade[fed.siglaAgrupada] = nomeFed;
+}
+
+const cadeirasSparse = {};
+for (const [entidade, porUF] of Object.entries(cadeirasPorEntidadePorUF)) {
+  const totalCad = Object.values(porUF).reduce((a, b) => a + b, 0);
+  if (totalCad > 0) {
+    const sparse = {};
+    for (const [uf, count] of Object.entries(porUF)) {
+      if (count > 0) sparse[uf] = count;
+    }
+    cadeirasSparse[entidade] = sparse;
+  }
+}
+
+const statusVotos = {};
+for (const [entidade, r] of Object.entries(resultadoClausula)) {
+  statusVotos[entidade] = {
+    cumpriuPorVotos: r.cumpriuPorVotos,
+    pctNacional: parseFloat(r.pctNacional.toFixed(4)),
+    ufsComPctMinimo: r.ufsComPctMinimo
+  };
+}
+
+const linhaDeBase = {
+  fonte: "Resultado TSE 2022 processado via conferencia-clausula-base.mjs; soma cadeiras = " + totalCadeirasNacional,
+  anoEleicao: 2022,
+  mapeamentoSiglaParaEntidade,
+  totalVotosPorUF,
+  cadeirasPorEntidadePorUF: cadeirasSparse,
+  statusVotosPorEntidade: statusVotos
+};
+
+fs.writeFileSync("./clausula-linhaDeBase2022.json",
+  JSON.stringify(linhaDeBase, null, 2), "utf8");
+console.log("\nLinha de base exportada: clausula-linhaDeBase2022.json");

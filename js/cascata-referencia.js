@@ -90,6 +90,435 @@ export const dadosReferencia = {
     }
   },
 
+  clausulaLinhaDeBase2022: {
+  "fonte": "Resultado TSE 2022 processado via conferencia-clausula-base.mjs; soma cadeiras = 513",
+  "anoEleicao": 2022,
+  "mapeamentoSiglaParaEntidade": {
+    "PT": "FE Brasil (PT/PC do B/PV)",
+    "PC do B": "FE Brasil (PT/PC do B/PV)",
+    "PV": "FE Brasil (PT/PC do B/PV)",
+    "PT/PC do B/PV": "FE Brasil (PT/PC do B/PV)",
+    "PSDB": "PSDB/Cidadania",
+    "CIDADANIA": "PSDB/Cidadania",
+    "PSDB/CIDADANIA": "PSDB/Cidadania",
+    "PSOL": "PSOL/Rede",
+    "REDE": "PSOL/Rede",
+    "PSOL/REDE": "PSOL/Rede"
+  },
+  "totalVotosPorUF": {
+    "AC": 434253,
+    "AL": 1626009,
+    "AM": 1976477,
+    "AP": 423017,
+    "BA": 7958431,
+    "CE": 5083860,
+    "DF": 1607519,
+    "ES": 2084430,
+    "GO": 3439644,
+    "MA": 3707930,
+    "MG": 11181098,
+    "MS": 1353024,
+    "MT": 1730277,
+    "PA": 4521516,
+    "PB": 2209355,
+    "PE": 4969863,
+    "PI": 1957483,
+    "PR": 6038642,
+    "RJ": 8575988,
+    "RN": 1864825,
+    "RO": 869148,
+    "RR": 291714,
+    "RS": 6149822,
+    "SC": 3969848,
+    "SE": 1191617,
+    "SP": 23302342,
+    "TO": 830140
+  },
+  "cadeirasPorEntidadePorUF": {
+    "FE Brasil (PT/PC do B/PV)": {
+      "AL": 1,
+      "AP": 1,
+      "BA": 10,
+      "CE": 3,
+      "DF": 2,
+      "ES": 2,
+      "GO": 2,
+      "MA": 2,
+      "MG": 10,
+      "MS": 2,
+      "PA": 2,
+      "PB": 1,
+      "PE": 3,
+      "PI": 5,
+      "PR": 6,
+      "RJ": 6,
+      "RN": 2,
+      "RS": 7,
+      "SC": 2,
+      "SE": 1,
+      "SP": 11
+    },
+    "PSDB/Cidadania": {
+      "AM": 1,
+      "BA": 1,
+      "GO": 1,
+      "MG": 2,
+      "MS": 3,
+      "PR": 1,
+      "RS": 3,
+      "SC": 1,
+      "SP": 5
+    },
+    "PSOL/Rede": {
+      "AP": 1,
+      "MG": 1,
+      "PE": 1,
+      "RJ": 5,
+      "RS": 1,
+      "SP": 6
+    },
+    "PP": {
+      "AC": 3,
+      "AL": 4,
+      "AP": 1,
+      "BA": 4,
+      "CE": 1,
+      "ES": 2,
+      "GO": 2,
+      "MA": 2,
+      "MG": 3,
+      "MS": 1,
+      "PB": 2,
+      "PE": 4,
+      "PI": 2,
+      "PR": 4,
+      "RJ": 3,
+      "RS": 3,
+      "SE": 1,
+      "SP": 4,
+      "TO": 1
+    },
+    "UNIÃO": {
+      "AC": 3,
+      "AL": 1,
+      "AM": 2,
+      "BA": 6,
+      "CE": 4,
+      "GO": 2,
+      "MA": 2,
+      "MG": 3,
+      "MT": 2,
+      "PA": 1,
+      "PB": 1,
+      "PE": 3,
+      "PR": 4,
+      "RJ": 6,
+      "RN": 2,
+      "RO": 3,
+      "RR": 2,
+      "RS": 1,
+      "SC": 1,
+      "SE": 2,
+      "SP": 6,
+      "TO": 1
+    },
+    "REPUBLICANOS": {
+      "AC": 2,
+      "AL": 1,
+      "AM": 2,
+      "AP": 1,
+      "BA": 3,
+      "DF": 2,
+      "ES": 2,
+      "GO": 1,
+      "MA": 1,
+      "MG": 2,
+      "PB": 3,
+      "PE": 2,
+      "PR": 1,
+      "RJ": 3,
+      "RR": 3,
+      "RS": 3,
+      "SE": 1,
+      "SP": 5,
+      "TO": 3
+    },
+    "MDB": {
+      "AL": 2,
+      "AP": 1,
+      "BA": 1,
+      "CE": 1,
+      "DF": 1,
+      "GO": 2,
+      "MA": 1,
+      "MG": 2,
+      "MT": 2,
+      "PA": 9,
+      "PE": 1,
+      "PR": 1,
+      "RJ": 2,
+      "RO": 2,
+      "RR": 2,
+      "RS": 3,
+      "SC": 3,
+      "SP": 5
+    },
+    "PSD": {
+      "AM": 2,
+      "BA": 6,
+      "CE": 3,
+      "GO": 1,
+      "MA": 1,
+      "MG": 4,
+      "PA": 2,
+      "PI": 3,
+      "PR": 6,
+      "RJ": 4,
+      "RR": 1,
+      "RS": 1,
+      "SC": 2,
+      "SE": 2,
+      "SP": 3
+    },
+    "PDT": {
+      "AP": 2,
+      "BA": 2,
+      "CE": 5,
+      "GO": 1,
+      "MA": 1,
+      "MG": 2,
+      "RJ": 1,
+      "RS": 2
+    },
+    "PODE": {
+      "BA": 1,
+      "ES": 2,
+      "MA": 1,
+      "MG": 2,
+      "PR": 2,
+      "RJ": 1,
+      "RO": 1,
+      "RS": 1,
+      "SP": 3,
+      "TO": 1
+    },
+    "PSB": {
+      "BA": 1,
+      "DF": 1,
+      "ES": 1,
+      "MA": 1,
+      "PB": 1,
+      "PE": 5,
+      "PR": 1,
+      "RJ": 1,
+      "RS": 1,
+      "SP": 2
+    },
+    "SOLIDARIEDADE": {
+      "MG": 1,
+      "PE": 1,
+      "RJ": 1,
+      "SP": 1
+    },
+    "PATRIOTA": {
+      "MA": 1,
+      "MG": 3
+    },
+    "PROS": {
+      "MG": 1,
+      "PR": 1,
+      "RJ": 1
+    },
+    "PSC": {
+      "GO": 1,
+      "MA": 1,
+      "MG": 1,
+      "PB": 2,
+      "SP": 1
+    },
+    "PTB": {
+      "RJ": 1
+    },
+    "AVANTE": {
+      "BA": 1,
+      "MG": 5,
+      "PE": 1
+    },
+    "PL": {
+      "AM": 1,
+      "AP": 1,
+      "BA": 3,
+      "CE": 5,
+      "DF": 2,
+      "ES": 1,
+      "GO": 4,
+      "MA": 4,
+      "MG": 11,
+      "MS": 2,
+      "MT": 4,
+      "PA": 3,
+      "PB": 2,
+      "PE": 4,
+      "PR": 3,
+      "RJ": 11,
+      "RN": 4,
+      "RO": 2,
+      "RS": 4,
+      "SC": 6,
+      "SE": 1,
+      "SP": 17,
+      "TO": 2
+    },
+    "NOVO": {
+      "RS": 1,
+      "SC": 1,
+      "SP": 1
+    }
+  },
+  "statusVotosPorEntidade": {
+    "FE Brasil (PT/PC do B/PV)": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 14.034,
+      "ufsComPctMinimo": 27
+    },
+    "PSDB/Cidadania": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 4.5023,
+      "ufsComPctMinimo": 22
+    },
+    "PSOL/Rede": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 4.2389,
+      "ufsComPctMinimo": 15
+    },
+    "PP": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 7.9271,
+      "ufsComPctMinimo": 25
+    },
+    "UNIÃO": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 9.3421,
+      "ufsComPctMinimo": 26
+    },
+    "REPUBLICANOS": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 6.9602,
+      "ufsComPctMinimo": 27
+    },
+    "MDB": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 7.2712,
+      "ufsComPctMinimo": 24
+    },
+    "PSD": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 7.5849,
+      "ufsComPctMinimo": 24
+    },
+    "PDT": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 3.5011,
+      "ufsComPctMinimo": 18
+    },
+    "PODE": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 3.3033,
+      "ufsComPctMinimo": 17
+    },
+    "PSB": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 3.818,
+      "ufsComPctMinimo": 22
+    },
+    "SOLIDARIEDADE": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 1.557,
+      "ufsComPctMinimo": 10
+    },
+    "PATRIOTA": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 1.3961,
+      "ufsComPctMinimo": 6
+    },
+    "PROS": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 0.7313,
+      "ufsComPctMinimo": 4
+    },
+    "PSC": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 1.7784,
+      "ufsComPctMinimo": 11
+    },
+    "AGIR": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 0.1453,
+      "ufsComPctMinimo": 0
+    },
+    "PMN": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 0.2346,
+      "ufsComPctMinimo": 2
+    },
+    "PTB": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 1.301,
+      "ufsComPctMinimo": 11
+    },
+    "AVANTE": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 2.0051,
+      "ufsComPctMinimo": 9
+    },
+    "UP": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 0.0499,
+      "ufsComPctMinimo": 0
+    },
+    "PSTU": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 0.0256,
+      "ufsComPctMinimo": 0
+    },
+    "PMB": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 0.0589,
+      "ufsComPctMinimo": 0
+    },
+    "DC": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 0.0894,
+      "ufsComPctMinimo": 0
+    },
+    "PCO": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 0.0067,
+      "ufsComPctMinimo": 0
+    },
+    "PRTB": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 0.2184,
+      "ufsComPctMinimo": 3
+    },
+    "PL": {
+      "cumpriuPorVotos": true,
+      "pctNacional": 16.6021,
+      "ufsComPctMinimo": 25
+    },
+    "NOVO": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 1.2389,
+      "ufsComPctMinimo": 6
+    },
+    "PCB": {
+      "cumpriuPorVotos": false,
+      "pctNacional": 0.0782,
+      "ufsComPctMinimo": 0
+    }
+  }
+},
+
   clausula: {
     fonteLegal: "EC 97/2017, art. 3, paragrafo unico; art. 17, paragrafo 3, da CF/1988",
     observacao: "O patamar que governa o acesso numa legislatura e o da eleicao geral anterior. A legislatura seguinte as eleicoes de 2022 vai ate fevereiro de 2027; ate la vale o patamar de 2022 (inciso II). Os criterios sao alternativos: votos OU cadeiras. Ambos exigem espalhamento em ufsMinimas estados.",
