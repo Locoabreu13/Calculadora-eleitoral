@@ -128,7 +128,9 @@ def processar_uf(uf, zf_part, zf_cand):
                 mapa_fed[cd][chave] = chave
 
     raw_c = zf_cand.read(nome_c).decode('latin-1')
-    cands = defaultdict(lambda: defaultdict(dict))  # cd -> bloco -> chave_cand -> dados
+    cands  = defaultdict(lambda: defaultdict(dict))  # cd -> bloco -> chave_cand -> dados
+    eleitos = defaultdict(set)                        # cd -> set(sq_candidato eleitos)
+    ELEITO_SITS = {'ELEITO POR QP', 'ELEITO POR MÉDIA', 'ELEITO'}
     for row in csv.DictReader(StringIO(raw_c), delimiter=';'):
         def v(k): return row.get(k,'').strip().strip('"')
         if v('DS_CARGO').upper() != 'VEREADOR': continue
@@ -137,9 +139,14 @@ def processar_uf(uf, zf_part, zf_cand):
         sigla_p = v('SG_PARTIDO')
         nome_c2 = v('NM_CANDIDATO')
         num_c   = v('NR_CANDIDATO')
+        sq      = v('SQ_CANDIDATO')
+        sit     = v('DS_SIT_TOT_TURNO').upper()
         vs = v('QT_VOTOS_NOMINAIS_VALIDOS') or v('QT_VOTOS_NOMINAIS') or '0'
         votos = max(0, int(vs) if vs.lstrip('-').isdigit() else 0)
         if not nome_c2: continue
+        # Conta eleitos únicos por município para vagas
+        if sit in ELEITO_SITS and sq:
+            eleitos[cd].add(sq)
         bloco = mapa_fed.get(cd, {}).get(sigla_p, sigla_p)
         chave = f'{num_c}_{nome_c2}'
         if chave not in cands[cd][bloco]:
@@ -161,8 +168,14 @@ def processar_uf(uf, zf_part, zf_cand):
         if not ok:
             continue
 
+        # Limpa dados anteriores (evita duplicatas em re-execução)
+        deletar_municipio(cd)
+
+        # Vagas = candidatos eleitos únicos (SQ_CANDIDATO distintos)
+        vagas = len(eleitos[cd]) if eleitos[cd] else None
+
         # Monta rows
-        row_mun = {'cd_municipio': cd, 'uf': uf, 'nm_municipio': dados['nm'], 'vagas': None}
+        row_mun = {'cd_municipio': cd, 'uf': uf, 'nm_municipio': dados['nm'], 'vagas': vagas}
         rows_part = [
             {
                 'cd_municipio': cd,
