@@ -22,8 +22,38 @@ export const dadosReferencia = {
     senadoresPorPartido: {
       "CIDADANIA":1,"MDB":9,"PDT":3,"PL":15,"PODE":7,"PP":6,"PSB":1,"PSD":11,
       "PSDB":4,"PT":9,"REDE":1,"REPUBLICANOS":3,"SOLIDARIEDADE":1,"UNIÃO":10
+    },
+    votosPorPartido: {
+      "AGIR": 252112,
+      "AVANTE": 3194896,
+      "CIDADANIA": 2129202,
+      "DC": 141390,
+      "MDB": 10761792,
+      "MISSÃO": 104610,
+      "MOBILIZA": 370667,
+      "NOVO": 1723908,
+      "PC do B": 2151919,
+      "PCB": 139627,
+      "PCO": 9688,
+      "PDT": 5581426,
+      "PL": 24852355,
+      "PODE": 7440504,
+      "PP": 12221833,
+      "PRD": 3942190,
+      "PRTB": 378549,
+      "PSB": 6102326,
+      "PSD": 10586856,
+      "PSDB": 4132346,
+      "PSOL": 5904436,
+      "PSTU": 39386,
+      "PT": 18596095,
+      "PV": 1220262,
+      "REDE": 1220382,
+      "REPUBLICANOS": 11085138,
+      "SOLIDARIEDADE": 3788568,
+      "UNIÃO": 14582207,
+      "UP": 98906
     }
-    // votosPorPartido fica pendente: depende do voto em dobro (EC 117), TC-01b.
   },
 
   // Portaria TSE 739/2022, anexo.
@@ -559,6 +589,20 @@ export const dadosReferencia = {
       naoAtingiramSemDeputados: ["AGIR", "DC", "PCB", "PCO", "PMB", "PMN", "PRTB", "PSTU", "UP"],
       nota: "AVANTE e SOLIDARIEDADE entraram na lista oficial so em 2023, por incorporacao do PROS, nao por desempenho nas urnas. Para validar este no, vale o resultado das urnas."
     }
+  },
+
+  fundoPartidario: {
+    fonteLegal: "Lei 9.096/1995, art. 41-A (redação Lei 13.165/2015); EC 111/2019 (voto em dobro)",
+    valorTotalAnual: null, // Parâmetro a ser preenchido com o valor real do ano analisado
+    entidadesElegiveis5Pct: [
+      "PT", "PC do B", "PV",
+      "PSDB", "CIDADANIA",
+      "PSOL", "REDE",
+      "MDB", "PDT", "PL", "PODE", "PP", "PRD", "PSB", "PSD",
+      "REPUBLICANOS", "SOLIDARIEDADE", "UNIÃO",
+      "AVANTE"
+    ],
+    observacao: "A base dos 95% usa a mesma contagem de votos ponderados do FEFC 35% (fefc.votosPorPartido). O conjunto de elegíveis aos 5% vem de quem superou a cláusula pelas urnas."
   },
 
   cortes: {
