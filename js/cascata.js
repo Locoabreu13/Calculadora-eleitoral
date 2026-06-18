@@ -50,9 +50,90 @@ function criarResultadoPendente() {
   };
 }
 
-export function calcularTempoTV() {
-  // TODO: preencher a formula apos validacao contra dado oficial do TSE.
-  return criarResultadoPendente();
+export function calcularTempoTV(_base, _cenarioRetotalizado, dadosReferencia, cenario, _categoria) {
+  const referencia = dadosReferencia && dadosReferencia.tempoTVCamara2022;
+  const fotoBase = referencia && referencia.cadeirasPorPartido;
+
+  if (!fotoBase || typeof fotoBase !== "object") {
+    return criarResultadoPendente();
+  }
+
+  const deltaCadeiras = cenario && cenario.deltaCadeirasPorPartido;
+
+  if (!deltaCadeiras || typeof deltaCadeiras !== "object") {
+    return {
+      ...criarResultadoPendente(),
+      observacao: "delta de cadeiras nao informado"
+    };
+  }
+
+  const fotoDepois = { ...fotoBase };
+  const siglasNaoMapeadas = [];
+
+  for (const [sigla, variacao] of Object.entries(deltaCadeiras)) {
+    if (!Object.prototype.hasOwnProperty.call(fotoDepois, sigla)) {
+      siglasNaoMapeadas.push(sigla);
+      continue;
+    }
+
+    fotoDepois[sigla] += variacao;
+  }
+
+  function repartirFracao(fotoCadeiras) {
+    // Formula 90/10 validada contra a Resolucao TSE 23.706/2022
+    // em conferencia-tempotv-presidente.mjs. Aqui ela e aplicada em fracao
+    // para medir o impacto de uma retotalizacao, sem arredondar em segundos.
+    // A porta de entrada (cadeira maior que zero) implementa o limiar do art. 47.
+    const concorrentes = Object.entries(fotoCadeiras)
+      .filter(([, cadeiras]) => cadeiras > 0);
+
+    if (concorrentes.length === 0) {
+      return {};
+    }
+
+    const parteIgual = 0.10 / concorrentes.length;
+    const somaCadeiras = concorrentes.reduce((s, [, cadeiras]) => s + cadeiras, 0);
+    const fracoes = {};
+
+    for (const [sigla, cadeiras] of concorrentes) {
+      const parteProporcional = 0.90 * (cadeiras / somaCadeiras);
+      fracoes[sigla] = parteIgual + parteProporcional;
+    }
+
+    return fracoes;
+  }
+
+  const fracaoAntes = repartirFracao(fotoBase);
+  const fracaoDepois = repartirFracao(fotoDepois);
+  const todasSiglas = new Set([
+    ...Object.keys(fracaoAntes),
+    ...Object.keys(fracaoDepois)
+  ]);
+
+  const porPartido = {};
+
+  for (const sigla of todasSiglas) {
+    const antes = fracaoAntes[sigla] || 0;
+    const depois = fracaoDepois[sigla] || 0;
+
+    porPartido[sigla] = {
+      fracaoAntes: antes,
+      fracaoDepois: depois,
+      deltaFracao: depois - antes
+    };
+  }
+
+  const resultado = {
+    status: "validado",
+    base: "tempoTVCamara2022",
+    porPartido
+  };
+
+  if (siglasNaoMapeadas.length) {
+    resultado._siglasNaoMapeadas = siglasNaoMapeadas;
+  }
+
+  return resultado;
 }
 
 export function calcularFEFC(_base, _cenarioRetotalizado, dadosReferencia, cenario, categoria) {
