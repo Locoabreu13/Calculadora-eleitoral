@@ -179,9 +179,142 @@ export function calcularFEFC(_base, _cenarioRetotalizado, dadosReferencia, cenar
   };
 }
 
-export function calcularClausula() {
-  // TODO: preencher a formula apos validacao contra dado oficial do TSE.
-  return criarResultadoPendente();
+export function calcularClausula(_base, _cenarioRetotalizado, dadosReferencia, cenario, _categoria) {
+  const linhaDeBase = dadosReferencia && dadosReferencia.clausulaLinhaDeBase2022;
+  const clausulaMeta = dadosReferencia && dadosReferencia.clausula;
+
+  if (!linhaDeBase || !clausulaMeta) {
+    return criarResultadoPendente();
+  }
+
+  const uf = cenario && cenario.circunscricao;
+  if (!uf) {
+    return { ...criarResultadoPendente(), observacao: "circunscricao nao informada" };
+  }
+
+  const delta = cenario && cenario.deltaCadeirasPorPartido;
+  if (!delta || typeof delta !== "object") {
+    return { ...criarResultadoPendente(), observacao: "delta de cadeiras nao informado" };
+  }
+
+  const anoEleicao = linhaDeBase.anoEleicao;
+  const patamar = clausulaMeta.patamaresPorEleicao[anoEleicao];
+  if (!patamar) {
+    return { ...criarResultadoPendente(), observacao: "patamar nao encontrado para ano " + anoEleicao };
+  }
+
+  const mapeamento = linhaDeBase.mapeamentoSiglaParaEntidade;
+  const cadeirasPorEntidadePorUFBase = linhaDeBase.cadeirasPorEntidadePorUF;
+  const statusVotosPorEntidade = linhaDeBase.statusVotosPorEntidade;
+
+  // Mapear delta de siglas para entidades (federacoes ou partidos individuais).
+  // Siglas desconhecidas sao registradas e ignoradas.
+  const deltaEntidade = {};
+  const siglasNaoMapeadas = [];
+
+  for (const [sigla, variacao] of Object.entries(delta)) {
+    const entidade = mapeamento[sigla] || sigla;
+    if (!cadeirasPorEntidadePorUFBase[entidade] && !statusVotosPorEntidade[entidade]) {
+      siglasNaoMapeadas.push(sigla);
+      continue;
+    }
+    deltaEntidade[entidade] = (deltaEntidade[entidade] || 0) + variacao;
+  }
+
+  // Avalia o criterio de cadeiras antes e depois da retotalizacao,
+  // aplicando a variacao apenas na UF da circunscricao.
+  function avaliarCriteriosCadeiras(entidade, variacaoNaUF) {
+    const baseUF = cadeirasPorEntidadePorUFBase[entidade] || {};
+
+    const cadeirasAntes = Object.values(baseUF).reduce((a, b) => a + b, 0);
+    const ufsAntes = Object.values(baseUF).filter(c => c >= 1).length;
+
+    const depoisUF = { ...baseUF };
+    const novaCont = (depoisUF[uf] || 0) + variacaoNaUF;
+    if (novaCont > 0) {
+      depoisUF[uf] = novaCont;
+    } else {
+      delete depoisUF[uf];
+    }
+    const cadeirasDepois = Object.values(depoisUF).reduce((a, b) => a + b, 0);
+    const ufsDepois = Object.values(depoisUF).filter(c => c >= 1).length;
+
+    return {
+      antes: {
+        cadeiras: cadeirasAntes,
+        ufsComCadeira: ufsAntes,
+        cumpriu: cadeirasAntes >= patamar.deputadosMinimos && ufsAntes >= patamar.ufsMinimas
+      },
+      depois: {
+        cadeiras: cadeirasDepois,
+        ufsComCadeira: ufsDepois,
+        cumpriu: cadeirasDepois >= patamar.deputadosMinimos && ufsDepois >= patamar.ufsMinimas
+      }
+    };
+  }
+
+  const perdaDeVotos = cenario.perdaDeVotos === true;
+  const porEntidade = {};
+  const mudancas = [];
+
+  for (const [entidade, variacaoNaUF] of Object.entries(deltaEntidade)) {
+    const svBase = statusVotosPorEntidade[entidade] || {
+      cumpriuPorVotos: false, pctNacional: 0, ufsComPctMinimo: 0
+    };
+    const critCadeiras = avaliarCriteriosCadeiras(entidade, variacaoNaUF);
+
+    // Criterio de votos: sem perda de votos, mantem o resultado da eleicao de base.
+    // Com perda de votos, marcado como parcial_pendente (recalculo por UF nao implementado).
+    const critVotos = perdaDeVotos
+      ? { status: "parcial_pendente", observacao: "recalculo de votos por UF nao implementado" }
+      : { cumpriu: svBase.cumpriuPorVotos, pctNacional: svBase.pctNacional, ufsComPctMinimo: svBase.ufsComPctMinimo };
+
+    const cumpriuAntes = critCadeiras.antes.cumpriu || svBase.cumpriuPorVotos;
+    const cumpriuDepois = perdaDeVotos
+      ? null
+      : (critCadeiras.depois.cumpriu || critVotos.cumpriu);
+    const mudou = !perdaDeVotos && (cumpriuAntes !== cumpriuDepois);
+
+    porEntidade[entidade] = {
+      criteriosCadeiras: critCadeiras,
+      criterioVotos: critVotos,
+      cumpriuAntes,
+      cumpriuDepois,
+      mudou
+    };
+
+    if (mudou) {
+      mudancas.push({
+        entidade,
+        de: cumpriuAntes ? "CUMPRIA" : "nao_cumpria",
+        para: cumpriuDepois ? "CUMPRE" : "nao_cumpre",
+        detalheCadeiras: critCadeiras,
+        detalheVotos: critVotos
+      });
+    }
+  }
+
+  const resultado = {
+    status: perdaDeVotos ? "parcial_votos_pendentes" : "validado",
+    anoEleicao,
+    uf,
+    patamarAplicado: "EC 97/2017, inciso " + patamar.incisoEC97,
+    limites: {
+      deputadosMinimos: patamar.deputadosMinimos,
+      ufsMinimas: patamar.ufsMinimas,
+      votosValidosPct: patamar.votosValidosPct,
+      votosMinimoPorUFPct: patamar.votosMinimoPorUFPct
+    },
+    temMudancaNaClausula: mudancas.length > 0,
+    mudancas,
+    porEntidade
+  };
+
+  if (siglasNaoMapeadas.length) {
+    resultado._siglasNaoMapeadas = siglasNaoMapeadas;
+  }
+
+  return resultado;
 }
 
 export function calcularFundoPartidario() {
