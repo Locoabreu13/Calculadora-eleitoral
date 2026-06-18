@@ -529,6 +529,9 @@
             <button id="btn-link" class="btn-action" disabled>🔗 Link</button>
             <button id="btn-apresentacao" class="btn-action-primary" disabled
                     title="Exibe a tabela em tela cheia (Esc para sair)">▶ Apresentação</button>
+            <button id="btn-cascata" class="btn-action-primary" disabled title="Exibe o impacto financeiro e de tempo de TV da retotalização">
+              ₢ Cascata
+            </button>
             <button id="btn-salvar-estudo" class="btn-action" disabled
                     title="Exportar estudo completo (parâmetros + resultado) como JSON">💾 Salvar Estudo</button>
           </div>
@@ -1754,5 +1757,30 @@
     </button>
   </div>
 
+<div id="cascata-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center;">
+  <div style="background: #fff; width: 90%; max-width: 800px; height: 85%; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; font-family: sans-serif;">
+    <header style="padding: 16px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center; background: #f8f9fa;">
+      <h2 style="margin: 0; font-size: 1.25rem;">Impacto da Retotalização (Cascata Eleitoral)</h2>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button id="btn-cascata-copiar" style="padding: 8px 16px; font-size: 0.95rem; cursor: pointer; background: #0056b3; color: #fff; border: none; border-radius: 4px; font-weight: bold;">Copiar para Petição</button>
+        <button id="btn-cascata-pdf" style="padding: 8px 16px; font-size: 0.95rem; cursor: pointer; background: #dc3545; color: #fff; border: none; border-radius: 4px; font-weight: bold;">Gerar PDF</button>
+        <button id="cascata-fechar" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0 8px;">&times;</button>
+      </div>
+    </header>
+    <nav style="display: flex; border-bottom: 1px solid #ccc; background: #eee;">
+      <button class="cascata-tab active" data-target="cascata-fefc" style="flex: 1; padding: 12px; border: none; background: #fff; cursor: pointer; font-weight: bold;">FEFC</button>
+      <button class="cascata-tab" data-target="cascata-tv" style="flex: 1; padding: 12px; border: none; background: transparent; cursor: pointer;">Tempo de TV</button>
+      <button class="cascata-tab" data-target="cascata-clausula" style="flex: 1; padding: 12px; border: none; background: transparent; cursor: pointer;">Cláusula</button>
+      <button class="cascata-tab" data-target="cascata-fundo" style="flex: 1; padding: 12px; border: none; background: transparent; cursor: pointer;">Fundo Partidário</button>
+    </nav>
+    <div style="flex: 1; overflow-y: auto; padding: 24px;">
+      <div id="cascata-fefc" class="cascata-panel" style="display: block;"></div>
+      <div id="cascata-tv" class="cascata-panel" style="display: none;"></div>
+      <div id="cascata-clausula" class="cascata-panel" style="display: none;"></div>
+      <div id="cascata-fundo" class="cascata-panel" style="display: none;"></div>
+    </div>
+  </div>
+</div>
+<script type="module" src="js/cascata-ui.js"></script>
 </body>
 </html>
