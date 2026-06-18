@@ -80,6 +80,16 @@ export const dadosReferencia = {
   // Cadeiras da Camara por partido a serem preenchidas a partir da totalizacao oficial do TSE.
   cadeirasCamaraPorPartido: {},
 
+  vagasDeputadoFederal2022PorUF: {
+    fonte: "js/tse-direto.js, objeto VAGAS, chave 'Deputado Federal'; soma 513",
+    porUF: {
+      AC:  8, AL:  9, AM:  8, AP:  8, BA: 39, CE: 22, DF:  8,
+      ES: 10, GO: 17, MA: 18, MG: 53, MS:  8, MT:  8, PA: 17,
+      PB: 12, PE: 25, PI: 10, PR: 30, RJ: 46, RN:  8, RO:  8,
+      RR:  8, RS: 31, SC: 16, SE:  8, SP: 70, TO:  8
+    }
+  },
+
   clausula: {
     fonteLegal: "EC 97/2017, art. 3, paragrafo unico; art. 17, paragrafo 3, da CF/1988",
     observacao: "O patamar que governa o acesso numa legislatura e o da eleicao geral anterior. A legislatura seguinte as eleicoes de 2022 vai ate fevereiro de 2027; ate la vale o patamar de 2022 (inciso II). Os criterios sao alternativos: votos OU cadeiras. Ambos exigem espalhamento em ufsMinimas estados.",
