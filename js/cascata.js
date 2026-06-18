@@ -154,25 +154,56 @@ export function calcularFEFC(_base, _cenarioRetotalizado, dadosReferencia, cenar
     };
   }
 
-  const porPartido = {};
-  let temDelta35Pendente = false;
+  const pool35 = 1736531922.00;
+  const votosBase = fefc.votosPorPartido || {};
+  const deltaVotos = cenario && cenario.deltaVotosFEFCPorPartido;
+  const temDeltaVotos =
+    categoria !== "cassacao_sem_perda_votos" &&
+    deltaVotos &&
+    typeof deltaVotos === "object";
 
-  for (const [sigla, variacao] of Object.entries(deltaCadeiras)) {
-    const delta2 = 0;
-    const delta48 = unidadeCadeira * variacao;
-    const delta15 = 0;
-    const delta35 = categoria === "cassacao_sem_perda_votos" ? 0 : null;
-    const deltaTotal = delta35 === null ? null : delta2 + delta35 + delta48 + delta15;
+  let totalVotosBase = 0;
+  for (const votos of Object.values(votosBase)) {
+    totalVotosBase += votos;
+  }
 
-    if (delta35 === null) {
-      temDelta35Pendente = true;
+  let totalVotosNovo = totalVotosBase;
+  if (temDeltaVotos) {
+    for (const variacao of Object.values(deltaVotos)) {
+      totalVotosNovo += variacao;
     }
+  }
+
+  const siglas = new Set([
+    ...Object.keys(votosBase),
+    ...Object.keys(deltaCadeiras),
+    ...(temDeltaVotos ? Object.keys(deltaVotos) : [])
+  ]);
+
+  const porPartido = {};
+
+  for (const sigla of siglas) {
+    const variacaoCadeiras = deltaCadeiras[sigla] || 0;
+    const delta2 = 0;
+    const delta48 = unidadeCadeira * variacaoCadeiras;
+    const delta15 = 0;
+
+    let delta35 = 0;
+    if (temDeltaVotos) {
+      const basePartido = votosBase[sigla] || 0;
+      const variacaoVotos = deltaVotos[sigla] || 0;
+      const fracaoAntiga = totalVotosBase > 0 ? basePartido / totalVotosBase : 0;
+      const fracaoNova = totalVotosNovo > 0 ? (basePartido + variacaoVotos) / totalVotosNovo : 0;
+      delta35 = (fracaoNova - fracaoAntiga) * pool35;
+    }
+
+    const deltaTotal = delta2 + delta35 + delta48 + delta15;
 
     porPartido[sigla] = { delta2, delta35, delta48, delta15, deltaTotal };
   }
 
   return {
-    status: temDelta35Pendente ? "parcial_35_pendente" : "validado",
+    status: "validado",
     unidadeCadeira,
     unidadeSenador,
     porPartido
