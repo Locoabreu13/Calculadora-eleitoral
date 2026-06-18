@@ -79,3 +79,17 @@ functions/.env*
 cache/
 scripts/supabase_config.py
 deploy-firebase.command
+
+# Configurações locais do Claude — NUNCA versionar
+.claude/
+.claude/settings.local.json
+
+# Arquivos de sistema macOS
+.DS_Store
+
+# Artefatos de migração Windows — remover da raiz
+*.bat
+*.vbs
+
+# Pasta com nome inválido gerada pelo Codex
+docs:validacao:/
