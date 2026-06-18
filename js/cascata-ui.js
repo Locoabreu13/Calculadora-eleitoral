@@ -1,4 +1,6 @@
 import { calcularCascata } from "./cascata.js";
+import { dadosReferencia } from "./cascata-referencia.js";
+import { gerarCenarioCascata } from "./cascata-adaptador.js";
 
 const estadoCascata = {
   ultimaBase: null,
@@ -277,8 +279,17 @@ function configurarEventos() {
   if (btnCascata) {
     btnCascata.addEventListener("click", () => {
       const base = window.Estado ? window.Estado.resultadoOriginal : estadoCascata.ultimaBase;
-      const cenario = window.Estado ? window.Estado.resultado : estadoCascata.ultimoCenario;
-      abrirCascata(base, cenario, estadoCascata.ultimosDadosRef, estadoCascata.ultimosDadosCen);
+      const cenarioMotor = window.Estado ? window.Estado.resultado : estadoCascata.ultimoCenario;
+      
+      if (!base || !cenarioMotor) {
+        console.warn("Cascata: Resultados do motor indisponíveis.");
+        return;
+      }
+
+      // Aciona o perito para extrair os deltas e aplicar o voto em dobro
+      const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos");
+      
+      abrirCascata(base, cenarioMotor, dadosReferencia, dadosCenarioAdaptado);
     });
   }
 }
