@@ -337,11 +337,23 @@
           </article>
         </div>
 
-        <div class="dash-kpi-grid">
-          <div class="dash-kpi"><span>∞</span><p>créditos disponíveis</p></div>
-          <div class="dash-kpi"><span id="dash-metric-ultimo">nenhum ainda</span><p id="dash-metric-ultimo-lbl">último cálculo</p></div>
-          <div class="dash-kpi"><span>v2.0</span><p>versão operacional</p></div>
-          <div class="dash-kpi"><span>STF</span><p>ADIs 7.228/7.263/7.325</p></div>
+        <div class="dash-kpi-grid dash-kpi-grid--painel">
+          <div class="dash-kpi dash-kpi--gold">
+            <div class="dash-kpi-icon" aria-hidden="true">▤</div>
+            <div><span data-dash-metric="estudos">0</span><p>Cálculos realizados</p><b></b></div>
+          </div>
+          <div class="dash-kpi dash-kpi--navy">
+            <div class="dash-kpi-icon" aria-hidden="true">♙</div>
+            <div><span id="dash-metric-ultimo">nenhum ainda</span><p id="dash-metric-ultimo-lbl">último cálculo</p><b></b></div>
+          </div>
+          <div class="dash-kpi dash-kpi--blue">
+            <div class="dash-kpi-icon" aria-hidden="true">▭</div>
+            <div><span data-dash-metric="creditos">—</span><p>Créditos restantes</p><b></b></div>
+          </div>
+          <div class="dash-kpi dash-kpi--green">
+            <div class="dash-kpi-icon" aria-hidden="true">□</div>
+            <div><span>v2.0</span><p>Versão operacional</p><b></b></div>
+          </div>
         </div>
 
         <div class="dash-home-grid dash-home-grid--painel">
@@ -351,24 +363,18 @@
                 <span class="dash-block-kicker">Histórico</span>
                 <span class="dash-block-title">Cálculos recentes</span>
               </div>
-              <button class="dash-ver-todos" data-sec="estudos">Ver todos →</button>
+              <button class="dash-ver-todos" data-sec="estudos">Ver todos</button>
             </div>
-            <div id="dash-recentes" class="dash-recentes"></div>
+            <div class="dash-recentes-table-head">
+              <div>Protocolo</div>
+              <div>Processo</div>
+              <div>Tribunal</div>
+              <div>Situação</div>
+              <div>Data</div>
+              <div></div>
+            </div>
+            <div id="dash-recentes" class="dash-recentes dash-recentes--table"></div>
           </div>
-
-          <aside class="dash-side">
-            <div class="dash-plan">
-              <div class="dash-plan-lbl">Seus créditos</div>
-              <div class="dash-plan-num" id="dash-plan-num">—</div>
-              <div class="dash-progress"><div class="dash-progress-bar" id="dash-plan-bar" style="width:0%"></div></div>
-              <div class="dash-plan-sub" id="dash-plan-sub">saldo disponível</div>
-              <button class="dash-btn-novo dash-plan-btn" id="dash-plan-comprar">Comprar mais créditos</button>
-            </div>
-            <div class="dash-quick">
-              <button class="dash-quick-item" id="dash-quick-novo">▶ Novo cálculo</button>
-              <button class="dash-quick-item" id="dash-quick-estudos">📂 Meus estudos</button>
-            </div>
-          </aside>
         </div>
 
       </div>
@@ -1356,6 +1362,7 @@
           const disp = n >= 9999 ? '∞' : n;
           const mCred = document.getElementById('dash-metric-creditos');
           if (mCred) mCred.textContent = disp;
+          document.querySelectorAll('[data-dash-metric="creditos"]').forEach(el => { el.textContent = disp; });
           const planNum = document.getElementById('dash-plan-num');
           if (planNum) planNum.textContent = disp;
           const planBar = document.getElementById('dash-plan-bar');
@@ -1809,6 +1816,7 @@
       const arr = _dashEstudos();
       const mE = document.getElementById('dash-metric-estudos');
       if (mE) mE.textContent = arr.length;
+      document.querySelectorAll('[data-dash-metric="estudos"]').forEach(el => { el.textContent = arr.length; });
       const mU  = document.getElementById('dash-metric-ultimo');
       const mUl = document.getElementById('dash-metric-ultimo-lbl');
       if (mU) {
@@ -1827,21 +1835,26 @@
       const el = document.getElementById('dash-recentes');
       if (!el) return;
       if (!arr.length) {
-        el.innerHTML = '<div class="dash-empty">Nenhum estudo salvo ainda. Use <strong>💾 Salvar Estudo</strong> na calculadora.</div>';
+        el.innerHTML = '<div class="dash-empty dash-empty--table">Nenhum estudo salvo ainda. Use <strong>💾 Salvar Estudo</strong> na calculadora.</div>';
         return;
       }
       el.innerHTML = arr.map((e, i) => {
         const fase = _fasePredominante(e.resultado);
-        const badge = fase ? `<span class="dash-rec-fase fase-${fase.toLowerCase()}">${fase}</span>` : '';
+        const badge = fase ? `<span class="dash-rec-fase fase-${fase.toLowerCase()}">${fase}</span>` : '<span class="dash-rec-status">Salvo</span>';
+        const data = new Date(e.savedAt || Date.now()).toLocaleDateString('pt-BR');
+        const protocolo = `RJE-${String(new Date(e.savedAt || Date.now()).getFullYear())}-${String(i + 1).padStart(4, '0')}`;
+        const tribunal = e.parametros?.uf || e.parametros?.estado || 'TSE';
         return `
-        <div class="dash-rec-item">
-          <div class="dash-rec-badge">JE</div>
-          <div class="dash-rec-info">
+        <div class="dash-rec-row">
+          <div class="dash-rec-protocolo">${protocolo}</div>
+          <div class="dash-rec-processo">
             <div class="dash-rec-rotulo">${_h(e.parametros?.rotulo || 'Cálculo sem nome')}</div>
-            <div class="dash-rec-meta">${e.parametros?.vagas || 0} vagas · ${e.parametros?.partidos?.length || 0} partidos · ${new Date(e.savedAt || Date.now()).toLocaleDateString('pt-BR')}</div>
+            <div class="dash-rec-meta">${e.parametros?.vagas || 0} vagas · ${e.parametros?.partidos?.length || 0} partidos</div>
           </div>
-          ${badge}
-          <button class="dash-rec-dl" onclick="dashDlEstudo(${i})" title="Baixar JSON">⬇</button>
+          <div class="dash-rec-tribunal">${_h(tribunal)}</div>
+          <div>${badge}</div>
+          <div class="dash-rec-data">${data}</div>
+          <button class="dash-rec-dl" onclick="dashDlEstudo(${i})" title="Baixar JSON">⋯</button>
         </div>`;
       }).join('');
     }
