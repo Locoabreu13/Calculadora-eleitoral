@@ -318,43 +318,67 @@
 
 <div id="app">
 
+  <!-- ═══ RAIL LATERAL — visual do Novo Calculo.dc.html ═══════════════════════ -->
+  <aside class="app-rail" aria-label="Navegação principal">
+    <button class="app-rail-logo" onclick="voltarDashboard()" title="Painel RetotalizaJE" aria-label="Voltar ao painel">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3v18"/>
+        <path d="M5 21h14"/>
+        <path d="M4 7h16"/>
+        <path d="M4 7l-3 6a4 4 0 0 0 6 0L4 7z"/>
+        <path d="M20 7l-3 6a4 4 0 0 0 6 0L20 7z"/>
+      </svg>
+    </button>
+
+    <div class="app-rail-nav">
+      <button class="app-rail-item" onclick="voltarDashboard()" title="Painel" aria-label="Painel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+      </button>
+      <button class="app-rail-item active" title="Novo cálculo" aria-label="Novo cálculo">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h5"/><path d="M8 15h6"/></svg>
+      </button>
+      <button class="app-rail-item" id="app-rail-manual" title="Manual" aria-label="Manual" onclick="document.getElementById('btn-toggle-manual')?.click()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a2 2 0 0 1 2 2v14"/><path d="M20 4h-6a2 2 0 0 0-2 2v14"/><path d="M4 4v15h6"/><path d="M20 4v15h-6"/></svg>
+      </button>
+      <button class="app-rail-item" id="app-rail-docs" title="Como funciona" aria-label="Como funciona" onclick="document.getElementById('btn-toggle-docs')?.click()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v6c0 4.5-3 8-8 9-5-1-8-4.5-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+      </button>
+    </div>
+
+    <button class="app-rail-item app-rail-logout" onclick="fazerLogout()" title="Sair" aria-label="Sair">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+    </button>
+  </aside>
+
   <!-- ═══ TOPBAR ═══════════════════════════════════════════════════════════════ -->
   <header class="topbar">
     <div class="topbar-left">
-      <!-- Icon -->
-      <div class="topbar-icon" title="Sistema RetotalizaJE">
-        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="1" y="10" width="3" height="5" rx="1"/>
-          <rect x="5.5" y="6" width="3" height="9" rx="1"/>
-          <rect x="10" y="2" width="3" height="13" rx="1"/>
-          <path d="M13.5 4.5 L15 3 L13.5 1.5" stroke="currentColor" stroke-width="1" fill="none"/>
-        </svg>
-      </div>
-      <!-- Title block -->
-      <div>
-        <h1 class="topbar-title" id="topbar-h1"
-          title="Shift+Click para executar testes automáticos (TC-01…TC-05)">
-          Sistema Retotaliza<span class="title-je">JE</span>
-        </h1>
-        <div class="topbar-sub">Sistema Proporcional Brasileiro · art. 109 CE</div>
-      </div>
-      <!-- Legal badge -->
-      <div class="topbar-adi-badge">ADIs 7.228/7.263/7.325 · STF 13/03/2025</div>
+      <h1 class="topbar-title" id="topbar-h1"
+        title="Shift+Click para executar testes automáticos (TC-01…TC-05)">
+        Retotaliza<em class="title-je">JE</em>
+      </h1>
+      <nav class="topbar-nav" aria-label="Navegação da calculadora">
+        <button class="topbar-dash-btn" onclick="voltarDashboard()" title="Voltar ao painel">Painel</button>
+        <span class="topbar-nav-item active">Novo cálculo</span>
+        <button class="topbar-docs-btn" id="btn-toggle-manual"
+                aria-expanded="false" aria-controls="manual-section"
+                title="Manual de uso do sistema">
+          Manual
+        </button>
+        <button class="topbar-docs-btn" id="btn-toggle-docs"
+                aria-expanded="false" aria-controls="docs-section"
+                title="Documentação e glossário jurídico">
+          Como funciona
+        </button>
+      </nav>
     </div>
 
     <div class="topbar-right">
-      <button class="topbar-dash-btn" onclick="voltarDashboard()" title="Voltar ao Dashboard">← Dashboard</button>
-      <button class="topbar-docs-btn" id="btn-toggle-manual"
-              aria-expanded="false" aria-controls="manual-section"
-              title="Manual de uso do sistema">
-        📖 Manual
-      </button>
       <span class="topbar-version" id="topbar-version">v2.0</span>
-      <button class="topbar-docs-btn" id="btn-toggle-docs"
-              aria-expanded="false" aria-controls="docs-section"
-              title="Documentação e glossário jurídico">
-        ⚖ Como Funciona
-      </button>
+      <div class="topbar-user-pill" aria-label="Usuário logado">
+        <span class="topbar-user-avatar">R</span>
+        <span class="usuario-email">Conta</span>
+      </div>
     </div>
   </header>
 
@@ -363,6 +387,11 @@
 
     <!-- ── SIDEBAR ──────────────────────────────────────────────────────────── -->
     <aside class="sidebar" role="complementary" aria-label="Painel de entrada de dados">
+
+      <div class="novo-calc-head">
+        <div class="novo-calc-eyebrow">Art. 109 CE · ADIs 7.228 / 7.263 / 7.325 STF</div>
+        <h2>Novo cálculo</h2>
+      </div>
 
       <!-- Fluxo de trabalho (3 passos em destaque) -->
       <div class="sidebar-flow" aria-label="Passos do cálculo">
