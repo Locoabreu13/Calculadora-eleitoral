@@ -33,7 +33,7 @@ function renderizarCascata(resultado) {
         <thead>
           <tr style="background: #f8f9fa; text-align: left; border-bottom: 2px solid #ccc;">
             <th style="padding: 10px; border: 1px solid #ddd;">Partido</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">Impacto (Cadeiras)</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Impacto Financeiro (48% cadeiras)</th>
             <th style="padding: 10px; border: 1px solid #ddd;">Impacto Financeiro Total</th>
           </tr>
         </thead>
@@ -407,6 +407,35 @@ function copiarTextoPeticao() {
       }
     }
     if (!temMudanca) texto += "Nenhum impacto no tempo de propaganda verificado.\n";
+    texto += "\n";
+  }
+
+  if (res.nos.clausula && res.nos.clausula.status === 'validado') {
+    texto += "3. Clausula de Desempenho\n";
+    texto += "Base legal: Art. 17, paragrafo 3o da Constituicao Federal (EC 97/2017). Patamar: Eleicoes " + (res.nos.clausula.anoEleicao || 2022) + ".\n";
+    if (res.nos.clausula.temMudancaNaClausula && res.nos.clausula.mudancas && res.nos.clausula.mudancas.length > 0) {
+      res.nos.clausula.mudancas.forEach(m => {
+        const situacao = m.atingiuDepois ? "Passou a atingir a clausula" : "Deixou de atingir a clausula";
+        texto += m.sigla + ": " + situacao + "\n";
+      });
+    } else {
+      texto += "Nenhuma alteracao na situacao da Clausula de Desempenho.\n";
+    }
+    texto += "\n";
+  }
+
+  if (res.nos.fundoPartidario && res.nos.fundoPartidario.status === 'validado') {
+    texto += "4. Fundo Partidario (Quota de 95%)\n";
+    texto += "Base legal: Art. 41-A da Lei 9.096/1995.\n";
+    let temMudancaFundo = false;
+    for (const sigla in res.nos.fundoPartidario.deltas) {
+      const valor = res.nos.fundoPartidario.deltas[sigla];
+      if (valor !== 0) {
+        temMudancaFundo = true;
+        texto += sigla + ": " + (valor > 0 ? "+" : "") + formatarMoeda(valor) + "\n";
+      }
+    }
+    if (!temMudancaFundo) texto += "Nenhum impacto verificado no Fundo Partidario.\n";
     texto += "\n";
   }
 
