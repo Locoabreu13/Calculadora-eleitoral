@@ -164,7 +164,8 @@ function candidatoTemVotoEmDobro(candidato) {
 
 export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categoria) {
   const cenario = {
-    tipo: "retotalizacao",
+    tipo: "cassacao",
+    perdaDeVotos: false,
     categoriaClassificada: categoria || "indefinido",
     deltaCadeirasPorPartido: {},
     deltaVotosFEFCPorPartido: {}
@@ -227,6 +228,10 @@ export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categor
 
     cenario.deltaVotosFEFCPorPartido[sigla] =
       (cenario.deltaVotosFEFCPorPartido[sigla] || 0) + deltaPonderado;
+  }
+
+  if (Object.keys(cenario.deltaVotosFEFCPorPartido).length > 0 || categoria === "cassacao_com_perda_votos") {
+    cenario.perdaDeVotos = true;
   }
 
   return cenario;
