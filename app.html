@@ -1852,7 +1852,7 @@
       const el = document.getElementById('dash-recentes');
       if (!el) return;
       if (!arr.length) {
-        el.innerHTML = '<div class="dash-empty dash-empty--table">Nenhum estudo salvo ainda. Use <strong>💾 Salvar Estudo</strong> na calculadora.</div>';
+        el.innerHTML = '';
         return;
       }
       el.innerHTML = arr.map((e, i) => {

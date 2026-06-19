@@ -7285,18 +7285,6 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   background: #fbefd2;
 }
 
-#tela-dashboard .dash-empty--table {
-  min-height: 96px;
-  margin: 20px 22px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #dbe2ee;
-  border-radius: 14px;
-  color: #6b7588;
-  font-size: 13px;
-}
-
 #tela-dashboard .dash-plan {
   border-radius: 16px;
   background: #131f33;
