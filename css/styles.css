@@ -5545,3 +5545,408 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 .app-body:not(.tem-resultados) #lista-partidos.modo-tse .candidato-votos {
   color: #B07D0A;
 }
+
+/* ── DASHBOARD — visual do Painel.dc.html adaptado ao painel real ───── */
+#tela-dashboard {
+  background: #121e31;
+}
+
+.dash-layout {
+  height: 100vh;
+  overflow: hidden;
+  flex-direction: row;
+  background: #121e31;
+  font-family: var(--fonte-corpo, "Inter", system-ui, sans-serif);
+}
+
+.dash-sidebar {
+  position: relative;
+  top: auto;
+  z-index: 1;
+  width: 72px;
+  min-width: 72px;
+  height: 100vh;
+  min-height: 100vh;
+  padding: 20px 0 24px;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+  background: #121e31;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 0;
+}
+
+.dash-brand {
+  width: 100%;
+  justify-content: center;
+  margin: 0 0 34px;
+  padding: 0;
+  border: 0;
+}
+
+.dash-brand-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(160deg, #d7a34b, #b9822f);
+  box-shadow: 0 12px 28px rgba(11, 18, 32, 0.28), 0 0 0 1px rgba(255,255,255,0.08) inset;
+}
+
+.dash-brand-icon svg {
+  width: 20px;
+  height: 20px;
+  color: #121e31;
+  fill: #121e31;
+}
+
+.dash-brand-text {
+  display: none;
+}
+
+.dash-nav {
+  width: 100%;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  overflow: visible;
+}
+
+.dash-nav-item {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  justify-content: center;
+  padding: 0;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #55657c;
+  font-size: 0;
+  flex-shrink: 0;
+}
+
+.dash-nav-item span:not(.dash-nav-cnt) {
+  display: none;
+}
+
+.dash-nav-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #aab5c8;
+}
+
+.dash-nav-item.active {
+  background: rgba(215, 163, 75, 0.14);
+  border-color: rgba(215, 163, 75, 0.28);
+  color: #d7a34b;
+}
+
+.dash-nav-ico {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  opacity: 1;
+}
+
+.dash-nav-cnt {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #d7a34b;
+  color: #121e31;
+  font-size: 9px;
+  line-height: 1;
+}
+
+.dash-sidebar-footer {
+  width: 100%;
+  margin: 0;
+  padding: 14px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.dash-user-chip {
+  width: 44px;
+  height: 44px;
+  justify-content: center;
+  padding: 0;
+  border-radius: 12px;
+  background: transparent;
+}
+
+.dash-user-detail,
+.dash-creditos-badge {
+  display: none;
+}
+
+.dash-avatar {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(160deg, #d7a34b, #b9822f);
+  color: #121e31;
+  font-size: 11px;
+  box-shadow: none;
+}
+
+.dash-sair-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #55657c;
+  font-size: 0;
+}
+
+.dash-sair-btn::before {
+  content: "↪";
+  font-size: 18px;
+  line-height: 1;
+}
+
+.dash-sair-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #aab5c8;
+}
+
+.dash-main {
+  width: auto;
+  flex: 1;
+  overflow-y: auto;
+  background: #edf0f5;
+  border-radius: 22px 0 0 22px;
+}
+
+.dash-sec {
+  min-height: 100vh;
+  max-width: min(1180px, 100%);
+  padding: 36px 40px 48px;
+  background: #edf0f5;
+}
+
+.dash-page-header {
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.dash-greeting-sub {
+  margin-bottom: 8px;
+  color: #b9822f;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.dash-greeting {
+  font-family: var(--fonte-titulo, "Playfair Display", Georgia, serif);
+  color: #111b2d;
+  font-size: 30px;
+  line-height: 1.12;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.dash-saudacao-nome {
+  color: #111b2d;
+}
+
+.dash-btn-novo,
+.dash-plan-comprar {
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #d7a34b, #bd8733);
+  color: #111b2d;
+  box-shadow: 0 12px 26px rgba(185, 130, 47, 0.24);
+}
+
+.dash-btn-novo:hover,
+.dash-plan-comprar:hover {
+  background: linear-gradient(180deg, #e0b260, #c9933d);
+  color: #111b2d;
+  transform: translateY(-1px);
+}
+
+.dash-metrics {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dash-metric,
+.dash-block,
+.dash-plan,
+.dash-quick-item,
+.dash-study-item,
+.dash-empty,
+.dash-form-card {
+  border: 1px solid #dde3ec;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 18px 40px rgba(17, 27, 45, 0.06);
+}
+
+.dash-metric {
+  padding: 22px;
+}
+
+.dash-metric-k {
+  color: #7d8798;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.dash-metric-v {
+  color: #111b2d;
+  font-family: var(--fonte-titulo, "Playfair Display", Georgia, serif);
+  font-size: 34px;
+  letter-spacing: 0;
+}
+
+.dash-metric-sub {
+  color: #7d8798;
+}
+
+.dash-home-grid {
+  gap: 18px;
+}
+
+.dash-block {
+  padding: 24px;
+}
+
+.dash-block-title,
+.dash-plan-title,
+.dash-sec-title {
+  color: #111b2d;
+  font-family: var(--fonte-titulo, "Playfair Display", Georgia, serif);
+  letter-spacing: 0;
+}
+
+.dash-block-sub,
+.dash-sec-sub,
+.dash-plan-sub,
+.dash-study-meta,
+.dash-empty p {
+  color: #657184;
+}
+
+.dash-quick-item {
+  border-color: #dde3ec;
+  color: #111b2d;
+}
+
+.dash-quick-item:hover {
+  border-color: rgba(185, 130, 47, 0.38);
+  box-shadow: 0 18px 40px rgba(185, 130, 47, 0.12);
+}
+
+.dash-quick-icon {
+  background: #f8f1e4;
+  color: #b9822f;
+}
+
+.dash-plan {
+  background: #111b2d;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.dash-plan-title {
+  color: #ffffff;
+}
+
+.dash-plan-sub,
+.dash-plan-feature,
+.dash-plan-line {
+  color: #aab5c8;
+}
+
+.dash-plan-creditos {
+  background: rgba(215, 163, 75, 0.12);
+  border-color: rgba(215, 163, 75, 0.24);
+}
+
+.dash-plan-creditos strong {
+  color: #f3c675;
+}
+
+@media (max-width: 860px) {
+  .dash-layout {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    flex-direction: column;
+  }
+
+  .dash-sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    padding: 10px 14px;
+    flex-direction: row;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .dash-brand {
+    width: auto;
+    margin: 0 10px 0 0;
+  }
+
+  .dash-nav {
+    width: auto;
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .dash-sidebar-footer {
+    width: auto;
+    padding: 0;
+    border-top: 0;
+    flex-direction: row;
+  }
+
+  .dash-main {
+    border-radius: 18px 18px 0 0;
+  }
+
+  .dash-sec {
+    padding: 26px 18px 36px;
+  }
+
+  .dash-page-header {
+    align-items: flex-start;
+  }
+
+  .dash-greeting {
+    font-size: 26px;
+  }
+
+  .dash-metrics {
+    grid-template-columns: 1fr;
+  }
+}
