@@ -7340,11 +7340,23 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   background: #131f33;
   color: #131f33;
   font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 .cascata-page[style*="display:none"],
 .cascata-page[style*="display: none"] {
   display: none !important;
+}
+
+.cascata-page *,
+.cascata-page *::before,
+.cascata-page *::after {
+  box-sizing: border-box;
+}
+
+.cascata-page button {
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .cascata-rail {
@@ -7475,6 +7487,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   font-weight: 600;
   color: #131f33;
   letter-spacing: -0.01em;
+  font-optical-sizing: auto;
 }
 
 .cascata-brand em {
@@ -7600,6 +7613,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   font-size: 28px;
   font-weight: 600;
   letter-spacing: -0.014em;
+  font-optical-sizing: auto;
 }
 
 .cascata-tag {
@@ -7748,6 +7762,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.02em;
+  font-optical-sizing: auto;
 }
 
 .cascata-kpi small {
@@ -7788,12 +7803,24 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   font-size: 13px;
   font-weight: 700;
   text-align: left;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 
 .cascata-tab.active {
   border-bottom-color: #d4a65a;
   background: #fff;
   color: #131f33;
+}
+
+.cascata-tab svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .cascata-tab span {
@@ -7826,6 +7853,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.012em;
+  font-optical-sizing: auto;
 }
 
 .cascata-node-head em {
