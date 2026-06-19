@@ -7,7 +7,8 @@ const estadoCascata = {
   ultimoCenario: null,
   ultimosDadosRef: null,
   ultimosDadosCen: null,
-  ultimoResultado: null
+  ultimoResultado: null,
+  ultimoTempoCalculo: 0
 };
 
 function formatarMoeda(valor) {
@@ -309,7 +310,36 @@ function observarResultados() {
   }
 }
 
+function instalarGrampoNoMotor() {
+  if (window.ElectoralEngine && window.ElectoralEngine.calcular && !window.ElectoralEngine._grampoInstalado) {
+    const calcularOriginal = window.ElectoralEngine.calcular;
+    
+    window.ElectoralEngine.calcular = function(cenario) {
+      // Deixa o motor original fazer a conta normalmente
+      const resultado = calcularOriginal.call(this, cenario);
+      const agora = Date.now();
+      
+      // Se os cálculos ocorrerem na mesma fração de segundo (< 100ms), 
+      // o primeiro foi a base e o segundo é o cenário retotalizado.
+      // Se for um clique novo (> 100ms de intervalo), reseta o estado.
+      if (agora - estadoCascata.ultimoTempoCalculo > 100) {
+        estadoCascata.ultimaBase = resultado;
+        estadoCascata.ultimoCenario = resultado;
+      } else {
+        estadoCascata.ultimaBase = estadoCascata.ultimoCenario;
+        estadoCascata.ultimoCenario = resultado;
+      }
+      
+      estadoCascata.ultimoTempoCalculo = agora;
+      return resultado;
+    };
+    
+    window.ElectoralEngine._grampoInstalado = true;
+  }
+}
+
 function iniciar() {
+  instalarGrampoNoMotor();
   configurarEventos();
   observarResultados();
 }
