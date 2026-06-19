@@ -288,10 +288,23 @@ function configurarEventos() {
       }
 
       // Aciona o perito para extrair os deltas e aplicar o voto em dobro
-      const selUf = document.getElementById("sel-cascata-uf");
+      const selUf = document.getElementById("sel-cascata-uf-overlay");
       const ufSelecionada = selUf ? selUf.value.trim() : "";
       const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada);
       
+      abrirCascata(base, cenarioMotor, dadosReferencia, dadosCenarioAdaptado);
+    });
+  }
+
+  // Recalcula automaticamente quando o usuario troca a UF dentro do overlay
+  const selUfOverlay = document.getElementById("sel-cascata-uf-overlay");
+  if (selUfOverlay) {
+    selUfOverlay.addEventListener("change", () => {
+      const base = estadoCascata.ultimaBase;
+      const cenarioMotor = estadoCascata.ultimoCenario;
+      if (!base || !cenarioMotor) return;
+      const ufSelecionada = selUfOverlay.value.trim();
+      const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada);
       abrirCascata(base, cenarioMotor, dadosReferencia, dadosCenarioAdaptado);
     });
   }
