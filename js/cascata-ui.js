@@ -404,68 +404,131 @@ function exportarPdfCascata() {
     alert("Nenhum resultado disponível para exportação.");
     return;
   }
-  
-  if (typeof window.pdfMake === 'undefined') {
-    alert("Biblioteca PDF não encontrada. Certifique-se de estar conectado à internet para carregar os módulos necessários.");
-    return;
-  }
 
-  const conteudo = [
-    { text: 'IMPACTO FINANCEIRO E DE TEMPO DE PROPAGANDA DA RETOTALIZAÇÃO', style: 'header', margin: [0, 0, 0, 10] },
-    { text: 'Anexo Técnico - Cascata Eleitoral', style: 'subheader', margin: [0, 0, 0, 20] }
-  ];
+  let secoes = "";
 
   // FEFC
-  if (res.nos.fefc && (res.nos.fefc.status === 'validado' || res.nos.fefc.status === 'parcial_35_pendente')) {
-    conteudo.push({ text: '1. Fundo Especial de Financiamento de Campanha (FEFC)', style: 'secaoTitulo' });
-    conteudo.push({ text: 'Base legal: Art. 16-D, incisos II e III da Lei nº 9.504/1997.', style: 'baseLegal' });
-    
-    let tabela = { table: { headerRows: 1, widths: ['*', 'auto'], body: [[{text: 'Partido', bold: true}, {text: 'Impacto Financeiro', bold: true}]] }, layout: 'lightHorizontalLines', margin: [0, 10, 0, 20] };
+  if (res.nos.fefc && (res.nos.fefc.status === "validado" || res.nos.fefc.status === "parcial_35_pendente")) {
+    secoes += `
+      <h2>1. Fundo Especial de Financiamento de Campanha (FEFC)</h2>
+      <p class="base-legal">Base legal: Art. 16-D, incisos II e III da Lei n&ordm; 9.504/1997.</p>
+      <table>
+        <thead><tr><th>Partido</th><th>Impacto Financeiro</th></tr></thead>
+        <tbody>`;
     let mudou = false;
-    
     for (const sigla in res.nos.fefc.porPartido) {
       const p = res.nos.fefc.porPartido[sigla];
       if (p.deltaTotal !== 0) {
         mudou = true;
-        tabela.table.body.push([sigla, (p.deltaTotal > 0 ? "+" : "") + formatarMoeda(p.deltaTotal)]);
+        const sinal = p.deltaTotal > 0 ? "+" : "";
+        const cls = p.deltaTotal > 0 ? "positivo" : "negativo";
+        secoes += `<tr><td class="partido">${sigla}</td><td class="${cls}">${sinal}${formatarMoeda(p.deltaTotal)}</td></tr>`;
       }
     }
-    if (mudou) conteudo.push(tabela);
-    else conteudo.push({ text: 'Nenhum impacto financeiro verificado nesta rubrica.', style: 'italicoMensagem' });
+    if (!mudou) secoes += `<tr><td colspan="2" class="sem-impacto">Nenhum impacto financeiro verificado nesta rúbrica.</td></tr>`;
+    secoes += `</tbody></table>`;
   }
 
   // Tempo de TV
-  if (res.nos.tempoTV && res.nos.tempoTV.status === 'validado') {
-    conteudo.push({ text: '2. Tempo de Propaganda Eleitoral Gratuita', style: 'secaoTitulo' });
-    conteudo.push({ text: 'Base legal: Art. 47, § 1º, inciso II da Lei nº 9.504/1997.', style: 'baseLegal' });
-    
-    let tabela = { table: { headerRows: 1, widths: ['*', 'auto'], body: [[{text: 'Partido', bold: true}, {text: 'Variação na Quota', bold: true}]] }, layout: 'lightHorizontalLines', margin: [0, 10, 0, 20] };
+  if (res.nos.tempoTV && res.nos.tempoTV.status === "validado") {
+    secoes += `
+      <h2>2. Tempo de Propaganda Eleitoral Gratuita</h2>
+      <p class="base-legal">Base legal: Art. 47, &sect; 1&ordm;, inciso II da Lei n&ordm; 9.504/1997.</p>
+      <table>
+        <thead><tr><th>Partido</th><th>Varia&ccedil;&atilde;o na Quota</th></tr></thead>
+        <tbody>`;
     let mudou = false;
-    
     for (const sigla in res.nos.tempoTV.porPartido) {
       const p = res.nos.tempoTV.porPartido[sigla];
       if (p.deltaFracao !== 0) {
         mudou = true;
-        tabela.table.body.push([sigla, (p.deltaFracao > 0 ? "+" : "") + (p.deltaFracao * 100).toFixed(4).replace('.', ',') + "%"]);
+        const sinal = p.deltaFracao > 0 ? "+" : "";
+        const cls = p.deltaFracao > 0 ? "positivo" : "negativo";
+        const pct = (p.deltaFracao * 100).toFixed(4).replace(".", ",");
+        secoes += `<tr><td class="partido">${sigla}</td><td class="${cls}">${sinal}${pct}%</td></tr>`;
       }
     }
-    if (mudou) conteudo.push(tabela);
-    else conteudo.push({ text: 'Nenhum impacto no tempo de propaganda verificado.', style: 'italicoMensagem' });
+    if (!mudou) secoes += `<tr><td colspan="2" class="sem-impacto">Nenhum impacto no tempo de propaganda verificado.</td></tr>`;
+    secoes += `</tbody></table>`;
   }
 
-  const docDefinition = {
-    content: conteudo,
-    styles: {
-      header: { fontSize: 16, bold: true, alignment: 'center' },
-      subheader: { fontSize: 12, alignment: 'center', color: '#666' },
-      secaoTitulo: { fontSize: 14, bold: true, margin: [0, 10, 0, 5] },
-      baseLegal: { fontSize: 10, italics: true, color: '#444' },
-      italicoMensagem: { fontSize: 11, italics: true, margin: [0, 5, 0, 20] }
-    },
-    defaultStyle: { fontSize: 11 }
-  };
+  // Clausula
+  if (res.nos.clausula && res.nos.clausula.status === "validado") {
+    secoes += `
+      <h2>3. Cl&aacute;usula de Desempenho</h2>
+      <p class="base-legal">Base legal: Art. 17, &sect; 3&ordm; da Constitui&ccedil;&atilde;o Federal (EC 97/2017). Patamar: Elei&ccedil;&otilde;es ${res.nos.clausula.anoEleicao || 2022}.</p>`;
+    if (res.nos.clausula.temMudancaNaClausula && res.nos.clausula.mudancas && res.nos.clausula.mudancas.length > 0) {
+      secoes += `<table><thead><tr><th>Partido</th><th>Situa&ccedil;&atilde;o</th></tr></thead><tbody>`;
+      res.nos.clausula.mudancas.forEach(m => {
+        const cls = m.atingiuDepois ? "positivo" : "negativo";
+        const texto = m.atingiuDepois ? "Passou a atingir a cl&aacute;usula" : "Deixou de atingir a cl&aacute;usula";
+        secoes += `<tr><td class="partido">${m.sigla}</td><td class="${cls}">${texto}</td></tr>`;
+      });
+      secoes += `</tbody></table>`;
+    } else {
+      secoes += `<p class="sem-impacto">Nenhuma altera&ccedil;&atilde;o na situa&ccedil;&atilde;o da Cl&aacute;usula de Desempenho nesta retotaliza&ccedil;&atilde;o.</p>`;
+    }
+  }
 
-  window.pdfMake.createPdf(docDefinition).download('Parecer_Cascata_Eleitoral.pdf');
+  // Fundo Partidario
+  if (res.nos.fundoPartidario && res.nos.fundoPartidario.status === "validado") {
+    secoes += `
+      <h2>4. Fundo Partid&aacute;rio (Quota de 95%)</h2>
+      <p class="base-legal">Base legal: Art. 41-A da Lei n&ordm; 9.096/1995.</p>
+      <table>
+        <thead><tr><th>Partido</th><th>Impacto Financeiro (Estimativa Anual)</th></tr></thead>
+        <tbody>`;
+    let mudou = false;
+    for (const sigla in res.nos.fundoPartidario.deltas) {
+      const valor = res.nos.fundoPartidario.deltas[sigla];
+      if (valor !== 0) {
+        mudou = true;
+        const sinal = valor > 0 ? "+" : "";
+        const cls = valor > 0 ? "positivo" : "negativo";
+        secoes += `<tr><td class="partido">${sigla}</td><td class="${cls}">${sinal}${formatarMoeda(valor)}</td></tr>`;
+      }
+    }
+    if (!mudou) secoes += `<tr><td colspan="2" class="sem-impacto">Nenhum impacto verificado no Fundo Partid&aacute;rio.</td></tr>`;
+    secoes += `</tbody></table>`;
+  }
+
+  const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Parecer Cascata Eleitoral</title>
+<style>
+  body { font-family: Arial, sans-serif; font-size: 11pt; color: #111; margin: 2cm; }
+  h1 { font-size: 14pt; text-align: center; text-transform: uppercase; margin-bottom: 4px; }
+  .subtitulo { text-align: center; font-size: 10pt; color: #555; margin-bottom: 24px; }
+  h2 { font-size: 12pt; margin-top: 20px; margin-bottom: 4px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+  .base-legal { font-size: 9pt; font-style: italic; color: #444; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  th { background: #f0f0f0; padding: 8px; border: 1px solid #ccc; text-align: left; font-size: 10pt; }
+  td { padding: 8px; border: 1px solid #ddd; font-size: 10pt; }
+  td.partido { font-weight: bold; }
+  td.positivo { color: #155724; font-weight: bold; }
+  td.negativo { color: #721c24; font-weight: bold; }
+  td.sem-impacto { text-align: center; font-style: italic; color: #666; }
+  @media print { body { margin: 1.5cm; } }
+</style>
+</head>
+<body>
+<h1>Impacto Financeiro e de Tempo de Propaganda da Retotaliza&ccedil;&atilde;o</h1>
+<p class="subtitulo">Anexo T&eacute;cnico &mdash; Cascata Eleitoral / RetotalizaJE</p>
+${secoes}
+</body>
+</html>`;
+
+  const janela = window.open("", "_blank");
+  if (!janela) {
+    alert("O navegador bloqueou a abertura da janela. Permita pop-ups para este site e tente novamente.");
+    return;
+  }
+  janela.document.write(html);
+  janela.document.close();
+  janela.focus();
+  setTimeout(() => janela.print(), 400);
 }
 
 if (document.readyState === "loading") {
