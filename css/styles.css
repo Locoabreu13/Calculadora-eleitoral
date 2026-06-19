@@ -7331,3 +7331,719 @@ body.resizing-x { cursor: col-resize; user-select: none; }
     grid-template-columns: 1fr;
   }
 }
+
+/* ── CASCATA ELEITORAL — tela interna baseada em Cascata.dc.html ───── */
+.cascata-page {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #131f33;
+  color: #131f33;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
+.cascata-page[style*="display:none"],
+.cascata-page[style*="display: none"] {
+  display: none !important;
+}
+
+.cascata-rail {
+  width: 72px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0 24px;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+
+.cascata-rail-logo,
+.cascata-rail-item {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #4a5e7a;
+}
+
+.cascata-rail-logo {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 36px;
+  filter: drop-shadow(0 6px 14px rgba(184,133,58,0.45));
+}
+
+.cascata-rail-logo svg {
+  width: 40px;
+  height: 40px;
+}
+
+.cascata-rail-item svg,
+.cascata-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cascata-rail-item:hover {
+  background: rgba(255,255,255,0.06);
+  color: #a8afbe;
+}
+
+.cascata-rail-item.active {
+  background: rgba(212,166,90,0.15);
+  border: 1px solid rgba(212,166,90,0.30);
+  color: #d4a65a;
+}
+
+.cascata-rail-item:disabled {
+  cursor: default;
+  opacity: 0.58;
+}
+
+.cascata-rail-nav {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.cascata-rail-sep {
+  width: 36px;
+  height: 1px;
+  margin: 10px 0;
+  background: rgba(255,255,255,0.08);
+}
+
+.cascata-rail-logout {
+  color: #3d5073;
+}
+
+.cascata-shell {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #edf0f5;
+  border-radius: 20px 0 0 20px;
+}
+
+.cascata-topbar {
+  height: 60px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 28px;
+  background: #fff;
+  border-bottom: 1px solid #e8ebf0;
+  border-radius: 20px 0 0 0;
+}
+
+.cascata-topbar-left,
+.cascata-topbar-right,
+.cascata-topnav,
+.cascata-user-pill {
+  display: flex;
+  align-items: center;
+}
+
+.cascata-topbar-left {
+  gap: 32px;
+  min-width: 0;
+}
+
+.cascata-topbar-right {
+  gap: 10px;
+}
+
+.cascata-brand {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #131f33;
+  letter-spacing: -0.01em;
+}
+
+.cascata-brand em {
+  color: #b8853a;
+}
+
+.cascata-topnav {
+  gap: 2px;
+}
+
+.cascata-topnav button {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #6b7588;
+  font: 500 13px "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
+.cascata-topnav button.active,
+.cascata-topnav button:hover:not(:disabled) {
+  background: #f2f4f8;
+  color: #131f33;
+}
+
+.cascata-topnav button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.cascata-version {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px 5px 8px;
+  border: 1px solid rgba(36,84,240,0.16);
+  border-radius: 999px;
+  background: rgba(36,84,240,0.06);
+  color: #2454f0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cascata-version::before {
+  content: "";
+  width: 13px;
+  height: 13px;
+  border: 2px solid #2454f0;
+  border-radius: 50%;
+}
+
+.cascata-user-pill {
+  gap: 8px;
+  padding: 5px 10px 5px 5px;
+  border: 1px solid #e2e6ed;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.cascata-user-avatar {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(160deg,#d4a65a,#b8853a);
+  color: #131f33;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.cascata-user-pill b {
+  color: #131f33;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.cascata-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 32px 48px;
+}
+
+.cascata-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.cascata-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #8090aa;
+  font-size: 12px;
+}
+
+.cascata-breadcrumb button {
+  border: 0;
+  background: transparent;
+  color: #8090aa;
+  font: inherit;
+}
+
+.cascata-breadcrumb button:hover {
+  color: #131f33;
+}
+
+.cascata-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cascata-title-row h1 {
+  margin: 0;
+  font-family: "Newsreader", Georgia, serif;
+  color: #131f33;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.014em;
+}
+
+.cascata-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border: 1px solid rgba(212,166,90,0.30);
+  border-radius: 999px;
+  background: rgba(212,166,90,0.12);
+  color: #8e6420;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+.cascata-tag i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d4a65a;
+}
+
+#cascata-contexto {
+  margin: 6px 0 0;
+  color: #6b7588;
+  font-size: 13px;
+}
+
+.cascata-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.cascata-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.cascata-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cascata-btn-light,
+.cascata-btn-outline {
+  border: 1px solid #e2e6ed;
+  background: #fff;
+  color: #4a5468;
+}
+
+.cascata-btn-light:hover,
+.cascata-btn-outline:hover {
+  border-color: #c8d0de;
+  background: #f7f9fc;
+}
+
+.cascata-btn-dark {
+  background: #131f33;
+  color: #fff;
+  box-shadow: 0 8px 20px -8px rgba(19,31,51,0.40);
+}
+
+.cascata-btn-dark:hover {
+  background: #0a1624;
+}
+
+.cascata-uf-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: -6px 0 20px;
+  padding: 12px 16px;
+  border: 1px solid #e5dfcf;
+  border-radius: 10px;
+  background: #faf7ee;
+}
+
+.cascata-uf-row label {
+  color: #8e6420;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cascata-uf-row select {
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid #d8c7a5;
+  border-radius: 8px;
+  background: #fff;
+  color: #131f33;
+  font-weight: 700;
+}
+
+.cascata-uf-row span {
+  color: #6b5630;
+  font-size: 12px;
+}
+
+.cascata-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.cascata-kpi {
+  min-height: 118px;
+  padding: 18px 20px;
+  border: 1px solid #e8ebf0;
+  border-top: 3px solid #d4a65a;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(19,31,51,0.04);
+}
+
+.cascata-kpi span {
+  display: block;
+  margin-bottom: 8px;
+  color: #8090aa;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.cascata-kpi strong {
+  display: block;
+  color: #131f33;
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.cascata-kpi small {
+  display: block;
+  margin-top: 8px;
+  color: #8090aa;
+  font-size: 11.5px;
+}
+
+.cascata-kpi-blue { border-top-color: #2454f0; }
+.cascata-kpi-green { border-top-color: #1f8a5b; }
+.cascata-kpi-purple { border-top-color: #8b5cf6; }
+
+.cascata-card {
+  overflow: hidden;
+  border: 1px solid #e8ebf0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(19,31,51,0.04);
+}
+
+.cascata-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid #e8ebf0;
+  background: #f7f9fc;
+}
+
+.cascata-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #6b7588;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.cascata-tab.active {
+  border-bottom-color: #d4a65a;
+  background: #fff;
+  color: #131f33;
+}
+
+.cascata-tab span {
+  margin-left: auto;
+  color: #8090aa;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.cascata-panel-wrap {
+  min-height: 420px;
+}
+
+.cascata-panel {
+  padding: 28px 32px;
+}
+
+.cascata-node-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.cascata-node-head h2 {
+  margin: 0;
+  color: #131f33;
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+.cascata-node-head em {
+  color: #b8853a;
+}
+
+.cascata-node-head p {
+  margin: 8px 0 0;
+  color: #4b5363;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.cascata-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: #e6f3ec;
+  color: #1f6a47;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cascata-status-pill::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.cascata-status-pill.warn {
+  background: #fef3ee;
+  color: #8e6420;
+}
+
+.cascata-status-pill.neutral {
+  background: #f2f4f8;
+  color: #6b7588;
+}
+
+.cascata-table {
+  overflow: hidden;
+  border: 1px solid #e8ebf0;
+  border-radius: 10px;
+}
+
+.cascata-row {
+  display: grid;
+  align-items: center;
+  gap: 0;
+  padding: 16px 18px;
+  border-bottom: 1px solid #f2f4f8;
+}
+
+.cascata-row:last-child {
+  border-bottom: 0;
+}
+
+.cascata-row-head {
+  padding: 11px 18px;
+  background: #f7f9fc;
+  color: #8090aa;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cascata-cols-3 { grid-template-columns: 1fr 1.2fr 1.2fr; }
+.cascata-cols-2 { grid-template-columns: 1fr 2fr; }
+
+.cascata-party-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cascata-party-marker {
+  width: 8px;
+  height: 28px;
+  flex: none;
+  border-radius: 2px;
+  background: #8090aa;
+}
+
+.cascata-party-marker.pos { background: #1f8a5b; }
+.cascata-party-marker.neg { background: #d85c5c; }
+
+.cascata-party-name {
+  color: #131f33;
+  font-size: 13.5px;
+  font-weight: 800;
+}
+
+.cascata-party-desc {
+  margin-top: 2px;
+  color: #8090aa;
+  font-size: 11.5px;
+}
+
+.cascata-value {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  color: #4b5363;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cascata-value.pos { color: #1f6a47; }
+.cascata-value.neg { color: #b23232; }
+
+.cascata-empty,
+.cascata-unavailable {
+  padding: 36px 18px;
+  color: #8090aa;
+  text-align: center;
+  font-size: 13.5px;
+  font-style: italic;
+}
+
+.cascata-unavailable {
+  background: #f7f9fc;
+}
+
+.cascata-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 14px 18px;
+  border: 1px solid #e5dfcf;
+  border-radius: 10px;
+  background: #faf7ee;
+  color: #6b5630;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.cascata-note::before {
+  content: "i";
+  width: 18px;
+  height: 18px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  border: 1.5px solid #b8853a;
+  border-radius: 50%;
+  color: #b8853a;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.cascata-note strong {
+  color: #8e6420;
+}
+
+.cascata-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+  color: #8090aa;
+  font-size: 11.5px;
+}
+
+.cascata-footer span:first-child {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@media (max-width: 1040px) {
+  .cascata-kpis,
+  .cascata-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cascata-head {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 760px) {
+  .cascata-rail {
+    display: none;
+  }
+
+  .cascata-shell {
+    border-radius: 0;
+  }
+
+  .cascata-topbar {
+    border-radius: 0;
+  }
+
+  .cascata-topnav {
+    display: none;
+  }
+
+  .cascata-content {
+    padding: 22px 16px 34px;
+  }
+
+  .cascata-kpis,
+  .cascata-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .cascata-row,
+  .cascata-row-head {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}

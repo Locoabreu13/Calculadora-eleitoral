@@ -16,6 +16,119 @@ function formatarMoeda(valor) {
   return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
+function escaparHtml(valor) {
+  return String(valor ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function formatarPercentual(valor) {
+  if (typeof valor !== "number") return "0,0000%";
+  return (valor * 100).toFixed(4).replace(".", ",") + "%";
+}
+
+function formatarMoedaCompacta(valor) {
+  if (typeof valor !== "number") return "—";
+  const abs = Math.abs(valor);
+  if (abs >= 1000000) return "R$ " + (valor / 1000000).toFixed(2).replace(".", ",") + "M";
+  if (abs >= 1000) return "R$ " + (valor / 1000).toFixed(1).replace(".", ",") + " mil";
+  return formatarMoeda(valor);
+}
+
+function classeValor(valor) {
+  if (valor > 0) return "pos";
+  if (valor < 0) return "neg";
+  return "";
+}
+
+function sinal(valor) {
+  return valor > 0 ? "+" : "";
+}
+
+function textoStatus(status) {
+  if (status === "validado") return "Calculado";
+  if (status && status.includes("pendente")) return "Pendente";
+  return "Indisponível";
+}
+
+function classeStatus(status) {
+  if (status === "validado") return "";
+  if (status && status.includes("pendente")) return "warn";
+  return "neutral";
+}
+
+function deltaCadeiras() {
+  const delta = estadoCascata.ultimosDadosCen && estadoCascata.ultimosDadosCen.deltaCadeirasPorPartido;
+  return delta && typeof delta === "object" ? delta : {};
+}
+
+function descreverDeltaCadeiras() {
+  const pares = Object.entries(deltaCadeiras()).filter(([, valor]) => valor);
+  if (!pares.length) return { total: "0", desc: "Sem transferência de cadeira" };
+  const perdas = pares.filter(([, v]) => v < 0).map(([s]) => s);
+  const ganhos = pares.filter(([, v]) => v > 0).map(([s]) => s);
+  const total = pares.reduce((acc, [, v]) => acc + Math.max(0, v), 0);
+  const desc = perdas.length && ganhos.length
+    ? `${perdas.join(", ")} → ${ganhos.join(", ")}`
+    : "Comparação entre cenários";
+  return { total: String(total), desc };
+}
+
+function obterDeltaFundo(valor, totalAnual) {
+  if (typeof valor === "number") return valor;
+  if (valor && typeof valor === "object") {
+    const f5 = typeof valor.deltaFatia5 === "number" ? valor.deltaFatia5 : 0;
+    const f95 = typeof valor.deltaFatia95 === "number" ? valor.deltaFatia95 : 0;
+    return (f5 + f95) * (typeof totalAnual === "number" ? totalAnual : 0);
+  }
+  return 0;
+}
+
+function atualizarResumoCascata(resultado) {
+  if (!resultado || !resultado.nos) return;
+
+  const cad = descreverDeltaCadeiras();
+  const kpiCad = document.getElementById("cascata-kpi-cadeiras");
+  const kpiCadDesc = document.getElementById("cascata-kpi-cadeiras-desc");
+  if (kpiCad) kpiCad.textContent = cad.total;
+  if (kpiCadDesc) kpiCadDesc.textContent = cad.desc;
+
+  const contexto = document.getElementById("cascata-contexto");
+  if (contexto) {
+    let uf = "";
+    try { uf = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch(e) {}
+    contexto.textContent = `Resultado da retotalização atual${uf ? " · " + uf : ""}${cad.desc !== "Sem transferência de cadeira" ? " · " + cad.desc : ""}`;
+  }
+
+  const fefc = resultado.nos.fefc;
+  const totalFefc = fefc && fefc.porPartido
+    ? Object.values(fefc.porPartido).reduce((acc, p) => acc + Math.max(0, p.deltaTotal || 0), 0)
+    : 0;
+  const kpiFefc = document.getElementById("cascata-kpi-fefc");
+  const kpiFefcDesc = document.getElementById("cascata-kpi-fefc-desc");
+  if (kpiFefc) kpiFefc.textContent = totalFefc ? formatarMoedaCompacta(totalFefc) : "Sem impacto";
+  if (kpiFefcDesc) kpiFefcDesc.textContent = totalFefc ? formatarMoeda(totalFefc) : "Art. 16-D";
+
+  const tv = resultado.nos.tempoTV;
+  const mudouTv = tv && tv.porPartido && Object.values(tv.porPartido).some(p => p.deltaFracao !== 0);
+  const kpiTv = document.getElementById("cascata-kpi-tv");
+  const kpiTvDesc = document.getElementById("cascata-kpi-tv-desc");
+  if (kpiTv) kpiTv.textContent = mudouTv ? "Redistr." : "Sem impacto";
+  if (kpiTvDesc) kpiTvDesc.textContent = "90% por cadeira";
+
+  const fundo = resultado.nos.fundoPartidario;
+  const totalFundo = fundo && fundo.deltas
+    ? Object.values(fundo.deltas).reduce((acc, v) => acc + Math.max(0, obterDeltaFundo(v, fundo.valorTotalAnual)), 0)
+    : 0;
+  const kpiFundo = document.getElementById("cascata-kpi-fundo");
+  const kpiFundoDesc = document.getElementById("cascata-kpi-fundo-desc");
+  if (kpiFundo) kpiFundo.textContent = totalFundo ? formatarMoedaCompacta(totalFundo) : "Anual";
+  if (kpiFundoDesc) kpiFundoDesc.textContent = fundo && fundo.status ? textoStatus(fundo.status) : "Art. 41-A";
+}
+
 function renderizarCascata(resultado) {
   if (!resultado || !resultado.nos) return;
   const nos = resultado.nos;
@@ -24,20 +137,16 @@ function renderizarCascata(resultado) {
   const divFefc = document.getElementById('cascata-fefc');
   if (divFefc && nos.fefc) {
     let html = `
-      <h3 style="color: #333; margin-top: 0; margin-bottom: 8px;">Fundo Especial de Financiamento de Campanha (FEFC)</h3>
-      <p style="color: #444; font-size: 0.95rem; margin-bottom: 16px; line-height: 1.4;">
-        <strong>Fundamentação Legal:</strong> Art. 16-D, incisos II e III da Lei nº 9.504/1997.<br>
-        <strong>Base de cálculo (Cadeira na Câmara):</strong> ${formatarMoeda(nos.fefc.unidadeCadeira || 4642357.69)}
-      </p>
-      <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
-        <thead>
-          <tr style="background: #f8f9fa; text-align: left; border-bottom: 2px solid #ccc;">
-            <th style="padding: 10px; border: 1px solid #ddd;">Partido</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">Impacto Financeiro (48% cadeiras)</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">Impacto Financeiro Total</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div class="cascata-node-head">
+        <div>
+          <h2>Fundo Especial de Financiamento de Campanha <em>(FEFC)</em></h2>
+          <p><strong>Fundamentação Legal:</strong> Art. 16-D, incisos II e III da Lei nº 9.504/1997.<br>
+          <strong>Base de cálculo (cadeira na Câmara):</strong> <span class="cascata-value">${formatarMoeda(nos.fefc.unidadeCadeira || 4642357.69)}</span></p>
+        </div>
+        <span class="cascata-status-pill ${classeStatus(nos.fefc.status)}">${textoStatus(nos.fefc.status)}</span>
+      </div>
+      <div class="cascata-table">
+        <div class="cascata-row cascata-row-head cascata-cols-3"><div>Partido</div><div>Impacto (48% cadeiras)</div><div>Impacto Total</div></div>
     `;
 
     if (nos.fefc.status === 'validado' || nos.fefc.status === 'parcial_35_pendente') {
@@ -46,29 +155,30 @@ function renderizarCascata(resultado) {
         const p = nos.fefc.porPartido[sigla];
         if (p.deltaTotal !== 0) {
           temMudanca = true;
-          const ganhou = p.deltaTotal > 0;
-          const corFonte = ganhou ? '#155724' : '#721c24';
-          const corFundo = ganhou ? '#d4edda' : '#f8d7da';
-          const sinal = ganhou ? '+' : '';
-          
+          const classe = classeValor(p.deltaTotal);
           html += `
-            <tr>
-              <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">${sigla}</td>
-              <td style="padding: 10px; border: 1px solid #ddd;">${formatarMoeda(p.delta48)}</td>
-              <td style="padding: 10px; border: 1px solid #ddd; background: ${corFundo}; color: ${corFonte}; font-weight: bold;">
-                ${sinal}${formatarMoeda(p.deltaTotal)}
-              </td>
-            </tr>
+            <div class="cascata-row cascata-cols-3">
+              <div class="cascata-party-cell">
+                <span class="cascata-party-marker ${classe}"></span>
+                <div>
+                  <div class="cascata-party-name">${escaparHtml(sigla)}</div>
+                  <div class="cascata-party-desc">${p.deltaTotal > 0 ? "Ganhou impacto financeiro" : "Perdeu impacto financeiro"}</div>
+                </div>
+              </div>
+              <div class="cascata-value ${classe}">${sinal(p.delta48 || 0)}${formatarMoeda(p.delta48 || 0)}</div>
+              <div class="cascata-value ${classe}">${sinal(p.deltaTotal)}${formatarMoeda(p.deltaTotal)}</div>
+            </div>
           `;
         }
       }
       if (!temMudanca) {
-        html += `<tr><td colspan="3" style="padding: 10px; text-align: center; color: #666; font-style: italic;">Nenhum partido sofreu impacto financeiro na retotalização atual.</td></tr>`;
+        html += `<div class="cascata-empty">Nenhum partido sofreu impacto financeiro na retotalização atual.</div>`;
       }
     } else {
-      html += `<tr><td colspan="3" style="padding: 10px; text-align: center; color: #666;">Cálculo indisponível. Motivo: ${nos.fefc.status.replace(/_/g, ' ')}</td></tr>`;
+      html += `<div class="cascata-unavailable">Cálculo indisponível. Motivo: ${escaparHtml(String(nos.fefc.status || "").replace(/_/g, " "))}</div>`;
     }
-    html += `</tbody></table>`;
+    html += `</div>
+      <div class="cascata-note"><div><strong>Cálculo proporcional:</strong> a fração de cadeiras do FEFC é redistribuída conforme a mudança de cadeiras na Câmara, preservando a base oficial de referência.</div></div>`;
     divFefc.innerHTML = html;
   }
 
@@ -76,19 +186,16 @@ function renderizarCascata(resultado) {
   const divTv = document.getElementById('cascata-tv');
   if (divTv && nos.tempoTV) {
     let html = `
-      <h3 style="color: #333; margin-top: 0; margin-bottom: 8px;">Tempo de Propaganda (TV e Rádio)</h3>
-      <p style="color: #444; font-size: 0.95rem; margin-bottom: 16px; line-height: 1.4;">
-        <strong>Fundamentação Legal:</strong> Art. 47, § 1º, inciso II da Lei nº 9.504/1997.<br>
-        <strong>Impacto na distribuição proporcional (90% do tempo total)</strong>
-      </p>
-      <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
-        <thead>
-          <tr style="background: #f8f9fa; text-align: left; border-bottom: 2px solid #ccc;">
-            <th style="padding: 10px; border: 1px solid #ddd;">Partido</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">Variação na Quota</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div class="cascata-node-head">
+        <div>
+          <h2>Tempo de <em>Propaganda</em> (TV e Rádio)</h2>
+          <p><strong>Fundamentação Legal:</strong> Art. 47, § 1º, inciso II da Lei nº 9.504/1997.<br>
+          <strong>Impacto na distribuição proporcional:</strong> 90% do tempo total.</p>
+        </div>
+        <span class="cascata-status-pill ${classeStatus(nos.tempoTV.status)}">${textoStatus(nos.tempoTV.status)}</span>
+      </div>
+      <div class="cascata-table">
+        <div class="cascata-row cascata-row-head cascata-cols-2"><div>Partido</div><div>Variação na quota</div></div>
     `;
     if (nos.tempoTV.status === 'validado') {
       let temMudanca = false;
@@ -96,28 +203,29 @@ function renderizarCascata(resultado) {
         const p = nos.tempoTV.porPartido[sigla];
         if (p.deltaFracao !== 0) {
           temMudanca = true;
-          const ganhou = p.deltaFracao > 0;
-          const corFonte = ganhou ? '#155724' : '#721c24';
-          const corFundo = ganhou ? '#d4edda' : '#f8d7da';
-          const sinal = ganhou ? '+' : '';
-          const percentual = (p.deltaFracao * 100).toFixed(4).replace('.', ',');
+          const classe = classeValor(p.deltaFracao);
           html += `
-            <tr>
-              <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">${sigla}</td>
-              <td style="padding: 10px; border: 1px solid #ddd; background: ${corFundo}; color: ${corFonte}; font-weight: bold;">
-                ${sinal}${percentual}%
-              </td>
-            </tr>
+            <div class="cascata-row cascata-cols-2">
+              <div class="cascata-party-cell">
+                <span class="cascata-party-marker ${classe}"></span>
+                <div>
+                  <div class="cascata-party-name">${escaparHtml(sigla)}</div>
+                  <div class="cascata-party-desc">${p.deltaFracao > 0 ? "Ganhou quota" : "Perdeu quota"}</div>
+                </div>
+              </div>
+              <div class="cascata-value ${classe}">${sinal(p.deltaFracao)}${formatarPercentual(p.deltaFracao)}</div>
+            </div>
           `;
         }
       }
       if (!temMudanca) {
-        html += `<tr><td colspan="2" style="padding: 10px; text-align: center; color: #666; font-style: italic;">Sem impacto no tempo de TV para a retotalização atual.</td></tr>`;
+        html += `<div class="cascata-empty">Sem impacto no tempo de TV para a retotalização atual.</div>`;
       }
     } else {
-      html += `<tr><td colspan="2" style="padding: 10px; text-align: center; color: #666;">Cálculo indisponível. Motivo: ${nos.tempoTV.status.replace(/_/g, ' ')}</td></tr>`;
+      html += `<div class="cascata-unavailable">Cálculo indisponível. Motivo: ${escaparHtml(String(nos.tempoTV.status || "").replace(/_/g, " "))}</div>`;
     }
-    html += `</tbody></table>`;
+    html += `</div>
+      <div class="cascata-note"><div><strong>Nota técnica:</strong> a fórmula 90/10 do art. 47 é aplicada em fração, para medir o impacto da retotalização sobre a divisão do tempo.</div></div>`;
     divTv.innerHTML = html;
   }
 
@@ -125,43 +233,37 @@ function renderizarCascata(resultado) {
   const divClausula = document.getElementById('cascata-clausula');
   if (divClausula && nos.clausula) {
     let html = `
-      <h3 style="color: #333; margin-top: 0; margin-bottom: 8px;">Cláusula de Desempenho</h3>
-      <p style="color: #444; font-size: 0.95rem; margin-bottom: 16px; line-height: 1.4;">
-        <strong>Fundamentação Legal:</strong> Art. 17, § 3º da Constituição Federal (EC 97/2017).<br>
-        <strong>Patamar Aplicado:</strong> Eleições ${nos.clausula.anoEleicao || 2022}
-      </p>
+      <div class="cascata-node-head">
+        <div>
+          <h2>Cláusula de <em>Desempenho</em></h2>
+          <p><strong>Fundamentação Legal:</strong> Art. 17, § 3º da Constituição Federal (EC 97/2017).<br>
+          <strong>Patamar aplicado:</strong> Eleições ${nos.clausula.anoEleicao || 2022}</p>
+        </div>
+        <span class="cascata-status-pill ${classeStatus(nos.clausula.status)}">${textoStatus(nos.clausula.status)}</span>
+      </div>
     `;
     if (nos.clausula.status === 'validado') {
       if (nos.clausula.temMudancaNaClausula && nos.clausula.mudancas && nos.clausula.mudancas.length > 0) {
-        html += `
-          <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
-            <thead>
-              <tr style="background: #f8f9fa; text-align: left; border-bottom: 2px solid #ccc;">
-                <th style="padding: 10px; border: 1px solid #ddd;">Partido/Federação</th>
-                <th style="padding: 10px; border: 1px solid #ddd;">Situação Nova</th>
-              </tr>
-            </thead>
-            <tbody>
-        `;
+        html += `<div class="cascata-table"><div class="cascata-row cascata-row-head cascata-cols-2"><div>Partido/Federação</div><div>Situação nova</div></div>`;
         nos.clausula.mudancas.forEach(m => {
           const atingiu = m.atingiuDepois;
-          const corFonte = atingiu ? '#155724' : '#721c24';
-          const corFundo = atingiu ? '#d4edda' : '#f8d7da';
+          const classe = atingiu ? "pos" : "neg";
           const texto = atingiu ? 'Passou a atingir a cláusula' : 'Deixou de atingir a cláusula';
           html += `
-            <tr>
-              <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">${m.sigla}</td>
-              <td style="padding: 10px; border: 1px solid #ddd; background: ${corFundo}; color: ${corFonte}; font-weight: bold;">${texto}</td>
-            </tr>
+            <div class="cascata-row cascata-cols-2">
+              <div class="cascata-party-cell"><span class="cascata-party-marker ${classe}"></span><div class="cascata-party-name">${escaparHtml(m.sigla)}</div></div>
+              <div class="cascata-value ${classe}">${texto}</div>
+            </div>
           `;
         });
-        html += `</tbody></table>`;
+        html += `</div>`;
       } else {
-        html += `<div style="padding: 16px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; color: #555; text-align: center; font-style: italic;">Nenhuma alteração na situação da Cláusula de Desempenho dos partidos nesta retotalização.</div>`;
+        html += `<div class="cascata-table"><div class="cascata-empty">Nenhuma alteração na situação da Cláusula de Desempenho dos partidos nesta retotalização.</div></div>`;
       }
     } else {
-      html += `<div style="padding: 16px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; color: #555; text-align: center;">Cálculo indisponível. Motivo: ${nos.clausula.status.replace(/_/g, ' ')}</div>`;
+      html += `<div class="cascata-table"><div class="cascata-unavailable">Cálculo indisponível. Motivo: ${escaparHtml(String(nos.clausula.status || "").replace(/_/g, " "))}</div></div>`;
     }
+    html += `<div class="cascata-note"><div><strong>Importância:</strong> a cláusula é um nó de alta alavancagem. Uma única cadeira pode afetar acesso a recursos e tempo de propaganda.</div></div>`;
     divClausula.innerHTML = html;
   }
 
@@ -169,47 +271,43 @@ function renderizarCascata(resultado) {
   const divFundo = document.getElementById('cascata-fundo');
   if (divFundo && nos.fundoPartidario) {
     let html = `
-      <h3 style="color: #333; margin-top: 0; margin-bottom: 8px;">Fundo Partidário (Quota de 95%)</h3>
-      <p style="color: #444; font-size: 0.95rem; margin-bottom: 16px; line-height: 1.4;">
-        <strong>Fundamentação Legal:</strong> Art. 41-A da Lei nº 9.096/1995.<br>
-        <strong>Montante Anual de Referência:</strong> ${formatarMoeda(nos.fundoPartidario.valorTotalAnual || 1185566089.46)}
-      </p>
-      <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
-        <thead>
-          <tr style="background: #f8f9fa; text-align: left; border-bottom: 2px solid #ccc;">
-            <th style="padding: 10px; border: 1px solid #ddd;">Partido</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">Impacto Financeiro (Estimativa Anual)</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div class="cascata-node-head">
+        <div>
+          <h2>Fundo <em>Partidário</em> (quota de 95%)</h2>
+          <p><strong>Fundamentação Legal:</strong> Art. 41-A da Lei nº 9.096/1995.<br>
+          <strong>Montante anual de referência:</strong> <span class="cascata-value">${formatarMoeda(nos.fundoPartidario.valorTotalAnual || 1185566089.46)}</span></p>
+        </div>
+        <span class="cascata-status-pill ${classeStatus(nos.fundoPartidario.status)}">${textoStatus(nos.fundoPartidario.status)}</span>
+      </div>
+      <div class="cascata-table">
+        <div class="cascata-row cascata-row-head cascata-cols-2"><div>Partido</div><div>Impacto financeiro estimado</div></div>
     `;
     if (nos.fundoPartidario.status === 'validado') {
       let temMudanca = false;
       for (const sigla in nos.fundoPartidario.deltas) {
-        const valor = nos.fundoPartidario.deltas[sigla];
+        const valor = obterDeltaFundo(nos.fundoPartidario.deltas[sigla], nos.fundoPartidario.valorTotalAnual);
         if (valor !== 0) {
           temMudanca = true;
-          const ganhou = valor > 0;
-          const corFonte = ganhou ? '#155724' : '#721c24';
-          const corFundo = ganhou ? '#d4edda' : '#f8d7da';
-          const sinal = ganhou ? '+' : '';
+          const classe = classeValor(valor);
           html += `
-            <tr>
-              <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">${sigla}</td>
-              <td style="padding: 10px; border: 1px solid #ddd; background: ${corFundo}; color: ${corFonte}; font-weight: bold;">
-                ${sinal}${formatarMoeda(valor)}
-              </td>
-            </tr>
+            <div class="cascata-row cascata-cols-2">
+              <div class="cascata-party-cell">
+                <span class="cascata-party-marker ${classe}"></span>
+                <div class="cascata-party-name">${escaparHtml(sigla)}</div>
+              </div>
+              <div class="cascata-value ${classe}">${sinal(valor)}${formatarMoeda(valor)}</div>
+            </div>
           `;
         }
       }
       if (!temMudanca) {
-        html += `<tr><td colspan="2" style="padding: 10px; text-align: center; color: #666; font-style: italic;">Nenhum partido sofreu impacto financeiro no Fundo Partidário.</td></tr>`;
+        html += `<div class="cascata-empty">Nenhum partido sofreu impacto financeiro no Fundo Partidário.</div>`;
       }
     } else {
-      html += `<tr><td colspan="2" style="padding: 10px; text-align: center; color: #666;">Cálculo indisponível. Motivo: ${nos.fundoPartidario.status.replace(/_/g, ' ')}</td></tr>`;
+      html += `<div class="cascata-unavailable">Cálculo indisponível. Motivo: ${escaparHtml(String(nos.fundoPartidario.status || "").replace(/_/g, " "))}</div>`;
     }
-    html += `</tbody></table>`;
+    html += `</div>
+      <div class="cascata-note"><div><strong>Composição:</strong> 5% são distribuídos igualmente entre partidos com cláusula, e 95% proporcionalmente aos votos válidos.</div></div>`;
     divFundo.innerHTML = html;
   }
 }
@@ -220,8 +318,14 @@ export function abrirCascata(saidaEngineBase, saidaEngineCenario, dadosReferenci
   if (dadosReferencia) estadoCascata.ultimosDadosRef = dadosReferencia;
   if (dadosCenario) estadoCascata.ultimosDadosCen = dadosCenario;
 
-  const overlay = document.getElementById("cascata-overlay");
-  if (overlay) overlay.style.display = "flex";
+  const app = document.getElementById("app");
+  const telaCascata = document.getElementById("tela-cascata");
+  if (app) app.style.display = "none";
+  if (telaCascata) {
+    telaCascata.style.display = "flex";
+    const conteudo = telaCascata.querySelector(".cascata-content");
+    if (conteudo) conteudo.scrollTop = 0;
+  }
 
   // Auto-detectar UF e configurar visibilidade do seletor
   const ufContainer = document.getElementById("cascata-uf-container");
@@ -245,6 +349,7 @@ export function abrirCascata(saidaEngineBase, saidaEngineCenario, dadosReferenci
 
   estadoCascata.ultimoResultado = resultado;
   renderizarCascata(resultado);
+  atualizarResumoCascata(resultado);
 }
 
 window.CascataUI = { abrirCascata };
@@ -252,12 +357,8 @@ window.CascataUI = { abrirCascata };
 function alternarAba(abaClicada) {
   document.querySelectorAll(".cascata-tab").forEach(aba => {
     aba.classList.remove("active");
-    aba.style.background = "transparent";
-    aba.style.fontWeight = "normal";
   });
   abaClicada.classList.add("active");
-  abaClicada.style.background = "#fff";
-  abaClicada.style.fontWeight = "bold";
 
   const alvoId = abaClicada.dataset.target;
   document.querySelectorAll(".cascata-panel").forEach(painel => {
@@ -266,13 +367,39 @@ function alternarAba(abaClicada) {
 }
 
 function fecharOverlay() {
-  const overlay = document.getElementById("cascata-overlay");
-  if (overlay) overlay.style.display = "none";
+  const telaCascata = document.getElementById("tela-cascata");
+  const app = document.getElementById("app");
+  if (telaCascata) telaCascata.style.display = "none";
+  if (app) app.style.display = "";
 }
 
 function configurarEventos() {
   const btnFechar = document.getElementById("cascata-fechar");
   if (btnFechar) btnFechar.addEventListener("click", fecharOverlay);
+
+  [
+    "btn-cascata-voltar-calculo",
+    "btn-cascata-voltar-calculo-rail",
+    "btn-cascata-voltar-calculo-breadcrumb",
+    "btn-cascata-voltar-resultado"
+  ].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.addEventListener("click", fecharOverlay);
+  });
+
+  [
+    "btn-cascata-voltar-painel",
+    "btn-cascata-voltar-painel-logo",
+    "btn-cascata-voltar-painel-topo"
+  ].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener("click", () => {
+        fecharOverlay();
+        if (typeof window.voltarDashboard === "function") window.voltarDashboard();
+      });
+    }
+  });
 
   const btnCopiar = document.getElementById("btn-cascata-copiar");
   if (btnCopiar) btnCopiar.addEventListener("click", copiarTextoPeticao);
@@ -442,11 +569,15 @@ function copiarTextoPeticao() {
   navigator.clipboard.writeText(texto).then(() => {
     const btn = document.getElementById("btn-cascata-copiar");
     const textoOriginal = btn.innerText;
+    const fundoOriginal = btn.style.background;
+    const corOriginal = btn.style.color;
     btn.innerText = "Copiado!";
     btn.style.background = "#28a745";
+    btn.style.color = "#fff";
     setTimeout(() => {
       btn.innerText = textoOriginal;
-      btn.style.background = "#0056b3";
+      btn.style.background = fundoOriginal;
+      btn.style.color = corOriginal;
     }, 2000);
   }).catch(err => {
     console.error("Erro ao copiar texto: ", err);

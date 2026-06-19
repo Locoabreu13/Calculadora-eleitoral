@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=66" />
+  <link rel="stylesheet" href="css/styles.css?v=67" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -1949,62 +1949,160 @@
     </button>
   </div>
 
-<div id="cascata-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center;">
-  <div style="background: #fff; width: 90%; max-width: 800px; height: 85%; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; font-family: sans-serif;">
-    <header style="padding: 16px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center; background: #f8f9fa;">
-      <h2 style="margin: 0; font-size: 1.25rem;">Impacto da Retotalização (Cascata Eleitoral)</h2>
-      <div style="display: flex; gap: 10px; align-items: center;">
-        <button id="btn-cascata-copiar" style="padding: 8px 16px; font-size: 0.95rem; cursor: pointer; background: #0056b3; color: #fff; border: none; border-radius: 4px; font-weight: bold;">Copiar para Petição</button>
-        <button id="btn-cascata-pdf" style="padding: 8px 16px; font-size: 0.95rem; cursor: pointer; background: #dc3545; color: #fff; border: none; border-radius: 4px; font-weight: bold;">Gerar PDF</button>
-        <button id="cascata-fechar" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0 8px;">&times;</button>
+<div id="tela-cascata" class="cascata-page" style="display:none">
+  <aside class="cascata-rail" aria-label="Navegação da Cascata">
+    <button class="cascata-rail-logo" id="btn-cascata-voltar-painel-logo" title="Voltar ao painel" aria-label="Voltar ao painel">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <defs><path id="cascata-seal-ring" d="M20 4a16 16 0 1 1 0 32a16 16 0 1 1 0 -32"/></defs>
+        <circle cx="20" cy="20" r="20" fill="#0a1624"/>
+        <circle cx="20" cy="20" r="18.8" fill="none" stroke="#d4a65a" stroke-width="0.9" opacity="0.42"/>
+        <circle cx="20" cy="20" r="14.8" fill="none" stroke="#d4a65a" stroke-width="0.5" opacity="0.20"/>
+        <text font-size="3.6" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" fill="#d4a65a" opacity="0.38" letter-spacing="0.55">
+          <textPath href="#cascata-seal-ring">RETOTALIZAJE · RETOTALIZAJE · </textPath>
+        </text>
+        <text x="20" y="29" text-anchor="middle" font-family="Newsreader, Georgia, serif" font-size="23" font-weight="600" font-style="italic" fill="#d4a65a">R</text>
+      </svg>
+    </button>
+
+    <div class="cascata-rail-nav">
+      <button class="cascata-rail-item" id="btn-cascata-voltar-painel" title="Painel" aria-label="Painel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+      </button>
+      <button class="cascata-rail-item active" id="btn-cascata-voltar-calculo-rail" title="Resultado do cálculo" aria-label="Resultado do cálculo">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h5"/><path d="M8 15h6"/></svg>
+      </button>
+      <button class="cascata-rail-item" title="Meus cálculos" aria-label="Meus cálculos" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/></svg>
+      </button>
+      <button class="cascata-rail-item" title="Exportações" aria-label="Exportações" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+      </button>
+      <div class="cascata-rail-sep"></div>
+      <button class="cascata-rail-item" title="Auditoria jurídica" aria-label="Auditoria jurídica" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v6c0 4.5-3 8-8 9-5-1-8-4.5-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+      </button>
+    </div>
+
+    <button class="cascata-rail-item cascata-rail-logout" onclick="fazerLogout()" title="Sair" aria-label="Sair">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+    </button>
+  </aside>
+
+  <div class="cascata-shell">
+    <header class="cascata-topbar">
+      <div class="cascata-topbar-left">
+        <div class="cascata-brand">Retotaliza<em>JE</em></div>
+        <nav class="cascata-topnav" aria-label="Navegação da Cascata">
+          <button type="button" id="btn-cascata-voltar-painel-topo">Painel</button>
+          <button type="button" class="active" id="btn-cascata-voltar-calculo">Novo cálculo</button>
+          <button type="button" disabled>Meus cálculos</button>
+          <button type="button" disabled>Exportações</button>
+        </nav>
+      </div>
+      <div class="cascata-topbar-right">
+        <span class="cascata-version">v2.0</span>
+        <span class="cascata-user-pill">
+          <span class="cascata-user-avatar">R</span>
+          <b class="usuario-email">Conta</b>
+        </span>
       </div>
     </header>
-    <div id="cascata-uf-container" style="padding: 12px 24px; background: #f0f4ff; border-bottom: 1px solid #ccc; display: flex; align-items: center; gap: 10px;">
-      <label for="sel-cascata-uf-overlay" style="font-size: 0.9rem; font-weight: bold; white-space: nowrap;">Estado da eleicao:</label>
-      <select id="sel-cascata-uf-overlay" style="padding: 5px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem;">
-        <option value="">-- Selecione a UF --</option>
-        <option value="AC">AC</option>
-        <option value="AL">AL</option>
-        <option value="AM">AM</option>
-        <option value="AP">AP</option>
-        <option value="BA">BA</option>
-        <option value="CE">CE</option>
-        <option value="DF">DF</option>
-        <option value="ES">ES</option>
-        <option value="GO">GO</option>
-        <option value="MA">MA</option>
-        <option value="MG">MG</option>
-        <option value="MS">MS</option>
-        <option value="MT">MT</option>
-        <option value="PA">PA</option>
-        <option value="PB">PB</option>
-        <option value="PE">PE</option>
-        <option value="PI">PI</option>
-        <option value="PR">PR</option>
-        <option value="RJ">RJ</option>
-        <option value="RN">RN</option>
-        <option value="RO">RO</option>
-        <option value="RR">RR</option>
-        <option value="RS">RS</option>
-        <option value="SC">SC</option>
-        <option value="SE">SE</option>
-        <option value="SP">SP</option>
-        <option value="TO">TO</option>
-      </select>
-      <span style="font-size: 0.85rem; color: #555;">Necessario para o calculo da Clausula de Desempenho.</span>
-    </div>
-    <nav style="display: flex; border-bottom: 1px solid #ccc; background: #eee;">
-      <button class="cascata-tab active" data-target="cascata-fefc" style="flex: 1; padding: 12px; border: none; background: #fff; cursor: pointer; font-weight: bold;">FEFC</button>
-      <button class="cascata-tab" data-target="cascata-tv" style="flex: 1; padding: 12px; border: none; background: transparent; cursor: pointer;">Tempo de TV</button>
-      <button class="cascata-tab" data-target="cascata-clausula" style="flex: 1; padding: 12px; border: none; background: transparent; cursor: pointer;">Cláusula</button>
-      <button class="cascata-tab" data-target="cascata-fundo" style="flex: 1; padding: 12px; border: none; background: transparent; cursor: pointer;">Fundo Partidário</button>
-    </nav>
-    <div style="flex: 1; overflow-y: auto; padding: 24px;">
-      <div id="cascata-fefc" class="cascata-panel" style="display: block;"></div>
-      <div id="cascata-tv" class="cascata-panel" style="display: none;"></div>
-      <div id="cascata-clausula" class="cascata-panel" style="display: none;"></div>
-      <div id="cascata-fundo" class="cascata-panel" style="display: none;"></div>
-    </div>
+
+    <main class="cascata-content">
+      <section class="cascata-head">
+        <div>
+          <div class="cascata-breadcrumb">
+            <button type="button" id="btn-cascata-voltar-calculo-breadcrumb">Novo cálculo</button>
+            <span>›</span>
+            <button type="button" id="btn-cascata-voltar-resultado">Resultado</button>
+            <span>›</span>
+            <strong>Cascata Eleitoral</strong>
+          </div>
+          <div class="cascata-title-row">
+            <h1>Impacto da Retotalização</h1>
+            <span class="cascata-tag"><i></i>Cascata Eleitoral</span>
+          </div>
+          <p id="cascata-contexto">Resultado da retotalização atual</p>
+        </div>
+        <div class="cascata-actions">
+          <button id="btn-cascata-copiar" class="cascata-btn cascata-btn-light" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+            Copiar para Petição
+          </button>
+          <button id="btn-cascata-pdf" class="cascata-btn cascata-btn-dark" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 12v6"/><path d="M9 15l3 3 3-3"/></svg>
+            Gerar PDF
+          </button>
+          <button id="cascata-fechar" class="cascata-btn cascata-btn-outline" type="button">Voltar ao resultado</button>
+        </div>
+      </section>
+
+      <div id="cascata-uf-container" class="cascata-uf-row">
+        <label for="sel-cascata-uf-overlay">Estado da eleição</label>
+        <select id="sel-cascata-uf-overlay">
+          <option value="">-- Selecione a UF --</option>
+          <option value="AC">AC</option><option value="AL">AL</option><option value="AM">AM</option><option value="AP">AP</option>
+          <option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option>
+          <option value="GO">GO</option><option value="MA">MA</option><option value="MG">MG</option><option value="MS">MS</option>
+          <option value="MT">MT</option><option value="PA">PA</option><option value="PB">PB</option><option value="PE">PE</option>
+          <option value="PI">PI</option><option value="PR">PR</option><option value="RJ">RJ</option><option value="RN">RN</option>
+          <option value="RO">RO</option><option value="RR">RR</option><option value="RS">RS</option><option value="SC">SC</option>
+          <option value="SE">SE</option><option value="SP">SP</option><option value="TO">TO</option>
+        </select>
+        <span>Necessário para a análise da cláusula de desempenho.</span>
+      </div>
+
+      <section class="cascata-kpis" aria-label="Resumo da cascata eleitoral">
+        <article class="cascata-kpi cascata-kpi-gold">
+          <span>Cadeiras transferidas</span>
+          <strong id="cascata-kpi-cadeiras">—</strong>
+          <small id="cascata-kpi-cadeiras-desc">Comparação entre cenários</small>
+        </article>
+        <article class="cascata-kpi cascata-kpi-blue">
+          <span>Impacto FEFC</span>
+          <strong id="cascata-kpi-fefc">—</strong>
+          <small id="cascata-kpi-fefc-desc">Art. 16-D</small>
+        </article>
+        <article class="cascata-kpi cascata-kpi-green">
+          <span>Tempo de TV</span>
+          <strong id="cascata-kpi-tv">—</strong>
+          <small id="cascata-kpi-tv-desc">Art. 47</small>
+        </article>
+        <article class="cascata-kpi cascata-kpi-purple">
+          <span>Fundo Partidário</span>
+          <strong id="cascata-kpi-fundo">—</strong>
+          <small id="cascata-kpi-fundo-desc">Art. 41-A</small>
+        </article>
+      </section>
+
+      <section class="cascata-card">
+        <nav class="cascata-tabs" aria-label="Nós da cascata eleitoral">
+          <button class="cascata-tab active" data-target="cascata-fefc" type="button">
+            FEFC <span>Art. 16-D</span>
+          </button>
+          <button class="cascata-tab" data-target="cascata-tv" type="button">
+            Tempo de TV <span>Art. 47</span>
+          </button>
+          <button class="cascata-tab" data-target="cascata-clausula" type="button">
+            Cláusula <span>Art. 17 §3º</span>
+          </button>
+          <button class="cascata-tab" data-target="cascata-fundo" type="button">
+            Fundo Partidário <span>Art. 41-A</span>
+          </button>
+        </nav>
+        <div class="cascata-panel-wrap">
+          <div id="cascata-fefc" class="cascata-panel" style="display:block"></div>
+          <div id="cascata-tv" class="cascata-panel" style="display:none"></div>
+          <div id="cascata-clausula" class="cascata-panel" style="display:none"></div>
+          <div id="cascata-fundo" class="cascata-panel" style="display:none"></div>
+        </div>
+      </section>
+
+      <footer class="cascata-footer">
+        <span id="cascata-protocolo">RJE · Cascata Eleitoral</span>
+        <span>Sistema Proporcional Brasileiro · Art. 109 CE · ADIs 7.228/7.263/7.325 · v2.0</span>
+      </footer>
+    </main>
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
