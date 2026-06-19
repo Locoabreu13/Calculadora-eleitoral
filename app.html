@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=62" />
+  <link rel="stylesheet" href="css/styles.css?v=63" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -408,12 +408,17 @@
   <!-- ═══ RAIL LATERAL — visual do Novo Calculo.dc.html ═══════════════════════ -->
   <aside class="app-rail" aria-label="Navegação principal">
     <button class="app-rail-logo" onclick="voltarDashboard()" title="Painel RetotalizaJE" aria-label="Voltar ao painel">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 3v18"/>
-        <path d="M5 21h14"/>
-        <path d="M4 7h16"/>
-        <path d="M4 7l-3 6a4 4 0 0 0 6 0L4 7z"/>
-        <path d="M20 7l-3 6a4 4 0 0 0 6 0L20 7z"/>
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <defs>
+          <path id="novo-seal-ring" d="M20 4a16 16 0 1 1 0 32a16 16 0 1 1 0 -32"/>
+        </defs>
+        <circle cx="20" cy="20" r="20" fill="#0a1624"/>
+        <circle cx="20" cy="20" r="18.8" fill="none" stroke="#d4a65a" stroke-width="0.9" opacity="0.42"/>
+        <circle cx="20" cy="20" r="14.8" fill="none" stroke="#d4a65a" stroke-width="0.5" opacity="0.20"/>
+        <text font-size="3.6" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" fill="#d4a65a" opacity="0.38" letter-spacing="0.55">
+          <textPath href="#novo-seal-ring">RETOTALIZAJE · RETOTALIZAJE · </textPath>
+        </text>
+        <text x="20" y="29" text-anchor="middle" font-family="Newsreader, Georgia, serif" font-size="23" font-weight="600" font-style="italic" fill="#d4a65a">R</text>
       </svg>
     </button>
 
@@ -424,11 +429,18 @@
       <button class="app-rail-item active" title="Novo cálculo" aria-label="Novo cálculo">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h5"/><path d="M8 15h6"/></svg>
       </button>
-      <button class="app-rail-item" id="app-rail-manual" title="Manual" aria-label="Manual" onclick="document.getElementById('btn-toggle-manual')?.click()">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a2 2 0 0 1 2 2v14"/><path d="M20 4h-6a2 2 0 0 0-2 2v14"/><path d="M4 4v15h6"/><path d="M20 4v15h-6"/></svg>
+      <button class="app-rail-item" title="Meus cálculos" aria-label="Meus cálculos" onclick="voltarDashboard(); setTimeout(() => document.querySelector('.dash-nav-item[data-sec=estudos]')?.click(), 0)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/></svg>
       </button>
-      <button class="app-rail-item" id="app-rail-docs" title="Como funciona" aria-label="Como funciona" onclick="document.getElementById('btn-toggle-docs')?.click()">
+      <button class="app-rail-item" title="Exportações" aria-label="Exportações" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+      </button>
+      <div class="app-rail-sep"></div>
+      <button class="app-rail-item" title="Casos validados" aria-label="Casos validados" disabled>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v6c0 4.5-3 8-8 9-5-1-8-4.5-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+      </button>
+      <button class="app-rail-item" title="Legislação" aria-label="Legislação" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a2 2 0 0 1 2 2v14"/><path d="M20 4h-6a2 2 0 0 0-2 2v14"/><path d="M4 4v15h6"/><path d="M20 4v15h-6"/></svg>
       </button>
     </div>
 
@@ -447,17 +459,13 @@
       <nav class="topbar-nav" aria-label="Navegação da calculadora">
         <button class="topbar-dash-btn" onclick="voltarDashboard()" title="Voltar ao painel">Painel</button>
         <span class="topbar-nav-item active">Novo cálculo</span>
-        <button class="topbar-docs-btn" id="btn-toggle-manual"
-                aria-expanded="false" aria-controls="manual-section"
-                title="Manual de uso do sistema">
-          Manual
-        </button>
-        <button class="topbar-docs-btn" id="btn-toggle-docs"
-                aria-expanded="false" aria-controls="docs-section"
-                title="Documentação e glossário jurídico">
-          Como funciona
-        </button>
+        <button class="topbar-docs-btn" type="button" onclick="voltarDashboard(); setTimeout(() => document.querySelector('.dash-nav-item[data-sec=estudos]')?.click(), 0)">Meus cálculos</button>
+        <span class="topbar-docs-btn topbar-disabled">Exportações</span>
       </nav>
+      <div class="topbar-hidden-tools" aria-hidden="true">
+        <button id="btn-toggle-manual" aria-expanded="false" aria-controls="manual-section" title="Manual de uso do sistema">Manual</button>
+        <button id="btn-toggle-docs" aria-expanded="false" aria-controls="docs-section" title="Documentação e glossário jurídico">Como funciona</button>
+      </div>
     </div>
 
     <div class="topbar-right">

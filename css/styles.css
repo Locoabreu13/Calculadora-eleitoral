@@ -5959,6 +5959,9 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   height: 100vh;
   overflow: hidden;
   background: #131f33;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  color: #131f33;
+  -webkit-font-smoothing: antialiased;
 }
 
 .app-rail {
@@ -5990,9 +5993,10 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   width: 40px;
   height: 40px;
   margin-bottom: 36px;
-  background: linear-gradient(160deg,#d4a65a,#b8853a);
-  color: #131f33;
-  box-shadow: 0 4px 14px -4px rgba(184,133,58,0.60);
+  background: transparent;
+  color: #d4a65a;
+  filter: drop-shadow(0 6px 14px rgba(184,133,58,0.45));
+  box-shadow: none;
 }
 
 .app-rail svg {
@@ -6006,8 +6010,9 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 }
 
 .app-rail-logo svg {
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
+  stroke: none;
 }
 
 .app-rail-nav {
@@ -6028,6 +6033,18 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   background: rgba(212,166,90,0.15);
   border: 1px solid rgba(212,166,90,0.30);
   color: #d4a65a;
+}
+
+.app-rail-item:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.app-rail-sep {
+  width: 36px;
+  height: 1px;
+  margin: 10px 0;
+  background: rgba(255,255,255,0.08);
 }
 
 .app-rail-logout {
@@ -6054,12 +6071,13 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 
 .topbar-title {
   margin: 0;
-  font-family: var(--fonte-titulo, "Playfair Display", Georgia, serif);
+  font-family: "Newsreader", Georgia, serif;
   font-size: 20px;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1;
   color: #131f33;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
+  font-optical-sizing: auto;
 }
 
 .title-je {
@@ -6110,9 +6128,19 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   border-radius: 999px;
   background: rgba(36,84,240,0.06);
   color: #2454f0;
-  font-family: var(--fonte-corpo, "Inter", system-ui, sans-serif);
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   font-size: 12px;
   font-weight: 700;
+}
+
+.topbar-version::before {
+  content: "";
+  width: 13px;
+  height: 13px;
+  margin-right: 7px;
+  border: 1.8px solid currentColor;
+  border-radius: 999px;
+  opacity: .85;
 }
 
 .topbar-user-pill {
@@ -6139,6 +6167,10 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   color: #131f33;
   font-size: 10px;
   font-weight: 800;
+}
+
+.topbar-hidden-tools {
+  display: none;
 }
 
 .app-body {
@@ -6180,11 +6212,13 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 
 .novo-calc-head h2 {
   margin: 0;
-  font-family: var(--fonte-titulo, "Playfair Display", Georgia, serif);
+  font-family: "Newsreader", Georgia, serif;
   color: #131f33;
   font-size: 28px;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.12;
+  letter-spacing: -0.014em;
+  font-optical-sizing: auto;
 }
 
 .app-body:not(.tem-resultados) .sidebar-flow {
@@ -6225,9 +6259,10 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   background: #f2f4f8;
   border: 2px solid #dde3ec;
   color: #a0aab8;
-  font-family: var(--fonte-titulo, "Playfair Display", Georgia, serif);
+  font-family: "Newsreader", Georgia, serif;
   font-size: 20px;
-  font-weight: 650;
+  font-weight: 600;
+  font-optical-sizing: auto;
 }
 
 .app-body:not(.tem-resultados) .sf-step.sf-active .sf-num {
@@ -6275,10 +6310,26 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   box-shadow: 0 1px 4px rgba(19,31,51,0.04);
 }
 
+.app-body:not(.tem-resultados) .sidebar-section:has(#input-rotulo) {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 16px;
+  align-items: end;
+}
+
+.app-body:not(.tem-resultados) .sidebar-section:has(#input-rotulo) .sidebar-label {
+  grid-column: 1 / -1;
+  margin-bottom: 2px;
+}
+
+.app-body:not(.tem-resultados) .sidebar-section:has(#input-rotulo) .sidebar-field {
+  margin: 0;
+}
+
 .app-body:not(.tem-resultados) .sidebar-label {
   margin-bottom: 18px;
   color: #b8853a;
-  font-family: var(--fonte-corpo, "Inter", system-ui, sans-serif);
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   font-size: 10.5px;
   font-weight: 800;
   letter-spacing: 0.20em;
@@ -6302,7 +6353,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   border-radius: 9px;
   background: #f7f9fc;
   color: #131f33;
-  font-family: var(--fonte-corpo, "Inter", system-ui, sans-serif);
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   font-size: 14px;
 }
 
@@ -6325,6 +6376,18 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   background: linear-gradient(180deg,rgba(212,166,90,0.08),rgba(184,133,58,0.04));
 }
 
+.app-body:not(.tem-resultados) .import-header::after {
+  content: "Dados oficiais";
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(212,166,90,0.12);
+  color: #a88840;
+  font-size: 11px;
+  font-weight: 700;
+}
+
 .app-body:not(.tem-resultados) .import-toggle-btn {
   justify-content: flex-start;
   width: 100%;
@@ -6339,6 +6402,23 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 
 .app-body:not(.tem-resultados) #import-body {
   padding: 22px 28px;
+}
+
+.app-body:not(.tem-resultados) #import-panel-auto {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.app-body:not(.tem-resultados) #import-panel-auto > .import-filter-field {
+  margin: 0;
+}
+
+.app-body:not(.tem-resultados) #import-panel-auto > #tse-mun-wrap,
+.app-body:not(.tem-resultados) #import-panel-auto > #tse-cdmun-wrap,
+.app-body:not(.tem-resultados) #import-panel-auto > #btn-tse-carregar,
+.app-body:not(.tem-resultados) #import-panel-auto > #tse-direto-status {
+  grid-column: 1 / -1;
 }
 
 .app-body:not(.tem-resultados) .import-btn-processar,
@@ -6361,6 +6441,67 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   background: rgba(212,166,90,0.06);
   color: #b8853a;
   font-weight: 700;
+}
+
+.app-body:not(.tem-resultados) .sidebar-section:has(#lista-cassacoes) {
+  overflow: hidden;
+  padding: 0;
+}
+
+.app-body:not(.tem-resultados) .sidebar-section:has(#lista-cassacoes) .sidebar-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 16px 28px 14px;
+  border-bottom: 1px solid #f2f4f8;
+  color: #131f33;
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.008em;
+  text-transform: none;
+}
+
+.app-body:not(.tem-resultados) .sidebar-label-optional {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #f2f4f8;
+  color: #8090aa;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.app-body:not(.tem-resultados) #lista-cassacoes {
+  padding: 22px 28px 0;
+}
+
+.app-body:not(.tem-resultados) .sidebar-section:has(#lista-cassacoes) #btn-adicionar-cassacao {
+  width: calc(100% - 56px);
+  margin: 0 28px 22px;
+}
+
+.app-body:not(.tem-resultados) .sidebar-section:has(#lista-partidos) {
+  display: none;
+}
+
+.app-body:not(.tem-resultados) .sidebar-section:has(#lista-partidos.modo-tse),
+.app-body:not(.tem-resultados) .sidebar-section:has(#lista-partidos .partido-card) {
+  display: block;
+}
+
+.app-body:not(.tem-resultados) #erros-formulario:empty {
+  display: none;
+}
+
+.app-body:not(.tem-resultados) .sidebar-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
 }
 
 #app > .footer {
