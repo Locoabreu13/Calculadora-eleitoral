@@ -223,6 +223,14 @@ export function abrirCascata(saidaEngineBase, saidaEngineCenario, dadosReferenci
   const overlay = document.getElementById("cascata-overlay");
   if (overlay) overlay.style.display = "flex";
 
+  // Auto-detectar UF e configurar visibilidade do seletor
+  const ufContainer = document.getElementById("cascata-uf-container");
+  const selUfOv = document.getElementById("sel-cascata-uf-overlay");
+  let ufAuto = "";
+  try { ufAuto = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch(e) {}
+  if (ufAuto && selUfOv) selUfOv.value = ufAuto;
+  if (ufContainer) ufContainer.style.display = ufAuto ? "none" : "flex";
+
   if (!estadoCascata.ultimaBase || !estadoCascata.ultimoCenario) {
     console.warn("Cascata: Faltam dados do motor para o cálculo inicial.");
     return;
@@ -288,8 +296,12 @@ function configurarEventos() {
       }
 
       // Aciona o perito para extrair os deltas e aplicar o voto em dobro
-      const selUf = document.getElementById("sel-cascata-uf-overlay");
-      const ufSelecionada = selUf ? selUf.value.trim() : "";
+      let ufSelecionada = "";
+      try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch(e) {}
+      if (!ufSelecionada) {
+        const selUf = document.getElementById("sel-cascata-uf-overlay");
+        ufSelecionada = selUf ? selUf.value.trim() : "";
+      }
       const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada);
       
       abrirCascata(base, cenarioMotor, dadosReferencia, dadosCenarioAdaptado);
