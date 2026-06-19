@@ -6410,6 +6410,25 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   height: 100vh;
   overflow: hidden;
   background: #131f33;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
+#tela-dashboard .dash-brand {
+  justify-content: center;
+}
+
+#tela-dashboard .dash-seal-logo {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#tela-dashboard .dash-seal-logo svg {
+  width: 40px;
+  height: 40px;
+  display: block;
 }
 
 #tela-dashboard .dash-main {
@@ -6444,11 +6463,12 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 #tela-dashboard .dash-topbar-nav { gap: 2px; }
 
 #tela-dashboard .dash-topbar-brand {
-  font-family: var(--fonte-titulo, "Playfair Display", Georgia, serif);
+  font-family: "Newsreader", Georgia, serif;
   font-size: 20px;
-  font-weight: 650;
+  font-weight: 600;
   color: #131f33;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
+  font-optical-sizing: auto;
   white-space: nowrap;
 }
 
@@ -6600,11 +6620,12 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 
 #tela-dashboard .dash-panel-titlebar h1 {
   margin: 0;
-  font-family: var(--fonte-titulo, "Playfair Display", Georgia, serif);
+  font-family: "Newsreader", Georgia, serif;
   font-size: 28px;
-  font-weight: 650;
+  font-weight: 600;
   color: #131f33;
-  letter-spacing: 0;
+  letter-spacing: -0.014em;
+  font-optical-sizing: auto;
 }
 
 #tela-dashboard .dash-panel-actions {
@@ -6681,9 +6702,11 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 
 #tela-dashboard .dash-chart-head strong {
   color: #131f33;
-  font-family: var(--fonte-titulo, "Playfair Display", Georgia, serif);
+  font-family: "Newsreader", Georgia, serif;
   font-size: 28px;
-  font-weight: 650;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-optical-sizing: auto;
 }
 
 #tela-dashboard .dash-bars {

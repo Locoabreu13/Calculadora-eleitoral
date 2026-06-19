@@ -17,7 +17,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
   <link rel="stylesheet" href="css/styles.css?v=61" />
 </head>
@@ -185,15 +185,20 @@
 
       <!-- Brand -->
       <div class="dash-brand">
-        <div class="dash-brand-icon">
-          <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="1" y="10" width="3" height="5" rx="1"/>
-            <rect x="5.5" y="6" width="3" height="9" rx="1"/>
-            <rect x="10" y="2" width="3" height="13" rx="1"/>
-            <path d="M13.5 4.5 L15 3 L13.5 1.5" stroke="currentColor" stroke-width="1" fill="none"/>
+        <div class="dash-seal-logo" aria-hidden="true">
+          <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <path id="dash-seal-ring" d="M20 4a16 16 0 1 1 0 32a16 16 0 1 1 0 -32"/>
+            </defs>
+            <circle cx="20" cy="20" r="18" fill="#111c2e" stroke="rgba(212,166,90,0.45)" stroke-width="1"/>
+            <circle cx="20" cy="20" r="14.5" fill="none" stroke="rgba(212,166,90,0.18)" stroke-width="0.7"/>
+            <text font-size="3.6" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" fill="#d4a65a" opacity="0.38" letter-spacing="0.55">
+              <textPath href="#dash-seal-ring">RETOTALIZAJE · RETOTALIZAJE · </textPath>
+            </text>
+            <text x="20" y="29" text-anchor="middle" font-family="Newsreader, Georgia, serif" font-size="23" font-weight="600" font-style="italic" fill="#d4a65a">R</text>
           </svg>
         </div>
-        <span class="dash-brand-text">Retotaliza<span class="title-je">JE</span></span>
+        <span class="dash-brand-text sr-only">RetotalizaJE</span>
       </div>
 
       <!-- Nav -->
