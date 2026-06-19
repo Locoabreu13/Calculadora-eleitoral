@@ -162,11 +162,18 @@ function candidatoTemVotoEmDobro(candidato) {
   return candidatoEhMulher(candidato) || candidatoEhNegro(candidato);
 }
 
-export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categoria) {
+export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categoria, uf) {
+  const ufFinal = uf
+    ? String(uf).toUpperCase().trim()
+    : (saidaEngineBase && saidaEngineBase.meta && saidaEngineBase.meta.uf)
+      ? String(saidaEngineBase.meta.uf).toUpperCase().trim()
+      : "";
+
   const cenario = {
     tipo: categoria || "cassacao_sem_perda_votos",
     perdaDeVotos: false,
     categoriaClassificada: categoria || "indefinido",
+    circunscricao: ufFinal,
     deltaCadeirasPorPartido: {},
     deltaVotosFEFCPorPartido: {}
   };

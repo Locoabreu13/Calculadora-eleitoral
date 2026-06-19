@@ -288,7 +288,9 @@ function configurarEventos() {
       }
 
       // Aciona o perito para extrair os deltas e aplicar o voto em dobro
-      const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos");
+      const selUf = document.getElementById("sel-cascata-uf");
+      const ufSelecionada = selUf ? selUf.value.trim() : "";
+      const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada);
       
       abrirCascata(base, cenarioMotor, dadosReferencia, dadosCenarioAdaptado);
     });
