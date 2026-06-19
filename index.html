@@ -22,753 +22,873 @@
 <meta property="og:url" content="https://retotalizaje.com.br/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
-<meta name="google-site-verification" content="9RQpgeVBC5cVWLfVr_yb2qQbSfb8Jt0rHcVRhOlGXZw" />
+<meta name="google-site-verification" content="9RQpgeVBC5cVWLfVr_yb2qQbSfb8Jt0rHcVRhOlGXZw">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="css/tokens.css">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<style>
-body{overflow-x:hidden}
-p{text-align:left}
-nav{position:sticky;top:0;z-index:100;background:var(--cor-profundo);height:var(--navbar-altura);display:flex;align-items:center;justify-content:space-between;padding-inline:var(--espaco-48);border-bottom:1px solid var(--cor-profundo-borda)}
-.nav-links{display:flex;align-items:center;gap:var(--espaco-32)}
-.nav-links a{color:var(--cor-texto-inv-suave);font-size:var(--texto-sm);text-decoration:none;transition:color var(--transicao)}
-.nav-links a:hover{color:var(--cor-texto-inv)}
-.nav-wpp{color:var(--cor-texto-inv-suave)!important}
-.nav-wpp:hover{color:var(--cor-texto-inv)!important}
-/* MENU MOBILE · hambúrguer (visível só em ≤900px via @media) */
-.nav-mobile-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;padding:0;background:transparent;border:1px solid var(--cor-profundo-borda);border-radius:var(--raio-md);color:var(--cor-texto-inv);font-size:var(--texto-xl);line-height:1;cursor:pointer;transition:background var(--transicao),border-color var(--transicao)}
-.nav-mobile-btn:hover{background:var(--cor-profundo-meio)}
-.nav-mobile-btn:focus-visible{outline:2px solid var(--cor-confiante);outline-offset:2px}
-#mobile-menu{display:none;position:fixed;top:var(--navbar-altura);left:0;right:0;z-index:99;flex-direction:column;background:var(--cor-profundo);border-bottom:1px solid var(--cor-profundo-borda);padding:var(--espaco-8) var(--espaco-16) var(--espaco-16)}
-#mobile-menu a{color:var(--cor-texto-inv-suave);font-family:var(--fonte-corpo);font-size:var(--texto-base);text-decoration:none;padding:var(--espaco-12) var(--espaco-8);border-bottom:1px solid var(--cor-profundo-borda);transition:color var(--transicao)}
-#mobile-menu a:last-child{border-bottom:none}
-#mobile-menu a:hover{color:var(--cor-texto-inv)}
-/* SEÇÃO 01 · HERO */
-.hero-secao{background:var(--cor-profundo);padding-block:var(--secao-padding-v)}
-.hero-conteudo{max-width:var(--largura-texto);margin-inline:auto;text-align:center}
-.hero-titulo{font-family:var(--fonte-titulo);font-size:var(--texto-3xl);font-weight:var(--peso-black);color:var(--cor-texto-inv);letter-spacing:var(--tracking-titulo);line-height:var(--linha-titulo);margin-top:var(--espaco-16);margin-bottom:var(--espaco-20)}
-.hero-corpo{color:var(--cor-texto-inv-medio);font-size:var(--texto-base);margin-bottom:var(--espaco-32)}
-.hero-botoes{display:flex;gap:var(--espaco-12);flex-wrap:wrap;justify-content:center;margin-bottom:var(--espaco-48)}
-.hero-entregas{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--espaco-16);margin-bottom:var(--espaco-48);text-align:left}
-.hero-entrega-item{background:var(--cor-profundo-meio);border:1px solid var(--cor-profundo-borda);border-radius:var(--raio-lg);padding:var(--espaco-20)}
-.hero-entrega-icone{font-size:var(--texto-xl);margin-bottom:var(--espaco-8);display:block}
-.hero-entrega-titulo{font-weight:var(--peso-bold);font-size:var(--texto-sm);color:var(--cor-texto-inv);margin-bottom:var(--espaco-4)}
-.hero-entrega-desc{font-size:var(--texto-xs);color:var(--cor-texto-inv-suave);line-height:var(--linha-corpo)}
-.hero-metricas{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--espaco-16);border-top:1px solid var(--cor-profundo-borda);padding-top:var(--espaco-32);max-width:var(--largura-texto);margin-inline:auto;text-align:left}
-.hero-metrica-item{display:flex;flex-direction:column;gap:var(--espaco-4)}
-.hero-metrica-numero{font-family:var(--fonte-titulo);font-weight:var(--peso-black);font-size:var(--texto-2xl);color:var(--cor-ambar);line-height:1}
-/* PADRÃO EDITORIAL · cabeçalho assimétrico usado nas seções */
-.secao-header{display:grid;grid-template-columns:1fr 1fr;gap:var(--grid-gap-lg);align-items:end;margin-bottom:var(--espaco-64)}
-.secao-header-label{font-size:var(--texto-xs);letter-spacing:var(--tracking-label);color:var(--cor-texto-label);text-transform:uppercase;margin-bottom:var(--espaco-16)}
-.secao-header-titulo{font-family:var(--fonte-titulo);font-size:var(--texto-2xl);font-weight:var(--peso-bold);color:var(--cor-texto);letter-spacing:var(--tracking-titulo);line-height:var(--linha-titulo)}
-.secao-header-titulo--inv{color:var(--cor-texto-inv)}
-.secao-header-desc{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo);align-self:end}
-.secao-header-desc--inv{color:var(--cor-texto-inv-medio)}
-/* FLUXO CARD · visão geral */
-.fluxo-card{display:flex;align-items:stretch;background:var(--cor-profundo);border-radius:var(--raio-xl);overflow:hidden;margin-bottom:var(--espaco-48)}
-.fluxo-etapa{flex:1;padding:var(--espaco-24);border-right:1px solid var(--cor-profundo-borda);display:flex;flex-direction:column;gap:var(--espaco-8)}
-.fluxo-etapa:last-child{border-right:none}
-.fluxo-n{font-size:var(--texto-xs);letter-spacing:var(--tracking-label);color:var(--cor-ambar);font-weight:var(--peso-bold)}
-.fluxo-t{font-size:var(--texto-sm);font-weight:var(--peso-medio);color:var(--cor-texto-inv)}
-.fluxo-d{font-size:var(--texto-xs);color:var(--cor-texto-inv-suave);line-height:var(--linha-corpo)}
-/* STEPS LIST · 4 cards individuais full-width */
-.steps-list{display:flex;flex-direction:column;gap:var(--grid-gap)}
-.step-card-full{background:var(--cor-fundo-card);border:1px solid var(--cor-borda-suave);border-radius:var(--raio-xl);display:flex;gap:var(--espaco-32);padding:var(--espaco-32);align-items:flex-start}
-.step-card-full-text{width:260px;flex-shrink:0;padding-top:var(--espaco-4)}
-.step-card-full-sml{flex:1;background:var(--cor-profundo);border-radius:var(--raio-lg);padding:var(--espaco-20) var(--espaco-24);min-height:280px;position:relative;overflow:hidden}
-.step-card-n{font-size:var(--texto-xs);letter-spacing:var(--tracking-label);color:var(--cor-texto-label);margin-bottom:var(--espaco-12)}
-.step-card-t{font-weight:var(--peso-bold);font-size:var(--texto-base);color:var(--cor-texto);margin-bottom:var(--espaco-8)}
-.step-card-d{font-size:var(--texto-sm);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
-/* MOCKUP GRANDE */
-.sml{background:var(--cor-profundo);border-radius:var(--raio-lg);padding:var(--espaco-20);height:240px;overflow:hidden;position:relative}
-.sml-row{display:flex;gap:var(--espaco-12);align-items:flex-end;margin-bottom:var(--espaco-12)}
-.sml-col{display:flex;flex-direction:column;position:relative}
-.sml-frow{display:flex;align-items:center;gap:var(--espaco-12);margin-bottom:var(--espaco-10)}
-.sml-lbl{font-size:9px;color:var(--cor-texto-inv-suave);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px}
-.sml-lbl-i{font-size:9px;color:var(--cor-texto-inv-suave);text-transform:uppercase;letter-spacing:.08em;min-width:64px}
-.sml-field{background:var(--cor-profundo-meio);border:1px solid var(--cor-profundo-borda);border-radius:4px;padding:5px 10px;font-size:11px;color:var(--cor-texto-inv);display:inline-block;white-space:nowrap}
-.sml-field-sel::after{content:' ▾';font-size:9px;color:var(--cor-texto-inv-suave)}
-.sml-btn{background:var(--cor-confiante);border-radius:4px;padding:6px 14px;font-size:11px;font-weight:500;color:var(--cor-texto-inv);display:inline-block;margin-bottom:var(--espaco-12)}
-.sml-ok{font-size:11px;color:#4ade80}
-.sml-info{font-size:11px;color:var(--cor-texto-inv-suave);margin-bottom:var(--espaco-12)}
-.sml-info b{color:var(--cor-texto-inv);font-weight:500}
-.sml-pname{font-size:10px;color:var(--cor-texto-inv-suave);margin-bottom:3px}
-.sml-ptrack{background:var(--cor-profundo-borda);border-radius:2px;height:4px;overflow:hidden;margin-bottom:var(--espaco-10)}
-.sml-pfill{height:100%;background:var(--cor-confiante);border-radius:2px;width:0}
-.sml-th,.sml-tr{display:flex;align-items:center}
-.sml-th{padding-bottom:5px;border-bottom:1px solid var(--cor-profundo-borda);margin-bottom:4px}
-.sml-th span{flex:1;font-size:9px;color:var(--cor-texto-inv-suave);text-transform:uppercase;letter-spacing:.06em}
-.sml-tr{padding:4px 3px;border-radius:3px;margin-bottom:2px}
-.sml-tr span{flex:1;font-size:11px;color:var(--cor-texto-inv)}
-.sml-up{color:#4ade80!important;font-weight:700}
-.sml-dn{color:var(--cor-ambar)!important;font-weight:700}
-.sml-bar{color:var(--cor-texto-inv-suave)!important;font-size:10px}
-.sml-row-up{background:rgba(74,222,128,.12)}
-.sml-row-dn{background:rgba(212,160,23,.12)}
-/* DROPDOWN ANIMADO */
-.sml-dropdown{position:absolute;top:100%;left:0;right:0;min-width:80px;background:var(--cor-profundo-meio);border:1px solid var(--cor-profundo-borda);border-radius:4px;z-index:10;margin-top:2px;overflow:hidden;transform-origin:top}
-.sml-dd-item{padding:4px 10px;font-size:10px;color:var(--cor-texto-inv-suave)}
-.sml-dd-hl{color:var(--cor-confiante)!important;background:rgba(26,86,219,.18)}
-/* ============ MOCKUP · monitor na mesa de madeira (Fluxo de uso) ============ */
-.cpu-stage{position:relative;display:flex;flex-direction:column;align-items:center;margin-top:var(--espaco-48)}
-.monitor{position:relative;width:min(42rem,100%);background:linear-gradient(180deg,#262b33 0%,#13161b 100%);border-radius:16px;padding:14px 14px 18px;box-shadow:0 26px 60px -22px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.05)}
-.monitor-screen{position:relative;aspect-ratio:16/10;border-radius:7px;overflow:hidden;background:var(--cor-profundo);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),inset 0 2px 26px rgba(0,0,0,.55)}
-.monitor-led{position:absolute;left:50%;bottom:6px;width:5px;height:5px;border-radius:50%;background:var(--cor-confiante);transform:translateX(-50%);opacity:.65;box-shadow:0 0 6px var(--cor-confiante)}
-.monitor-neck{width:48px;height:34px;margin-top:-1px;background:linear-gradient(180deg,#1d222a,#14171d);clip-path:polygon(32% 0,68% 0,80% 100%,20% 100%)}
-.monitor-base{position:relative;width:170px;height:13px;border-radius:0 0 12px 12px/0 0 16px 16px;background:linear-gradient(180deg,#1d222a,#0f1218)}
-.monitor-base::after{content:"";position:absolute;left:-22%;right:-22%;bottom:-8px;height:16px;border-radius:50%;background:rgba(0,0,0,.32);filter:blur(7px);z-index:-1}
-.cpu-desk{position:relative;width:min(58rem,100%);height:50px;margin-top:-5px;border-radius:9px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 1px,transparent 1px 78px),linear-gradient(180deg,#835632 0%,#6d4727 46%,#583820 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 16px 34px -18px rgba(0,0,0,.55)}
-.cpu-desk::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;border-radius:9px 9px 0 0;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0))}
-/* janela / tela */
-.scr-top{display:flex;align-items:center;gap:6px;height:24px;padding:0 12px;background:rgba(0,0,0,.28);border-bottom:1px solid rgba(255,255,255,.06)}
-.scr-dot{width:8px;height:8px;border-radius:50%}
-.scr-title{margin-left:8px;font-size:9px;letter-spacing:.08em;color:var(--cor-texto-inv-suave);text-transform:uppercase}
-.scr-body{position:absolute;inset:24px 0 0 0}
-.cpu-scene{position:absolute;inset:0;padding:16px 18px;opacity:0;animation:cpuScene 18s ease-in-out infinite both}
-.cpu-s1{animation-delay:0s}.cpu-s2{animation-delay:4.5s}.cpu-s3{animation-delay:9s}.cpu-s4{animation-delay:13.5s}
-.scn-step{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--cor-ambar);margin-bottom:12px;font-weight:var(--peso-bold)}
-.cpu-click{animation:cpuClick 2.6s ease-in-out infinite}
-.cpu-fill{width:0;animation:cpuFill 2.6s ease-in-out infinite}
-.cpu-fill.pf2{animation-delay:.28s}.cpu-fill.pf3{animation-delay:.56s}
-@keyframes cpuScene{0%{opacity:0;transform:translateY(9px)}2.5%,21%{opacity:1;transform:none}25%,100%{opacity:0;transform:translateY(-7px)}}
-@keyframes cpuClick{0%,42%,100%{transform:none}50%{transform:scale(.94)}58%{transform:scale(1)}}
-@keyframes cpuFill{0%{width:0}55%{width:100%}100%{width:100%}}
-@media (prefers-reduced-motion:reduce){.cpu-scene{animation:none;opacity:0}.cpu-s4{opacity:1}.cpu-click{animation:none}.cpu-fill{animation:none;width:100%}}
-/* ENTREGAS · 3 colunas editoriais */
-.entregas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--cor-profundo-borda);margin-top:var(--espaco-48)}
-.entrega-item{padding:var(--espaco-32) var(--espaco-24) var(--espaco-32) 0;border-right:1px solid var(--cor-profundo-borda)}
-.entrega-item:last-child{border-right:none}
-.entrega-titulo{font-weight:var(--peso-bold);font-size:var(--texto-base);color:var(--cor-texto);margin-bottom:var(--espaco-8)}
-.entrega-desc{font-size:var(--texto-sm);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
-/* SEÇÃO 02 · O PROBLEMA */
-.secao-02{background:var(--cor-fundo-neutro);padding-block:var(--secao-padding-v)}
-.secao-02-corpo{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
-/* SEÇÃO 03 · COMO FUNCIONA */
-.secao-03{background:var(--cor-fundo-principal);padding-block:var(--secao-padding-v)}
-/* SEÇÃO 04 · RESULTADO */
-.secao-04{background:var(--cor-fundo-neutro);padding-block:var(--secao-padding-v)}
-.secao-04-corpo{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
-/* SEÇÃO 05 · PROVA */
-.secao-05{background:var(--cor-fundo-principal);padding-block:var(--secao-padding-v)}
-.secao-05-corpo{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
-.casos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--cor-borda-suave)}
-.caso-item{padding:var(--espaco-32) var(--espaco-24) var(--espaco-32) 0;border-right:1px solid var(--cor-borda-suave)}
-.caso-item:last-child{border-right:none}
-.caso-titulo{font-weight:var(--peso-bold);font-size:var(--texto-base);color:var(--cor-texto);margin-bottom:var(--espaco-4)}
-.caso-subtitulo{font-size:var(--texto-xs);color:var(--cor-confiante);font-weight:var(--peso-medio);letter-spacing:var(--tracking-label);text-transform:uppercase;margin-bottom:var(--espaco-16)}
-.caso-metricas{font-size:var(--texto-xs);color:var(--cor-texto-label);line-height:var(--linha-corpo);margin-bottom:var(--espaco-12)}
-.caso-resultado{font-size:var(--texto-sm);color:var(--cor-texto-medio)}
-.caso-pdf{display:inline-flex;align-items:center;gap:var(--espaco-4);margin-top:var(--espaco-16);font-size:var(--texto-xs);font-weight:var(--peso-medio);color:var(--cor-confiante);text-decoration:none;letter-spacing:.01em;transition:color var(--transicao)}
-.caso-pdf:hover{color:var(--cor-confiante-hover);text-decoration:underline}
-/* SEÇÕES 06 E 07 */
-.secao-06{background:var(--cor-fundo-neutro);padding-block:var(--secao-padding-v)}
-.secao-07{background:var(--cor-fundo-principal);padding-block:var(--secao-padding-v)}
-.secao-texto{font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo);max-width:var(--largura-texto)}
-/* SEÇÃO PREÇOS */
-.secao-precos{background:var(--cor-fundo-neutro);padding-block:var(--secao-padding-v)}
-.precos-header{text-align:center;margin-bottom:var(--espaco-40)}
-.precos-titulo{font-family:var(--fonte-titulo);font-weight:var(--peso-bold);font-size:var(--texto-2xl);color:var(--cor-texto);letter-spacing:var(--tracking-titulo);line-height:var(--linha-titulo);margin-bottom:var(--espaco-8)}
-.precos-sub{font-family:var(--fonte-corpo);font-size:var(--texto-base);color:var(--cor-texto-suave);line-height:var(--linha-corpo)}
-.precos-banner{display:flex;align-items:center;gap:var(--espaco-8);background:var(--cor-confiante-claro);border:1px solid #C3D9FF;border-radius:var(--raio-md);padding:12px 20px;margin-bottom:var(--espaco-32);font-family:var(--fonte-corpo);font-size:var(--texto-sm);color:var(--cor-confiante)}
-.precos-banner strong{font-weight:var(--peso-bold)}
-.precos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--grid-gap);margin-bottom:var(--grid-gap)}
-.preco-card{background:var(--cor-fundo-card);border:1px solid var(--cor-borda-suave);border-radius:var(--raio-xl);padding:var(--espaco-24);display:flex;flex-direction:column;gap:var(--espaco-8);position:relative}
-.preco-card--destaque{border-color:var(--cor-confiante);box-shadow:0 0 0 1px var(--cor-confiante)}
-.preco-badge{display:inline-flex;align-items:center;background:var(--cor-confiante-claro);color:var(--cor-confiante);font-family:var(--fonte-corpo);font-size:var(--texto-xs);font-weight:var(--peso-medio);padding:4px 10px;border-radius:var(--raio-pill);margin-bottom:var(--espaco-4);width:fit-content}
-.preco-nome{font-family:var(--fonte-corpo);font-size:var(--texto-sm);color:var(--cor-texto-label);font-weight:var(--peso-medio)}
-.preco-valor{font-family:'DM Sans',sans-serif;font-size:var(--texto-3xl);font-weight:800;color:var(--cor-texto);line-height:1;margin:var(--espaco-4) 0}
-.preco-qtd{font-family:var(--fonte-corpo);font-size:var(--texto-sm);color:var(--cor-texto-suave);margin-bottom:var(--espaco-12)}
-.preco-divisor{height:1px;background:var(--cor-borda-suave);margin:var(--espaco-4) 0}
-.preco-por{font-family:var(--fonte-corpo);font-size:var(--texto-xs);color:var(--cor-texto-label)}
-.preco-economia{font-family:var(--fonte-corpo);font-size:var(--texto-xs);color:var(--cor-confiante);font-weight:var(--peso-medio)}
-.preco-btn{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:auto;padding:var(--botao-padding);background:transparent;border:var(--borda);border-radius:var(--botao-raio);color:var(--cor-texto);font-family:var(--botao-fonte);font-size:var(--botao-tamanho);font-weight:var(--botao-peso);text-decoration:none;transition:background var(--transicao),border-color var(--transicao)}
-.preco-btn:hover{background:var(--cor-fundo-neutro);text-decoration:none}
-.preco-card--destaque .preco-btn{background:var(--botao-fundo);border-color:var(--botao-fundo);color:var(--botao-texto)}
-.preco-card--destaque .preco-btn:hover{background:var(--botao-fundo-hover);border-color:var(--botao-fundo-hover)}
-.preco-card-ciclo{background:var(--cor-fundo-card);border:1px solid var(--cor-borda-suave);border-radius:var(--raio-xl);padding:var(--espaco-24);display:flex;align-items:center;gap:var(--espaco-24)}
-.preco-ciclo-ico{flex-shrink:0;color:var(--cor-texto-label)}
-.preco-ciclo-info{flex:1}
-.preco-ciclo-nome{font-family:var(--fonte-corpo);font-size:var(--texto-base);font-weight:var(--peso-bold);color:var(--cor-texto);margin-bottom:2px}
-.preco-ciclo-desc{font-family:var(--fonte-corpo);font-size:var(--texto-sm);color:var(--cor-texto-suave)}
-.preco-ciclo-direita{display:flex;flex-direction:column;align-items:flex-end;gap:var(--espaco-8);flex-shrink:0}
-.preco-ciclo-valor{font-family:'DM Sans',sans-serif;font-size:var(--texto-2xl);font-weight:800;color:var(--cor-texto)}
-/* FOOTER */
-.footer-lp{background:var(--cor-profundo);padding-block:var(--secao-padding-v-pequeno)}
-.footer-lp-top{display:flex;justify-content:space-between;align-items:center;gap:var(--espaco-24)}
-.footer-lp-links{display:flex;gap:var(--espaco-24)}
-.footer-lp-links a{color:var(--cor-texto-inv-suave);font-size:var(--texto-sm);text-decoration:none;transition:color var(--transicao)}
-.footer-lp-links a:hover{color:var(--cor-texto-inv)}
-.footer-lp-legal{font-size:var(--texto-xs);color:var(--cor-texto-inv-suave)}
-.footer-lp-contato{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--cor-profundo-borda);margin-top:var(--espaco-24);padding-top:var(--espaco-20);flex-wrap:wrap;gap:var(--espaco-12)}
-.footer-lp-contato-nome{font-size:var(--texto-sm);color:var(--cor-texto-inv-suave)}
-.footer-lp-contato-wpp{font-size:var(--texto-sm);font-weight:var(--peso-medio);color:var(--cor-texto-inv);text-decoration:none;transition:color var(--transicao)}
-.footer-lp-contato-wpp:hover{color:var(--cor-ambar)}
-.footer-lp-bottom{border-top:1px solid var(--cor-profundo-borda);margin-top:var(--espaco-16);padding-top:var(--espaco-16);text-align:center;font-size:var(--texto-xs);color:var(--cor-texto-inv-suave)}
-/* KEYFRAMES · ciclo 7s */
-@keyframes smA{0%,4%{opacity:0;transform:translateY(5px)}8%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
-@keyframes smB{0%,13%{opacity:0;transform:translateY(5px)}17%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
-@keyframes smC{0%,22%{opacity:0;transform:translateY(5px)}26%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
-@keyframes smD{0%,31%{opacity:0;transform:translateY(5px)}35%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
-@keyframes smE{0%,40%{opacity:0;transform:translateY(5px)}44%,77%{opacity:1;transform:none}85%,100%{opacity:0;transform:translateY(-2px)}}
-@keyframes smBtn{0%,13%{opacity:0;transform:translateY(5px)}17%,26%{opacity:1;transform:translateY(0) scale(1)}28%{transform:translateY(0) scale(.91)}30%,77%{transform:translateY(0) scale(1);opacity:1}85%,100%{opacity:0}}
-@keyframes smDrop{0%,9%{opacity:0;transform:scaleY(0)}13%,21%{opacity:1;transform:scaleY(1)}25%,100%{opacity:0;transform:scaleY(0)}}
-@keyframes smPb1{0%,29%{width:0}52%{width:100%}100%{width:100%}}
-@keyframes smPb2{0%,42%{width:0}65%{width:100%}100%{width:100%}}
-@keyframes smPb3{0%,53%{width:0}70%{width:100%}100%{width:100%}}
-/* STEP 1 · keyframes 14s, seleção sequencial */
-@keyframes s1YearDrop{0%,3%{opacity:0;transform:scaleY(0)}7%,16%{opacity:1;transform:scaleY(1)}19%,100%{opacity:0;transform:scaleY(0)}}
-@keyframes s1UfDrop{0%,24%{opacity:0;transform:scaleY(0)}28%,37%{opacity:1;transform:scaleY(1)}40%,100%{opacity:0;transform:scaleY(0)}}
-@keyframes s1CargoDrop{0%,45%{opacity:0;transform:scaleY(0)}49%,58%{opacity:1;transform:scaleY(1)}61%,100%{opacity:0;transform:scaleY(0)}}
-@keyframes s1Btn{0%,63%{opacity:0;transform:translateY(4px)}66%,72%{opacity:1;transform:translateY(0) scale(1)}74%{transform:translateY(0) scale(.91)}76%,84%{transform:translateY(0) scale(1);opacity:1}88%,100%{opacity:0}}
-@keyframes s1Status{0%,75%{opacity:0;transform:translateY(4px)}78%,84%{opacity:1;transform:none}88%,100%{opacity:0}}
-/* STEP 2 · keyframes 14s, preenchimento sequencial */
-@keyframes s2Parti{0%,2%{opacity:0;transform:translateY(4px)}5%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-@keyframes s2PartiDrop{0%,4%{opacity:0;transform:scaleY(0)}7%,14%{opacity:1;transform:scaleY(1)}17%,100%{opacity:0;transform:scaleY(0)}}
-@keyframes s2Cand{0%,19%{opacity:0;transform:translateY(4px)}23%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-@keyframes s2Votos{0%,29%{opacity:0;transform:translateY(4px)}33%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-@keyframes s2Modal{0%,37%{opacity:0;transform:translateY(4px)}41%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-@keyframes s2ModalDrop{0%,38%{opacity:0;transform:scaleY(0)}42%,52%{opacity:1;transform:scaleY(1)}55%,100%{opacity:0;transform:scaleY(0)}}
-@keyframes s2QE{0%,57%{opacity:0;transform:translateY(4px)}61%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-/* STEP 3 · keyframes 14s, cálculo por fases */
-@keyframes s3Info{0%,4%{opacity:0;transform:translateY(4px)}8%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-@keyframes s3Btn{0%,11%{opacity:0;transform:translateY(4px)}14%,18%{opacity:1;transform:translateY(0) scale(1)}20%{transform:translateY(0) scale(.91)}22%,80%{transform:translateY(0) scale(1);opacity:1}84%,100%{opacity:0}}
-@keyframes s3F1{0%,21%{opacity:0;transform:translateY(3px)}24%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-@keyframes s3Pb1{0%,24%{width:0}39%{width:100%}100%{width:100%}}
-@keyframes s3F2{0%,36%{opacity:0;transform:translateY(3px)}39%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-@keyframes s3Pb2{0%,39%{width:0}54%{width:100%}100%{width:100%}}
-@keyframes s3F3{0%,51%{opacity:0;transform:translateY(3px)}54%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-@keyframes s3Pb3{0%,54%{width:0}68%{width:100%}100%{width:100%}}
-@keyframes s3Ok{0%,66%{opacity:0;transform:translateY(3px)}69%,80%{opacity:1;transform:none}84%,100%{opacity:0}}
-/* STEP 4 · keyframes 14s, tabela → exportações sequenciais */
-@keyframes s4Head{0%,3%{opacity:0;transform:translateY(4px)}6%,82%{opacity:1;transform:none}86%,100%{opacity:0}}
-@keyframes s4RowA{0%,7%{opacity:0;transform:translateY(4px)}10%,82%{opacity:1;transform:none}86%,100%{opacity:0}}
-@keyframes s4RowB{0%,12%{opacity:0;transform:translateY(4px)}15%,82%{opacity:1;transform:none}86%,100%{opacity:0}}
-@keyframes s4RowC{0%,18%{opacity:0;transform:translateY(4px)}21%,82%{opacity:1;transform:none}86%,100%{opacity:0}}
-@keyframes s4ExpLbl{0%,26%{opacity:0}29%,82%{opacity:1}86%,100%{opacity:0}}
-@keyframes s4PdfBtn{0%,28%{opacity:0;transform:translateY(3px)}31%,82%{opacity:1;transform:none}86%,100%{opacity:0}}
-@keyframes s4PdfPb{0%,31%{width:0}44%{width:100%}100%{width:100%}}
-@keyframes s4PdfOk{0%,42%{opacity:0}45%,82%{opacity:1}86%,100%{opacity:0}}
-@keyframes s4CsvBtn{0%,46%{opacity:0;transform:translateY(3px)}49%,82%{opacity:1;transform:none}86%,100%{opacity:0}}
-@keyframes s4CsvPb{0%,49%{width:0}61%{width:100%}100%{width:100%}}
-@keyframes s4CsvOk{0%,59%{opacity:0}62%,82%{opacity:1}86%,100%{opacity:0}}
-@keyframes s4AprBtn{0%,63%{opacity:0;transform:translateY(3px)}66%,82%{opacity:1;transform:none}86%,100%{opacity:0}}
-@keyframes s4AprPb{0%,66%{width:0}77%{width:100%}100%{width:100%}}
-@keyframes s4AprOk{0%,75%{opacity:0}78%,82%{opacity:1}86%,100%{opacity:0}}
-.smA{animation:smA 7s ease infinite}
-.smB{animation:smB 7s ease infinite}
-.smC{animation:smC 7s ease infinite}
-.smD{animation:smD 7s ease infinite}
-.smE{animation:smE 7s ease infinite}
-.smBtn{animation:smBtn 7s ease infinite}
-.smDrop{animation:smDrop 7s ease infinite;transform-origin:top}
-.smPb1{animation:smPb1 7s ease infinite}
-.smPb2{animation:smPb2 7s ease infinite}
-.smPb3{animation:smPb3 7s ease infinite}
-.s4Head{animation:s4Head 14s ease infinite}
-.s4RowA{animation:s4RowA 14s ease infinite}
-.s4RowB{animation:s4RowB 14s ease infinite}
-.s4RowC{animation:s4RowC 14s ease infinite}
-.s4ExpLbl{animation:s4ExpLbl 14s ease infinite}
-.s4PdfBtn{animation:s4PdfBtn 14s ease infinite}
-.s4PdfPb{animation:s4PdfPb 14s ease infinite}
-.s4PdfOk{animation:s4PdfOk 14s ease infinite}
-.s4CsvBtn{animation:s4CsvBtn 14s ease infinite}
-.s4CsvPb{animation:s4CsvPb 14s ease infinite}
-.s4CsvOk{animation:s4CsvOk 14s ease infinite}
-.s4AprBtn{animation:s4AprBtn 14s ease infinite}
-.s4AprPb{animation:s4AprPb 14s ease infinite}
-.s4AprOk{animation:s4AprOk 14s ease infinite}
-.s1YearDrop{animation:s1YearDrop 14s ease infinite;transform-origin:top}
-.s1UfDrop{animation:s1UfDrop 14s ease infinite;transform-origin:top}
-.s1CargoDrop{animation:s1CargoDrop 14s ease infinite;transform-origin:top}
-.s1Btn{animation:s1Btn 14s ease infinite}
-.s1Status{animation:s1Status 14s ease infinite}
-.s2Parti{animation:s2Parti 14s ease infinite}
-.s2PartiDrop{animation:s2PartiDrop 14s ease infinite;transform-origin:top}
-.s2Cand{animation:s2Cand 14s ease infinite}
-.s2Votos{animation:s2Votos 14s ease infinite}
-.s2Modal{animation:s2Modal 14s ease infinite}
-.s2ModalDrop{animation:s2ModalDrop 14s ease infinite;transform-origin:top}
-.s2QE{animation:s2QE 14s ease infinite}
-.s3Info{animation:s3Info 14s ease infinite}
-.s3Btn{animation:s3Btn 14s ease infinite}
-.s3F1{animation:s3F1 14s ease infinite}
-.s3Pb1{animation:s3Pb1 14s ease infinite}
-.s3F2{animation:s3F2 14s ease infinite}
-.s3Pb2{animation:s3Pb2 14s ease infinite}
-.s3F3{animation:s3F3 14s ease infinite}
-.s3Pb3{animation:s3Pb3 14s ease infinite}
-.s3Ok{animation:s3Ok 14s ease infinite}
-/* ANIMAÇÕES DE SCROLL */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-delay-1{transition-delay:0.1s}
-.reveal-delay-2{transition-delay:0.2s}
-.reveal-delay-3{transition-delay:0.3s}
-.reveal-delay-4{transition-delay:0.4s}
-/* TABLET intermediário (13" retrato e similares): grids de 3/4 colunas viram 2 */
-@media(min-width:901px) and (max-width:1180px){
-  .hero-entregas{grid-template-columns:repeat(2,1fr)}
-  .hero-metricas{grid-template-columns:repeat(2,1fr);row-gap:var(--espaco-24)}
-  .precos-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:900px){
-  nav{padding-inline:var(--espaco-16)}
-  .nav-links{display:none}
-  .nav-mobile-btn{display:flex;margin-left:auto;margin-right:var(--espaco-12)}
-  #mobile-menu.open{display:flex}
-  .hero-conteudo{max-width:100%}
-  .hero-titulo{font-size:var(--texto-hero-mobile)}
-  .hero-entregas{grid-template-columns:1fr}
-  .hero-metricas{grid-template-columns:repeat(2,1fr);gap:var(--espaco-20)}
-  .precos-grid{grid-template-columns:1fr}
-  .secao-header{grid-template-columns:1fr}
-  .fluxo-card{flex-direction:column}
-  .fluxo-etapa{border-right:none;border-bottom:1px solid var(--cor-profundo-borda)}
-  .fluxo-etapa:last-child{border-bottom:none}
-  .step-card-full{flex-direction:column}
-  .step-card-full-text{width:100%}
-  .casos-grid{grid-template-columns:1fr}
-  .caso-item{border-right:none;border-bottom:1px solid var(--cor-borda-suave)}
-  .caso-item:last-child{border-bottom:none}
-  .entregas-grid{grid-template-columns:1fr}
-  .entrega-item{border-right:none;border-bottom:1px solid var(--cor-profundo-borda)}
-  .entrega-item:last-child{border-bottom:none}
-  .footer-lp-top{flex-direction:column;gap:var(--espaco-16);text-align:center}
-  .footer-lp-links{flex-wrap:wrap;justify-content:center}
-  .footer-lp-contato{flex-direction:column;text-align:center}
-}
-</style>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:'Inter',system-ui,sans-serif;color:#131F33;background:#F4EFE4;-webkit-font-smoothing:antialiased;font-feature-settings:'ss01'}
+    p{text-align:justify;text-justify:inter-word}
+    button{font-family:inherit;cursor:pointer;border:0;background:none;padding:0;color:inherit}
+    a{color:inherit;text-decoration:none}
+    .serif{font-family:'Playfair Display',Georgia,serif;font-optical-sizing:auto}
+    .mono{font-family:'JetBrains Mono','SFMono-Regular',ui-monospace,monospace;font-feature-settings:'liga' 0}
+    .eyebrow{display:inline-flex;align-items:center;gap:12px}
+    .eyebrow-line{width:24px;height:1px;background:#B8853A}
+    .eyebrow-line-light{width:24px;height:1px;background:#D4A65A}
+    .placeholder{background-image:repeating-linear-gradient(135deg,rgba(184,133,58,0.06) 0 1px,transparent 1px 14px);position:relative}
+    .placeholder::before{content:attr(data-label);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(19,31,51,0.45);text-align:center;padding:24px;line-height:1.6}
+    @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+    @keyframes glow{0%,100%{opacity:0.45}50%{opacity:0.85}}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  </style>
 </head>
 <body>
+<div style="background:#F4EFE4;color:#131F33;overflow:hidden">
 
-<nav id="nav">
-  <a href="/" class="wordmark">
-    <span class="wordmark-base">Retotaliza</span><span class="wordmark-je">JE</span>
-  </a>
-  <div class="nav-links">
-    <a href="#como-funciona-cards">Como funciona</a>
-    <a href="#casos-validados">Casos validados</a>
-    <a href="#fundamento">Fundamento jurídico</a>
-    <a href="https://wa.me/5561992774443" target="_blank" rel="noopener" class="nav-wpp">Fale conosco</a>
-  </div>
-  <button id="mobile-menu-btn" class="nav-mobile-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
-  <a href="app.html" class="botao">Acessar sistema</a>
-</nav>
-
-<!-- Menu mobile (drawer abaixo da navbar; visível só em ≤900px) -->
-<div id="mobile-menu">
-  <a href="#como-funciona-cards">Como funciona</a>
-  <a href="#casos-validados">Casos validados</a>
-  <a href="#fundamento">Fundamento jurídico</a>
-  <a href="https://wa.me/5561992774443" target="_blank" rel="noopener">Fale conosco</a>
-</div>
-
-<!-- SEÇÃO 01 · HERO -->
-<section class="hero-secao">
-  <div class="container">
-    <div class="hero-conteudo">
-      <p class="label" style="color:var(--cor-ambar)">ADIs 7.228 · 7.263 · 7.325 · STF 13/03/2025</p>
-      <h1 class="hero-titulo" style="font-size:1.75rem;letter-spacing:0.01em;">Retotaliza<span style="color:var(--cor-ambar)">JE</span></h1>
-      <p class="hero-corpo">Ferramenta para calcular a distribuição de vagas em eleições proporcionais de acordo com as novas regras do STF a respeito das sobras eleitorais. Utilizando dados oficiais do TSE, o sistema redistribui as cadeiras automaticamente sempre que há cassação ou anulação de votos.</p>
-      <div class="hero-botoes">
-        <a href="app.html" class="botao">Calcular agora →</a>
-        <a href="#casos-validados" class="botao botao--sec">Ver casos validados</a>
-      </div>
-      <div class="hero-metricas">
-        <div class="hero-metrica-item">
-          <span class="hero-metrica-numero">3</span>
-          <span class="label" style="color:var(--cor-texto-inv-suave)">Fases</span>
-        </div>
-        <div class="hero-metrica-item">
-          <span class="hero-metrica-numero">100%</span>
-          <span class="label" style="color:var(--cor-texto-inv-suave)">Fiel às ADIs</span>
-        </div>
-        <div class="hero-metrica-item">
-          <span class="hero-metrica-numero">27</span>
-          <span class="label" style="color:var(--cor-texto-inv-suave)">Estados</span>
-        </div>
-        <div class="hero-metrica-item">
-          <span class="hero-metrica-numero">5.570</span>
-          <span class="label" style="color:var(--cor-texto-inv-suave)">Municípios</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SEÇÃO 02 · O PROBLEMA -->
-<section class="secao-02" id="como-funciona">
-  <div class="container">
-    <div class="secao-header">
-      <div>
-        <p class="secao-header-label">O problema</p>
-        <h2 class="secao-header-titulo">A retotalização envolve dados dispersos, cálculos em fases e regras jurídicas específicas.</h2>
-      </div>
-      <p class="secao-header-desc secao-02-corpo">Para chegar ao resultado correto, era necessário localizar e filtrar os dados oficiais do TSE, aplicar o Quociente Eleitoral, calcular o Quociente Partidário e distribuir as sobras conforme as ADIs 7.228, 7.263 e 7.325, fase por fase. Um processo que, sem a ferramenta adequada, exigia horas de trabalho manual e abria margem para erros em cada etapa.</p>
-    </div>
-  </div>
-</section>
-
-<!-- SEÇÃO 03 · COMO FUNCIONA -->
-<section class="secao-03" id="como-funciona-cards">
-  <div class="container">
-    <div class="secao-header">
-      <div>
-        <p class="secao-header-label">Fluxo de uso</p>
-        <h2 class="secao-header-titulo">Dos dados do TSE ao resultado em minutos.</h2>
-      </div>
-      <p class="secao-header-desc">São apenas quatro passos: o RetotalizaJE se encarrega de toda a complexidade jurídica e matemática por você.</p>
-    </div>
-
-    <!-- Card resumo do fluxo -->
-    <div class="fluxo-card">
-      <div class="fluxo-etapa">
-        <span class="fluxo-n">01</span>
-        <span class="fluxo-t">Selecione o estado e cargo</span>
-      </div>
-      <div class="fluxo-etapa">
-        <span class="fluxo-n">02</span>
-        <span class="fluxo-t">Configure a cassação</span>
-      </div>
-      <div class="fluxo-etapa">
-        <span class="fluxo-n">03</span>
-        <span class="fluxo-t">Calcule com um clique</span>
-      </div>
-      <div class="fluxo-etapa">
-        <span class="fluxo-n">04</span>
-        <span class="fluxo-t">Analise e exporte</span>
-      </div>
-    </div>
-
-    <!-- Mockup · monitor na mesa de madeira: a tela executa o fluxo -->
-    <div class="cpu-stage" aria-hidden="true">
-      <div class="monitor">
-        <div class="monitor-screen">
-          <div class="scr-top">
-            <span class="scr-dot" style="background:#ef5f57"></span>
-            <span class="scr-dot" style="background:#febc2e"></span>
-            <span class="scr-dot" style="background:#28c840"></span>
-            <span class="scr-title">RetotalizaJE</span>
-          </div>
-          <div class="scr-body">
-
-            <!-- CENA 1 · selecionar -->
-            <div class="cpu-scene cpu-s1">
-              <div class="scn-step">Passo 01 · Selecionar estado e cargo</div>
-              <div class="sml-row" style="align-items:flex-start;gap:var(--espaco-12)">
-                <div class="sml-col"><span class="sml-lbl">Eleição</span><div class="sml-field sml-field-sel">2022</div></div>
-                <div class="sml-col"><span class="sml-lbl">Estado</span><div class="sml-field sml-field-sel">CE · Ceará</div></div>
-                <div class="sml-col"><span class="sml-lbl">Cargo</span><div class="sml-field sml-field-sel">Dep. Federal</div></div>
-                <div class="sml-col"><span class="sml-lbl">Vagas</span><div class="sml-field">22</div></div>
-              </div>
-              <div class="sml-btn cpu-click" style="margin-top:var(--espaco-16)">↓ Carregar dados do TSE</div>
-              <div class="sml-ok" style="margin-top:var(--espaco-12)">✓ 28 partidos · 5.083.860 votos válidos · QE 231.084</div>
-            </div>
-
-            <!-- CENA 2 · cassação -->
-            <div class="cpu-scene cpu-s2">
-              <div class="scn-step">Passo 02 · Configurar a cassação</div>
-              <div class="sml-frow"><span class="sml-lbl-i">Partido</span><div class="sml-field sml-field-sel">UNIÃO Brasil</div></div>
-              <div class="sml-frow" style="margin-top:var(--espaco-8)"><span class="sml-lbl-i">Candidato</span><div class="sml-field">Heitor Freire</div></div>
-              <div class="sml-frow" style="margin-top:var(--espaco-8)"><span class="sml-lbl-i">Votos anulados</span><div class="sml-field">48.888</div></div>
-              <div class="sml-frow" style="margin-top:var(--espaco-8)"><span class="sml-lbl-i">Modalidade</span><div class="sml-field sml-field-sel">Anular nominais · sem reatribuição</div></div>
-              <div class="sml-frow" style="margin-top:var(--espaco-12)"><span class="sml-lbl-i">QE</span><div class="sml-field">231.084</div><span style="font-size:10px;color:var(--cor-texto-inv-suave)">→</span><div class="sml-field" style="color:#4ade80">182.506</div><span style="font-size:10px;color:#4ade80">recalculado ✓</span></div>
-            </div>
-
-            <!-- CENA 3 · calcular -->
-            <div class="cpu-scene cpu-s3">
-              <div class="scn-step">Passo 03 · Calcular com um clique</div>
-              <div class="sml-info" style="margin-bottom:var(--espaco-12)">QE <b>182.506</b> · Vagas <b>22</b> · Barreira 80% <b>146.004</b></div>
-              <div class="sml-btn cpu-click" style="margin-bottom:var(--espaco-16)">Calcular retotalização →</div>
-              <div class="sml-pname">Fase 1 · Quociente eleitoral</div>
-              <div class="sml-ptrack"><div class="sml-pfill cpu-fill pf1"></div></div>
-              <div class="sml-pname" style="margin-top:var(--espaco-8)">Fase 2 · Sobras (D'Hondt)</div>
-              <div class="sml-ptrack"><div class="sml-pfill cpu-fill pf2"></div></div>
-              <div class="sml-pname" style="margin-top:var(--espaco-8)">Fase 3 · Barreira legal (80% do QE)</div>
-              <div class="sml-ptrack"><div class="sml-pfill cpu-fill pf3"></div></div>
-            </div>
-
-            <!-- CENA 4 · resultado -->
-            <div class="cpu-scene cpu-s4">
-              <div class="scn-step">Passo 04 · Analisar e exportar</div>
-              <div class="sml-th"><span>Partido</span><span>F1</span><span>F2</span><span>F3</span><span>Total</span><span>Δ</span></div>
-              <div class="sml-tr sml-row-up"><span>PL</span><span>4</span><span>1</span><span>1</span><span>6</span><span class="sml-up">+1 ↑</span></div>
-              <div class="sml-tr sml-row-dn"><span>UNIÃO Brasil</span><span>3</span><span>0</span><span>0</span><span>3</span><span class="sml-dn">−1 ↓</span></div>
-              <div class="sml-tr"><span>MDB</span><span>3</span><span>0</span><span>0</span><span>3</span><span>—</span></div>
-              <div class="sml-tr"><span>Republicanos</span><span>0</span><span>0</span><span>0</span><span>0</span><span class="sml-bar">barrado</span></div>
-              <div style="display:flex;gap:var(--espaco-8);margin-top:var(--espaco-12);flex-wrap:wrap">
-                <div class="sml-field" style="font-size:10px">↓ Relatório PDF</div>
-                <div class="sml-field" style="font-size:10px">↓ Planilha CSV</div>
-                <div class="sml-field" style="font-size:10px;color:var(--cor-ambar)">↗ Apresentação</div>
-              </div>
-            </div>
-
-          </div>
-          <span class="monitor-led"></span>
-        </div>
-      </div>
-      <div class="monitor-neck"></div>
-      <div class="monitor-base"></div>
-      <div class="cpu-desk"></div>
-    </div>
-
-    <!-- Entregas do sistema -->
-    <div class="entregas-grid" style="border-top-color:var(--cor-borda-suave)">
-      <div class="entrega-item" style="border-right-color:var(--cor-borda-suave)">
-        <div class="entrega-titulo">Relatório técnico</div>
-        <p class="entrega-desc">Exportação em PDF com metodologia, QE, fases e resultado por partido. Pronto para juntada em petição.</p>
-      </div>
-      <div class="entrega-item" style="border-right-color:var(--cor-borda-suave)">
-        <div class="entrega-titulo">Planilha de dados</div>
-        <p class="entrega-desc">CSV com toda a distribuição de vagas, votos válidos e quocientes partidários por fase.</p>
-      </div>
-      <div class="entrega-item" style="border-right-color:var(--cor-borda-suave)">
-        <div class="entrega-titulo">Modo apresentação</div>
-        <p class="entrega-desc">Visualização limpa dos resultados para uso em audiências, sustentações orais e reuniões.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SEÇÃO 04 · RESULTADO -->
-<section class="secao-04" id="casos-validados">
-  <div class="container">
-    <div class="secao-header">
-      <div>
-        <p class="secao-header-label">Antes da publicação oficial</p>
-        <h2 class="secao-header-titulo">Calcule o resultado antes do Tribunal e oriente o cliente com precisão.</h2>
-      </div>
-      <p class="secao-header-desc secao-04-corpo">Obtenha o resultado antes da divulgação oficial e tome decisões com segurança. Após uma decisão judicial, há um intervalo até que o Tribunal publique a retotalização. Nesse período, advogados, candidatos e partidos precisam se organizar. O RetotalizaJE elimina a incerteza ao calcular imediatamente a nova distribuição de vagas.</p>
-    </div>
-    <div class="destaque-ambar">
-      <p class="label" style="color:var(--cor-ambar);margin-bottom:var(--espaco-8)">Exemplo real · Ceará 2022</p>
-      <p>A cassação do deputado Heitor Freire foi julgada em 21 de maio, mas o TRE só publicou a retotalização em 29 de maio. O RetotalizaJE calculou o resultado final oito dias antes, com a mesma distribuição de vagas que veio a ser oficializada.</p>
-    </div>
-  </div>
-</section>
-
-<!-- SEÇÃO 05 · PROVA -->
-<section class="secao-05">
-  <div class="container">
-    <div class="secao-header">
-      <div>
-        <p class="secao-header-label">Casos validados</p>
-        <h2 class="secao-header-titulo">Três casos reais. Três resultados confirmados.</h2>
-      </div>
-      <p class="secao-header-desc secao-05-corpo">Casos já confirmados: três eleições, três resultados conferidos. O RetotalizaJE foi testado com dados reais e comparado às resoluções e publicações oficiais dos TREs. Nos processos do Ceará, do Amapá e do Distrito Federal, a redistribuição de vagas calculada pelo sistema coincidiu exatamente com os resultados oficiais.</p>
-    </div>
-    <div class="casos-grid">
-      <div class="caso-item">
-        <div class="caso-titulo">Ceará 2022 · Cassação Heitor Freire</div>
-        <div class="caso-subtitulo">Deputado Federal</div>
-        <div class="caso-metricas">22 vagas · QE 231.084 · Barreira 80%: 183.089</div>
-        <p class="caso-resultado">PL +1 (5→6) · UNIÃO −1 (4→3) · Republicanos barrado</p>
-        <a href="pdfs/caso_ce.pdf" target="_blank" rel="noopener" class="caso-pdf">↗ Veja a análise feita pelo sistema</a>
-      </div>
-      <div class="caso-item">
-        <div class="caso-titulo">Amapá 2022 · Pós-ADIs</div>
-        <div class="caso-subtitulo">Deputado Federal</div>
-        <div class="caso-metricas">8 vagas · QE 52.877 · 3 federações</div>
-        <p class="caso-resultado">F2: PDT 2, PL 1, MDB 1 · F3: PP, Rep., FE Brasil, PSOL/REDE</p>
-        <a href="pdfs/caso_ap.pdf" target="_blank" rel="noopener" class="caso-pdf">↗ Veja a análise feita pelo sistema</a>
-      </div>
-      <div class="caso-item">
-        <div class="caso-titulo">Distrito Federal 2022 · Pós-ADIs</div>
-        <div class="caso-subtitulo">Deputado Federal</div>
-        <div class="caso-metricas">8 vagas · QE 259.752 · Fase 3 ativada</div>
-        <p class="caso-resultado">PSB obteve 1 vaga via Fase 3 sem barreira</p>
-        <a href="pdfs/caso_df.pdf" target="_blank" rel="noopener" class="caso-pdf">↗ Veja a análise feita pelo sistema</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SEÇÃO 06 · RISCO -->
-<section class="secao-06" id="fundamento">
-  <div class="container">
-    <div class="secao-header">
-      <div>
-        <p class="secao-header-label">Consequências</p>
-        <h2 class="secao-header-titulo">A consequência de um resultado incorreto vai além do erro técnico.</h2>
-      </div>
-      <p class="secao-header-desc secao-texto">Uma previsão errada compromete a estratégia do partido, a credibilidade do advogado e as decisões do candidato. Orientações equivocadas podem afetar finanças, alianças e planejamento político. Por isso, a precisão do RetotalizaJE é essencial.</p>
-    </div>
-  </div>
-</section>
-
-<!-- SEÇÃO 07 · POSICIONAMENTO -->
-<section class="secao-07">
-  <div class="container">
-    <div class="secao-header">
-      <div>
-        <p class="secao-header-label">Fundamento jurídico</p>
-        <h2 class="secao-header-titulo">Não é um simulador de cenários. É um instrumento de precisão jurídica.</h2>
-      </div>
-      <p class="secao-header-desc secao-texto">O RetotalizaJE não cria suposições, aplica o algoritmo estabelecido pelo STF nas ADIs 7.228, 7.263 e 7.325, exatamente como os tribunais farão. Os resultados refletem a aplicação das normas vigentes, validados com resoluções dos TREs e dados oficiais do TSE. Assim, você obtém o mesmo cálculo que será adotado pela Justiça Eleitoral.</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- SEÇÃO PREÇOS -->
-<section class="secao-precos" id="planos">
-  <div class="container">
-    <div class="precos-header">
-      <h2 class="precos-titulo">Pronto para calcular? Veja os preços e planos disponíveis</h2>
-      <p class="precos-sub">Escolha o plano ideal para seu volume de trabalho</p>
-    </div>
-    <div class="precos-banner">
-      <span><strong>1 cálculo completo grátis</strong> · para todo novo usuário, sem cartão</span>
-    </div>
-
-    <!-- 3 cards -->
-    <div class="precos-grid">
-      <div class="preco-card">
-        <div class="preco-nome">Unitário</div>
-        <div class="preco-valor">R$ 197</div>
-        <div class="preco-qtd">1 cálculo</div>
-        <div class="preco-divisor"></div>
-        <div class="preco-por">R$ 197 por cálculo</div>
-        <a href="app.html?plano=unitario" class="preco-btn">Contratar ↗</a>
-      </div>
-
-      <div class="preco-card preco-card--destaque">
-        <div class="preco-badge">mais popular</div>
-        <div class="preco-nome">Pack 5</div>
-        <div class="preco-valor">R$ 790</div>
-        <div class="preco-qtd">5 cálculos</div>
-        <div class="preco-divisor"></div>
-        <div class="preco-por">R$ 158 por cálculo</div>
-        <div class="preco-economia">economia de 20%</div>
-        <a href="app.html?plano=pack5" class="preco-btn">Contratar ↗</a>
-      </div>
-
-      <div class="preco-card">
-        <div class="preco-nome">Pack 10</div>
-        <div class="preco-valor">R$ 1.490</div>
-        <div class="preco-qtd">10 cálculos</div>
-        <div class="preco-divisor"></div>
-        <div class="preco-por">R$ 149 por cálculo</div>
-        <div class="preco-economia">economia de 24%</div>
-        <a href="app.html?plano=pack10" class="preco-btn">Contratar ↗</a>
-      </div>
-    </div>
-
-    <!-- Card ciclo eleitoral -->
-    <div class="preco-card-ciclo">
-      <div class="preco-ciclo-info">
-        <div class="preco-ciclo-nome">Ciclo eleitoral 2026</div>
-        <div class="preco-ciclo-desc">cálculos ilimitados durante toda a campanha</div>
-      </div>
-      <div class="preco-ciclo-direita">
-        <div class="preco-ciclo-valor">R$ 2.490</div>
-        <a href="app.html?plano=ciclo2026" class="preco-btn">Ver detalhes ↗</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="footer-lp">
-  <div class="container">
-    <div class="footer-lp-top">
-      <a href="/" class="wordmark">
-        <span class="wordmark-base">Retotaliza</span><span class="wordmark-je">JE</span>
+  <!-- NAV -->
+  <header style="position:sticky;top:0;z-index:50;background:rgba(244,239,228,0.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(19,31,51,0.06)">
+    <div style="max-width:1340px;margin:0 auto;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+      <a href="/" class="serif" style="font-size:23px;font-weight:600;color:#131F33;letter-spacing:-0.012em">
+        Retotaliza<span style="color:#B8853A;font-style:italic;font-weight:500">JE</span>
       </a>
-      <nav class="footer-lp-links">
-        <a href="#como-funciona-cards">Como funciona</a>
-        <a href="#casos-validados">Casos validados</a>
-        <a href="#fundamento">Fundamento jurídico</a>
+      <nav style="display:flex;gap:38px">
+        <a href="#problema" style="font-size:13.5px;color:#4B5363;font-weight:500">Como funciona</a>
+        <a href="#consequencias" style="font-size:13.5px;color:#4B5363;font-weight:500">Consequências</a>
+        <a href="#casos" style="font-size:13.5px;color:#4B5363;font-weight:500">Casos validados</a>
+        <a href="#fundamento" style="font-size:13.5px;color:#4B5363;font-weight:500">Fundamento jurídico</a>
+        <a href="#contato" style="font-size:13.5px;color:#4B5363;font-weight:500">Fale conosco</a>
       </nav>
-      <span class="footer-lp-legal">Art. 109 CE · ADIs 7.228/7.263/7.325 · STF 2025</span>
+      <a href="app.html" style="display:inline-flex;align-items:center;gap:10px;background:#131F33;color:#FFFFFF;font-size:13px;font-weight:600;padding:11px 20px;border-radius:99px;letter-spacing:0.005em;box-shadow:0 1px 0 rgba(255,255,255,0.10) inset,0 8px 22px -10px rgba(19,31,51,0.45)">
+        Acessar sistema
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+      </a>
     </div>
-    <div class="footer-lp-bottom">© 2025 RetotalizaJE · Ferramenta técnico-jurídica de apoio · Não substitui decisão da Justiça Eleitoral</div>
-  </div>
-</footer>
+  </header>
 
-<script>
-(function(){
-  // Elementos individuais com reveal simples
-  var simples = [
-    '.hero-titulo','.hero-corpo','.hero-botoes','.hero-metricas',
-    '.secao-header-label','.secao-header-titulo','.secao-header-desc',
-    '.destaque-ambar',
-    '.footer-lp-top','.footer-lp-contato'
-  ];
-  // Elementos em grid com delay escalonado
-  var escalonados = [
-    '.hero-metrica-item',
-    '.step-card-full',
-    '.caso-item',
-    '.entrega-item'
-  ];
+  <!-- HERO -->
+  <section style="padding:40px 40px 0;position:relative">
+    <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:90%;height:80%;background:radial-gradient(ellipse at top,rgba(184,133,58,0.10),transparent 65%);pointer-events:none"></div>
 
-  simples.forEach(function(sel){
-    document.querySelectorAll(sel).forEach(function(el){
-      el.classList.add('reveal');
-    });
-  });
+    <div style="max-width:1340px;margin:0 auto;position:relative">
 
-  escalonados.forEach(function(sel){
-    var delays = ['reveal-delay-1','reveal-delay-2','reveal-delay-3','reveal-delay-4'];
-    document.querySelectorAll(sel).forEach(function(el, i){
-      el.classList.add('reveal');
-      if(i > 0) el.classList.add(delays[(i - 1) % 4]);
-    });
-  });
+      <div style="position:absolute;inset:24px -16px -16px 16px;background:#1A2738;border-radius:24px;opacity:0.45;filter:blur(2px)"></div>
 
-  // Hero entra imediatamente ao carregar
-  ['hero-titulo','hero-corpo','hero-botoes','hero-metricas'].forEach(function(cls, i){
-    var el = document.querySelector('.' + cls);
-    if(el) setTimeout(function(){ el.classList.add('visible'); }, 80 + i * 130);
-  });
+      <div style="position:relative;background:linear-gradient(160deg,#131F33 0%,#1A2738 100%);border-radius:24px;overflow:hidden;color:#F4EFE4;box-shadow:0 1px 0 rgba(255,255,255,0.06) inset,0 50px 100px -40px rgba(19,31,51,0.55)">
 
-  // IntersectionObserver com threshold baixo para disparar cedo
-  var observer = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if(entry.isIntersecting){
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        <div style="position:absolute;top:-120px;right:-80px;width:480px;height:480px;background:radial-gradient(circle,rgba(184,133,58,0.20),transparent 60%);pointer-events:none"></div>
+        <div style="position:absolute;bottom:-160px;left:-80px;width:520px;height:520px;background:radial-gradient(circle,rgba(36,84,240,0.07),transparent 60%);pointer-events:none"></div>
 
-  document.querySelectorAll('.reveal').forEach(function(el){
-    observer.observe(el);
-  });
-})();
-</script>
-<script>
-(function(){
-  var btn  = document.getElementById('mobile-menu-btn');
-  var menu = document.getElementById('mobile-menu');
-  if(!btn || !menu) return;
+        <div style="display:grid;grid-template-columns:1.2fr 1fr;align-items:center;min-height:520px;position:relative">
 
-  function abrir(){
-    menu.classList.add('open');
-    btn.setAttribute('aria-expanded', 'true');
-  }
-  function fechar(){
-    menu.classList.remove('open');
-    btn.setAttribute('aria-expanded', 'false');
-  }
+          <div style="padding:72px 56px 72px 64px;display:flex;flex-direction:column;gap:36px;border-right:1px solid rgba(255,255,255,0.06);animation:rise 700ms cubic-bezier(.2,.7,.2,1) both">
+            <div style="display:inline-flex;align-items:center;gap:12px;align-self:flex-start;padding:7px 14px 7px 10px;background:rgba(184,133,58,0.10);border:1px solid rgba(184,133,58,0.30);border-radius:99px">
+              <span style="width:6px;height:6px;background:#D4A65A;border-radius:50%;box-shadow:0 0 12px #D4A65A;animation:glow 2.4s ease-in-out infinite"></span>
+              <span class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#D4A65A;font-weight:500">ADIs 7.228 · 7.263 · 7.325 · STF 13.03.2025</span>
+            </div>
 
-  btn.addEventListener('click', function(){
-    menu.classList.contains('open') ? fechar() : abrir();
-  });
+            <h1 class="serif" style="margin:0;font-size:76px;line-height:1.0;font-weight:500;letter-spacing:-0.026em;color:#FAF7EE">
+              Precisão jurídica para a <em style="font-style:italic;color:#D4A65A;font-weight:500">retotalização</em> de vagas parlamentares.
+            </h1>
+          </div>
 
-  // Fecha ao clicar em qualquer link do menu
-  menu.querySelectorAll('a').forEach(function(a){
-    a.addEventListener('click', fechar);
-  });
+          <div style="padding:72px 64px 72px 56px;display:flex;flex-direction:column;justify-content:center;gap:36px;animation:rise 700ms cubic-bezier(.2,.7,.2,1) 150ms both">
+            <p style="margin:0;font-size:16px;line-height:1.75;color:#A8AFBE;font-weight:400">
+              Instrumento de cálculo da redistribuição de cadeiras em eleições proporcionais conforme o novo entendimento do Supremo sobre sobras eleitorais. Opera com dados oficiais do TSE e refaz a totalização a cada cassação, renúncia ou anulação de votos, quantificando também o impacto financeiro de cada cadeira transferida.
+            </p>
 
-  // Fecha ao pressionar Escape
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') fechar();
-  });
-})();
-</script>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+              <a href="app.html" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(180deg,#D4A65A 0%,#B8853A 100%);color:#131F33;font-size:14.5px;font-weight:700;padding:16px 28px;border-radius:99px;letter-spacing:0.005em;box-shadow:0 1px 0 rgba(255,255,255,0.45) inset,0 14px 30px -10px rgba(184,133,58,0.55)">
+                Calcular agora
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+              </a>
+              <a href="#casos" style="display:inline-flex;align-items:center;gap:10px;color:#F4EFE4;font-size:14.5px;font-weight:500;padding:16px 24px;border-radius:99px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.02)">
+                Ver casos validados
+              </a>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:14px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08)">
+              <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(180deg,rgba(242,212,155,0.18),rgba(184,133,58,0.30));display:flex;align-items:center;justify-content:center;flex:none">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#D4A65A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v6c0 4.5-3 8-8 9-5-1-8-4.5-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+              </div>
+              <div>
+                <div class="mono" style="font-size:9.5px;letter-spacing:0.20em;text-transform:uppercase;color:#D4A65A;font-weight:600">Validação independente</div>
+                <div class="serif" style="font-size:16px;font-weight:500;color:#FAF7EE;line-height:1.2;margin-top:2px">3 TREs · 3 acertos exatos</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div style="margin-top:32px;padding:18px 0;border-top:1px solid rgba(19,31,51,0.08);border-bottom:1px solid rgba(19,31,51,0.08);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)">
+        <div style="display:flex;gap:48px;animation:ticker 38s linear infinite;width:max-content;white-space:nowrap" class="mono">
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">TSE · dados oficiais</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">STF · ADIs 7.228 / 7.263 / 7.325</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">FEFC 2026 · cálculo ao centavo</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">TREs · resoluções publicadas</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">Cláusula de desempenho</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">Quociente partidário</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">TSE · dados oficiais</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">STF · ADIs 7.228 / 7.263 / 7.325</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">FEFC 2026 · cálculo ao centavo</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">TREs · resoluções publicadas</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">Cláusula de desempenho</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">Quociente partidário</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- QUOTE / EDITORIAL -->
+  <section style="padding:140px 40px 100px">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:36px;align-items:center;text-align:center">
+
+      <div style="display:flex;flex-direction:column;gap:36px;align-items:center">
+        <div style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,#FAF5E8,#EDE3CD);box-shadow:0 8px 20px -8px rgba(184,133,58,0.45)">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#B8853A"><path d="M12 2l1.6 8.4L22 12l-8.4 1.6L12 22l-1.6-8.4L2 12l8.4-1.6L12 2z"/></svg>
+        </div>
+        <p class="serif" style="margin:0;font-size:42px;line-height:1.18;font-weight:400;color:#131F33;letter-spacing:-0.015em;max-width:720px">
+          Se há <em style="font-style:italic;color:#8E6420;font-weight:500">cassação</em>, há retotalização. E há um único cálculo correto, fase por fase, segundo o que decidiu o <em style="font-style:italic;color:#8E6420;font-weight:500">Supremo</em>.
+        </p>
+        <p style="margin:0;font-size:15px;color:#6B6356;max-width:540px;line-height:1.7">
+          O RetotalizaJE adapta a metodologia oficial a cada processo, aplicando QE, QP e sobras com a precisão exigida em peças jurídicas e sustentações orais.
+        </p>
+        <a href="#fundamento" style="display:inline-flex;align-items:center;gap:8px;padding:14px 22px;background:#131F33;color:#FFFFFF;font-size:13.5px;font-weight:600;border-radius:99px;letter-spacing:0.005em;box-shadow:0 12px 28px -12px rgba(19,31,51,0.50)">
+          Conheça o fundamento jurídico
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- STATS BAND -->
+  <section style="padding:0 40px">
+    <div style="max-width:1340px;margin:0 auto;padding:52px 0;border-top:1px solid rgba(19,31,51,0.10);border-bottom:1px solid rgba(19,31,51,0.10)">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:48px">
+        <div style="text-align:center;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(19,31,51,0.10);padding-right:24px">
+          <div class="serif" style="font-size:64px;font-weight:500;color:#131F33;line-height:1;letter-spacing:-0.03em">3</div>
+          <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356;font-weight:500">Fases de cálculo</div>
+        </div>
+        <div style="text-align:center;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(19,31,51,0.10);padding-right:24px">
+          <div class="serif" style="font-size:64px;font-weight:500;color:#131F33;line-height:1;letter-spacing:-0.03em">100<em style="color:#B8853A;font-style:italic">%</em></div>
+          <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356;font-weight:500">Fiel às ADIs</div>
+        </div>
+        <div style="text-align:center;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(19,31,51,0.10);padding-right:24px">
+          <div class="serif" style="font-size:64px;font-weight:500;color:#131F33;line-height:1;letter-spacing:-0.03em">27</div>
+          <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356;font-weight:500">Estados</div>
+        </div>
+        <div style="text-align:center;display:flex;flex-direction:column;gap:10px">
+          <div class="serif" style="font-size:64px;font-weight:500;color:#131F33;line-height:1;letter-spacing:-0.03em">5.570</div>
+          <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356;font-weight:500">Municípios</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- O PROBLEMA -->
+  <section id="problema" style="padding:140px 40px 120px">
+    <div style="max-width:1340px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:96px;align-items:start">
+      <div>
+        <div class="eyebrow" style="margin-bottom:24px">
+          <span class="eyebrow-line"></span>
+          <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#B8853A;font-weight:500">O problema</span>
+        </div>
+        <h2 class="serif" style="margin:0;font-size:60px;line-height:1.04;font-weight:500;letter-spacing:-0.022em;color:#131F33">
+          A retotalização envolve dados dispersos, cálculos em <em style="font-style:italic;color:#8E6420">fases</em> e regras jurídicas <em style="font-style:italic;color:#8E6420">específicas</em>.
+        </h2>
+      </div>
+      <div style="padding-top:18px;display:flex;flex-direction:column;gap:20px">
+        <p style="margin:0;font-size:16.5px;line-height:1.7;color:#4B5363">
+          Para chegar ao resultado correto, é necessário localizar os dados oficiais do TSE, aplicar o Quociente Eleitoral, recalcular o Quociente Partidário e distribuir as sobras conforme as ADIs 7.228, 7.263 e 7.325, fase por fase, partido por partido.
+        </p>
+        <p style="margin:0;font-size:16.5px;line-height:1.7;color:#4B5363">
+          Sem ferramenta adequada, o processo exige horas de trabalho manual e abre margem para erros que comprometem a tese, a estratégia e a credibilidade do escritório perante o cliente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLUXO DE USO -->
+  <section style="padding:0 40px 140px">
+    <div style="max-width:1340px;margin:0 auto">
+
+      <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:96px;align-items:end;margin-bottom:64px">
+        <div>
+          <div class="eyebrow" style="margin-bottom:24px">
+            <span class="eyebrow-line"></span>
+            <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#B8853A;font-weight:500">Fluxo de uso</span>
+          </div>
+          <h2 class="serif" style="margin:0;font-size:60px;line-height:1.04;font-weight:500;letter-spacing:-0.022em;color:#131F33">
+            Dos dados do TSE ao resultado em <em style="font-style:italic;color:#8E6420">minutos</em>.
+          </h2>
+        </div>
+        <div style="padding-bottom:8px">
+          <p style="margin:0;font-size:16px;line-height:1.7;color:#4B5363">
+            Quatro passos. O RetotalizaJE se encarrega de toda a complexidade jurídica e matemática. Você acompanha cada decisão e exporta o resultado pronto para juntada.
+          </p>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(160deg,#131F33,#1A2738);border-radius:20px;display:grid;grid-template-columns:repeat(4,1fr);color:#F4EFE4;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,0.06) inset,0 40px 80px -40px rgba(19,31,51,0.45);position:relative">
+        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(184,133,58,0.5),transparent)"></div>
+        <div style="padding:48px 36px 44px;border-right:1px solid rgba(255,255,255,0.08)">
+          <div class="serif" style="font-size:48px;font-weight:400;color:#D4A65A;line-height:1;font-style:italic">01</div>
+          <div class="serif" style="margin-top:32px;font-size:24px;font-weight:500;color:#FAF7EE;line-height:1.22;letter-spacing:-0.01em">Selecione o estado e o cargo</div>
+          <div style="margin-top:14px;font-size:13.5px;color:#A8AFBE;line-height:1.6">Eleição, unidade federativa, ano e cargo em disputa.</div>
+        </div>
+        <div style="padding:48px 36px 44px;border-right:1px solid rgba(255,255,255,0.08)">
+          <div class="serif" style="font-size:48px;font-weight:400;color:#D4A65A;line-height:1;font-style:italic">02</div>
+          <div class="serif" style="margin-top:32px;font-size:24px;font-weight:500;color:#FAF7EE;line-height:1.22;letter-spacing:-0.01em">Configure a cassação</div>
+          <div style="margin-top:14px;font-size:13.5px;color:#A8AFBE;line-height:1.6">Candidato, votos anulados e modalidade jurídica.</div>
+        </div>
+        <div style="padding:48px 36px 44px;border-right:1px solid rgba(255,255,255,0.08)">
+          <div class="serif" style="font-size:48px;font-weight:400;color:#D4A65A;line-height:1;font-style:italic">03</div>
+          <div class="serif" style="margin-top:32px;font-size:24px;font-weight:500;color:#FAF7EE;line-height:1.22;letter-spacing:-0.01em">Calcule com um clique</div>
+          <div style="margin-top:14px;font-size:13.5px;color:#A8AFBE;line-height:1.6">QE, QP e sobras refeitos automaticamente em três fases.</div>
+        </div>
+        <div style="padding:48px 36px 44px">
+          <div class="serif" style="font-size:48px;font-weight:400;color:#D4A65A;line-height:1;font-style:italic">04</div>
+          <div class="serif" style="margin-top:32px;font-size:24px;font-weight:500;color:#FAF7EE;line-height:1.22;letter-spacing:-0.01em">Analise e exporte</div>
+          <div style="margin-top:14px;font-size:13.5px;color:#A8AFBE;line-height:1.6">Relatório técnico, planilha e modo apresentação.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:96px;display:grid;grid-template-columns:1fr 1.2fr;gap:72px;align-items:center">
+        <div>
+          <div class="eyebrow" style="margin-bottom:20px">
+            <span class="eyebrow-line"></span>
+            <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#B8853A;font-weight:500">A interface</span>
+          </div>
+          <h3 class="serif" style="margin:0;font-size:40px;line-height:1.12;font-weight:500;letter-spacing:-0.018em;color:#131F33">
+            Cada decisão à vista, cada cálculo <em style="font-style:italic;color:#8E6420">auditável</em>.
+          </h3>
+          <p style="margin:24px 0 0;font-size:15.5px;line-height:1.7;color:#4B5363">
+            A tela do passo 02 exibe o partido, o candidato, os votos anulados e a modalidade jurídica escolhida. O Quociente Eleitoral é recalculado em tempo real e mostrado lado a lado com o original, para conferência imediata.
+          </p>
+        </div>
+
+        <div style="position:relative">
+          <div style="position:absolute;inset:24px -16px -16px 16px;background:#1A2738;border-radius:16px;opacity:0.35;filter:blur(4px)"></div>
+          <div style="position:relative;background:linear-gradient(160deg,#131F33,#1A2738);border-radius:16px;padding:16px 18px 22px;border:1px solid rgba(255,255,255,0.06);box-shadow:0 1px 0 rgba(255,255,255,0.05) inset,0 40px 80px -40px rgba(19,31,51,0.45)">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.06)">
+              <div style="display:flex;gap:7px">
+                <span style="width:11px;height:11px;border-radius:50%;background:#B5403A"></span>
+                <span style="width:11px;height:11px;border-radius:50%;background:#B8853A"></span>
+                <span style="width:11px;height:11px;border-radius:50%;background:#5A8A5E"></span>
+              </div>
+              <div class="mono" style="font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#7E8DAB;font-weight:500">RetotalizaJE</div>
+              <div style="width:34px"></div>
+            </div>
+
+            <div style="padding:28px 28px 8px">
+              <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#D4A65A;font-weight:500;margin-bottom:24px">Passo 02 · Configurar a cassação</div>
+
+              <div style="display:grid;grid-template-columns:130px 1fr;gap:14px 22px;align-items:center;font-size:13px;color:#F4EFE4">
+                <div class="mono" style="color:#7E8DAB;letter-spacing:0.14em;text-transform:uppercase;font-size:10px;font-weight:500">Partido</div>
+                <div><span style="display:inline-flex;align-items:center;gap:8px;padding:9px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:8px">UNIÃO Brasil <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#7E8DAB" stroke-width="1.8" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></div>
+
+                <div class="mono" style="color:#7E8DAB;letter-spacing:0.14em;text-transform:uppercase;font-size:10px;font-weight:500">Candidato</div>
+                <div><span style="display:inline-flex;align-items:center;gap:8px;padding:9px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:8px">Heitor Freire</span></div>
+
+                <div class="mono" style="color:#7E8DAB;letter-spacing:0.14em;text-transform:uppercase;font-size:10px;font-weight:500">Anulados</div>
+                <div><span class="serif" style="display:inline-flex;align-items:center;gap:8px;padding:9px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:8px;font-weight:500">48.888</span></div>
+
+                <div class="mono" style="color:#7E8DAB;letter-spacing:0.14em;text-transform:uppercase;font-size:10px;font-weight:500">Modalidade</div>
+                <div><span style="display:inline-flex;align-items:center;gap:8px;padding:9px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:8px">Anular nominais, sem reatribuição <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#7E8DAB" stroke-width="1.8" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></div>
+
+                <div class="mono" style="color:#7E8DAB;letter-spacing:0.14em;text-transform:uppercase;font-size:10px;font-weight:500">Quociente</div>
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                  <span class="serif" style="padding:9px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:8px;color:#A8AFBE;font-weight:500">231.084</span>
+                  <span style="color:#7E8DAB">→</span>
+                  <span class="serif" style="padding:9px 14px;background:rgba(90,138,94,0.12);border:1px solid rgba(90,138,94,0.40);border-radius:8px;color:#9BC9A0;font-weight:500">182.506</span>
+                  <span class="mono" style="font-size:11px;color:#9BC9A0;letter-spacing:0.06em">recalculado ✓</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ALÉM DA CADEIRA -->
+  <section id="consequencias" style="background:#FAF7EE;padding:140px 40px 120px;border-top:1px solid rgba(19,31,51,0.06)">
+    <div style="max-width:1340px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:96px;align-items:start">
+      <div>
+        <div class="eyebrow" style="margin-bottom:24px">
+          <span class="eyebrow-line"></span>
+          <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#B8853A;font-weight:500">Além da cadeira</span>
+        </div>
+        <h2 class="serif" style="margin:0;font-size:62px;line-height:1.02;font-weight:500;letter-spacing:-0.024em;color:#131F33">
+          A cassação não custa só a vaga. Custa um valor <em style="font-style:italic;color:#8E6420">exato</em> em recursos públicos.
+        </h2>
+      </div>
+      <div style="padding-top:18px;display:flex;flex-direction:column;gap:20px">
+        <p style="margin:0;font-size:16.5px;line-height:1.7;color:#4B5363">
+          A redistribuição de uma cadeira na Câmara aciona automaticamente consequências financeiras e legais para os partidos envolvidos. O partido que perde a vaga perde também os recursos que ela carrega. O que os ganha, os recebe.
+        </p>
+        <p style="margin:0;font-size:16.5px;line-height:1.7;color:#4B5363">
+          Advogados e estrategistas precisam quantificar essas consequências com a mesma precisão do cálculo da cadeira, antes que o tribunal as publique e antes que a outra parte as calcule primeiro.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- O VALOR DE UMA CADEIRA (BIG REVEAL) -->
+  <section style="background:#FAF7EE;padding:0 40px 140px">
+    <div style="max-width:1340px;margin:0 auto;position:relative">
+
+      <div style="background:linear-gradient(160deg,#131F33 0%,#1A2738 100%);border-radius:24px;overflow:hidden;color:#F4EFE4;position:relative;box-shadow:0 1px 0 rgba(255,255,255,0.06) inset,0 50px 100px -40px rgba(19,31,51,0.55)">
+
+        <div style="position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse at center,rgba(184,133,58,0.18),transparent 60%);pointer-events:none"></div>
+        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(184,133,58,0.5),transparent)"></div>
+
+        <div style="position:relative;padding:80px 64px 72px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:32px">
+
+          <div class="eyebrow">
+            <span class="eyebrow-line-light"></span>
+            <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#D4A65A;font-weight:500">FEFC 2026 · Deputado federal</span>
+            <span class="eyebrow-line-light"></span>
+          </div>
+
+          <h2 class="serif" style="margin:0;font-size:54px;line-height:1.06;font-weight:500;letter-spacing:-0.022em;color:#FAF7EE;max-width:880px">
+            Cada cadeira federal <em style="font-style:italic;color:#D4A65A">carrega</em>
+          </h2>
+
+          <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0">
+            <div style="position:absolute;inset:-40px -80px;background:radial-gradient(ellipse,rgba(184,133,58,0.20),transparent 60%);pointer-events:none"></div>
+            <div class="serif" style="position:relative;font-size:152px;line-height:0.95;font-weight:500;letter-spacing:-0.045em;background:linear-gradient(180deg,#F2D49B 0%,#D4A65A 60%,#B8853A 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#D4A65A">
+              R$&thinsp;4,6&thinsp;<em style="font-style:italic">milhões</em>
+            </div>
+            <div class="mono" style="position:relative;font-size:12.5px;letter-spacing:0.26em;text-transform:uppercase;color:#A8AFBE;margin-top:18px">Na fatia de cadeiras do FEFC 2026</div>
+          </div>
+
+          <p style="margin:0;max-width:780px;font-size:17px;line-height:1.7;color:#A8AFBE">
+            No FEFC 2026, <span style="color:#FAF7EE;font-weight:500">48% do fundo é distribuído proporcionalmente às cadeiras</span> na Câmara dos Deputados. Quando uma cassação transfere uma vaga entre partidos, esse valor se move integralmente, calculado ao centavo sobre o total oficial do fundo.
+          </p>
+
+          <div style="display:inline-flex;align-items:center;gap:16px;padding:16px 24px;background:rgba(255,255,255,0.04);border:1px solid rgba(212,166,90,0.32);border-radius:99px;backdrop-filter:blur(4px)">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#D4A65A;font-weight:600">Valor exato · 2026</div>
+            <div style="width:1px;height:20px;background:rgba(212,166,90,0.40)"></div>
+            <div class="serif" style="font-size:22px;font-weight:500;color:#FAF7EE;letter-spacing:-0.005em">R$ 4.642.357,69</div>
+          </div>
+
+          <div style="margin-top:24px;padding-top:36px;border-top:1px solid rgba(255,255,255,0.10);width:100%;max-width:880px">
+            <p style="margin:0;font-size:15px;line-height:1.7;color:#A8AFBE">
+              E essa não é a única consequência. Uma cassação também altera a <span style="color:#FAF7EE;font-weight:500">fatia de votos do fundo</span>, o <span style="color:#FAF7EE;font-weight:500">tempo de propaganda eleitoral gratuita</span> e pode virar a <em class="serif" style="font-style:italic;color:#D4A65A">cláusula de desempenho</em> de um partido.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- QUATRO CONSEQUÊNCIAS -->
+  <section style="padding:140px 40px 120px">
+    <div style="max-width:1340px;margin:0 auto">
+
+      <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:96px;align-items:start;margin-bottom:80px">
+        <div>
+          <div class="eyebrow" style="margin-bottom:24px">
+            <span class="eyebrow-line"></span>
+            <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#B8853A;font-weight:500">Consequências automáticas</span>
+          </div>
+          <h2 class="serif" style="margin:0;font-size:60px;line-height:1.04;font-weight:500;letter-spacing:-0.022em;color:#131F33">
+            Da cadeira à cláusula: todas as implicações <em style="font-style:italic;color:#8E6420">quantificadas</em> de uma só vez.
+          </h2>
+        </div>
+        <div style="padding-top:18px">
+          <p style="margin:0;font-size:16.5px;line-height:1.7;color:#4B5363">
+            O sistema calcula, a partir da mudança de cadeira, as quatro consequências federais que ela produz, e gera o documento técnico correspondente, pronto para juntada.
+          </p>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px">
+
+        <article style="position:relative;background:linear-gradient(180deg,#FFFFFF,#FAF7EE);border:1px solid #E5DFCF;border-radius:18px;padding:40px;display:flex;flex-direction:column;gap:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 24px 48px -28px rgba(19,31,51,0.18)" style-hover="transform:translateY(-2px)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+            <div style="display:flex;align-items:center;gap:18px">
+              <div style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:linear-gradient(160deg,#F2D49B,#B8853A);box-shadow:0 12px 24px -10px rgba(184,133,58,0.5)">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#131F33" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M9 9c0-1 1-1.5 3-1.5s3 .5 3 1.5-1 1.5-3 1.5-3 .5-3 1.5 1 1.5 3 1.5 3-.5 3-1.5"/><path d="M12 6v12"/></svg>
+              </div>
+              <div class="mono" style="font-size:42px;font-weight:500;color:rgba(184,133,58,0.30);line-height:1">01</div>
+            </div>
+          </div>
+          <h3 class="serif" style="margin:0;font-size:30px;font-weight:500;color:#131F33;letter-spacing:-0.014em;line-height:1.2">
+            FEFC, <em style="font-style:italic;color:#8E6420">recursos de campanha</em>
+          </h3>
+          <p style="margin:0;font-size:15px;line-height:1.7;color:#4B5363">
+            Fatia de <span style="color:#131F33;font-weight:600">48% por cadeiras</span> e, quando houver mudança de votos, a fatia de <span style="color:#131F33;font-weight:600">35% por votação</span>. Calculado ao centavo sobre o total oficial do fundo.
+          </p>
+          <div style="margin-top:auto;padding-top:20px;border-top:1px solid rgba(184,133,58,0.18);display:flex;align-items:center;gap:14px">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#8E6420;font-weight:500">Por cadeira</div>
+            <div class="serif" style="font-size:20px;font-weight:500;color:#131F33;letter-spacing:-0.01em">R$ 4.642.357,69</div>
+          </div>
+        </article>
+
+        <article style="position:relative;background:linear-gradient(180deg,#FFFFFF,#FAF7EE);border:1px solid #E5DFCF;border-radius:18px;padding:40px;display:flex;flex-direction:column;gap:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 24px 48px -28px rgba(19,31,51,0.18)" style-hover="transform:translateY(-2px)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+            <div style="display:flex;align-items:center;gap:18px">
+              <div style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:linear-gradient(160deg,#F2D49B,#B8853A);box-shadow:0 12px 24px -10px rgba(184,133,58,0.5)">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#131F33" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M9 11l3-2v6l-3-2z" fill="#131F33"/></svg>
+              </div>
+              <div class="mono" style="font-size:42px;font-weight:500;color:rgba(184,133,58,0.30);line-height:1">02</div>
+            </div>
+          </div>
+          <h3 class="serif" style="margin:0;font-size:30px;font-weight:500;color:#131F33;letter-spacing:-0.014em;line-height:1.2">
+            Tempo de <em style="font-style:italic;color:#8E6420">propaganda</em>
+          </h3>
+          <p style="margin:0;font-size:15px;line-height:1.7;color:#4B5363">
+            <span style="color:#131F33;font-weight:600">90% do tempo</span> é distribuído proporcionalmente às cadeiras na Câmara. Perder a última cadeira remove o partido inteiramente do tempo de TV e redistribui a fração entre os demais.
+          </p>
+          <div style="margin-top:auto;padding-top:20px;border-top:1px solid rgba(184,133,58,0.18);display:flex;align-items:center;gap:14px">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#8E6420;font-weight:500">Rádio e TV</div>
+            <div class="serif" style="font-size:20px;font-weight:500;color:#131F33;letter-spacing:-0.01em">Redistribuição automática</div>
+          </div>
+        </article>
+
+        <article style="position:relative;background:linear-gradient(180deg,#131F33,#1A2738);border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:40px;display:flex;flex-direction:column;gap:20px;color:#F4EFE4;box-shadow:0 1px 0 rgba(255,255,255,0.06) inset,0 24px 48px -28px rgba(19,31,51,0.35);overflow:hidden" style-hover="transform:translateY(-2px)">
+          <div style="position:absolute;top:-100px;right:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(184,133,58,0.16),transparent 60%);pointer-events:none"></div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;position:relative">
+            <div style="display:flex;align-items:center;gap:18px">
+              <div style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:linear-gradient(160deg,#D4A65A,#8E6420);box-shadow:0 12px 24px -10px rgba(184,133,58,0.55)">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#131F33" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v6c0 4.5-3 8-8 9-5-1-8-4.5-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+              </div>
+              <div class="mono" style="font-size:42px;font-weight:500;color:rgba(212,166,90,0.40);line-height:1">03</div>
+            </div>
+            <div style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;background:rgba(184,133,58,0.18);border:1px solid rgba(212,166,90,0.40);border-radius:99px">
+              <span class="mono" style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#D4A65A;font-weight:600">Crítico</span>
+            </div>
+          </div>
+          <h3 class="serif" style="margin:0;font-size:30px;font-weight:500;color:#FAF7EE;letter-spacing:-0.014em;line-height:1.2;position:relative">
+            <em style="font-style:italic;color:#D4A65A">Cláusula</em> de desempenho
+          </h3>
+          <p style="margin:0;font-size:15px;line-height:1.7;color:#A8AFBE;position:relative">
+            O nó de maior alavancagem. Uma única cadeira pode ser a diferença entre <span style="color:#FAF7EE;font-weight:500">manter ou perder</span> o acesso a todos os fundos federais e ao tempo de rádio e TV.
+          </p>
+          <div style="margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,0.10);display:flex;align-items:center;gap:14px;position:relative">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#D4A65A;font-weight:500">Impacto</div>
+            <div class="serif" style="font-size:20px;font-weight:500;color:#FAF7EE;letter-spacing:-0.01em">Acesso integral aos recursos</div>
+          </div>
+        </article>
+
+        <article style="position:relative;background:linear-gradient(180deg,#FFFFFF,#FAF7EE);border:1px solid #E5DFCF;border-radius:18px;padding:40px;display:flex;flex-direction:column;gap:20px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 24px 48px -28px rgba(19,31,51,0.18)" style-hover="transform:translateY(-2px)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+            <div style="display:flex;align-items:center;gap:18px">
+              <div style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:linear-gradient(160deg,#F2D49B,#B8853A);box-shadow:0 12px 24px -10px rgba(184,133,58,0.5)">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#131F33" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg>
+              </div>
+              <div class="mono" style="font-size:42px;font-weight:500;color:rgba(184,133,58,0.30);line-height:1">04</div>
+            </div>
+          </div>
+          <h3 class="serif" style="margin:0;font-size:30px;font-weight:500;color:#131F33;letter-spacing:-0.014em;line-height:1.2">
+            Fundo <em style="font-style:italic;color:#8E6420">Partidário</em>
+          </h3>
+          <p style="margin:0;font-size:15px;line-height:1.7;color:#4B5363">
+            <span style="color:#131F33;font-weight:600">5% iguais</span> entre os partidos com cláusula, mais <span style="color:#131F33;font-weight:600">95% por votos</span>. Quando a cadeira vira a cláusula, o impacto se multiplica em receita permanente.
+          </p>
+          <div style="margin-top:auto;padding-top:20px;border-top:1px solid rgba(184,133,58,0.18);display:flex;align-items:center;gap:14px">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#8E6420;font-weight:500">Manutenção</div>
+            <div class="serif" style="font-size:20px;font-weight:500;color:#131F33;letter-spacing:-0.01em">Receita anual permanente</div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CENÁRIO REAL CEARÁ 2022 -->
+  <section style="padding:0 40px 140px">
+    <div style="max-width:1340px;margin:0 auto;background:linear-gradient(180deg,#FFFFFF,#FAF7EE);border:1px solid #E5DFCF;border-radius:24px;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 40px 80px -40px rgba(19,31,51,0.20)">
+
+      <div style="padding:72px 80px;display:flex;flex-direction:column;gap:32px">
+        <div class="eyebrow">
+          <span class="eyebrow-line"></span>
+          <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#B8853A;font-weight:500">Exemplo real · Ceará 2022</span>
+        </div>
+        <h2 class="serif" style="margin:0;font-size:48px;line-height:1.06;font-weight:500;letter-spacing:-0.020em;color:#131F33">
+          Uma cassação. Uma cadeira transferida. <em style="font-style:italic;color:#8E6420">R$ 4,6 milhões</em> ao centavo.
+        </h2>
+        <p style="margin:0;font-size:16px;line-height:1.7;color:#4B5363">
+          A cassação do deputado <span style="font-weight:600;color:#131F33">Heitor Freire</span> transferiu uma cadeira do UNIÃO Brasil para o PL. O sistema calculou o efeito imediato no FEFC: R$ 4.642.357,69 saindo de um partido e chegando ao outro, com a mesma metodologia que o tribunal adotaria.
+        </p>
+        <p style="margin:0;font-size:16px;line-height:1.7;color:#4B5363">
+          O resultado foi produzido com os dados oficiais do TSE e coincidiu exatamente com a redistribuição publicada pelo TRE-CE. O sistema calculou oito dias antes da publicação oficial.
+        </p>
+
+        <div style="margin-top:8px;display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;padding:24px;background:#FAF5E8;border:1px solid #E5DFCF;border-radius:14px">
+          <div style="text-align:center">
+            <div class="mono" style="font-size:10px;letter-spacing:0.20em;text-transform:uppercase;color:#6B6356;font-weight:500">Perdeu</div>
+            <div class="serif" style="font-size:24px;font-weight:600;color:#131F33;margin-top:6px">UNIÃO Brasil</div>
+            <div class="serif" style="font-size:13px;color:#4B5363;margin-top:2px;font-style:italic">1 cadeira · R$ 4,64 mi</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:linear-gradient(160deg,#D4A65A,#B8853A);box-shadow:0 8px 16px -6px rgba(184,133,58,0.5)">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#131F33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+          </div>
+          <div style="text-align:center">
+            <div class="mono" style="font-size:10px;letter-spacing:0.20em;text-transform:uppercase;color:#6B6356;font-weight:500">Ganhou</div>
+            <div class="serif" style="font-size:24px;font-weight:600;color:#131F33;margin-top:6px">PL</div>
+            <div class="serif" style="font-size:13px;color:#4B5363;margin-top:2px;font-style:italic">1 cadeira · R$ 4,64 mi</div>
+          </div>
+        </div>
+
+        <a href="app.html" style="margin-top:8px;display:inline-flex;align-items:center;gap:10px;padding:15px 24px;background:#131F33;color:#FAF7EE;font-size:14px;font-weight:600;border-radius:99px;letter-spacing:0.005em;box-shadow:0 14px 30px -14px rgba(19,31,51,0.50);align-self:flex-start">
+          Ver análise completa
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXPORTAÇÕES -->
+  <section style="background:#FAF7EE;padding:120px 40px;border-top:1px solid rgba(19,31,51,0.06);border-bottom:1px solid rgba(19,31,51,0.06)">
+    <div style="max-width:1340px;margin:0 auto">
+
+      <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:96px;align-items:start;margin-bottom:72px">
+        <div>
+          <div class="eyebrow" style="margin-bottom:24px">
+            <span class="eyebrow-line"></span>
+            <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#B8853A;font-weight:500">Exportações</span>
+          </div>
+          <h2 class="serif" style="margin:0;font-size:54px;line-height:1.06;font-weight:500;letter-spacing:-0.022em;color:#131F33">
+            Quatro consequências. Um único <em style="font-style:italic;color:#8E6420">documento</em>.
+          </h2>
+        </div>
+        <div style="padding-top:18px">
+          <p style="margin:0;font-size:16px;line-height:1.7;color:#4B5363">
+            O sistema gera um relatório técnico consolidado com a mudança de cadeira, o impacto no FEFC, no Fundo Partidário, no tempo de propaganda e na cláusula de desempenho, pronto para juntada em petição ou apresentação ao cliente.
+          </p>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+
+        <article style="position:relative;background:#FFFFFF;border:1px solid #E5DFCF;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:18px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(19,31,51,0.18)" style-hover="transform:translateY(-2px)">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(160deg,#F2D49B,#B8853A);color:#131F33;box-shadow:0 10px 20px -8px rgba(184,133,58,0.50)">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>
+          </div>
+          <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#B8853A;font-weight:500">01 · Petição</div>
+          <h3 class="serif" style="margin:0;font-size:26px;font-weight:500;color:#131F33;letter-spacing:-0.012em;line-height:1.2">Relatório técnico PDF</h3>
+          <p style="margin:0;font-size:14.5px;line-height:1.65;color:#4B5363">Metodologia, memória de cálculo, resultado por partido e por consequência. Pronto para juntada.</p>
+        </article>
+
+        <article style="position:relative;background:#FFFFFF;border:1px solid #E5DFCF;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:18px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(19,31,51,0.18)" style-hover="transform:translateY(-2px)">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(160deg,#F2D49B,#B8853A);color:#131F33;box-shadow:0 10px 20px -8px rgba(184,133,58,0.50)">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M3 16h18"/><path d="M9 4v16"/><path d="M15 4v16"/></svg>
+          </div>
+          <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#B8853A;font-weight:500">02 · Análise</div>
+          <h3 class="serif" style="margin:0;font-size:26px;font-weight:500;color:#131F33;letter-spacing:-0.012em;line-height:1.2">Planilha de dados</h3>
+          <p style="margin:0;font-size:14.5px;line-height:1.65;color:#4B5363">CSV com distribuição de vagas, votos válidos, quocientes e valores financeiros por partido.</p>
+        </article>
+
+        <article style="position:relative;background:#FFFFFF;border:1px solid #E5DFCF;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:18px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(19,31,51,0.18)" style-hover="transform:translateY(-2px)">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(160deg,#F2D49B,#B8853A);color:#131F33;box-shadow:0 10px 20px -8px rgba(184,133,58,0.50)">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+          </div>
+          <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#B8853A;font-weight:500">03 · Cliente</div>
+          <h3 class="serif" style="margin:0;font-size:26px;font-weight:500;color:#131F33;letter-spacing:-0.012em;line-height:1.2">Modo apresentação</h3>
+          <p style="margin:0;font-size:14.5px;line-height:1.65;color:#4B5363">Visualização limpa para audiências, sustentações orais e reuniões com clientes e candidatos.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CASOS VALIDADOS -->
+  <section id="casos" style="padding:140px 40px 120px">
+    <div style="max-width:1340px;margin:0 auto">
+
+      <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:96px;align-items:start;margin-bottom:72px">
+        <div>
+          <div class="eyebrow" style="margin-bottom:24px">
+            <span class="eyebrow-line"></span>
+            <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#B8853A;font-weight:500">Casos validados</span>
+          </div>
+          <h2 class="serif" style="margin:0;font-size:60px;line-height:1.04;font-weight:500;letter-spacing:-0.022em;color:#131F33">
+            Três casos reais. Três resultados <em style="font-style:italic;color:#8E6420">confirmados</em>.
+          </h2>
+        </div>
+        <div style="padding-top:18px">
+          <p style="margin:0;font-size:16.5px;line-height:1.7;color:#4B5363">
+            O RetotalizaJE foi testado com dados reais e comparado às resoluções oficiais dos TREs. Nos processos do Ceará, do Amapá e do Distrito Federal, a redistribuição de vagas calculada pelo sistema coincidiu exatamente com os resultados publicados.
+          </p>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+
+        <article style="background:linear-gradient(180deg,#FFFFFF,#FAF7EE);border:1px solid #E5DFCF;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 24px 48px -28px rgba(19,31,51,0.18)" style-hover="transform:translateY(-2px)">
+          <div style="padding:32px 32px 28px;display:flex;flex-direction:column;gap:18px;flex:1">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#B8853A;font-weight:500">Ceará 2022 · Deputado federal</div>
+            <h3 class="serif" style="margin:0;font-size:26px;font-weight:500;color:#131F33;letter-spacing:-0.012em;line-height:1.22">
+              Cassação <em style="font-style:italic">Heitor Freire</em>
+            </h3>
+            <div style="font-size:14px;color:#4B5363;line-height:1.65">22 vagas · QE 231.084 · barreira de 80%: 183.089 votos.</div>
+            <div style="padding-top:14px;border-top:1px solid #E5DFCF;font-size:14px;color:#131F33;line-height:1.55">
+              PL +1 (5 para 6) · UNIÃO menos 1 (4 para 3) · Republicanos barrado pela cláusula de votos válidos.
+            </div>
+            <a href="app.html" style="margin-top:auto;display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#131F33;padding-top:18px">
+              Ver análise do sistema
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article style="background:linear-gradient(180deg,#FFFFFF,#FAF7EE);border:1px solid #E5DFCF;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 24px 48px -28px rgba(19,31,51,0.18)" style-hover="transform:translateY(-2px)">
+          <div style="padding:32px 32px 28px;display:flex;flex-direction:column;gap:18px;flex:1">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#B8853A;font-weight:500">Amapá 2022 · Deputado federal</div>
+            <h3 class="serif" style="margin:0;font-size:26px;font-weight:500;color:#131F33;letter-spacing:-0.012em;line-height:1.22">
+              Distribuição <em style="font-style:italic">pós-ADIs</em>
+            </h3>
+            <div style="font-size:14px;color:#4B5363;line-height:1.65">8 vagas · QE 52.877 · três federações em disputa.</div>
+            <div style="padding-top:14px;border-top:1px solid #E5DFCF;font-size:14px;color:#131F33;line-height:1.55">
+              F2: PDT 2, PL 1, MDB 1. F3: PP, Republicanos, FE Brasil e PSOL/REDE.
+            </div>
+            <a href="app.html" style="margin-top:auto;display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#131F33;padding-top:18px">
+              Ver análise do sistema
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article style="background:linear-gradient(180deg,#FFFFFF,#FAF7EE);border:1px solid #E5DFCF;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 24px 48px -28px rgba(19,31,51,0.18)" style-hover="transform:translateY(-2px)">
+          <div style="padding:32px 32px 28px;display:flex;flex-direction:column;gap:18px;flex:1">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#B8853A;font-weight:500">Distrito Federal 2022 · Deputado federal</div>
+            <h3 class="serif" style="margin:0;font-size:26px;font-weight:500;color:#131F33;letter-spacing:-0.012em;line-height:1.22">
+              Fase 3 <em style="font-style:italic">ativada</em>
+            </h3>
+            <div style="font-size:14px;color:#4B5363;line-height:1.65">8 vagas · QE 259.752 · fase 3 das ADIs aplicada.</div>
+            <div style="padding-top:14px;border-top:1px solid #E5DFCF;font-size:14px;color:#131F33;line-height:1.55">
+              PSB obteve 1 vaga via Fase 3 sem necessidade de barreira partidária.
+            </div>
+            <a href="app.html" style="margin-top:auto;display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#131F33;padding-top:18px">
+              Ver análise do sistema
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FUNDAMENTO JURÍDICO -->
+  <section id="fundamento" style="background:linear-gradient(160deg,#131F33,#1A2738);color:#F4EFE4;padding:140px 40px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(184,133,58,0.5),transparent)"></div>
+    <div style="position:absolute;top:-200px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(184,133,58,0.10),transparent 60%);pointer-events:none"></div>
+
+    <div style="max-width:1340px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:96px;align-items:start;position:relative">
+      <div>
+        <div class="eyebrow" style="margin-bottom:24px">
+          <span class="eyebrow-line-light"></span>
+          <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#D4A65A;font-weight:500">Fundamento jurídico</span>
+        </div>
+        <h2 class="serif" style="margin:0;font-size:60px;line-height:1.04;font-weight:500;letter-spacing:-0.022em;color:#FAF7EE">
+          Não é um simulador de cenários. É um <em style="font-style:italic;color:#D4A65A">instrumento</em> de precisão jurídica.
+        </h2>
+      </div>
+      <div style="padding-top:18px;display:flex;flex-direction:column;gap:20px">
+        <p style="margin:0;font-size:16.5px;line-height:1.75;color:#A8AFBE">
+          O RetotalizaJE não cria suposições. Aplica o algoritmo estabelecido pelo STF nas ADIs 7.228, 7.263 e 7.325, exatamente como os tribunais farão. Os resultados refletem a aplicação das normas vigentes, validadas com resoluções dos TREs e dados oficiais do TSE.
+        </p>
+        <p style="margin:0;font-size:16.5px;line-height:1.75;color:#A8AFBE">
+          Assim, você obtém o mesmo cálculo que será adotado pela Justiça Eleitoral. Nenhuma margem de interpretação. Nenhuma aproximação.
+        </p>
+
+        <div style="margin-top:32px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.10)">
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.20em;text-transform:uppercase;color:#D4A65A;font-weight:500">ADI 7.228</div>
+            <div class="serif" style="margin-top:8px;font-size:15px;color:#FAF7EE;font-weight:500">Quociente partidário</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.20em;text-transform:uppercase;color:#D4A65A;font-weight:500">ADI 7.263</div>
+            <div class="serif" style="margin-top:8px;font-size:15px;color:#FAF7EE;font-weight:500">Distribuição de sobras</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.20em;text-transform:uppercase;color:#D4A65A;font-weight:500">ADI 7.325</div>
+            <div class="serif" style="margin-top:8px;font-size:15px;color:#FAF7EE;font-weight:500">Federações partidárias</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="planos" style="padding:140px 40px 120px">
+    <div style="max-width:1340px;margin:0 auto">
+      <div style="text-align:center;max-width:760px;margin:0 auto 56px">
+        <div class="eyebrow" style="margin-bottom:20px;justify-content:center">
+          <span class="eyebrow-line"></span>
+          <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#B8853A;font-weight:500">Planos</span>
+          <span class="eyebrow-line"></span>
+        </div>
+        <h2 class="serif" style="margin:0;font-size:54px;line-height:1.06;font-weight:500;letter-spacing:-0.022em;color:#131F33">
+          Pronto para calcular? Conheça os <em style="font-style:italic;color:#8E6420">planos</em> disponíveis.
+        </h2>
+        <p style="margin:20px 0 0;font-size:16px;color:#4B5363">Escolha o formato ideal para seu volume de trabalho.</p>
+      </div>
+
+      <div style="margin:0 auto 40px;max-width:780px;background:linear-gradient(180deg,#FAF5E8,#F2EBD5);border:1px solid rgba(184,133,58,0.30);border-radius:99px;padding:14px 24px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px;box-shadow:0 12px 24px -16px rgba(184,133,58,0.40)">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#8E6420" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        <span style="color:#8E6420;font-weight:600">1 cálculo completo gratuito</span>
+        <span style="color:#6B6356">para todo novo usuário, sem cartão.</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:#FFFFFF;border:1px solid #E5DFCF;border-radius:20px;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 30px 60px -30px rgba(19,31,51,0.18)">
+
+        <article style="padding:48px 40px;display:flex;flex-direction:column;border-right:1px solid #E5DFCF">
+          <div class="mono" style="font-size:11px;letter-spacing:0.20em;text-transform:uppercase;color:#6B6356;font-weight:500">Unitário</div>
+          <div class="serif" style="margin-top:24px;font-size:60px;font-weight:500;color:#131F33;letter-spacing:-0.028em;line-height:1">R$ 197</div>
+          <div style="margin-top:10px;font-size:14px;color:#6B6356">1 cálculo · R$ 197 por cálculo</div>
+          <div style="margin:32px 0;height:1px;background:#E5DFCF"></div>
+          <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:11px;font-size:14px;color:#131F33">
+            <li style="display:flex;gap:10px;align-items:flex-start"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#B8853A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;flex:none"><path d="M5 12l4 4 10-10"/></svg>Relatório técnico em PDF</li>
+            <li style="display:flex;gap:10px;align-items:flex-start"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#B8853A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;flex:none"><path d="M5 12l4 4 10-10"/></svg>Planilha CSV completa</li>
+            <li style="display:flex;gap:10px;align-items:flex-start"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#B8853A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;flex:none"><path d="M5 12l4 4 10-10"/></svg>Modo apresentação</li>
+          </ul>
+          <a href="app.html?plano=unitario" style="margin-top:36px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;border:1px solid #131F33;border-radius:99px;font-size:14px;font-weight:600;color:#131F33;letter-spacing:0.005em">
+            Contratar
+          </a>
+        </article>
+
+        <article style="padding:72px 40px 48px;display:flex;flex-direction:column;background:linear-gradient(180deg,#FAF5E8,#F2EBD5);border-right:1px solid #E5DFCF;position:relative">
+          <div style="position:absolute;top:20px;left:50%;transform:translateX(-50%);background:#131F33;color:#F4EFE4;font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;padding:7px 16px;border-radius:99px;font-weight:600;box-shadow:0 8px 20px -8px rgba(19,31,51,0.50);white-space:nowrap">Recomendado</div>
+          <div class="mono" style="font-size:11px;letter-spacing:0.20em;text-transform:uppercase;color:#8E6420;font-weight:500">Pack 5</div>
+          <div class="serif" style="margin-top:24px;font-size:60px;font-weight:500;color:#131F33;letter-spacing:-0.028em;line-height:1">R$ 790</div>
+          <div style="margin-top:10px;font-size:14px;color:#6B6356">5 cálculos · R$ 158 por cálculo · <span style="color:#8E6420;font-weight:600">20% off</span></div>
+          <div style="margin:32px 0;height:1px;background:rgba(184,133,58,0.30)"></div>
+          <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:11px;font-size:14px;color:#131F33">
+            <li style="display:flex;gap:10px;align-items:flex-start"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#B8853A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;flex:none"><path d="M5 12l4 4 10-10"/></svg>Tudo do plano Unitário</li>
+            <li style="display:flex;gap:10px;align-items:flex-start"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#B8853A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;flex:none"><path d="M5 12l4 4 10-10"/></svg>Validade de 12 meses</li>
+            <li style="display:flex;gap:10px;align-items:flex-start"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#B8853A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;flex:none"><path d="M5 12l4 4 10-10"/></svg>Suporte prioritário</li>
+          </ul>
+          <a href="app.html?plano=pack5" style="margin-top:36px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;background:linear-gradient(180deg,#D4A65A,#B8853A);color:#131F33;border-radius:99px;font-size:14px;font-weight:700;letter-spacing:0.005em;box-shadow:0 1px 0 rgba(255,255,255,0.45) inset,0 14px 28px -10px rgba(184,133,58,0.50)">
+            Contratar Pack 5
+          </a>
+        </article>
+
+        <article style="padding:48px 40px;display:flex;flex-direction:column">
+          <div class="mono" style="font-size:11px;letter-spacing:0.20em;text-transform:uppercase;color:#6B6356;font-weight:500">Pack 10</div>
+          <div class="serif" style="margin-top:24px;font-size:60px;font-weight:500;color:#131F33;letter-spacing:-0.028em;line-height:1">R$ 1.490</div>
+          <div style="margin-top:10px;font-size:14px;color:#6B6356">10 cálculos · R$ 149 por cálculo · <span style="color:#8E6420;font-weight:600">24% off</span></div>
+          <div style="margin:32px 0;height:1px;background:#E5DFCF"></div>
+          <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:11px;font-size:14px;color:#131F33">
+            <li style="display:flex;gap:10px;align-items:flex-start"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#B8853A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;flex:none"><path d="M5 12l4 4 10-10"/></svg>Tudo do Pack 5</li>
+            <li style="display:flex;gap:10px;align-items:flex-start"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#B8853A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;flex:none"><path d="M5 12l4 4 10-10"/></svg>Acompanhamento dedicado</li>
+            <li style="display:flex;gap:10px;align-items:flex-start"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#B8853A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;flex:none"><path d="M5 12l4 4 10-10"/></svg>Treinamento da equipe</li>
+          </ul>
+          <a href="app.html?plano=pack10" style="margin-top:36px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;border:1px solid #131F33;border-radius:99px;font-size:14px;font-weight:600;color:#131F33;letter-spacing:0.005em">
+            Contratar
+          </a>
+        </article>
+
+      </div>
+
+      <p style="margin:32px auto 0;text-align:center;font-size:13px;color:#6B6356;max-width:760px">
+        Para escritórios com volume superior a 10 cálculos por mês, fale conosco para um plano corporativo personalizado.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section style="padding:0 40px 100px">
+    <div style="max-width:1340px;margin:0 auto;background:linear-gradient(160deg,#131F33,#1A2738);border-radius:24px;overflow:hidden;color:#F4EFE4;position:relative;box-shadow:0 1px 0 rgba(255,255,255,0.06) inset,0 50px 100px -40px rgba(19,31,51,0.55)">
+      <div style="position:absolute;top:-160px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(184,133,58,0.18),transparent 60%);pointer-events:none"></div>
+
+      <div style="padding:80px 120px;display:flex;flex-direction:column;gap:28px;align-items:center;text-align:center;position:relative">
+        <div class="eyebrow">
+          <span class="eyebrow-line-light"></span>
+          <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#D4A65A;font-weight:500">Comece agora</span>
+        </div>
+        <h2 class="serif" style="margin:0;font-size:50px;line-height:1.06;font-weight:500;letter-spacing:-0.022em;color:#FAF7EE">
+          O primeiro cálculo é por nossa <em style="font-style:italic;color:#D4A65A">conta</em>.
+        </h2>
+        <p style="margin:0;font-size:16px;line-height:1.7;color:#A8AFBE;max-width:560px">
+          Crie sua conta, configure um caso real e gere o relatório técnico completo, sem cartão de crédito e sem compromisso.
+        </p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;justify-content:center">
+          <a href="app.html" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(180deg,#D4A65A,#B8853A);color:#131F33;font-size:14.5px;font-weight:700;padding:16px 28px;border-radius:99px;letter-spacing:0.005em;box-shadow:0 1px 0 rgba(255,255,255,0.45) inset,0 14px 30px -10px rgba(184,133,58,0.55)">
+            Começar o cálculo gratuito
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contato" style="background:#0E1A2E;color:#A8AFBE;padding:80px 40px 40px">
+    <div style="max-width:1340px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px">
+
+      <div>
+        <div class="serif" style="font-size:28px;font-weight:600;color:#FAF7EE;letter-spacing:-0.012em">
+          Retotaliza<span style="color:#D4A65A;font-style:italic;font-weight:500">JE</span>
+        </div>
+        <p style="margin:18px 0 0;font-size:14px;line-height:1.65;color:#7E8DAB;max-width:380px">
+          Instrumento de precisão jurídica para a retotalização de eleições proporcionais e o cálculo das consequências federais conforme as ADIs 7.228, 7.263 e 7.325 do Supremo Tribunal Federal.
+        </p>
+      </div>
+
+      <div>
+        <div class="mono" style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#D4A65A;font-weight:500;margin-bottom:18px">Produto</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+          <a href="#problema" style="color:#A8AFBE">Como funciona</a>
+          <a href="#consequencias" style="color:#A8AFBE">Consequências</a>
+          <a href="#casos" style="color:#A8AFBE">Casos validados</a>
+          <a href="#fundamento" style="color:#A8AFBE">Fundamento jurídico</a>
+          <a href="#planos" style="color:#A8AFBE">Planos e preços</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="mono" style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#D4A65A;font-weight:500;margin-bottom:18px">Suporte</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+          <a href="app.html" style="color:#A8AFBE">Documentação</a>
+          <a href="app.html" style="color:#A8AFBE">Tutoriais</a>
+          <a href="#contato" style="color:#A8AFBE">Fale conosco</a>
+          <a href="#contato" style="color:#A8AFBE">Status do sistema</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="mono" style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#D4A65A;font-weight:500;margin-bottom:18px">Institucional</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+          <a href="termos.html" style="color:#A8AFBE">Termos de uso</a>
+          <a href="privacidade.html" style="color:#A8AFBE">Política de privacidade</a>
+          <a href="privacidade.html#lgpd" style="color:#A8AFBE">LGPD</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="max-width:1340px;margin:64px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div class="mono" style="font-size:11px;letter-spacing:0.14em;color:#7E8DAB">© 2026 RetotalizaJE · Todos os direitos reservados</div>
+      <div class="mono" style="font-size:11px;letter-spacing:0.14em;color:#7E8DAB">contato@retotalizaje.com.br</div>
+    </div>
+  </footer>
+
+</div>
 </body>
 </html>
