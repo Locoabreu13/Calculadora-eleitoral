@@ -164,7 +164,7 @@ function candidatoTemVotoEmDobro(candidato) {
 
 export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categoria) {
   const cenario = {
-    tipo: "cassacao",
+    tipo: categoria || "cassacao_sem_perda_votos",
     perdaDeVotos: false,
     categoriaClassificada: categoria || "indefinido",
     deltaCadeirasPorPartido: {},
