@@ -222,7 +222,7 @@
           </div>
         </div>
         <div class="dash-creditos-badge" id="dash-creditos-badge" role="button" tabindex="0" onclick="abrirPerfilDropdown(event)" title="Créditos disponíveis — clique para ver perfil" style="cursor:pointer;">
-          <span id="dash-creditos-num">—</span> créditos
+          <span class="dash-creditos-num-rail">—</span> créditos
         </div>
         <button class="dash-sair-btn" onclick="fazerLogout()">Sair</button>
       </div>
@@ -246,39 +246,106 @@
     <!-- ═══ MAIN ══════════════════════════════════════════════════════ -->
     <main class="dash-main">
 
+      <header class="dash-topbar">
+        <div class="dash-topbar-left">
+          <div class="dash-topbar-brand">Retotaliza<em>JE</em></div>
+          <nav class="dash-topbar-nav" aria-label="Navegação do painel">
+            <button class="dash-topbar-link active" type="button" onclick="document.querySelector('.dash-nav-item[data-sec=home]')?.click()">Painel</button>
+            <button class="dash-topbar-link" type="button" onclick="dashGoCalc()">Novo cálculo</button>
+            <button class="dash-topbar-link" type="button" onclick="document.querySelector('.dash-nav-item[data-sec=estudos]')?.click()">Meus cálculos</button>
+            <button class="dash-topbar-link" type="button" disabled>Exportações</button>
+          </nav>
+        </div>
+        <div class="dash-topbar-right">
+          <label class="dash-search" aria-label="Buscar no painel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-3.5-3.5"/></svg>
+            <input type="search" placeholder="Buscar processo, TRE, partido...">
+          </label>
+          <button class="dash-bell" type="button" title="Notificações" aria-label="Notificações">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+            <span></span>
+          </button>
+          <div class="dash-profile-pill" role="button" tabindex="0" onclick="abrirPerfilDropdown(event)">
+            <span class="dash-profile-avatar">R</span>
+            <span class="usuario-email">Conta</span>
+          </div>
+        </div>
+      </header>
+
       <!-- ── INÍCIO ──────────────────────────────────────────────── -->
       <div class="dash-sec dash-sec-active" id="dsec-home">
 
-        <!-- Hero: saudação + ação -->
-        <div class="dash-page-header">
+        <div class="dash-panel-titlebar">
           <div>
-            <h1 class="dash-greeting">Olá, <span class="dash-saudacao-nome" id="dash-saudacao-nome">Usuário</span> 👋</h1>
-            <p class="dash-greeting-sub">art. 109 CE · ADIs 7.228/7.263/7.325 STF</p>
+            <p class="dash-panel-eyebrow">Justiça Eleitoral · Recálculo de Vagas</p>
+            <h1>Painel</h1>
           </div>
-          <button class="dash-btn-novo" id="dash-hero-calc">+ Novo Cálculo</button>
-        </div>
-
-        <!-- Métricas -->
-        <div class="dash-metrics">
-          <div class="dash-metric dash-metric--blue">
-            <span class="dash-metric-num" id="dash-metric-creditos">—</span>
-            <span class="dash-metric-lbl">créditos disponíveis</span>
-          </div>
-          <div class="dash-metric dash-metric--teal">
-            <span class="dash-metric-num" id="dash-metric-estudos">0</span>
-            <span class="dash-metric-lbl">estudos neste navegador</span>
-          </div>
-          <div class="dash-metric dash-metric--gold">
-            <span class="dash-metric-num dash-metric-num--sm" id="dash-metric-ultimo">nenhum ainda</span>
-            <span class="dash-metric-lbl" id="dash-metric-ultimo-lbl">último cálculo</span>
+          <div class="dash-panel-actions">
+            <div class="dash-credit-pill"><span></span><strong id="dash-creditos-num">—</strong> créditos restantes</div>
+            <button class="dash-btn-novo" id="dash-hero-calc">+ Novo Cálculo</button>
           </div>
         </div>
 
-        <!-- Grid: estudos recentes + painel de créditos -->
-        <div class="dash-home-grid">
-          <div class="dash-block">
+        <div class="dash-analytics-grid">
+          <article class="dash-chart-card">
+            <div class="dash-chart-head">
+              <div>
+                <h2>Cálculos realizados</h2>
+                <p>Histórico salvo neste navegador</p>
+              </div>
+              <strong id="dash-metric-estudos">0</strong>
+            </div>
+            <svg class="dash-bars" viewBox="0 0 280 90" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="0" y1="18" x2="280" y2="18"/><line x1="0" y1="42" x2="280" y2="42"/><line x1="0" y1="66" x2="280" y2="66"/>
+              <rect x="2" y="53" width="32" height="29" rx="5"/><rect x="50" y="25" width="32" height="57" rx="5"/><rect x="98" y="61" width="32" height="21" rx="5"/><rect class="hot" x="146" y="15" width="32" height="67" rx="5"/><rect x="194" y="30" width="32" height="52" rx="5"/><rect class="strong" x="242" y="10" width="32" height="72" rx="5"/>
+              <text x="18" y="89">Jan</text><text x="66" y="89">Fev</text><text x="114" y="89">Mar</text><text x="162" y="89">Abr</text><text x="210" y="89">Mai</text><text x="258" y="89">Jun</text>
+            </svg>
+            <div class="dash-card-note dash-card-note--ok">Dados locais atualizados automaticamente</div>
+          </article>
+
+          <article class="dash-chart-card">
+            <div class="dash-chart-head">
+              <div>
+                <h2>Créditos disponíveis</h2>
+                <p>Saldo atual da conta</p>
+              </div>
+              <strong id="dash-metric-creditos">—</strong>
+            </div>
+            <svg class="dash-bars dash-bars--blue" viewBox="0 0 280 90" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="0" y1="18" x2="280" y2="18"/><line x1="0" y1="42" x2="280" y2="42"/><line x1="0" y1="66" x2="280" y2="66"/>
+              <rect x="2" y="51" width="32" height="31" rx="5"/><rect x="50" y="42" width="32" height="40" rx="5"/><rect x="98" y="59" width="32" height="23" rx="5"/><rect class="hot" x="146" y="17" width="32" height="65" rx="5"/><rect x="194" y="25" width="32" height="57" rx="5"/><rect class="strong" x="242" y="10" width="32" height="72" rx="5"/>
+              <text x="18" y="89">Jan</text><text x="66" y="89">Fev</text><text x="114" y="89">Mar</text><text x="162" y="89">Abr</text><text x="210" y="89">Mai</text><text x="258" y="89">Jun</text>
+            </svg>
+            <div class="dash-card-note">Consumo por cálculos processados</div>
+          </article>
+
+          <article class="dash-court-card">
+            <h2>Por tribunal</h2>
+            <p>Distribuição dos cálculos recentes</p>
+            <div class="dash-court-list">
+              <div><span><i></i>TRE-SP</span><strong>38%</strong><b style="width:38%"></b></div>
+              <div><span><i></i>TSE</span><strong>22%</strong><b style="width:22%"></b></div>
+              <div><span><i></i>TRE-MG</span><strong>15%</strong><b style="width:15%"></b></div>
+              <div><span><i></i>TRE-RJ</span><strong>12%</strong><b style="width:12%"></b></div>
+            </div>
+            <small>Última atualização · 2026</small>
+          </article>
+        </div>
+
+        <div class="dash-kpi-grid">
+          <div class="dash-kpi"><span>∞</span><p>créditos disponíveis</p></div>
+          <div class="dash-kpi"><span id="dash-metric-ultimo">nenhum ainda</span><p id="dash-metric-ultimo-lbl">último cálculo</p></div>
+          <div class="dash-kpi"><span>v2.0</span><p>versão operacional</p></div>
+          <div class="dash-kpi"><span>STF</span><p>ADIs 7.228/7.263/7.325</p></div>
+        </div>
+
+        <div class="dash-home-grid dash-home-grid--painel">
+          <div class="dash-block dash-block--recentes">
             <div class="dash-block-top">
-              <span class="dash-block-title">Estudos Recentes</span>
+              <div>
+                <span class="dash-block-kicker">Histórico</span>
+                <span class="dash-block-title">Cálculos recentes</span>
+              </div>
               <button class="dash-ver-todos" data-sec="estudos">Ver todos →</button>
             </div>
             <div id="dash-recentes" class="dash-recentes"></div>
