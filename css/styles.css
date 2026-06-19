@@ -6189,6 +6189,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 }
 
 .app-body:not(.tem-resultados) .sidebar {
+  align-self: flex-start;
   width: 100%;
   height: auto;
   min-height: 100%;
