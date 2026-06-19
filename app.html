@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/tokens-vars.css" />
-  <link rel="stylesheet" href="css/styles.css?v=61" />
+  <link rel="stylesheet" href="css/styles.css?v=62" />
 </head>
 <body>
   <!-- TELA: Login -->
@@ -203,33 +203,42 @@
 
       <!-- Nav -->
       <nav class="dash-nav" id="dash-nav">
-        <button class="dash-nav-item active" data-sec="home">
-          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
-          <span>Início</span>
+        <button class="dash-nav-item active" data-sec="home" title="Painel" aria-label="Painel">
+          <svg class="dash-nav-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          <span>Painel</span>
         </button>
-        <button class="dash-nav-item" data-sec="calc">
-          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
-          <span>Novo Cálculo</span>
+        <button class="dash-nav-item" data-sec="calc" title="Novo cálculo" aria-label="Novo cálculo">
+          <svg class="dash-nav-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h5"/><path d="M8 15h6"/></svg>
+          <span>Novo cálculo</span>
         </button>
-        <button class="dash-nav-item" data-sec="estudos">
-          <svg class="dash-nav-ico" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>
-          <span>Meus Estudos</span>
+        <button class="dash-nav-item" data-sec="estudos" title="Meus cálculos" aria-label="Meus cálculos">
+          <svg class="dash-nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/></svg>
+          <span>Meus cálculos</span>
           <span class="dash-nav-cnt" id="dash-nav-cnt"></span>
+        </button>
+        <button class="dash-nav-item" type="button" title="Exportações" aria-label="Exportações" disabled>
+          <svg class="dash-nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+          <span>Exportações</span>
+        </button>
+        <div class="dash-nav-sep"></div>
+        <button class="dash-nav-item" type="button" title="Casos validados" aria-label="Casos validados" disabled>
+          <svg class="dash-nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v6c0 4.5-3 8-8 9-5-1-8-4.5-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span>Casos validados</span>
+        </button>
+        <button class="dash-nav-item" type="button" title="Legislação" aria-label="Legislação" disabled>
+          <svg class="dash-nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a2 2 0 0 1 2 2v14"/><path d="M20 4h-6a2 2 0 0 0-2 2v14"/><path d="M4 4v15h6"/><path d="M20 4v15h-6"/></svg>
+          <span>Legislação</span>
         </button>
       </nav>
 
-      <!-- User chip -->
+      <!-- Sign out -->
       <div class="dash-sidebar-footer">
         <div class="dash-user-chip" id="dash-user-chip" role="button" tabindex="0" onclick="abrirPerfilDropdown(event)" title="Meu perfil" style="cursor:pointer;">
           <div class="dash-avatar" id="dash-avatar">?</div>
-          <div class="dash-user-detail">
-            <span class="dash-user-email-sm usuario-email"></span>
-          </div>
         </div>
-        <div class="dash-creditos-badge" id="dash-creditos-badge" role="button" tabindex="0" onclick="abrirPerfilDropdown(event)" title="Créditos disponíveis — clique para ver perfil" style="cursor:pointer;">
-          <span class="dash-creditos-num-rail">—</span> créditos
-        </div>
-        <button class="dash-sair-btn" onclick="fazerLogout()">Sair</button>
+        <button class="dash-sair-btn" onclick="fazerLogout()" title="Sair" aria-label="Sair">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        </button>
       </div>
 
       <!-- Modal: Alterar Senha -->
@@ -339,19 +348,19 @@
 
         <div class="dash-kpi-grid dash-kpi-grid--painel">
           <div class="dash-kpi dash-kpi--gold">
-            <div class="dash-kpi-icon" aria-hidden="true">▤</div>
+            <div class="dash-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8"/><path d="M8 12h5"/></svg></div>
             <div><span data-dash-metric="estudos">0</span><p>Cálculos realizados</p><b></b></div>
           </div>
           <div class="dash-kpi dash-kpi--navy">
-            <div class="dash-kpi-icon" aria-hidden="true">♙</div>
+            <div class="dash-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
             <div><span id="dash-metric-ultimo">nenhum ainda</span><p id="dash-metric-ultimo-lbl">último cálculo</p><b></b></div>
           </div>
           <div class="dash-kpi dash-kpi--blue">
-            <div class="dash-kpi-icon" aria-hidden="true">▭</div>
+            <div class="dash-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg></div>
             <div><span data-dash-metric="creditos">—</span><p>Créditos restantes</p><b></b></div>
           </div>
           <div class="dash-kpi dash-kpi--green">
-            <div class="dash-kpi-icon" aria-hidden="true">□</div>
+            <div class="dash-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg></div>
             <div><span>v2.0</span><p>Versão operacional</p><b></b></div>
           </div>
         </div>
