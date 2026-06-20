@@ -30,6 +30,13 @@ function formatarPercentual(valor) {
   return (valor * 100).toFixed(4).replace(".", ",") + "%";
 }
 
+// Formata segundos com duas casas decimais, no padrao brasileiro de virgula.
+// Usado para o dado em segundos reais do tempo de TV (art. 47 da Lei 9.504/97).
+function formatarSegundos(valor) {
+  if (typeof valor !== "number") return "0,00s";
+  return Math.abs(valor).toFixed(2).replace(".", ",") + "s";
+}
+
 function formatarMoedaCompacta(valor) {
   if (typeof valor !== "number") return "—";
   const abs = Math.abs(valor);
@@ -237,7 +244,13 @@ function renderizarCascata(resultado) {
               ? `desceu ${Math.abs(deltaPosicao)} posição${Math.abs(deltaPosicao) > 1 ? "ões" : ""} no ranking (${posicaoAntes}º → ${posicaoDepois}º)`
               : `manteve a ${posicaoDepois}ª posição no ranking`;
 
-          const textoComplementar = [textoRelativo, textoRanking].filter(Boolean).join(" · ");
+          // Segundos reais no bloco, o dado mais facil de entender, derivado da
+          // mesma fracao ja validada (art. 47, par. 1o, II, "a", Lei 9.504/97).
+          const textoSegundos = typeof p.deltaSegundos === "number"
+            ? `${sinal(p.deltaSegundos)}${formatarSegundos(p.deltaSegundos)} no bloco`
+            : null;
+
+          const textoComplementar = [textoSegundos, textoRelativo, textoRanking].filter(Boolean).join(" · ");
 
           html += `
             <div class="cascata-row cascata-cols-2">

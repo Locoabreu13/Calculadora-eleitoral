@@ -72,6 +72,13 @@ export const dadosReferencia = {
   // PPL foi incorporado pelo PCdoB; DEM e PSL formaram Uniao Brasil.
   tempoTVCamara2022: {
     totalCamara: 507,
+    // Duracao legal do bloco de propaganda de deputado federal: 12min30s
+    // (750 segundos), por bloco, igual para qualquer unidade da federacao.
+    // Base legal: art. 47, par. 1o, inciso II, alinea "a" da Lei 9.504/1997
+    // (redacao dada pela Lei 13.165/2015). Validado contra o cronograma
+    // oficial do TRE-CE e do TRE-DF, Eleicoes 2022 (mesmos horarios,
+    // 7h12m30 as 7h25 e 12h12m30 as 12h25, em ambos os tribunais).
+    totalSegundosBloco: 750,
     cadeirasPorPartido: {
       "AVANTE": 7,
       "FEDERAÇÃO BRASIL DA ESPERANÇA": 70, // PT, PC do B, PV

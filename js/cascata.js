@@ -155,17 +155,28 @@ export function calcularTempoTV(base, _cenarioRetotalizado, dadosReferencia, cen
     ...Object.keys(fracaoDepois)
   ]);
 
+  const totalSegundosBloco = referencia.totalSegundosBloco || null;
   const porPartido = {};
 
   for (const sigla of todasSiglas) {
     const antes = fracaoAntes[sigla] || 0;
     const depois = fracaoDepois[sigla] || 0;
+    const deltaFracao = depois - antes;
 
     porPartido[sigla] = {
       fracaoAntes: antes,
       fracaoDepois: depois,
-      deltaFracao: depois - antes
+      deltaFracao
     };
+
+    // Conversao para segundos reais, validada contra o art. 47, par. 1o,
+    // inciso II, alinea "a" da Lei 9.504/1997 (750 segundos por bloco,
+    // deputado federal). So calculada quando a referencia tiver esse dado.
+    if (totalSegundosBloco) {
+      porPartido[sigla].segundosAntes = antes * totalSegundosBloco;
+      porPartido[sigla].segundosDepois = depois * totalSegundosBloco;
+      porPartido[sigla].deltaSegundos = deltaFracao * totalSegundosBloco;
+    }
   }
 
   const resultado = {
