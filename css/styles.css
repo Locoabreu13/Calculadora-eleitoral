@@ -3810,6 +3810,8 @@ button:focus:not(:focus-visible) { outline: none; }
 }
 .dash-estudo-btn:hover { background: rgba(37,99,235,.2); color: #93C5FD; border-color: rgba(37,99,235,.3); }
 .dash-estudo-del:hover { background: rgba(220,38,38,.2) !important; color: #FCA5A5 !important; border-color: rgba(220,38,38,.3) !important; }
+.dash-estudo-abrir { background: rgba(184,133,58,.12) !important; color: #D4A65A !important; border-color: rgba(184,133,58,.30) !important; font-weight: 600 !important; }
+.dash-estudo-abrir:hover { background: rgba(184,133,58,.25) !important; color: #F2D49B !important; border-color: rgba(184,133,58,.5) !important; }
 
 /* ── Plano & Créditos */
 .dash-plano-saldo {

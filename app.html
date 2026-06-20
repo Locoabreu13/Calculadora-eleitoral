@@ -1279,6 +1279,7 @@
       // Salva no dashboard (localStorage)
       if (typeof window._dashSalvarLocal === 'function') {
         window._dashSalvarLocal(estudo);
+        if (typeof _toast === 'function') _toast('✓ Estudo salvo em Meus cálculos');
       }
     });
   })();
@@ -1881,12 +1882,32 @@
             <div class="dash-estudo-data">${new Date(e.savedAt || Date.now()).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'})}</div>
           </div>
           <div class="dash-estudo-acoes">
-            <button class="dash-estudo-btn" onclick="dashDlEstudo(${i})">⬇ JSON</button>
+            <button class="dash-estudo-btn dash-estudo-abrir" onclick="dashAbrirEstudo(${i})">▶ Abrir</button>
             <button class="dash-estudo-btn dash-estudo-del" onclick="dashDelEstudo(${i})">✕</button>
           </div>
         </div>
       `).join('');
     }
+
+    function _toast(msg, tipo) {
+      tipo = tipo || 'sucesso';
+      var t = document.createElement('div');
+      t.className = 'pagamento-toast ' + tipo;
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 3000);
+    }
+
+    window.dashAbrirEstudo = function(i) {
+      var e = _dashEstudos()[i];
+      if (!e || !e.parametros) return;
+      dashGoCalc();
+      setTimeout(function() {
+        if (window._UI && typeof window._UI.preencherCenario === 'function') {
+          window._UI.preencherCenario(e.parametros);
+        }
+      }, 80);
+    };
 
     window.dashDlEstudo = function(i) {
       const e = _dashEstudos()[i];
