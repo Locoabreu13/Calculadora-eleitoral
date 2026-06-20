@@ -718,7 +718,7 @@
               ₢ Cascata
             </button>
             <button id="btn-salvar-estudo" class="btn-action" disabled
-                    title="Exportar estudo completo (parâmetros + resultado) como JSON">💾 Salvar Estudo</button>
+                    title="Salvar estudo no painel">💾 Salvar Estudo</button>
           </div>
         </div>
 
@@ -1276,19 +1276,7 @@
         resultado:       resultado
       };
 
-      var blob = new Blob([JSON.stringify(estudo, null, 2)], { type: 'application/json' });
-      var url  = URL.createObjectURL(blob);
-      var a    = document.createElement('a');
-      a.href     = url;
-      a.download = 'retotalizaje-' +
-        rotulo.replace(/[^a-zA-Z0-9\-_]/g, '-').slice(0, 40) +
-        '-' + new Date().toISOString().slice(0, 10) + '.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      // Persiste também no dashboard (localStorage)
+      // Salva no dashboard (localStorage)
       if (typeof window._dashSalvarLocal === 'function') {
         window._dashSalvarLocal(estudo);
       }
