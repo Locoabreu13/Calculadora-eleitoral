@@ -48,6 +48,19 @@ function sinal(valor) {
   return valor > 0 ? "+" : "";
 }
 
+// Ordena os partidos pela fracao indicada (antes ou depois) e devolve um
+// mapa sigla -> posicao no ranking (1 = maior fracao). Usado para mostrar
+// se um partido subiu ou desceu no ranking de tempo de TV.
+function calcularRanking(porPartido, chave) {
+  const ordenado = Object.entries(porPartido)
+    .sort((a, b) => b[1][chave] - a[1][chave]);
+  const ranking = {};
+  ordenado.forEach(([sigla], indice) => {
+    ranking[sigla] = indice + 1;
+  });
+  return ranking;
+}
+
 function textoStatus(status) {
   if (status === "validado") return "Calculado";
   if (status && status.includes("pendente")) return "Pendente";
@@ -199,11 +212,33 @@ function renderizarCascata(resultado) {
     `;
     if (nos.tempoTV.status === 'validado') {
       let temMudanca = false;
+      const rankingAntes = calcularRanking(nos.tempoTV.porPartido, 'fracaoAntes');
+      const rankingDepois = calcularRanking(nos.tempoTV.porPartido, 'fracaoDepois');
       for (const sigla in nos.tempoTV.porPartido) {
         const p = nos.tempoTV.porPartido[sigla];
         if (p.deltaFracao !== 0) {
           temMudanca = true;
           const classe = classeValor(p.deltaFracao);
+
+          // Variacao relativa: o quanto a mudanca representa sobre o que o
+          // partido ja tinha, em vez de so a diferenca bruta em pontos.
+          const variacaoRelativa = p.fracaoAntes > 0 ? (p.deltaFracao / p.fracaoAntes) : null;
+          const textoRelativo = variacaoRelativa !== null
+            ? `${sinal(variacaoRelativa)}${formatarPercentual(variacaoRelativa)} sobre o que já tinha`
+            : null;
+
+          // Mudanca de posicao no ranking de tempo de TV entre os partidos.
+          const posicaoAntes = rankingAntes[sigla];
+          const posicaoDepois = rankingDepois[sigla];
+          const deltaPosicao = posicaoAntes - posicaoDepois;
+          const textoRanking = deltaPosicao > 0
+            ? `subiu ${deltaPosicao}ª posição${deltaPosicao > 1 ? "s" : ""} no ranking (${posicaoAntes}º → ${posicaoDepois}º)`
+            : deltaPosicao < 0
+              ? `desceu ${Math.abs(deltaPosicao)} posição${Math.abs(deltaPosicao) > 1 ? "ões" : ""} no ranking (${posicaoAntes}º → ${posicaoDepois}º)`
+              : `manteve a ${posicaoDepois}ª posição no ranking`;
+
+          const textoComplementar = [textoRelativo, textoRanking].filter(Boolean).join(" · ");
+
           html += `
             <div class="cascata-row cascata-cols-2">
               <div class="cascata-party-cell">
@@ -211,6 +246,7 @@ function renderizarCascata(resultado) {
                 <div>
                   <div class="cascata-party-name">${escaparHtml(sigla)}</div>
                   <div class="cascata-party-desc">${p.deltaFracao > 0 ? "Ganhou quota" : "Perdeu quota"}</div>
+                  <div class="cascata-party-desc">${escaparHtml(textoComplementar)}</div>
                 </div>
               </div>
               <div class="cascata-value ${classe}">${sinal(p.deltaFracao)}${formatarPercentual(p.deltaFracao)}</div>
