@@ -1851,7 +1851,7 @@
         const protocolo = `RJE-${String(new Date(e.savedAt || Date.now()).getFullYear())}-${String(i + 1).padStart(4, '0')}`;
         const tribunal = e.parametros?.uf || e.parametros?.estado || 'TSE';
         return `
-        <div class="dash-rec-row">
+        <div class="dash-rec-row" onclick="dashAbrirEstudo(${i})" style="cursor:pointer" title="Abrir cálculo">
           <div class="dash-rec-protocolo">${protocolo}</div>
           <div class="dash-rec-processo">
             <div class="dash-rec-rotulo">${_h(e.parametros?.rotulo || 'Cálculo sem nome')}</div>
@@ -1860,7 +1860,6 @@
           <div class="dash-rec-tribunal">${_h(tribunal)}</div>
           <div>${badge}</div>
           <div class="dash-rec-data">${data}</div>
-          <button class="dash-rec-dl" onclick="dashAbrirEstudo(${i})" title="Abrir cálculo">▶</button>
         </div>`;
       }).join('');
     }
@@ -1875,14 +1874,13 @@
       }
       el.innerHTML = arr.map((e, i) => `
         <div class="dash-estudo-row">
-          <div class="dash-estudo-ico">JE</div>
-          <div class="dash-estudo-info">
+          <div class="dash-estudo-ico" onclick="dashAbrirEstudo(${i})" style="cursor:pointer" title="Abrir cálculo">JE</div>
+          <div class="dash-estudo-info" onclick="dashAbrirEstudo(${i})" style="cursor:pointer;flex:1" title="Abrir cálculo">
             <div class="dash-estudo-nome">${_h(e.parametros?.rotulo || 'Sem rótulo')}</div>
             <div class="dash-estudo-meta">${e.parametros?.vagas || 0} vagas · ${e.parametros?.partidos?.length || 0} partidos · v${e.versao || '—'}</div>
             <div class="dash-estudo-data">${new Date(e.savedAt || Date.now()).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'})}</div>
           </div>
           <div class="dash-estudo-acoes">
-            <button class="dash-estudo-btn dash-estudo-abrir" onclick="dashAbrirEstudo(${i})">▶ Abrir</button>
             <button class="dash-estudo-btn dash-estudo-del" onclick="dashDelEstudo(${i})">✕</button>
           </div>
         </div>
@@ -1906,6 +1904,10 @@
         if (window._UI && typeof window._UI.preencherCenario === 'function') {
           window._UI.preencherCenario(e.parametros);
         }
+        setTimeout(function() {
+          var btnCalc = document.getElementById('btn-calcular');
+          if (btnCalc) btnCalc.click();
+        }, 120);
       }, 80);
     };
 
