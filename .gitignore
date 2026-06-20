@@ -90,6 +90,7 @@ deploy-firebase.command
 # Artefatos de migração Windows — remover da raiz
 *.bat
 *.vbs
+*.ps1
 
 # Pasta com nome inválido gerada pelo Codex
 docs:validacao:/
