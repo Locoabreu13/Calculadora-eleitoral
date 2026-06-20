@@ -1899,16 +1899,33 @@
     window.dashAbrirEstudo = function(i) {
       var e = _dashEstudos()[i];
       if (!e || !e.parametros) return;
+
+      // Cobre a tela para evitar flash do formulário vazio
+      var overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:var(--cor-fundo,#F4F6FB);z-index:9990;';
+      document.body.appendChild(overlay);
+
       dashGoCalc();
-      setTimeout(function() {
-        if (window._UI && typeof window._UI.preencherCenario === 'function') {
-          window._UI.preencherCenario(e.parametros);
+      if (window._UI && typeof window._UI.preencherCenario === 'function') {
+        window._UI.preencherCenario(e.parametros);
+      }
+      var btnCalc = document.getElementById('btn-calcular');
+      if (btnCalc) btnCalc.click();
+
+      // Remove overlay só quando tem-resultados estiver ativo
+      var appBody = document.querySelector('.app-body');
+      var tentativas = 0;
+      function aguardarResultado() {
+        tentativas++;
+        if ((appBody && appBody.classList.contains('tem-resultados')) || tentativas > 40) {
+          overlay.style.transition = 'opacity .15s';
+          overlay.style.opacity = '0';
+          setTimeout(function() { overlay.parentNode && overlay.parentNode.removeChild(overlay); }, 160);
+        } else {
+          setTimeout(aguardarResultado, 50);
         }
-        setTimeout(function() {
-          var btnCalc = document.getElementById('btn-calcular');
-          if (btnCalc) btnCalc.click();
-        }, 120);
-      }, 80);
+      }
+      setTimeout(aguardarResultado, 60);
     };
 
     window.dashDlEstudo = function(i) {
