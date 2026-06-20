@@ -281,27 +281,60 @@ function renderizarCascata(resultado) {
   // 3. Cláusula de Desempenho
   const divClausula = document.getElementById('cascata-clausula');
   if (divClausula && nos.clausula) {
+    const limites = nos.clausula.limites || {};
     let html = `
       <div class="cascata-node-head">
         <div>
           <h2>Cláusula de <em>Desempenho</em></h2>
           <p><strong>Fundamentação Legal:</strong> Art. 17, § 3º da Constituição Federal (EC 97/2017).<br>
-          <strong>Patamar aplicado:</strong> Eleições ${nos.clausula.anoEleicao || 2022}</p>
+          <strong>Patamar aplicado:</strong> Eleições ${nos.clausula.anoEleicao || 2022} &mdash; mínimo de ${limites.deputadosMinimos || "?"} cadeiras em ${limites.ufsMinimas || "?"} estados</p>
         </div>
         <span class="cascata-status-pill ${classeStatus(nos.clausula.status)}">${textoStatus(nos.clausula.status)}</span>
       </div>
     `;
     if (nos.clausula.status === 'validado') {
       if (nos.clausula.temMudancaNaClausula && nos.clausula.mudancas && nos.clausula.mudancas.length > 0) {
-        html += `<div class="cascata-table"><div class="cascata-row cascata-row-head cascata-cols-2"><div>Partido/Federação</div><div>Situação nova</div></div>`;
+        html += `<div class="cascata-table"><div class="cascata-row cascata-row-head cascata-cols-2"><div>Partido/Federação</div><div>Situação</div></div>`;
         nos.clausula.mudancas.forEach(m => {
-          const atingiu = m.atingiuDepois;
-          const classe = atingiu ? "pos" : "neg";
-          const texto = atingiu ? 'Passou a atingir a cláusula' : 'Deixou de atingir a cláusula';
+          const cumpre = m.para === "CUMPRE";
+          const classe = cumpre ? "pos" : "neg";
+          const textoSituacao = cumpre ? "Passou a cumprir a cláusula" : "Deixou de cumprir a cláusula";
+
+          const cad = m.detalheCadeiras;
+          let textoComplementar = "";
+          if (cad && cad.antes && cad.depois) {
+            const cadAntes = cad.antes.cadeiras;
+            const cadDepois = cad.depois.cadeiras;
+            const ufsAntes = cad.antes.ufsComCadeira;
+            const ufsDepois = cad.depois.ufsComCadeira;
+            const minCad = limites.deputadosMinimos;
+            const minUFs = limites.ufsMinimas;
+            const textoMov = `cadeiras: ${cadAntes} → ${cadDepois} (min. ${minCad}) · UFs: ${ufsAntes} → ${ufsDepois} (min. ${minUFs})`;
+            const distCad = cadDepois - (minCad || 0);
+            const distUFs = ufsDepois - (minUFs || 0);
+            let textoDistancia = "";
+            if (!cumpre) {
+              const partes = [];
+              if (distCad < 0) partes.push(`${Math.abs(distCad)} cadeira${Math.abs(distCad) !== 1 ? "s" : ""} abaixo do mínimo`);
+              if (distUFs < 0) partes.push(`${Math.abs(distUFs)} UF${Math.abs(distUFs) !== 1 ? "s" : ""} abaixo do mínimo`);
+              if (partes.length) textoDistancia = partes.join(", ");
+            } else {
+              if (distCad >= 0) textoDistancia = `${distCad} cadeira${distCad !== 1 ? "s" : ""} acima do mínimo`;
+            }
+            textoComplementar = [textoMov, textoDistancia].filter(Boolean).join(" · ");
+          }
+
           html += `
             <div class="cascata-row cascata-cols-2">
-              <div class="cascata-party-cell"><span class="cascata-party-marker ${classe}"></span><div class="cascata-party-name">${escaparHtml(m.sigla)}</div></div>
-              <div class="cascata-value ${classe}">${texto}</div>
+              <div class="cascata-party-cell">
+                <span class="cascata-party-marker ${classe}"></span>
+                <div>
+                  <div class="cascata-party-name">${escaparHtml(m.entidade)}</div>
+                  <div class="cascata-party-desc">${textoSituacao}</div>
+                  ${textoComplementar ? `<div class="cascata-party-desc">${escaparHtml(textoComplementar)}</div>` : ""}
+                </div>
+              </div>
+              <div class="cascata-value ${classe}">${cumpre ? "Cumpre" : "Não cumpre"}</div>
             </div>
           `;
         });
@@ -590,9 +623,16 @@ function copiarTextoPeticao() {
     texto += "3. Clausula de Desempenho\n";
     texto += "Base legal: Art. 17, paragrafo 3o da Constituicao Federal (EC 97/2017). Patamar: Eleicoes " + (res.nos.clausula.anoEleicao || 2022) + ".\n";
     if (res.nos.clausula.temMudancaNaClausula && res.nos.clausula.mudancas && res.nos.clausula.mudancas.length > 0) {
+      const limitesCopia = res.nos.clausula.limites || {};
       res.nos.clausula.mudancas.forEach(m => {
-        const situacao = m.atingiuDepois ? "Passou a atingir a clausula" : "Deixou de atingir a clausula";
-        texto += m.sigla + ": " + situacao + "\n";
+        const cumpre = m.para === "CUMPRE";
+        const situacao = cumpre ? "Passou a cumprir a clausula" : "Deixou de atingir a clausula";
+        let detalhe = "";
+        const cad = m.detalheCadeiras;
+        if (cad && cad.antes && cad.depois) {
+          detalhe = ` (cadeiras: ${cad.antes.cadeiras} -> ${cad.depois.cadeiras}, min. ${limitesCopia.deputadosMinimos}; UFs: ${cad.antes.ufsComCadeira} -> ${cad.depois.ufsComCadeira}, min. ${limitesCopia.ufsMinimas})`;
+        }
+        texto += m.entidade + ": " + situacao + detalhe + "\n";
       });
     } else {
       texto += "Nenhuma alteracao na situacao da Clausula de Desempenho.\n";
@@ -690,15 +730,20 @@ function exportarPdfCascata() {
 
   // Clausula
   if (res.nos.clausula && res.nos.clausula.status === "validado") {
+    const limitesPdf = res.nos.clausula.limites || {};
     secoes += `
       <h2>3. Cl&aacute;usula de Desempenho</h2>
-      <p class="base-legal">Base legal: Art. 17, &sect; 3&ordm; da Constitui&ccedil;&atilde;o Federal (EC 97/2017). Patamar: Elei&ccedil;&otilde;es ${res.nos.clausula.anoEleicao || 2022}.</p>`;
+      <p class="base-legal">Base legal: Art. 17, &sect; 3&ordm; da Constitui&ccedil;&atilde;o Federal (EC 97/2017). Patamar: Elei&ccedil;&otilde;es ${res.nos.clausula.anoEleicao || 2022} &mdash; m&iacute;nimo de ${limitesPdf.deputadosMinimos || "?"} cadeiras em ${limitesPdf.ufsMinimas || "?"} estados.</p>`;
     if (res.nos.clausula.temMudancaNaClausula && res.nos.clausula.mudancas && res.nos.clausula.mudancas.length > 0) {
-      secoes += `<table><thead><tr><th>Partido</th><th>Situa&ccedil;&atilde;o</th></tr></thead><tbody>`;
+      secoes += `<table><thead><tr><th>Partido</th><th>Situa&ccedil;&atilde;o</th><th>Cadeiras</th><th>UFs</th></tr></thead><tbody>`;
       res.nos.clausula.mudancas.forEach(m => {
-        const cls = m.atingiuDepois ? "positivo" : "negativo";
-        const texto = m.atingiuDepois ? "Passou a atingir a cl&aacute;usula" : "Deixou de atingir a cl&aacute;usula";
-        secoes += `<tr><td class="partido">${m.sigla}</td><td class="${cls}">${texto}</td></tr>`;
+        const cumpre = m.para === "CUMPRE";
+        const cls = cumpre ? "positivo" : "negativo";
+        const texto = cumpre ? "Passou a cumprir a cl&aacute;usula" : "Deixou de cumprir a cl&aacute;usula";
+        const cad = m.detalheCadeiras;
+        const cadTexto = cad && cad.antes && cad.depois ? `${cad.antes.cadeiras} &rarr; ${cad.depois.cadeiras} (min. ${limitesPdf.deputadosMinimos})` : "&mdash;";
+        const ufsTexto = cad && cad.antes && cad.depois ? `${cad.antes.ufsComCadeira} &rarr; ${cad.depois.ufsComCadeira} (min. ${limitesPdf.ufsMinimas})` : "&mdash;";
+        secoes += `<tr><td class="partido">${m.entidade}</td><td class="${cls}">${texto}</td><td>${cadTexto}</td><td>${ufsTexto}</td></tr>`;
       });
       secoes += `</tbody></table>`;
     } else {
