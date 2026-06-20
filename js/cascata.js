@@ -50,7 +50,7 @@ function criarResultadoPendente() {
   };
 }
 
-export function calcularTempoTV(_base, _cenarioRetotalizado, dadosReferencia, cenario, _categoria) {
+export function calcularTempoTV(base, _cenarioRetotalizado, dadosReferencia, cenario, _categoria) {
   const referencia = dadosReferencia && dadosReferencia.tempoTVCamara2022;
   const fotoBase = referencia && referencia.cadeirasPorPartido;
 
@@ -79,6 +79,51 @@ export function calcularTempoTV(_base, _cenarioRetotalizado, dadosReferencia, ce
     fotoDepois[sigla] += variacao;
   }
 
+  // Filtra a tabela nacional para conter apenas os partidos que de fato
+  // registraram candidato a deputado federal no estado da retotalizacao,
+  // pois o tempo de TV de deputado federal e dividido por concorrente real
+  // em cada unidade da federacao, nao pela bancada nacional inteira.
+  // Validado contra o relatorio oficial "Distribuicao de Tempo" do TRE-CE,
+  // Cargo Deputado Federal, 2022 (total de representantes 494, nao 507,
+  // por exclusao do SOLIDARIEDADE, que nao teve candidato no Ceara).
+  const siglasEstado = (() => {
+    const partidosEstado = base && Array.isArray(base.partidos) ? base.partidos : null;
+    if (!partidosEstado) return null;
+    return new Set(
+      partidosEstado
+        .map((p) => String((p && p.sigla) || "").trim().toUpperCase())
+        .filter(Boolean)
+    );
+  })();
+
+  const federacoes = (dadosReferencia && dadosReferencia.federacoesTV2022) || {};
+
+  function partidoConcorreuNoEstado(siglaNacional) {
+    if (!siglasEstado) return true;
+    const siglaUpper = String(siglaNacional).trim().toUpperCase();
+    if (siglasEstado.has(siglaUpper)) return true;
+    const membros = federacoes[siglaNacional];
+    if (Array.isArray(membros)) {
+      return membros.some((m) => siglasEstado.has(String(m).trim().toUpperCase()));
+    }
+    return false;
+  }
+
+  const siglasExcluidasPorAusenciaNoEstado = siglasEstado
+    ? Object.keys(fotoBase).filter((sigla) => !partidoConcorreuNoEstado(sigla))
+    : [];
+
+  function filtrarPorEstado(fotoCadeiras) {
+    if (!siglasEstado) return fotoCadeiras;
+    const resultado = {};
+    for (const [sigla, cadeiras] of Object.entries(fotoCadeiras)) {
+      if (partidoConcorreuNoEstado(sigla)) {
+        resultado[sigla] = cadeiras;
+      }
+    }
+    return resultado;
+  }
+
   function repartirFracao(fotoCadeiras) {
     // Formula 90/10 validada contra a Resolucao TSE 23.706/2022
     // em conferencia-tempotv-presidente.mjs. Aqui ela e aplicada em fracao
@@ -103,8 +148,8 @@ export function calcularTempoTV(_base, _cenarioRetotalizado, dadosReferencia, ce
     return fracoes;
   }
 
-  const fracaoAntes = repartirFracao(fotoBase);
-  const fracaoDepois = repartirFracao(fotoDepois);
+  const fracaoAntes = repartirFracao(filtrarPorEstado(fotoBase));
+  const fracaoDepois = repartirFracao(filtrarPorEstado(fotoDepois));
   const todasSiglas = new Set([
     ...Object.keys(fracaoAntes),
     ...Object.keys(fracaoDepois)
@@ -131,6 +176,10 @@ export function calcularTempoTV(_base, _cenarioRetotalizado, dadosReferencia, ce
 
   if (siglasNaoMapeadas.length) {
     resultado._siglasNaoMapeadas = siglasNaoMapeadas;
+  }
+
+  if (siglasExcluidasPorAusenciaNoEstado.length) {
+    resultado._siglasExcluidasPorAusenciaNoEstado = siglasExcluidasPorAusenciaNoEstado;
   }
 
   return resultado;

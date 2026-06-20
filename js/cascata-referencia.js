@@ -95,6 +95,15 @@ export const dadosReferencia = {
     }
   },
 
+  // Federacoes vigentes no ciclo eleitoral de 2022, usadas para traduzir a
+  // sigla individual de partido (como aparece nos arquivos de estado, ex. CE)
+  // para a sigla combinada da federacao usada na tabela tempoTVCamara2022.
+  federacoesTV2022: {
+    "FEDERAÇÃO BRASIL DA ESPERANÇA": ["PT", "PC do B", "PV"],
+    "FEDERAÇÃO PSDB CIDADANIA": ["PSDB", "CIDADANIA"],
+    "FEDERAÇÃO PSOL REDE": ["PSOL", "REDE"]
+  },
+
   // Valor total do Fundo Partidario a ser obtido em dado oficial do TSE ou fonte normativa aplicavel.
   valorTotalFundoPartidario: null,
 
