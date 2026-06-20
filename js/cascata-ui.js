@@ -34,7 +34,7 @@ function formatarPercentual(valor) {
 // Usado para o dado em segundos reais do tempo de TV (art. 47 da Lei 9.504/97).
 function formatarSegundos(valor) {
   if (typeof valor !== "number") return "0,00s";
-  return Math.abs(valor).toFixed(2).replace(".", ",") + "s";
+  return valor.toFixed(2).replace(".", ",") + "s";
 }
 
 function formatarMoedaCompacta(valor) {
