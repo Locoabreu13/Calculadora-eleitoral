@@ -352,44 +352,70 @@ function renderizarCascata(resultado) {
   // 4. Fundo Partidário
   const divFundo = document.getElementById('cascata-fundo');
   if (divFundo && nos.fundoPartidario) {
+    const fp = nos.fundoPartidario;
+    const valorTotal = fp.valorTotalAnual || 1185566089.46;
+    const isPendente = fp.status !== 'validado';
+
+    // Partidos afetados: aqueles com delta no FEFC (ganharam ou perderam cadeira)
+    const partidosAfetados = nos.fefc && nos.fefc.porPartido
+      ? Object.entries(nos.fefc.porPartido).filter(([, p]) => (p.deltaTotal || 0) !== 0).map(([s]) => s)
+      : [];
+
+    // Partidos cuja clausula mudou nesta retotalizacao (alerta de 5%)
+    const comMudancaClausula = new Set(
+      (nos.clausula && nos.clausula.mudancas ? nos.clausula.mudancas : []).map(m => m.entidade)
+    );
+
     let html = `
       <div class="cascata-node-head">
         <div>
           <h2>Fundo <em>Partidário</em> (quota de 95%)</h2>
           <p><strong>Fundamentação Legal:</strong> Art. 41-A da Lei nº 9.096/1995.<br>
-          <strong>Montante anual de referência:</strong> <span class="cascata-value">${formatarMoeda(nos.fundoPartidario.valorTotalAnual || 1185566089.46)}</span></p>
+          <strong>Montante anual de referência:</strong> <span class="cascata-value">${formatarMoeda(valorTotal)}</span></p>
         </div>
-        <span class="cascata-status-pill ${classeStatus(nos.fundoPartidario.status)}">${textoStatus(nos.fundoPartidario.status)}</span>
+        <span class="cascata-status-pill ${classeStatus(fp.status)}">${textoStatus(fp.status)}</span>
       </div>
-      <div class="cascata-table">
-        <div class="cascata-row cascata-row-head cascata-cols-2"><div>Partido</div><div>Impacto financeiro estimado</div></div>
     `;
-    if (nos.fundoPartidario.status === 'validado') {
-      let temMudanca = false;
-      for (const sigla in nos.fundoPartidario.deltas) {
-        const valor = obterDeltaFundo(nos.fundoPartidario.deltas[sigla], nos.fundoPartidario.valorTotalAnual);
-        if (valor !== 0) {
-          temMudanca = true;
-          const classe = classeValor(valor);
-          html += `
-            <div class="cascata-row cascata-cols-2">
-              <div class="cascata-party-cell">
-                <span class="cascata-party-marker ${classe}"></span>
+
+    if (partidosAfetados.length > 0) {
+      const labelCota = isPendente ? "Cota anual de referência (impacto nos votos pendente)" : "Cota anual base";
+      html += `<div class="cascata-table"><div class="cascata-row cascata-row-head cascata-cols-2"><div>Partido</div><div>${labelCota}</div></div>`;
+      for (const sigla of partidosAfetados) {
+        const fracao = fp.fracoesBase && fp.fracoesBase[sigla];
+        const cotaAnual = fracao ? ((fracao.fatia5 || 0) + (fracao.fatia95 || 0)) * valorTotal : null;
+        const temClausula = fracao && (fracao.fatia5 || 0) > 0;
+        const clausulaMudou = comMudancaClausula.has(sigla);
+        const textoClausula = temClausula
+          ? "Elegível para a cota de 5% (tem cláusula)"
+          : "Sem acesso à cota de 5% — sem cláusula";
+        const textoAlerta = clausulaMudou
+          ? "Atenção: a cláusula foi alterada — a cota de 5% seria redistribuída entre os elegíveis"
+          : null;
+        const textoComplementar = [textoClausula, textoAlerta].filter(Boolean).join(" · ");
+        html += `
+          <div class="cascata-row cascata-cols-2">
+            <div class="cascata-party-cell">
+              <span class="cascata-party-marker"></span>
+              <div>
                 <div class="cascata-party-name">${escaparHtml(sigla)}</div>
+                <div class="cascata-party-desc">${escaparHtml(textoComplementar)}</div>
               </div>
-              <div class="cascata-value ${classe}">${sinal(valor)}${formatarMoeda(valor)}</div>
             </div>
-          `;
-        }
+            <div class="cascata-value">${cotaAnual !== null ? formatarMoeda(cotaAnual) : "—"}</div>
+          </div>
+        `;
       }
-      if (!temMudanca) {
-        html += `<div class="cascata-empty">Nenhum partido sofreu impacto financeiro no Fundo Partidário.</div>`;
-      }
+      html += `</div>`;
     } else {
-      html += `<div class="cascata-unavailable">Cálculo indisponível. Motivo: ${escaparHtml(String(nos.fundoPartidario.status || "").replace(/_/g, " "))}</div>`;
+      html += `<div class="cascata-table"><div class="cascata-empty">Nenhum partido afetado identificado no Fundo Partidário.</div></div>`;
     }
-    html += `</div>
-      <div class="cascata-note"><div><strong>Composição:</strong> 5% são distribuídos igualmente entre partidos com cláusula, e 95% proporcionalmente aos votos válidos.</div></div>`;
+
+    if (!isPendente) {
+      html += `<div class="cascata-note"><div><strong>Faixa de 95%:</strong> sem perda de votos nesta cassação, a proporção se mantém. <strong>Composição:</strong> 5% igualitários entre elegíveis com cláusula, 95% proporcional aos votos válidos.</div></div>`;
+    } else {
+      html += `<div class="cascata-note"><div><strong>Pendente:</strong> a cassação envolve perda de votos. O impacto na faixa de 95% depende da redistribuição de votos por estado, ainda não calculada. Os valores acima são a cota atual de referência.</div></div>`;
+    }
+
     divFundo.innerHTML = html;
   }
 }
@@ -640,18 +666,37 @@ function copiarTextoPeticao() {
     texto += "\n";
   }
 
-  if (res.nos.fundoPartidario && res.nos.fundoPartidario.status === 'validado') {
+  if (res.nos.fundoPartidario) {
     texto += "4. Fundo Partidario (Quota de 95%)\n";
     texto += "Base legal: Art. 41-A da Lei 9.096/1995.\n";
-    let temMudancaFundo = false;
-    for (const sigla in res.nos.fundoPartidario.deltas) {
-      const valor = res.nos.fundoPartidario.deltas[sigla];
-      if (valor !== 0) {
-        temMudancaFundo = true;
-        texto += sigla + ": " + (valor > 0 ? "+" : "") + formatarMoeda(valor) + "\n";
-      }
+    const fpCopia = res.nos.fundoPartidario;
+    const valorTotalCopia = fpCopia.valorTotalAnual || 1185566089.46;
+    const isPendenteCopia = fpCopia.status !== 'validado';
+    if (isPendenteCopia) {
+      texto += "Status: impacto na faixa de 95% pendente (cassacao com perda de votos).\n";
     }
-    if (!temMudancaFundo) texto += "Nenhum impacto verificado no Fundo Partidario.\n";
+    const comMudancaClausulaCopia = new Set(
+      (res.nos.clausula && res.nos.clausula.mudancas ? res.nos.clausula.mudancas : []).map(m => m.entidade)
+    );
+    const partidosAfetadosCopia = res.nos.fefc && res.nos.fefc.porPartido
+      ? Object.entries(res.nos.fefc.porPartido).filter(([, p]) => (p.deltaTotal || 0) !== 0).map(([s]) => s)
+      : [];
+    if (partidosAfetadosCopia.length > 0) {
+      texto += "Cotas anuais de referencia (base 2024):\n";
+      for (const sigla of partidosAfetadosCopia) {
+        const fracao = fpCopia.fracoesBase && fpCopia.fracoesBase[sigla];
+        const cotaAnual = fracao ? ((fracao.fatia5 || 0) + (fracao.fatia95 || 0)) * valorTotalCopia : null;
+        const temClausula = fracao && (fracao.fatia5 || 0) > 0;
+        const clausulaMudou = comMudancaClausulaCopia.has(sigla);
+        let linha = sigla + ": " + (cotaAnual !== null ? formatarMoeda(cotaAnual) : "N/D");
+        linha += temClausula ? " (tem clausula, elegivel para 5%)" : " (sem clausula)";
+        if (clausulaMudou) linha += " [ATENCAO: clausula alterada — redistribuicao de 5%]";
+        texto += linha + "\n";
+      }
+    } else {
+      texto += "Nenhum partido afetado identificado.\n";
+    }
+    if (!isPendenteCopia) texto += "Faixa de 95%: sem perda de votos, a proporcao se mantem.\n";
     texto += "\n";
   }
 
@@ -752,24 +797,38 @@ function exportarPdfCascata() {
   }
 
   // Fundo Partidario
-  if (res.nos.fundoPartidario && res.nos.fundoPartidario.status === "validado") {
+  if (res.nos.fundoPartidario) {
+    const fpPdf = res.nos.fundoPartidario;
+    const valorTotalPdf = fpPdf.valorTotalAnual || 1185566089.46;
+    const isPendentePdf = fpPdf.status !== 'validado';
+    const comMudancaClausulaPdf = new Set(
+      (res.nos.clausula && res.nos.clausula.mudancas ? res.nos.clausula.mudancas : []).map(m => m.entidade)
+    );
+    const partidosAfetadosPdf = res.nos.fefc && res.nos.fefc.porPartido
+      ? Object.entries(res.nos.fefc.porPartido).filter(([, p]) => (p.deltaTotal || 0) !== 0).map(([s]) => s)
+      : [];
+    const notaPdf = isPendentePdf
+      ? 'A cassa&ccedil;&atilde;o envolve perda de votos &mdash; o impacto na faixa de 95% est&aacute; pendente.'
+      : 'Sem perda de votos: a faixa de 95% se mant&eacute;m.';
     secoes += `
       <h2>4. Fundo Partid&aacute;rio (Quota de 95%)</h2>
-      <p class="base-legal">Base legal: Art. 41-A da Lei n&ordm; 9.096/1995.</p>
+      <p class="base-legal">Base legal: Art. 41-A da Lei n&ordm; 9.096/1995. ${notaPdf}</p>
       <table>
-        <thead><tr><th>Partido</th><th>Impacto Financeiro (Estimativa Anual)</th></tr></thead>
+        <thead><tr><th>Partido</th><th>Cota Anual Base</th><th>Eleg&iacute;vel para 5%</th><th>Alerta</th></tr></thead>
         <tbody>`;
-    let mudou = false;
-    for (const sigla in res.nos.fundoPartidario.deltas) {
-      const valor = res.nos.fundoPartidario.deltas[sigla];
-      if (valor !== 0) {
-        mudou = true;
-        const sinal = valor > 0 ? "+" : "";
-        const cls = valor > 0 ? "positivo" : "negativo";
-        secoes += `<tr><td class="partido">${sigla}</td><td class="${cls}">${sinal}${formatarMoeda(valor)}</td></tr>`;
+    if (partidosAfetadosPdf.length > 0) {
+      for (const sigla of partidosAfetadosPdf) {
+        const fracao = fpPdf.fracoesBase && fpPdf.fracoesBase[sigla];
+        const cotaAnual = fracao ? ((fracao.fatia5 || 0) + (fracao.fatia95 || 0)) * valorTotalPdf : null;
+        const temClausula = fracao && (fracao.fatia5 || 0) > 0;
+        const clausulaMudou = comMudancaClausulaPdf.has(sigla);
+        const eligibilidade = temClausula ? "Sim" : "N&atilde;o";
+        const alerta = clausulaMudou ? "Cl&aacute;usula alterada &mdash; cota de 5% redistribu&iacute;da" : "&mdash;";
+        secoes += `<tr><td class="partido">${sigla}</td><td>${cotaAnual !== null ? formatarMoeda(cotaAnual) : "&mdash;"}</td><td>${eligibilidade}</td><td>${alerta}</td></tr>`;
       }
+    } else {
+      secoes += `<tr><td colspan="4" class="sem-impacto">Nenhum partido afetado identificado.</td></tr>`;
     }
-    if (!mudou) secoes += `<tr><td colspan="2" class="sem-impacto">Nenhum impacto verificado no Fundo Partid&aacute;rio.</td></tr>`;
     secoes += `</tbody></table>`;
   }
 
