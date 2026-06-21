@@ -50,6 +50,31 @@ function criarResultadoPendente() {
   };
 }
 
+// Formula 90/10 da Lei 9.504/1997, art. 47, validada contra a Resolucao TSE 23.706/2022
+// em conferencia-tempotv-presidente.mjs. Elevada ao escopo do modulo para ser compartilhada
+// por calcularTempoTV (calcula delta por estado) e calcularDominoTempoTV (fracao nacional
+// para o domino da clausula). Uma unica implementacao da formula, dois pontos de uso.
+// A porta de entrada (cadeira maior que zero) implementa o limiar do art. 47.
+function repartirFracao(fotoCadeiras) {
+  const concorrentes = Object.entries(fotoCadeiras)
+    .filter(([, cadeiras]) => cadeiras > 0);
+
+  if (concorrentes.length === 0) {
+    return {};
+  }
+
+  const parteIgual = 0.10 / concorrentes.length;
+  const somaCadeiras = concorrentes.reduce((s, [, cadeiras]) => s + cadeiras, 0);
+  const fracoes = {};
+
+  for (const [sigla, cadeiras] of concorrentes) {
+    const parteProporcional = 0.90 * (cadeiras / somaCadeiras);
+    fracoes[sigla] = parteIgual + parteProporcional;
+  }
+
+  return fracoes;
+}
+
 export function calcularTempoTV(base, _cenarioRetotalizado, dadosReferencia, cenario, _categoria) {
   const referencia = dadosReferencia && dadosReferencia.tempoTVCamara2022;
   const fotoBase = referencia && referencia.cadeirasPorPartido;
@@ -122,30 +147,6 @@ export function calcularTempoTV(base, _cenarioRetotalizado, dadosReferencia, cen
       }
     }
     return resultado;
-  }
-
-  function repartirFracao(fotoCadeiras) {
-    // Formula 90/10 validada contra a Resolucao TSE 23.706/2022
-    // em conferencia-tempotv-presidente.mjs. Aqui ela e aplicada em fracao
-    // para medir o impacto de uma retotalizacao, sem arredondar em segundos.
-    // A porta de entrada (cadeira maior que zero) implementa o limiar do art. 47.
-    const concorrentes = Object.entries(fotoCadeiras)
-      .filter(([, cadeiras]) => cadeiras > 0);
-
-    if (concorrentes.length === 0) {
-      return {};
-    }
-
-    const parteIgual = 0.10 / concorrentes.length;
-    const somaCadeiras = concorrentes.reduce((s, [, cadeiras]) => s + cadeiras, 0);
-    const fracoes = {};
-
-    for (const [sigla, cadeiras] of concorrentes) {
-      const parteProporcional = 0.90 * (cadeiras / somaCadeiras);
-      fracoes[sigla] = parteIgual + parteProporcional;
-    }
-
-    return fracoes;
   }
 
   const fracaoAntes = repartirFracao(filtrarPorEstado(fotoBase));
@@ -270,6 +271,96 @@ export function calcularFEFC(_base, _cenarioRetotalizado, dadosReferencia, cenar
   };
 }
 
+// Calcula o domino do fundo partidario quando uma entidade perde a clausula de desempenho.
+// Chama calcularFundoPartidario com cenario vazio para obter fracoesBase ja validadas,
+// sem duplicar a formula de calculo de cotas. Retorna status "sem_dados_referencia" quando
+// os dados de referencia de FP ou votos ponderados nao estiverem disponiveis.
+function calcularDominoFundoPartidario(entidade, dadosReferencia) {
+  const fpRef = dadosReferencia && dadosReferencia.fundoPartidario;
+  const fefc = dadosReferencia && dadosReferencia.fefc;
+
+  if (!fpRef || !fefc || !fefc.votosPorPartido) {
+    return { status: "sem_dados_referencia" };
+  }
+
+  const fpBase = calcularFundoPartidario(null, null, dadosReferencia, {}, "cassacao_sem_perda_votos");
+  const fracaoEntidade = fpBase.fracoesBase[entidade];
+  const eraElegivel = !!(fracaoEntidade && fracaoEntidade.fatia5 > 0);
+
+  if (!eraElegivel) {
+    return { status: "nao_era_elegivel", eraElegivel: false };
+  }
+
+  const fracaoAtual = fracaoEntidade.fatia5 * 0.05 + fracaoEntidade.fatia95 * 0.95;
+  const valorAtual = typeof fpRef.valorTotalAnual === "number"
+    ? fracaoAtual * fpRef.valorTotalAnual
+    : null;
+  const quantosGanham = (fpRef.entidadesElegiveis5Pct || []).length - 1;
+
+  return { status: "calculado", eraElegivel: true, fracaoAtual, valorAtual, quantosGanham };
+}
+
+// Calcula o domino do tempo de TV quando uma entidade perde a clausula de desempenho.
+// Usa repartirFracao (modulo) sobre a tabela nacional tempoTVCamara2022.
+//
+// ATENCAO — denominador nacional, nao por estado: este calculo usa a tabela tempoTVCamara2022
+// com a totalidade das 507 cadeiras da Camara, sem filtragem por UF. O domino da clausula e um
+// efeito nacional: a entidade perde o acesso ao tempo de TV em todas as UFs (CF/1988, art. 17,
+// par. 3, com regime transitorio do art. 3 da EC 97/2017 — VERIFICAR referencia legal contra
+// o texto oficial antes de usar em peca processual). Nao confundir com calcularTempoTV, que
+// filtra pelo conjunto de partidos concorrentes em cada estado especifico (precisao validada em
+// TC-03b contra o relatorio oficial do TRE-CE).
+function calcularDominoTempoTV(entidade, dadosReferencia) {
+  const tvRef = dadosReferencia && dadosReferencia.tempoTVCamara2022;
+
+  if (!tvRef || !tvRef.cadeirasPorPartido) {
+    return { status: "sem_dados_referencia" };
+  }
+
+  const tvCadeiras = tvRef.cadeirasPorPartido;
+  const mapeamento = (dadosReferencia.clausulaLinhaDeBase2022 &&
+    dadosReferencia.clausulaLinhaDeBase2022.mapeamentoSiglaParaEntidade) || {};
+  const federacoesTV = dadosReferencia.federacoesTV2022 || {};
+
+  // Mapear o nome de clausula para a chave da tabela de TV.
+  // Entidades individuais batem diretamente. Federacoes de clausula (ex.: "FE Brasil (PT/PC do B/PV)")
+  // sao localizadas via membros do mapeamentoSiglaParaEntidade cruzados com federacoesTV2022.
+  let chaveTV = null;
+  if (tvCadeiras[entidade] !== undefined) {
+    chaveTV = entidade;
+  } else {
+    const membros = Object.entries(mapeamento)
+      .filter(([, ent]) => ent === entidade)
+      .map(([sigla]) => sigla);
+
+    for (const [tvSigla, tvMembros] of Object.entries(federacoesTV)) {
+      if (membros.some(m => tvMembros.includes(m))) {
+        chaveTV = tvSigla;
+        break;
+      }
+    }
+  }
+
+  if (chaveTV === null || !(tvCadeiras[chaveTV] > 0)) {
+    return { status: "sem_representacao", temRepresentacao: false };
+  }
+
+  const fracoes = repartirFracao(tvCadeiras);
+  const fracaoAtual = fracoes[chaveTV] || 0;
+  const totalSegundosBloco = tvRef.totalSegundosBloco || null;
+  const segundosAtual = totalSegundosBloco !== null ? fracaoAtual * totalSegundosBloco : null;
+  const quantosGanham = Object.values(tvCadeiras).filter(c => c > 0).length - 1;
+
+  return {
+    status: "calculado",
+    temRepresentacao: true,
+    chaveTV,
+    fracaoAtual,
+    segundosAtual,
+    quantosGanham
+  };
+}
+
 export function calcularClausula(_base, _cenarioRetotalizado, dadosReferencia, cenario, _categoria) {
   const linhaDeBase = dadosReferencia && dadosReferencia.clausulaLinhaDeBase2022;
   const clausulaMeta = dadosReferencia && dadosReferencia.clausula;
@@ -375,13 +466,20 @@ export function calcularClausula(_base, _cenarioRetotalizado, dadosReferencia, c
     };
 
     if (mudou) {
-      mudancas.push({
+      const entrada = {
         entidade,
         de: cumpriuAntes ? "CUMPRIA" : "nao_cumpria",
         para: cumpriuDepois ? "CUMPRE" : "nao_cumpre",
         detalheCadeiras: critCadeiras,
         detalheVotos: critVotos
-      });
+      };
+      if (!cumpriuDepois) {
+        entrada.domino = {
+          fundoPartidario: calcularDominoFundoPartidario(entidade, dadosReferencia),
+          tempoTV: calcularDominoTempoTV(entidade, dadosReferencia)
+        };
+      }
+      mudancas.push(entrada);
     }
   }
 
