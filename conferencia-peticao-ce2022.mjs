@@ -56,7 +56,7 @@ function checa(nome, ok) {
 // Auxiliares de formatacao iguais aos do modulo, para conferir coincidencia exata.
 const fmtReais = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 const reais = (v) => fmtReais.format(v).replace(/\u00A0/g, " ");
-const pct4 = (fr) => (fr * 100).toFixed(4).replace(".", ",") + "%";
+const pct2 = (fr) => (fr * 100).toFixed(2).replace(".", ",") + "%";
 
 console.log("\n=== FRASE DE ABERTURA ===");
 console.log(dados.fraseAbertura);
@@ -87,14 +87,22 @@ tudo &= checa("Soma FEFC coincide com os nos", dados.somas.somaFefc === somaFefc
 // 3. Numeros impressos no HTML
 tudo &= checa("HTML imprime FEFC do PL (" + reais(r.nos.fefc.porPartido["PL"].deltaTotal) + ")",
   html.includes(reais(r.nos.fefc.porPartido["PL"].deltaTotal)));
-tudo &= checa("HTML imprime TV do PL (" + pct4(r.nos.tempoTV.porPartido["PL"].deltaFracao) + ")",
-  html.includes(pct4(r.nos.tempoTV.porPartido["PL"].deltaFracao)));
+tudo &= checa("HTML imprime TV do PL em 2 casas (" + pct2(r.nos.tempoTV.porPartido["PL"].deltaFracao) + ")",
+  html.includes(pct2(r.nos.tempoTV.porPartido["PL"].deltaFracao)));
+tudo &= checa("HTML NAO usa 4 casas no TV (frase e tabela consistentes)",
+  !html.includes("0,1822%"));
 
 // 4. Os quatro nos presentes
 tudo &= checa("Peca inclui o no FEFC", html.includes("FEFC"));
 tudo &= checa("Peca inclui o no Tempo de TV", html.includes("Tempo de TV"));
 tudo &= checa("Peca inclui o no Clausula de desempenho", html.includes("Cláusula de desempenho"));
 tudo &= checa("Peca inclui o no Fundo Partidario", html.includes("Fundo Partidário"));
+
+// 4b. Transparencia da fatia de 35% (delta35 = 0 neste caso)
+tudo &= checa("Sinal fefcFatia35Moveu = false (35% nao se moveu)", dados.tabela.fefcFatia35Moveu === false);
+tudo &= checa("Cabecalho marca FEFC como apenas fatia de cadeira", html.includes("apenas fatia de cadeira"));
+tudo &= checa("FEFC cita apenas o inciso III (sem inciso II quando delta35 = 0)",
+  html.includes("Art. 16-D, inciso III, da Lei nº 9.504/1997") && !html.includes("incisos II e III"));
 
 // 5. Fundamento legal completo
 tudo &= checa("Fundamento: art. 16-D", html.includes("16-D"));

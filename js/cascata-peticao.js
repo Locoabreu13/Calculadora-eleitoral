@@ -61,11 +61,13 @@ function inteiro(valor) {
   return fmtInt.format(Math.round(valor));
 }
 
-// Percentual com quatro casas, no padrao da tela (formatarPercentual de cascata-ui.js),
-// para a tabela por partido coincidir com o que o usuario ve no nó de tempo de TV.
+// Percentual com duas casas, para a tabela por partido. Mesma precisao da frase
+// de abertura (percentualProsa), para que frase e tabela nao divirjam. Duas casas
+// porque o metodo do tempo de TV usa cadeiras inteiras de uma tabela de 507
+// representantes, o que nao sustenta mais precisao (vide cascata-sintese.js).
 function percentualPreciso(fracao) {
-  if (typeof fracao !== "number" || !Number.isFinite(fracao)) return "0,0000%";
-  return (fracao * 100).toFixed(4).replace(".", ",") + "%";
+  if (typeof fracao !== "number" || !Number.isFinite(fracao)) return "0,00%";
+  return (fracao * 100).toFixed(2).replace(".", ",") + "%";
 }
 
 // Percentual com duas casas, no padrao da frase-sintese do produto, para a prosa
@@ -166,6 +168,21 @@ export function montarDadosPeca({ resultadoCascata, dadosCenario, contexto } = {
     }
   }
 
+  // A fatia de 35% (por votos) so se move quando ha delta de votos capturado.
+  // Hoje, em cassacao com perda de votos, esse delta nao e capturado (lacuna do
+  // adaptador, ver achado critico no projeto), entao delta35 fica zero. Este sinal
+  // permite a peca ser transparente: nao apresentar como FEFC integral nem citar o
+  // inciso II (votos) quando o numero correspondente nao foi computado.
+  let fefcFatia35Moveu = false;
+  if (fefc.porPartido) {
+    for (const p of Object.values(fefc.porPartido)) {
+      if (typeof (p && p.delta35) === "number" && p.delta35 !== 0) {
+        fefcFatia35Moveu = true;
+        break;
+      }
+    }
+  }
+
   // Tabela consolidada por partido: uniao das siglas com movimento de cadeira,
   // de FEFC ou de tempo de TV.
   const valorFundoAnual = typeof fundo.valorTotalAnual === "number"
@@ -245,6 +262,7 @@ export function montarDadosPeca({ resultadoCascata, dadosCenario, contexto } = {
       fundoStatus: fundo.status || "indisponivel",
       fundoValidado,
       fundoPendente,
+      fefcFatia35Moveu,
       valorFundoAnual
     },
     clausula: {
@@ -257,7 +275,7 @@ export function montarDadosPeca({ resultadoCascata, dadosCenario, contexto } = {
       anoEleicao: clausula.anoEleicao || null
     },
     somas: { somaFefc, somaTvFracao },
-    fundamentoLegal: montarFundamentoLegal(),
+    fundamentoLegal: montarFundamentoLegal(fefcFatia35Moveu),
     rodape: "Esta peça é uma simulação técnica independente, de caráter auxiliar. " +
       "Os valores aqui apresentados não constituem a totalização oficial da Justiça Eleitoral " +
       "e não substituem os atos e cálculos oficiais do Tribunal competente."
@@ -327,9 +345,15 @@ function narrarFatoConsumado({ cassacoes, perdedores, ganhadores, totalCadeirasM
   return abertura + transferencia + consequencia + clausulaTexto;
 }
 
-function montarFundamentoLegal() {
+function montarFundamentoLegal(fefcFatia35Moveu) {
+  // O inciso III trata da fatia por cadeiras (48%), sempre apurada. O inciso II
+  // trata da fatia por votos (35%): so e citado quando essa fatia de fato se moveu,
+  // para a citacao nunca aparecer sem o numero correspondente.
+  const dispositivoFefc = fefcFatia35Moveu
+    ? "Art. 16-D, incisos II e III, da Lei nº 9.504/1997"
+    : "Art. 16-D, inciso III, da Lei nº 9.504/1997";
   return [
-    { tema: "Fundo Especial de Financiamento de Campanha (FEFC)", dispositivo: "Art. 16-D, incisos II e III, da Lei nº 9.504/1997" },
+    { tema: "Fundo Especial de Financiamento de Campanha (FEFC)", dispositivo: dispositivoFefc },
     { tema: "Tempo de propaganda eleitoral gratuita", dispositivo: "Art. 47, § 1º, inciso II, da Lei nº 9.504/1997" },
     { tema: "Fundo Partidário", dispositivo: "Art. 41-A da Lei nº 9.096/1995" },
     { tema: "Cláusula de desempenho", dispositivo: "Art. 17, § 3º, da Constituição Federal, com a redação da Emenda Constitucional nº 97/2017" },
@@ -373,8 +397,14 @@ export function renderizarPecaHTML(dados) {
   const tab = d.tabela || {};
   corpo += '<section class="bloco">';
   corpo += '<h2>1. Impacto por partido</h2>';
+  // Quando o FEFC esta calculado mas a fatia de 35% (por votos) nao se moveu,
+  // o rotulo deixa claro que so a fatia de cadeira foi computada, no mesmo espirito
+  // de transparencia do "Pendente" usado em clausula e fundo.
+  const rotuloFefc = (ehStatusValidado(tab.fefcStatus) && !tab.fefcFatia35Moveu)
+    ? "Calculado (apenas fatia de cadeira, 48%)"
+    : rotuloStatus(tab.fefcStatus);
   corpo += '<p class="nota-status">' +
-    'FEFC: ' + escaparHtml(rotuloStatus(tab.fefcStatus)) + '. ' +
+    'FEFC: ' + escaparHtml(rotuloFefc) + '. ' +
     'Tempo de TV: ' + escaparHtml(rotuloStatus(tab.tvStatus)) + '. ' +
     'Fundo Partidário: ' + escaparHtml(rotuloStatus(tab.fundoStatus)) + '.' +
     '</p>';
