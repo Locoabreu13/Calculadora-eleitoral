@@ -1,6 +1,7 @@
 import { calcularCascata } from "./cascata.js";
 import { dadosReferencia } from "./cascata-referencia.js";
 import { gerarCenarioCascata } from "./cascata-adaptador.js";
+import { montarDadosPeca, abrirPecaParaImpressao } from "./cascata-peticao.js";
 
 const estadoCascata = {
   ultimaBase: null,
@@ -513,7 +514,7 @@ function configurarEventos() {
   if (btnCopiar) btnCopiar.addEventListener("click", copiarTextoPeticao);
 
   const btnPdf = document.getElementById("btn-cascata-pdf");
-  if (btnPdf) btnPdf.addEventListener("click", exportarPdfCascata);
+  if (btnPdf) btnPdf.addEventListener("click", gerarPecaPeticao);
 
   document.querySelectorAll(".cascata-tab").forEach(aba => {
     aba.addEventListener("click", () => alternarAba(aba));
@@ -719,156 +720,75 @@ function copiarTextoPeticao() {
   });
 }
 
-function exportarPdfCascata() {
+// Le as cassacoes do formulario no DOM, na mesma forma que lerCenario monta o
+// cenario (js/ui.js, mesma estrutura de campos). window.Estado nao e exposto, entao
+// o formulario e a fonte confiavel da decisao real: candidato, partido, votos
+// anulados e modalidade. Verificado no navegador com o caso Heitor Freire, CE 2022.
+function lerCassacoesDoFormulario() {
+  const cassacoes = [];
+  for (const row of document.querySelectorAll(".cassacao-row")) {
+    const partido = (row.querySelector(".cass-partido")?.value || "").trim();
+    const candidato = (row.querySelector(".cass-candidato")?.value || "").trim();
+    const votosAnular = parseInt(row.querySelector(".cass-votos")?.value, 10) || 0;
+    const modalidade = row.querySelector(".cass-modalidade")?.value || "";
+    if (partido && (votosAnular > 0 || modalidade === "cassacao_drap")) {
+      cassacoes.push({ partido, candidato: candidato || undefined, votosAnular, modalidade });
+    }
+  }
+  return cassacoes;
+}
+
+// Gera a peca de peticao para protocolo a partir da DECISAO REAL carregada na tela.
+// Reaproveita o que calcularCascata ja produziu (estadoCascata.ultimoResultado) e o
+// cenario adaptado (estadoCascata.ultimosDadosCen), sem recalcular nenhum no.
+function gerarPecaPeticao() {
   const res = estadoCascata.ultimoResultado;
   if (!res || !res.nos) {
-    alert("Nenhum resultado disponível para exportação.");
+    alert("Nenhum resultado disponível para gerar a peça.");
     return;
   }
 
-  let secoes = "";
-
-  // FEFC
-  if (res.nos.fefc && (res.nos.fefc.status === "validado" || res.nos.fefc.status === "parcial_35_pendente")) {
-    secoes += `
-      <h2>1. Fundo Especial de Financiamento de Campanha (FEFC)</h2>
-      <p class="base-legal">Base legal: Art. 16-D, incisos II e III da Lei n&ordm; 9.504/1997.</p>
-      <table>
-        <thead><tr><th>Partido</th><th>Impacto Financeiro</th></tr></thead>
-        <tbody>`;
-    let mudou = false;
-    for (const sigla in res.nos.fefc.porPartido) {
-      const p = res.nos.fefc.porPartido[sigla];
-      if (p.deltaTotal !== 0) {
-        mudou = true;
-        const sinal = p.deltaTotal > 0 ? "+" : "";
-        const cls = p.deltaTotal > 0 ? "positivo" : "negativo";
-        secoes += `<tr><td class="partido">${sigla}</td><td class="${cls}">${sinal}${formatarMoeda(p.deltaTotal)}</td></tr>`;
-      }
-    }
-    if (!mudou) secoes += `<tr><td colspan="2" class="sem-impacto">Nenhum impacto financeiro verificado nesta rúbrica.</td></tr>`;
-    secoes += `</tbody></table>`;
+  let fonte = {};
+  try {
+    fonte = (window.ImportTSE && window.ImportTSE.getFonteDados()) || {};
+  } catch (e) {
+    console.warn("Cascata: falha ao obter a fonte de dados do TSE.", e);
   }
 
-  // Tempo de TV
-  if (res.nos.tempoTV && res.nos.tempoTV.status === "validado") {
-    secoes += `
-      <h2>2. Tempo de Propaganda Eleitoral Gratuita</h2>
-      <p class="base-legal">Base legal: Art. 47, &sect; 1&ordm;, inciso II da Lei n&ordm; 9.504/1997.</p>
-      <table>
-        <thead><tr><th>Partido</th><th>Varia&ccedil;&atilde;o na Quota</th></tr></thead>
-        <tbody>`;
-    let mudou = false;
-    for (const sigla in res.nos.tempoTV.porPartido) {
-      const p = res.nos.tempoTV.porPartido[sigla];
-      if (p.deltaFracao !== 0) {
-        mudou = true;
-        const sinal = p.deltaFracao > 0 ? "+" : "";
-        const cls = p.deltaFracao > 0 ? "positivo" : "negativo";
-        const pct = (p.deltaFracao * 100).toFixed(4).replace(".", ",");
-        secoes += `<tr><td class="partido">${sigla}</td><td class="${cls}">${sinal}${pct}%</td></tr>`;
-      }
-    }
-    if (!mudou) secoes += `<tr><td colspan="2" class="sem-impacto">Nenhum impacto no tempo de propaganda verificado.</td></tr>`;
-    secoes += `</tbody></table>`;
+  let uf = String(fonte.uf || "").trim();
+  if (!uf) {
+    const selUf = document.getElementById("sel-cascata-uf-overlay");
+    uf = selUf ? selUf.value.trim() : "";
   }
 
-  // Clausula
-  if (res.nos.clausula && res.nos.clausula.status === "validado") {
-    const limitesPdf = res.nos.clausula.limites || {};
-    secoes += `
-      <h2>3. Cl&aacute;usula de Desempenho</h2>
-      <p class="base-legal">Base legal: Art. 17, &sect; 3&ordm; da Constitui&ccedil;&atilde;o Federal (EC 97/2017). Patamar: Elei&ccedil;&otilde;es ${res.nos.clausula.anoEleicao || 2022} &mdash; m&iacute;nimo de ${limitesPdf.deputadosMinimos || "?"} cadeiras em ${limitesPdf.ufsMinimas || "?"} estados.</p>`;
-    if (res.nos.clausula.temMudancaNaClausula && res.nos.clausula.mudancas && res.nos.clausula.mudancas.length > 0) {
-      secoes += `<table><thead><tr><th>Partido</th><th>Situa&ccedil;&atilde;o</th><th>Cadeiras</th><th>UFs</th></tr></thead><tbody>`;
-      res.nos.clausula.mudancas.forEach(m => {
-        const cumpre = m.para === "CUMPRE";
-        const cls = cumpre ? "positivo" : "negativo";
-        const texto = cumpre ? "Passou a cumprir a cl&aacute;usula" : "Deixou de cumprir a cl&aacute;usula";
-        const cad = m.detalheCadeiras;
-        const cadTexto = cad && cad.antes && cad.depois ? `${cad.antes.cadeiras} &rarr; ${cad.depois.cadeiras} (min. ${limitesPdf.deputadosMinimos})` : "&mdash;";
-        const ufsTexto = cad && cad.antes && cad.depois ? `${cad.antes.ufsComCadeira} &rarr; ${cad.depois.ufsComCadeira} (min. ${limitesPdf.ufsMinimas})` : "&mdash;";
-        secoes += `<tr><td class="partido">${m.entidade}</td><td class="${cls}">${texto}</td><td>${cadTexto}</td><td>${ufsTexto}</td></tr>`;
-      });
-      secoes += `</tbody></table>`;
-    } else {
-      secoes += `<p class="sem-impacto">Nenhuma altera&ccedil;&atilde;o na situa&ccedil;&atilde;o da Cl&aacute;usula de Desempenho nesta retotaliza&ccedil;&atilde;o.</p>`;
-    }
+  // Ano: o seletor tse-ano e a fonte direta; o nome do arquivo serve de reforco.
+  let ano;
+  const anoSel = document.getElementById("tse-ano");
+  if (anoSel && /^\d{4}$/.test(anoSel.value)) {
+    ano = Number(anoSel.value);
+  } else {
+    const m = String(fonte.arquivo || "").match(/(?:19|20)\d{2}/);
+    if (m) ano = Number(m[0]);
   }
 
-  // Fundo Partidario
-  if (res.nos.fundoPartidario) {
-    const fpPdf = res.nos.fundoPartidario;
-    const valorTotalPdf = fpPdf.valorTotalAnual || 1185566089.46;
-    const isPendentePdf = fpPdf.status !== 'validado';
-    const comMudancaClausulaPdf = new Set(
-      (res.nos.clausula && res.nos.clausula.mudancas ? res.nos.clausula.mudancas : []).map(m => m.entidade)
-    );
-    const partidosAfetadosPdf = res.nos.fefc && res.nos.fefc.porPartido
-      ? Object.entries(res.nos.fefc.porPartido).filter(([, p]) => (p.deltaTotal || 0) !== 0).map(([s]) => s)
-      : [];
-    const notaPdf = isPendentePdf
-      ? 'A cassa&ccedil;&atilde;o envolve perda de votos &mdash; o impacto na faixa de 95% est&aacute; pendente.'
-      : 'Sem perda de votos: a faixa de 95% se mant&eacute;m.';
-    secoes += `
-      <h2>4. Fundo Partid&aacute;rio (Quota de 95%)</h2>
-      <p class="base-legal">Base legal: Art. 41-A da Lei n&ordm; 9.096/1995. ${notaPdf}</p>
-      <table>
-        <thead><tr><th>Partido</th><th>Cota Anual Base</th><th>Eleg&iacute;vel para 5%</th><th>Alerta</th></tr></thead>
-        <tbody>`;
-    if (partidosAfetadosPdf.length > 0) {
-      for (const sigla of partidosAfetadosPdf) {
-        const fracao = fpPdf.fracoesBase && fpPdf.fracoesBase[sigla];
-        const cotaAnual = fracao ? ((fracao.fatia5 || 0) + (fracao.fatia95 || 0)) * valorTotalPdf : null;
-        const temClausula = fracao && (fracao.fatia5 || 0) > 0;
-        const clausulaMudou = comMudancaClausulaPdf.has(sigla);
-        const eligibilidade = temClausula ? "Sim" : "N&atilde;o";
-        const alerta = clausulaMudou ? "Cl&aacute;usula alterada &mdash; cota de 5% redistribu&iacute;da" : "&mdash;";
-        secoes += `<tr><td class="partido">${sigla}</td><td>${cotaAnual !== null ? formatarMoeda(cotaAnual) : "&mdash;"}</td><td>${eligibilidade}</td><td>${alerta}</td></tr>`;
-      }
-    } else {
-      secoes += `<tr><td colspan="4" class="sem-impacto">Nenhum partido afetado identificado.</td></tr>`;
-    }
-    secoes += `</tbody></table>`;
-  }
+  const vagasInput = document.getElementById("input-vagas");
+  const vagas = vagasInput ? (parseInt(vagasInput.value, 10) || undefined) : undefined;
 
-  const html = `<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<title>Parecer Cascata Eleitoral</title>
-<style>
-  body { font-family: Arial, sans-serif; font-size: 11pt; color: #111; margin: 2cm; }
-  h1 { font-size: 14pt; text-align: center; text-transform: uppercase; margin-bottom: 4px; }
-  .subtitulo { text-align: center; font-size: 10pt; color: #555; margin-bottom: 24px; }
-  h2 { font-size: 12pt; margin-top: 20px; margin-bottom: 4px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
-  .base-legal { font-size: 9pt; font-style: italic; color: #444; margin-bottom: 8px; }
-  table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
-  th { background: #f0f0f0; padding: 8px; border: 1px solid #ccc; text-align: left; font-size: 10pt; }
-  td { padding: 8px; border: 1px solid #ddd; font-size: 10pt; }
-  td.partido { font-weight: bold; }
-  td.positivo { color: #155724; font-weight: bold; }
-  td.negativo { color: #721c24; font-weight: bold; }
-  td.sem-impacto { text-align: center; font-style: italic; color: #666; }
-  @media print { body { margin: 1.5cm; } }
-</style>
-</head>
-<body>
-<h1>Impacto Financeiro e de Tempo de Propaganda da Retotaliza&ccedil;&atilde;o</h1>
-<p class="subtitulo">Anexo T&eacute;cnico &mdash; Cascata Eleitoral / RetotalizaJE</p>
-${secoes}
-</body>
-</html>`;
+  const contexto = {
+    cargo: fonte.cargo || undefined,
+    uf,
+    ano,
+    vagas,
+    dataGeracao: new Date(),
+    decisao: { cassacoes: lerCassacoesDoFormulario() }
+  };
 
-  const janela = window.open("", "_blank");
-  if (!janela) {
-    alert("O navegador bloqueou a abertura da janela. Permita pop-ups para este site e tente novamente.");
-    return;
-  }
-  janela.document.write(html);
-  janela.document.close();
-  janela.focus();
-  setTimeout(() => janela.print(), 400);
+  const dados = montarDadosPeca({
+    resultadoCascata: res,
+    dadosCenario: estadoCascata.ultimosDadosCen,
+    contexto
+  });
+  abrirPecaParaImpressao(dados);
 }
 
 if (document.readyState === "loading") {
