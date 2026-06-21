@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { calcular } from "./js/engine.js";
-import { montarCenarioCascata } from "./js/cascata-adaptador.js";
+import { gerarCenarioCascata } from "./js/cascata-adaptador.js";
 import { calcularCascata } from "./js/cascata.js";
 import { dadosReferencia } from "./js/cascata-referencia.js";
 
@@ -35,12 +35,10 @@ const quedaUniao = votosUniao(saidaAntes) - votosUniao(saidaDepois);
 console.log("\nVotos UNIAO antes:", votosUniao(saidaAntes), "depois:", votosUniao(saidaDepois), "| queda:", quedaUniao);
 
 // 4. Adaptador
-const cenarioCascata = montarCenarioCascata(saidaAntes, saidaDepois, dadosReferencia, {
-  tipo: "cassacao_sem_perda_votos", perdaDeVotos: false, circunscricao: "CE"
-});
+const cenarioCascata = gerarCenarioCascata(saidaAntes, saidaDepois, "cassacao_sem_perda_votos", "CE");
 console.log("\n== Delta entregue a cascata ==");
 console.log(JSON.stringify(cenarioCascata.deltaCadeirasPorPartido));
-if (cenarioCascata._siglasNaoMapeadas.length) console.log("ATENCAO nao mapeadas:", cenarioCascata._siglasNaoMapeadas);
+if ((cenarioCascata._siglasNaoMapeadas || []).length) console.log("ATENCAO nao mapeadas:", cenarioCascata._siglasNaoMapeadas);
 
 // 5. Cascata
 const resultado = calcularCascata(saidaAntes, saidaDepois, dadosReferencia, cenarioCascata);
