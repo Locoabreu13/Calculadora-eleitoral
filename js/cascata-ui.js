@@ -621,7 +621,9 @@ function linhaModoReverso(sigla, impacto, classe, rotuloEfeito) {
     ? sinal(impacto.fefc.deltaTotal) + formatarMoeda(impacto.fefc.deltaTotal)
     : "indisponível";
   const tvTexto = impacto.tempoTV && impacto.tempoTV.status === "validado"
-    ? sinal(impacto.tempoTV.deltaFracao) + formatarPercentual(impacto.tempoTV.deltaFracao)
+    ? (typeof impacto.tempoTV.deltaSegundos === "number"
+        ? sinal(impacto.tempoTV.deltaSegundos) + formatarSegundos(impacto.tempoTV.deltaSegundos) + " s/bloco (" + sinal(impacto.tempoTV.deltaFracao) + formatarPercentual(impacto.tempoTV.deltaFracao) + ")"
+        : sinal(impacto.tempoTV.deltaFracao) + formatarPercentual(impacto.tempoTV.deltaFracao))
     : "indisponível";
 
   return `

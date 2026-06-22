@@ -230,7 +230,10 @@ function gerarFraseImpactoLitigio(siglaPartidoProprio, ganhos, siglasAdversarias
       itens.push(reais(Math.abs(p.fefc.deltaTotal)) + " de FEFC");
     }
     if (p.tempoTV && p.tempoTV.status === "validado" && p.tempoTV.deltaFracao < 0) {
-      itens.push(porCento(Math.abs(p.tempoTV.deltaFracao)) + " do tempo de TV");
+      const tvTextoFrase = typeof p.tempoTV.deltaSegundos === "number"
+        ? Math.abs(p.tempoTV.deltaSegundos).toFixed(2).replace(".", ",") + " s/bloco de tempo de TV"
+        : porCento(Math.abs(p.tempoTV.deltaFracao)) + " do tempo de TV";
+      itens.push(tvTextoFrase);
     }
 
     let texto =
