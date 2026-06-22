@@ -2,7 +2,7 @@
 // Este modulo apenas le os objetos recebidos e monta deltas derivados.
 // Nao modifica saidaEngineBase, saidaEngineCenario nem candidatos/partidos internos.
 
-function normalizarTexto(valor) {
+export function normalizarTexto(valor) {
   return String(valor || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -162,7 +162,7 @@ function candidatoTemVotoEmDobro(candidato) {
   return candidatoEhMulher(candidato) || candidatoEhNegro(candidato);
 }
 
-export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categoria, uf) {
+export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categoria, uf, opts = {}) {
   const ufFinal = uf
     ? String(uf).toUpperCase().trim()
     : (saidaEngineBase && saidaEngineBase.meta && saidaEngineBase.meta.uf)
@@ -175,7 +175,13 @@ export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categor
     categoriaClassificada: categoria || "indefinido",
     circunscricao: ufFinal,
     deltaCadeirasPorPartido: {},
-    deltaVotosFEFCPorPartido: {}
+    deltaVotosFEFCPorPartido: {},
+    // Delta de votos SIMPLES (sem voto em dobro), por sigla individual, a ser
+    // aplicado na UF da circunscricao. Consumido pela clausula na Etapa 3.
+    deltaVotosClausulaPorPartido: {},
+    // Avisos de voto em dobro nao garantido (ambiguo, ausente ou sem tabela).
+    // A cascata e a peca exibem esses avisos; nunca se dobra em silencio.
+    _avisosVotoEmDobro: []
   };
 
   const partidosBase = listaPartidos(saidaEngineBase);
@@ -237,7 +243,118 @@ export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categor
       (cenario.deltaVotosFEFCPorPartido[sigla] || 0) + deltaPonderado;
   }
 
-  if (Object.keys(cenario.deltaVotosFEFCPorPartido).length > 0 || categoria === "cassacao_com_perda_votos") {
+  // ── Delta de votos a partir das cassacoes digitadas (Fase 5) ───────────────
+  // Caminho recomendado: ler as cassacoes direto (opts.cassacoes), em vez de
+  // comparar listas de candidatos (que a saida do engine nao expoe). Aplica o
+  // voto em dobro da EC 111/2021 cruzando nome+partido normalizados contra a
+  // tabela de genero/raca. So roda quando o chamador fornece opts.cassacoes;
+  // sem isso, o comportamento e identico ao anterior (compatibilidade retroativa).
+  const cassacoes = Array.isArray(opts.cassacoes) ? opts.cassacoes : null;
+  if (cassacoes) {
+    const tabela = (opts.tabelaGeneroRaca && opts.tabelaGeneroRaca.candidatos) || null;
+    const votosNacionais = (opts.dadosReferencia && opts.dadosReferencia.fefc
+      && opts.dadosReferencia.fefc.votosPorPartido) || null;
+
+    // Indice normalizado das chaves nacionais do FEFC (ex.: "UNIAO" -> "UNIÃO";
+    // "PC DO B" -> "PC do B"), para casar a sigla da cassacao com a base oficial
+    // reaproveitando o mesmo normalizarTexto, sem inventar tabela de traducao.
+    const indiceNacional = {};
+    if (votosNacionais) {
+      for (const chaveOficial of Object.keys(votosNacionais)) {
+        indiceNacional[normalizarTexto(chaveOficial)] = chaveOficial;
+      }
+    }
+
+    for (const cass of cassacoes) {
+      const partidoCass = normalizarSigla(cass && (cass.partido || cass.sigla));
+      const nomeCass = (cass && cass.candidato) ? String(cass.candidato) : "";
+      const votosAnular = numeroSeguro(cass && cass.votosAnular);
+      const modalidade = String((cass && cass.modalidade) || "");
+      // DRAP nao remove votos nominais de um candidato especifico; ignorado aqui.
+      if (!partidoCass || votosAnular <= 0 || modalidade === "cassacao_drap") continue;
+
+      // Membros: para federacao (sigla com "/"), tentar cada partido individual.
+      // ATENCAO: o caminho de FEDERACAO (mais de um membro) NAO e exercitado por
+      // nenhum teste real nesta fase. O caso validado (Heitor, UNIAO) e partido
+      // individual, entao membros = ["UNIAO"] e a federacao fica sem cobertura.
+      const membros = partidoCass.split("/").map((s) => s.trim()).filter(Boolean);
+      const ehFederacao = membros.length > 1;
+
+      // Resolve o voto em dobro pela tabela. A correspondencia e por IGUALDADE
+      // EXATA da chave "NOME|PARTIDO" normalizada (lookup de propriedade no
+      // objeto tabela), nunca por substring/includes.
+      let multiplicador = 1;
+      let membroResolvido = membros[0];
+      let statusDobro = "sem_tabela";
+      if (tabela && nomeCass) {
+        const achados = [];
+        for (const membro of membros) {
+          const chave = normalizarTexto(nomeCass) + "|" + normalizarTexto(membro);
+          const entrada = tabela[chave];
+          if (entrada) achados.push({ membro, entrada });
+        }
+        if (achados.length === 0) {
+          statusDobro = "ausente";
+        } else if (achados.some((a) => a.entrada.ambiguo)) {
+          statusDobro = "ambiguo";
+        } else if (new Set(achados.map((a) => !!a.entrada.votoEmDobro)).size > 1) {
+          statusDobro = "ambiguo"; // membros divergem (so possivel em federacao)
+        } else {
+          statusDobro = "ok";
+          membroResolvido = achados[0].membro;
+          multiplicador = achados[0].entrada.votoEmDobro ? 2 : 1;
+        }
+      }
+
+      // Nunca dobra em silencio: quando nao houver resposta garantida, registra
+      // o aviso visivel e usa multiplicador 1 (condicao 1 do escopo aprovado).
+      if (statusDobro !== "ok") {
+        cenario._avisosVotoEmDobro.push({
+          candidato: nomeCass, partido: partidoCass,
+          motivo: statusDobro, federacao: ehFederacao
+        });
+      }
+
+      // FEFC (fatia de 35%) e Fundo Partidario (faixa de 95%): delta PONDERADO
+      // (com voto em dobro), base NACIONAL. Cassacao REMOVE votos, entao o delta
+      // e NEGATIVO na chave do partido cassado.
+      // Caso Heitor: votosAnular 48888 * multiplicador 2 = 97776 -> -97776 em "UNIÃO".
+      const deltaPonderado = votosAnular * multiplicador;
+      const chaveNacional = indiceNacional[normalizarTexto(membroResolvido)] || null;
+      if (chaveNacional) {
+        cenario.deltaVotosFEFCPorPartido[chaveNacional] =
+          (cenario.deltaVotosFEFCPorPartido[chaveNacional] || 0) - deltaPonderado;
+      } else if (votosNacionais) {
+        cenario._avisosVotoEmDobro.push({
+          candidato: nomeCass, partido: partidoCass,
+          motivo: "sigla_nao_mapeada_no_fefc", federacao: ehFederacao
+        });
+      }
+
+      // Clausula de desempenho: delta SIMPLES (SEM voto em dobro), por sigla
+      // individual, representando a queda de votos DENTRO da UF da circunscricao
+      // (cenario.circunscricao), NAO um total nacional. Tambem NEGATIVO.
+      // A Etapa 3 deve aplicar este mesmo numero absoluto aos DOIS patamares da
+      // clausula (percentual nacional e percentual minimo por UF), cada um com
+      // SEU denominador; nunca somar como se fosse so um total nacional.
+      //
+      // VALIDACAO DE SIGLA ADIADA PARA A ETAPA 3 (deliberado): diferente do delta
+      // de FEFC, que so e gravado quando a sigla casa com fefc.votosPorPartido,
+      // este campo e gravado direto com membroResolvido, SEM verificar aqui se a
+      // sigla e reconhecida pela clausula. A base de reconhecimento da clausula
+      // (mapeamentoSiglaParaEntidade + cadeirasPorEntidadePorUF / statusVotosPorEntidade)
+      // e propria da clausula, e a verificacao correta pertence a calcularClausula
+      // (Etapa 3), que ja possui o mecanismo de _siglasNaoMapeadas para sinalizar
+      // siglas desconhecidas com o mesmo padrao de aviso. Ate la, este campo pode
+      // conter siglas ainda nao verificadas.
+      cenario.deltaVotosClausulaPorPartido[membroResolvido] =
+        (cenario.deltaVotosClausulaPorPartido[membroResolvido] || 0) - votosAnular;
+    }
+  }
+
+  if (Object.keys(cenario.deltaVotosFEFCPorPartido).length > 0 ||
+      Object.keys(cenario.deltaVotosClausulaPorPartido).length > 0 ||
+      categoria === "cassacao_com_perda_votos") {
     cenario.perdaDeVotos = true;
   }
 
