@@ -11,7 +11,8 @@ const estadoCascata = {
   ultimosDadosRef: null,
   ultimosDadosCen: null,
   ultimoResultado: null,
-  ultimoTempoCalculo: 0
+  ultimoTempoCalculo: 0,
+  grampoSuspenso: false
 };
 
 function formatarMoeda(valor) {
@@ -717,6 +718,7 @@ async function executarModoReverso() {
     return;
   }
 
+  estadoCascata.grampoSuspenso = true;
   try {
     const analise = analisarDecisaoLitigio({
       saidaEngineBase: base,
@@ -737,6 +739,8 @@ async function executarModoReverso() {
   } catch (e) {
     console.warn("Modo reverso: falha ao calcular.", e);
     exibirAvisoCascata("Não foi possível calcular o modo reverso: " + (e && e.message ? e.message : "erro desconhecido") + ".");
+  } finally {
+    estadoCascata.grampoSuspenso = false;
   }
 }
 
@@ -876,6 +880,14 @@ function instalarGrampoNoMotor() {
     const calcularOriginal = window.ElectoralEngine.calcular;
     
     window.ElectoralEngine.calcular = function(cenario) {
+      // Reentrância: a busca binária de calcularMargemUltimaCadeira chama o
+      // engine dezenas de vezes durante o modo reverso. Essas chamadas são
+      // sondagens internas, não cliques do usuário — não devem corromper o
+      // estado capturado dos cálculos reais.
+      if (estadoCascata.grampoSuspenso) {
+        return calcularOriginal.call(this, cenario);
+      }
+
       // Deixa o motor original fazer a conta normalmente
       const resultado = calcularOriginal.call(this, cenario);
       const agora = Date.now();
