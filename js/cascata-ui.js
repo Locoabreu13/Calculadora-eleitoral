@@ -668,6 +668,9 @@ function renderizarModoReverso(analise) {
     divAviso.innerHTML = `<div class="alerta info"><div class="alerta-titulo">⚠ Escopo do cálculo</div><p>${escaparHtml(analise.avisoEscopo)}</p></div>`;
   }
 
+  painel.classList.remove("cascata-litigio-atualizado");
+  void painel.offsetWidth;
+  painel.classList.add("cascata-litigio-atualizado");
   painel.style.display = "";
 }
 
@@ -709,6 +712,7 @@ async function executarModoReverso() {
 
   const btnCalcular = document.getElementById("btn-cascata-litigio-calcular");
   if (btnCalcular) { btnCalcular.disabled = true; btnCalcular.textContent = "Calculando..."; }
+  await new Promise(resolve => setTimeout(resolve, 0));
   estadoCascata.grampoSuspenso = true;
   try {
     const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
