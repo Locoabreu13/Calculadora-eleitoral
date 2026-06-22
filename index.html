@@ -96,7 +96,7 @@
 
           <div style="padding:72px 64px 72px 56px;display:flex;flex-direction:column;justify-content:center;gap:36px;animation:rise 700ms cubic-bezier(.2,.7,.2,1) 150ms both">
             <p style="margin:0;font-size:16px;line-height:1.75;color:#A8AFBE;font-weight:400">
-              Instrumento de cálculo da redistribuição de cadeiras em eleições proporcionais conforme o novo entendimento do Supremo sobre sobras eleitorais. Opera com dados oficiais do TSE e refaz a totalização a cada cassação, renúncia ou anulação de votos, quantificando também o impacto financeiro de cada cadeira transferida.
+              Instrumento de cálculo da redistribuição de cadeiras em eleições proporcionais conforme o novo entendimento do Supremo sobre sobras eleitorais. Opera com dados oficiais do TSE e refaz a totalização a cada cassação, renúncia ou anulação de votos. Calcula o impacto financeiro de cada cadeira transferida e responde, antes do recurso, se o número de votos contestados é suficiente para mudar o resultado.
             </p>
 
             <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
@@ -137,6 +137,10 @@
           <span style="font-size:11px;color:#B8853A">●</span>
           <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">Quociente partidário</span>
           <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">Modo reverso · viabilidade do recurso</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">Importação TSE · CSV oficial</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
           <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">TSE · dados oficiais</span>
           <span style="font-size:11px;color:#B8853A">●</span>
           <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">STF · ADIs 7.228 / 7.263 / 7.325</span>
@@ -148,6 +152,10 @@
           <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">Cláusula de desempenho</span>
           <span style="font-size:11px;color:#B8853A">●</span>
           <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">Quociente partidário</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">Modo reverso · viabilidade do recurso</span>
+          <span style="font-size:11px;color:#B8853A">●</span>
+          <span style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6356">Importação TSE · CSV oficial</span>
           <span style="font-size:11px;color:#B8853A">●</span>
         </div>
       </div>
@@ -246,7 +254,7 @@
         </div>
       </div>
 
-      <div style="background:linear-gradient(160deg,#131F33,#1A2738);border-radius:20px;display:grid;grid-template-columns:repeat(4,1fr);color:#F4EFE4;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,0.06) inset,0 40px 80px -40px rgba(19,31,51,0.45);position:relative">
+      <div style="background:linear-gradient(160deg,#131F33,#1A2738);border-radius:20px;display:grid;grid-template-columns:repeat(5,1fr);color:#F4EFE4;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,0.06) inset,0 40px 80px -40px rgba(19,31,51,0.45);position:relative">
         <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(184,133,58,0.5),transparent)"></div>
         <div style="padding:48px 36px 44px;border-right:1px solid rgba(255,255,255,0.08)">
           <div class="serif" style="font-size:48px;font-weight:400;color:#D4A65A;line-height:1;font-style:italic">01</div>
@@ -263,11 +271,21 @@
           <div class="serif" style="margin-top:32px;font-size:24px;font-weight:500;color:#FAF7EE;line-height:1.22;letter-spacing:-0.01em">Calcule com um clique</div>
           <div style="margin-top:14px;font-size:13.5px;color:#A8AFBE;line-height:1.6">QE, QP e sobras refeitos automaticamente em três fases.</div>
         </div>
-        <div style="padding:48px 36px 44px">
+        <div style="padding:48px 36px 44px;border-right:1px solid rgba(255,255,255,0.08)">
           <div class="serif" style="font-size:48px;font-weight:400;color:#D4A65A;line-height:1;font-style:italic">04</div>
-          <div class="serif" style="margin-top:32px;font-size:24px;font-weight:500;color:#FAF7EE;line-height:1.22;letter-spacing:-0.01em">Analise e exporte</div>
-          <div style="margin-top:14px;font-size:13.5px;color:#A8AFBE;line-height:1.6">Relatório técnico, planilha e modo apresentação.</div>
+          <div class="serif" style="margin-top:32px;font-size:24px;font-weight:500;color:#FAF7EE;line-height:1.22;letter-spacing:-0.01em">Analise as consequências</div>
+          <div style="margin-top:14px;font-size:13.5px;color:#A8AFBE;line-height:1.6">FEFC, Fundo Partidário, tempo de propaganda e cláusula de desempenho calculados automaticamente a partir da mudança de cadeira.</div>
         </div>
+        <div style="padding:48px 36px 44px">
+          <div class="serif" style="font-size:48px;font-weight:400;color:#D4A65A;line-height:1;font-style:italic">05</div>
+          <div class="serif" style="margin-top:32px;font-size:24px;font-weight:500;color:#FAF7EE;line-height:1.22;letter-spacing:-0.01em">Exporte ou simule o reverso</div>
+          <div style="margin-top:14px;font-size:13.5px;color:#A8AFBE;line-height:1.6">Relatório técnico em PDF, planilha CSV e modo apresentação. Ou ative o modo reverso para descobrir quantos votos precisam ser contestados para mudar o resultado.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;background:rgba(19,31,51,0.04);border:1px solid rgba(19,31,51,0.08);border-left:3px solid #B8853A;border-radius:10px;padding:20px 28px;display:flex;align-items:baseline;gap:18px;flex-wrap:wrap">
+        <span class="serif" style="font-size:15px;font-weight:500;color:#131F33;letter-spacing:-0.01em;white-space:nowrap">Importação direta do TSE</span>
+        <span style="font-size:13.5px;color:#4B5363;line-height:1.6">O sistema aceita o arquivo CSV oficial do TSE com um clique, preenchendo automaticamente todos os dados da eleição. Nenhuma digitação manual. Nenhuma margem para erro de transcrição.</span>
       </div>
 
       <div style="margin-top:96px;display:grid;grid-template-columns:1fr 1.2fr;gap:72px;align-items:center">
@@ -326,6 +344,83 @@
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- MODO REVERSO -->
+  <section id="modo-reverso" style="padding:140px 40px 120px;border-top:1px solid rgba(19,31,51,0.06)">
+    <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:96px;align-items:start">
+      <div>
+        <div class="eyebrow" style="margin-bottom:24px">
+          <span class="eyebrow-line"></span>
+          <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#B8853A;font-weight:500">Modo reverso</span>
+        </div>
+        <h2 class="serif" style="margin:0;font-size:56px;line-height:1.06;font-weight:500;letter-spacing:-0.022em;color:#131F33">
+          Antes do recurso, a pergunta <em style="font-style:italic;color:#8E6420">certa</em>.
+        </h2>
+        <p class="serif" style="margin:22px 0 0;font-size:22px;font-style:italic;line-height:1.4;color:#8E6420">
+          Vale a pena contestar esses votos?
+        </p>
+      </div>
+
+      <div style="padding-top:18px;display:flex;flex-direction:column;gap:20px">
+        <p style="margin:0;font-size:16.5px;line-height:1.7;color:#4B5363">
+          A decisão de recorrer não começa pelo mérito. Começa pelo número: quantos votos precisam ser anulados, excluídos ou atribuídos de forma diferente para que a distribuição de cadeiras mude?
+        </p>
+        <p style="margin:0;font-size:16.5px;line-height:1.7;color:#4B5363">
+          O modo reverso responde a essa pergunta com precisão. Informe o partido, o candidato e a modalidade jurídica pretendida. O sistema calcula, com base no resultado oficial, o limiar exato de votos a partir do qual a redistribuição de vagas se altera.
+        </p>
+        <p style="margin:0;font-size:16.5px;line-height:1.7;color:#4B5363">
+          Se o número de votos contestáveis na ação está abaixo desse limiar, o recurso não muda o resultado, independentemente de seu mérito jurídico. Se está acima, o caminho está aberto e o sistema já projeta qual partido ganha a vaga e quais as consequências financeiras imediatas.
+        </p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px">
+          <div style="background:#FFFFFF;border:1px solid #E5DFCF;border-radius:14px;padding:22px 24px">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:#8A8275;font-weight:500">Votos contestáveis na ação</div>
+            <div class="serif" style="margin-top:10px;font-size:32px;font-weight:500;color:#131F33;letter-spacing:-0.01em">31.200</div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #E5DFCF;border-radius:14px;padding:22px 24px">
+            <div class="mono" style="font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:#8A8275;font-weight:500">Limiar para mudar o resultado</div>
+            <div class="serif" style="margin-top:10px;font-size:32px;font-weight:500;color:#131F33;letter-spacing:-0.01em">28.540</div>
+          </div>
+        </div>
+
+        <p style="margin:4px 0 0;font-size:15px;line-height:1.6;color:#5A8A5E;font-weight:600">
+          O recurso é viável. A margem é de 2.660 votos.
+        </p>
+
+        <a href="app.html" style="margin-top:8px;align-self:flex-start;display:inline-flex;align-items:center;gap:10px;background:linear-gradient(180deg,#D4A65A,#B8853A);color:#131F33;font-size:14.5px;font-weight:700;padding:14px 24px;border-radius:99px;letter-spacing:0.005em;box-shadow:0 1px 0 rgba(255,255,255,0.45) inset,0 14px 30px -10px rgba(184,133,58,0.55)">
+          Simular o modo reverso
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIAGNÓSTICO INICIAL -->
+  <section style="padding:0 40px 100px">
+    <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:96px;align-items:center">
+      <div>
+        <div class="eyebrow" style="margin-bottom:20px">
+          <span class="eyebrow-line"></span>
+          <span class="mono" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#B8853A;font-weight:500">Diagnóstico inicial</span>
+        </div>
+        <h3 class="serif" style="margin:0;font-size:32px;line-height:1.16;font-weight:500;letter-spacing:-0.016em;color:#131F33">
+          Diagnóstico antes da cassação.
+        </h3>
+        <p style="margin:18px 0 0;font-size:15.5px;line-height:1.7;color:#4B5363">
+          Antes de configurar qualquer cenário, o sistema exibe a margem atual entre os partidos: quantos votos separam o último partido com cadeira do primeiro sem ela. Esse número orienta a avaliação inicial de viabilidade sem que o advogado precise abrir um único documento do processo.
+        </p>
+      </div>
+
+      <div style="background:rgba(19,31,51,0.03);border:1px solid rgba(19,31,51,0.08);border-left:3px solid #B8853A;border-radius:10px;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+        <div class="serif" style="font-size:16px;font-weight:500;color:#131F33;letter-spacing:-0.005em">
+          Margem atual entre PL e UNIÃO Brasil: <span style="color:#8E6420">4.312 votos</span>
+        </div>
+        <div style="font-size:13.5px;line-height:1.6;color:#4B5363">
+          Uma cassação que remova mais de 4.312 votos nominais do PL transfere a cadeira.
+        </div>
+      </div>
     </div>
   </section>
 
@@ -460,7 +555,7 @@
             Tempo de <em style="font-style:italic;color:#8E6420">propaganda</em>
           </h3>
           <p style="margin:0;font-size:15px;line-height:1.7;color:#4B5363">
-            <span style="color:#131F33;font-weight:600">90% do tempo</span> é distribuído proporcionalmente às cadeiras na Câmara. Perder a última cadeira remove o partido inteiramente do tempo de TV e redistribui a fração entre os demais.
+            <span style="color:#131F33;font-weight:600">90% do tempo</span> é distribuído proporcionalmente às cadeiras na Câmara. Perder a última cadeira remove o partido inteiramente do tempo de TV e redistribui a fração entre os demais. Os valores absolutos de 2026 serão incorporados ao sistema após a publicação oficial pelo TSE, prevista para o segundo semestre de 2026.
           </p>
           <div style="margin-top:auto;padding-top:20px;border-top:1px solid rgba(184,133,58,0.18);display:flex;align-items:center;gap:14px">
             <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#8E6420;font-weight:500">Rádio e TV</div>
@@ -583,7 +678,7 @@
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px">
 
         <article style="position:relative;background:#FFFFFF;border:1px solid #E5DFCF;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:18px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(19,31,51,0.18)" style-hover="transform:translateY(-2px)">
           <div style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(160deg,#F2D49B,#B8853A);color:#131F33;box-shadow:0 10px 20px -8px rgba(184,133,58,0.50)">
@@ -610,6 +705,15 @@
           <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#B8853A;font-weight:500">03 · Cliente</div>
           <h3 class="serif" style="margin:0;font-size:26px;font-weight:500;color:#131F33;letter-spacing:-0.012em;line-height:1.2">Modo apresentação</h3>
           <p style="margin:0;font-size:14.5px;line-height:1.65;color:#4B5363">Visualização limpa para audiências, sustentações orais e reuniões com clientes e candidatos.</p>
+        </article>
+
+        <article style="position:relative;background:#FFFFFF;border:1px solid #E5DFCF;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:18px;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 18px 40px -24px rgba(19,31,51,0.18)" style-hover="transform:translateY(-2px)">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(160deg,#F2D49B,#B8853A);color:#131F33;box-shadow:0 10px 20px -8px rgba(184,133,58,0.50)">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </div>
+          <div class="mono" style="font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#B8853A;font-weight:500">04 · Estratégia</div>
+          <h3 class="serif" style="margin:0;font-size:26px;font-weight:500;color:#131F33;letter-spacing:-0.012em;line-height:1.2">Modo reverso</h3>
+          <p style="margin:0;font-size:14.5px;line-height:1.65;color:#4B5363">Limiar de votos para mudança de resultado, margem atual e projeção de consequências financeiras, em uma tela de decisão antes do recurso.</p>
         </article>
 
       </div>
