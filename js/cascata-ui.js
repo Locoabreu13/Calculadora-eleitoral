@@ -7,6 +7,7 @@ import { analisarDecisaoLitigio } from "./cascata-reverso.js";
 const estadoCascata = {
   ultimaBase: null,
   ultimoCenario: null,
+  ultimoCenarioOriginalBase: null,
   ultimosDadosRef: null,
   ultimosDadosCen: null,
   ultimoResultado: null,
@@ -700,13 +701,11 @@ async function executarModoReverso() {
   const ano = obterAnoCascata();
   const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
 
-  // cenarioOriginalBase é o cenário INPUT do engine sem cassações — mesmo
-  // objeto que js/ui.js usa internamente para calcular Estado.resultadoOriginal
-  // (cenario.cassacoes.length > 0 -> { ...cenario, cassacoes: [] }), só
-  // reconstruído por fora, sem alterar js/ui.js.
-  const cenarioOriginalBase = window.Estado && window.Estado.cenario
-    ? { ...window.Estado.cenario, cassacoes: [] }
-    : null;
+  // cenarioOriginalBase vem do grampo instalado no engine: o input da primeira
+  // chamada de cada clique é o cenário sem cassações, salvo em
+  // estadoCascata.ultimoCenarioOriginalBase. Sem essa captura, window.Estado
+  // não está acessível neste contexto.
+  const cenarioOriginalBase = estadoCascata.ultimoCenarioOriginalBase || null;
 
   if (!cenarioOriginalBase) {
     exibirAvisoCascata("Cenário original do motor indisponível: a fragilidade da última cadeira não pôde ser calculada.");
@@ -887,6 +886,7 @@ function instalarGrampoNoMotor() {
       if (agora - estadoCascata.ultimoTempoCalculo > 100) {
         estadoCascata.ultimaBase = resultado;
         estadoCascata.ultimoCenario = resultado;
+        estadoCascata.ultimoCenarioOriginalBase = cenario;
       } else {
         estadoCascata.ultimaBase = estadoCascata.ultimoCenario;
         estadoCascata.ultimoCenario = resultado;
