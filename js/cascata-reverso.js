@@ -286,7 +286,9 @@ export function analisarDecisaoLitigio(params) {
   const base = clonarProfundamente(saidaEngineBase);
   const cenario = clonarProfundamente(saidaEngineCenario);
 
-  const margem = calcularMargemUltimaCadeira(base, cenarioOriginalBase, calcularFn);
+  const margem = cenarioOriginalBase
+    ? calcularMargemUltimaCadeira(base, cenarioOriginalBase, calcularFn)
+    : null;
 
   const cenarioCascata = gerarCenarioCascata(base, cenario, categoria, uf, opts);
   const resultadoCascata = calcularCascata(base, cenario, dadosReferencia, cenarioCascata);
