@@ -46,6 +46,17 @@ const MODALIDADE_LEGIVEL = {
   cassacao_drap: "anulação de DRAP"
 };
 
+const MOTIVO_VOTO_DOBRO_LEGIVEL = {
+  ausente: "candidato não localizado na tabela de gênero e raça da unidade federativa",
+  ambiguo: "registro divergente quanto à contagem em dobro para o candidato",
+  sem_tabela: "tabela de gênero e raça não disponível para a unidade federativa e o ano da decisão",
+  sigla_nao_mapeada_no_fefc: "sigla partidária não localizada na base oficial de votos do FEFC"
+};
+
+function motivoVotoDobroLegivel(motivo) {
+  return MOTIVO_VOTO_DOBRO_LEGIVEL[motivo] || (motivo ? String(motivo) : "motivo não informado");
+}
+
 const fmtReais = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 const fmtInt = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
 
@@ -212,6 +223,8 @@ export function montarDadosPeca({ resultadoCascata, dadosCenario, contexto } = {
       sigla,
       deltaCadeira: dCad,
       fefcDelta: pFefc ? (pFefc.deltaTotal || 0) : null,
+      fefcDelta48: pFefc && typeof pFefc.delta48 === "number" ? pFefc.delta48 : null,
+      fefcDelta35: pFefc && typeof pFefc.delta35 === "number" ? pFefc.delta35 : null,
       tvDeltaFracao: pTv ? (pTv.deltaFracao || 0) : null,
       tvDeltaSegundos: pTv && typeof pTv.deltaSegundos === "number" ? pTv.deltaSegundos : null,
       fundoCota: cotaFundo,
@@ -229,6 +242,11 @@ export function montarDadosPeca({ resultadoCascata, dadosCenario, contexto } = {
   const cassacoes = Array.isArray(ctx.decisao && ctx.decisao.cassacoes)
     ? ctx.decisao.cassacoes
     : (Array.isArray(ctx.cassacoes) ? ctx.cassacoes : []);
+
+  // Avisos de voto em dobro nao garantido (Fase 5), vindos do adaptador via
+  // cenario.cassacoes. Quando presentes, a peca exibe ressalva propria, antes
+  // do fundamento legal.
+  const avisosVotoEmDobro = Array.isArray(cen._avisosVotoEmDobro) ? cen._avisosVotoEmDobro : [];
 
   const cabecalho = {
     cargo: ctx.cargo || "Deputado Federal",
@@ -276,6 +294,7 @@ export function montarDadosPeca({ resultadoCascata, dadosCenario, contexto } = {
     },
     somas: { somaFefc, somaTvFracao },
     fundamentoLegal: montarFundamentoLegal(fefcFatia35Moveu),
+    avisosVotoEmDobro,
     rodape: "Esta peça é uma simulação técnica independente, de caráter auxiliar. " +
       "Os valores aqui apresentados não constituem a totalização oficial da Justiça Eleitoral " +
       "e não substituem os atos e cálculos oficiais do Tribunal competente."
@@ -414,7 +433,7 @@ export function renderizarPecaHTML(dados) {
     corpo += '<thead><tr>' +
       '<th>Partido</th>' +
       '<th>Cadeiras</th>' +
-      '<th>FEFC (48% das cadeiras)</th>' +
+      '<th>' + escaparHtml(tab.fefcFatia35Moveu ? "FEFC (48% cadeiras + 35% votos)" : "FEFC (48% das cadeiras)") + '</th>' +
       '<th>Tempo de TV</th>' +
       '<th>Fundo Partidário (cota anual de referência)</th>' +
       '</tr></thead><tbody>';
@@ -423,6 +442,11 @@ export function renderizarPecaHTML(dados) {
       const cadCls = l.deltaCadeira > 0 ? "positivo" : (l.deltaCadeira < 0 ? "negativo" : "");
       const fefcTxt = l.fefcDelta != null ? (sinal(l.fefcDelta) + reais(l.fefcDelta)) : "-";
       const fefcCls = (l.fefcDelta || 0) > 0 ? "positivo" : ((l.fefcDelta || 0) < 0 ? "negativo" : "");
+      let fefcDetalhe = "";
+      if (typeof l.fefcDelta35 === "number" && l.fefcDelta35 !== 0) {
+        fefcDetalhe = '<br><span class="detalhe">cadeiras (48%): ' + sinal(l.fefcDelta48 || 0) + reais(l.fefcDelta48 || 0) +
+          '; votos (35%): ' + sinal(l.fefcDelta35) + reais(l.fefcDelta35) + '</span>';
+      }
       let tvTxt = "-";
       if (l.tvDeltaFracao != null) {
         tvTxt = sinal(l.tvDeltaFracao) + percentualPreciso(l.tvDeltaFracao);
@@ -440,7 +464,7 @@ export function renderizarPecaHTML(dados) {
       corpo += '<tr>' +
         '<td class="partido">' + escaparHtml(l.sigla) + '</td>' +
         '<td class="' + cadCls + '">' + cadTxt + '</td>' +
-        '<td class="' + fefcCls + '">' + fefcTxt + '</td>' +
+        '<td class="' + fefcCls + '">' + fefcTxt + fefcDetalhe + '</td>' +
         '<td class="' + tvCls + '">' + tvTxt + '</td>' +
         '<td>' + fundoTxt + '</td>' +
         '</tr>';
@@ -509,9 +533,30 @@ export function renderizarPecaHTML(dados) {
   }
   corpo += '</section>';
 
+  // Ressalvas quanto ao voto em dobro (EC 111/2021), quando o adaptador nao
+  // confirmou o multiplicador para algum candidato da decisao carregada.
+  const avisos = Array.isArray(d.avisosVotoEmDobro) ? d.avisosVotoEmDobro : [];
+  if (avisos.length > 0) {
+    corpo += '<section class="bloco">';
+    corpo += '<h2>3. Ressalvas quanto à contagem em dobro de votos</h2>';
+    corpo += '<p class="nota-status">Em relação aos candidatos a seguir, não foi possível confirmar a contagem ' +
+      'em dobro de votos prevista na Emenda Constitucional nº 111/2021. Para esses casos, o cálculo desta peça ' +
+      'adotou a contagem simples (sem duplicação), até que a confirmação seja obtida.</p>';
+    corpo += '<table><thead><tr><th>Candidato</th><th>Partido</th><th>Motivo</th></tr></thead><tbody>';
+    for (const av of avisos) {
+      corpo += '<tr>' +
+        '<td>' + escaparHtml(av.candidato || "candidato não identificado") + '</td>' +
+        '<td class="partido">' + escaparHtml(av.partido || "") + '</td>' +
+        '<td>' + escaparHtml(motivoVotoDobroLegivel(av.motivo)) + '</td>' +
+        '</tr>';
+    }
+    corpo += '</tbody></table>';
+    corpo += '</section>';
+  }
+
   // Fundamento legal
   corpo += '<section class="bloco">';
-  corpo += '<h2>3. Fundamento legal</h2>';
+  corpo += '<h2>' + (avisos.length > 0 ? "4" : "3") + '. Fundamento legal</h2>';
   corpo += '<table class="legal"><tbody>';
   for (const f of (d.fundamentoLegal || [])) {
     corpo += '<tr><td class="tema">' + escaparHtml(f.tema) + '</td><td>' + escaparHtml(f.dispositivo) + '</td></tr>';
