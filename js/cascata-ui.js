@@ -700,26 +700,23 @@ async function executarModoReverso() {
   }
 
   const ano = obterAnoCascata();
-  const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
-
-  // cenarioOriginalBase vem do grampo instalado no engine: o input da primeira
-  // chamada de cada clique é o cenário sem cassações, salvo em
-  // estadoCascata.ultimoCenarioOriginalBase. Sem essa captura, window.Estado
-  // não está acessível neste contexto.
   const cenarioOriginalBase = estadoCascata.ultimoCenarioOriginalBase || null;
-
-  if (!cenarioOriginalBase) {
-    exibirAvisoCascata("Cenário original do motor indisponível: a fragilidade da última cadeira não pôde ser calculada.");
-  }
-
   const calcularFn = window.ElectoralEngine && window.ElectoralEngine.calcular;
   if (typeof calcularFn !== "function") {
     exibirAvisoCascata("Motor de cálculo indisponível para o modo reverso.");
     return;
   }
 
+  const btnCalcular = document.getElementById("btn-cascata-litigio-calcular");
+  if (btnCalcular) { btnCalcular.disabled = true; btnCalcular.textContent = "Calculando..."; }
   estadoCascata.grampoSuspenso = true;
   try {
+    const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
+
+    if (!cenarioOriginalBase) {
+      exibirAvisoCascata("Cenário original do motor indisponível: a fragilidade da última cadeira não pôde ser calculada.");
+    }
+
     const analise = analisarDecisaoLitigio({
       saidaEngineBase: base,
       cenarioOriginalBase,
@@ -741,6 +738,7 @@ async function executarModoReverso() {
     exibirAvisoCascata("Não foi possível calcular o modo reverso: " + (e && e.message ? e.message : "erro desconhecido") + ".");
   } finally {
     estadoCascata.grampoSuspenso = false;
+    if (btnCalcular) { btnCalcular.disabled = false; btnCalcular.textContent = "Calcular retorno do litígio"; }
   }
 }
 

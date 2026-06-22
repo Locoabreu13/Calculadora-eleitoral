@@ -149,14 +149,15 @@ function gerarFraseFragilidade(margem) {
   const pf = margem.primeiroFora;
 
   if (pf && pf.votosNecessarios !== null) {
+    const voto = pf.votosNecessarios === 1 ? "voto" : "votos";
     return (
-      "Independentemente da cassação em análise, a última cadeira, hoje de " +
+      "A última cadeira distribuída por sobras pertence hoje ao " +
       uc.sigla +
-      ", já está a " +
+      ". Bastaria um acréscimo de " +
       inteiro(pf.votosNecessarios) +
-      " votos de legenda de passar para " +
+      " " + voto + " de legenda ao " +
       pf.sigla +
-      " pela via ordinária da distribuição de sobras — uma medida de quão apertada é essa vaga."
+      " para que essa cadeira mudasse de mãos, o que demonstra a estreita margem dessa vaga, independentemente da cassação ora analisada."
     );
   }
 
