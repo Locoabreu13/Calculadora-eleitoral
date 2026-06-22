@@ -717,6 +717,9 @@
             <button id="btn-cascata" class="btn-action-primary" disabled title="Exibe o impacto financeiro e de tempo de TV da retotalização">
               ₢ Cascata
             </button>
+            <button id="btn-litigio" class="btn-action-primary" disabled title="Avalia o retorno financeiro e de tempo de TV de uma cassação cogitada, na ótica de quem decide se vale a pena litigar">
+              ⚖ Vale a pena litigar?
+            </button>
             <button id="btn-salvar-estudo" class="btn-action" disabled
                     title="Salvar estudo no painel">💾 Salvar Estudo</button>
           </div>
@@ -2080,6 +2083,15 @@
         <span>Necessário para a análise da cláusula de desempenho.</span>
       </div>
 
+      <div id="cascata-litigio-container" class="cascata-uf-row">
+        <label for="sel-cascata-meu-partido">Meu partido (modo reverso)</label>
+        <select id="sel-cascata-meu-partido">
+          <option value="">-- Selecione o partido representado --</option>
+        </select>
+        <button id="btn-cascata-litigio-calcular" class="cascata-btn cascata-btn-dark" type="button">Calcular retorno do litígio</button>
+        <span>Calcula o que esse partido ganha e o que o partido cassado perde, na ótica de quem decide se vale a pena litigar.</span>
+      </div>
+
       <section class="cascata-kpis" aria-label="Resumo da cascata eleitoral">
         <article class="cascata-kpi cascata-kpi-gold">
           <span>Cadeiras transferidas</span>
@@ -2128,6 +2140,19 @@
           <div id="cascata-clausula" class="cascata-panel" style="display:none"></div>
           <div id="cascata-fundo" class="cascata-panel" style="display:none"></div>
         </div>
+      </section>
+
+      <section id="cascata-litigio-resultado" class="cascata-card" style="display:none" aria-label="Modo reverso: vale a pena litigar?">
+        <div class="cascata-node-head">
+          <div>
+            <h2>Vale a pena <em>litigar</em>?</h2>
+            <p>Reorganização dos mesmos nós da cascata na ótica de quem decide se vale a pena litigar.</p>
+          </div>
+        </div>
+        <div id="cascata-litigio-fragilidade" class="cascata-note"></div>
+        <div id="cascata-litigio-impacto" class="cascata-note"></div>
+        <div id="cascata-litigio-tabela" class="cascata-table"></div>
+        <div id="cascata-litigio-aviso-escopo"></div>
       </section>
 
       <footer class="cascata-footer">

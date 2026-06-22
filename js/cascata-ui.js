@@ -2,6 +2,7 @@ import { calcularCascata } from "./cascata.js";
 import { dadosReferencia } from "./cascata-referencia.js";
 import { gerarCenarioCascata } from "./cascata-adaptador.js";
 import { montarDadosPeca, abrirPecaParaImpressao } from "./cascata-peticao.js";
+import { analisarDecisaoLitigio } from "./cascata-reverso.js";
 
 const estadoCascata = {
   ultimaBase: null,
@@ -421,6 +422,32 @@ function renderizarCascata(resultado) {
   }
 }
 
+// Popula o seletor "Meu partido" do modo reverso com as siglas presentes na
+// base carregada (saidaEngineBase.partidos), preservando a seleção atual se
+// ela ainda for válida. Confirmado em terminal antes de escrever esta função:
+// saida.partidos é array e cada elemento tem a propriedade "sigla".
+function popularSelectMeuPartido(saidaEngineBase) {
+  const select = document.getElementById("sel-cascata-meu-partido");
+  if (!select) return;
+
+  const partidos = saidaEngineBase && Array.isArray(saidaEngineBase.partidos)
+    ? saidaEngineBase.partidos
+    : [];
+
+  const valorAtual = select.value;
+  const opcoes = partidos
+    .map((p) => String((p && p.sigla) || "").trim())
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+  select.innerHTML = '<option value="">-- Selecione o partido representado --</option>' +
+    opcoes.map((sigla) => `<option value="${escaparHtml(sigla)}">${escaparHtml(sigla)}</option>`).join("");
+
+  if (valorAtual && opcoes.includes(valorAtual)) {
+    select.value = valorAtual;
+  }
+}
+
 export function abrirCascata(saidaEngineBase, saidaEngineCenario, dadosReferencia, dadosCenario) {
   if (saidaEngineBase) estadoCascata.ultimaBase = saidaEngineBase;
   if (saidaEngineCenario) estadoCascata.ultimoCenario = saidaEngineCenario;
@@ -448,6 +475,8 @@ export function abrirCascata(saidaEngineBase, saidaEngineCenario, dadosReferenci
     console.warn("Cascata: Faltam dados do motor para o cálculo inicial.");
     return;
   }
+
+  popularSelectMeuPartido(estadoCascata.ultimaBase);
 
   const resultado = calcularCascata(
     estadoCascata.ultimaBase,
@@ -571,6 +600,183 @@ function renderizarAvisosVotoEmDobro(avisos) {
   }
 }
 
+// Descreve o status da cláusula de uma sigla para uma linha da tabela do modo
+// reverso, no mesmo padrão textual do painel da cláusula direta.
+function descreverClausulaLinha(clausula) {
+  if (!clausula || clausula.status === "indisponivel") return "Cláusula indisponível";
+  if (!clausula.mudou) {
+    return clausula.cumpriuDepois === true
+      ? "Mantém a cláusula de desempenho"
+      : clausula.cumpriuDepois === false
+        ? "Já não cumpre a cláusula de desempenho"
+        : "Situação da cláusula pendente";
+  }
+  return clausula.cumpriuDepois ? "Passaria a cumprir a cláusula" : "Deixaria de cumprir a cláusula";
+}
+
+function linhaModoReverso(sigla, impacto, classe, rotuloEfeito) {
+  const fefcTexto = impacto.fefc && impacto.fefc.status === "validado"
+    ? sinal(impacto.fefc.deltaTotal) + formatarMoeda(impacto.fefc.deltaTotal)
+    : "indisponível";
+  const tvTexto = impacto.tempoTV && impacto.tempoTV.status === "validado"
+    ? sinal(impacto.tempoTV.deltaFracao) + formatarPercentual(impacto.tempoTV.deltaFracao)
+    : "indisponível";
+
+  return `
+    <div class="cascata-row cascata-cols-3">
+      <div class="cascata-party-cell">
+        <span class="cascata-party-marker ${classe}"></span>
+        <div>
+          <div class="cascata-party-name">${escaparHtml(sigla)}</div>
+          <div class="cascata-party-desc">${escaparHtml(rotuloEfeito)}</div>
+          <div class="cascata-party-desc">${escaparHtml(descreverClausulaLinha(impacto.clausula))}</div>
+        </div>
+      </div>
+      <div class="cascata-value ${classeValor(impacto.fefc && impacto.fefc.deltaTotal)}">${fefcTexto}</div>
+      <div class="cascata-value ${classeValor(impacto.tempoTV && impacto.tempoTV.deltaFracao)}">${tvTexto}</div>
+    </div>
+  `;
+}
+
+// Renderiza o painel do modo reverso (Fase 6): reorganiza os mesmos números
+// já calculados por analisarDecisaoLitigio na ótica de quem decide se vale a
+// pena litigar — sem recalcular nada, só formatando para exibição.
+function renderizarModoReverso(analise) {
+  const painel = document.getElementById("cascata-litigio-resultado");
+  if (!painel || !analise) return;
+
+  const divFragilidade = document.getElementById("cascata-litigio-fragilidade");
+  if (divFragilidade) divFragilidade.innerHTML = `<p>${escaparHtml(analise.fraseFragilidade)}</p>`;
+
+  const divImpacto = document.getElementById("cascata-litigio-impacto");
+  if (divImpacto) divImpacto.innerHTML = `<p><strong>${escaparHtml(analise.fraseImpactoLitigio)}</strong></p>`;
+
+  const divTabela = document.getElementById("cascata-litigio-tabela");
+  if (divTabela) {
+    let html = `<div class="cascata-row cascata-row-head cascata-cols-3"><div>Partido</div><div>FEFC</div><div>Tempo de TV</div></div>`;
+    html += linhaModoReverso(analise.siglaPartidoProprio, analise.ganhosPartidoProprio, "pos", "Partido representado (ganho cogitado)");
+    for (const sigla of analise.siglasPartidosAdversarios) {
+      html += linhaModoReverso(sigla, analise.perdasPorAdversario[sigla], "neg", "Partido adversário (perda cogitada)");
+    }
+    divTabela.innerHTML = html;
+  }
+
+  const divAviso = document.getElementById("cascata-litigio-aviso-escopo");
+  if (divAviso) {
+    divAviso.innerHTML = `<div class="alerta info"><div class="alerta-titulo">⚠ Escopo do cálculo</div><p>${escaparHtml(analise.avisoEscopo)}</p></div>`;
+  }
+
+  painel.style.display = "";
+}
+
+// Executa o modo reverso (Fase 6): lê "Meu partido" e as cassações cogitadas
+// já digitadas no formulário, reaproveita o mesmo encanamento da Fase 5
+// (cassacoes, tabela de gênero/raça) e chama analisarDecisaoLitigio. Nunca
+// recalcula a cascata por fora — só consome o que o módulo já valida.
+async function executarModoReverso() {
+  const selPartido = document.getElementById("sel-cascata-meu-partido");
+  const siglaPartidoProprio = selPartido ? selPartido.value.trim() : "";
+
+  if (!siglaPartidoProprio) {
+    exibirAvisoCascata("Selecione o partido representado antes de calcular o retorno do litígio.");
+    return;
+  }
+
+  const base = estadoCascata.ultimaBase;
+  const cenarioMotor = estadoCascata.ultimoCenario;
+  if (!base || !cenarioMotor) {
+    exibirAvisoCascata("Resultados do motor indisponíveis para o modo reverso.");
+    return;
+  }
+
+  let ufSelecionada = "";
+  try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch (e) {}
+  if (!ufSelecionada) {
+    const selUf = document.getElementById("sel-cascata-uf-overlay");
+    ufSelecionada = selUf ? selUf.value.trim() : "";
+  }
+
+  const ano = obterAnoCascata();
+  const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
+
+  // cenarioOriginalBase é o cenário INPUT do engine sem cassações — mesmo
+  // objeto que js/ui.js usa internamente para calcular Estado.resultadoOriginal
+  // (cenario.cassacoes.length > 0 -> { ...cenario, cassacoes: [] }), só
+  // reconstruído por fora, sem alterar js/ui.js.
+  const cenarioOriginalBase = window.Estado && window.Estado.cenario
+    ? { ...window.Estado.cenario, cassacoes: [] }
+    : null;
+
+  if (!cenarioOriginalBase) {
+    exibirAvisoCascata("Cenário original do motor indisponível: a fragilidade da última cadeira não pôde ser calculada.");
+  }
+
+  const calcularFn = window.ElectoralEngine && window.ElectoralEngine.calcular;
+  if (typeof calcularFn !== "function") {
+    exibirAvisoCascata("Motor de cálculo indisponível para o modo reverso.");
+    return;
+  }
+
+  try {
+    const analise = analisarDecisaoLitigio({
+      saidaEngineBase: base,
+      cenarioOriginalBase,
+      saidaEngineCenario: cenarioMotor,
+      calcularFn,
+      dadosReferencia,
+      categoria: "cassacao_com_perda_votos",
+      uf: ufSelecionada,
+      opts: {
+        cassacoes: lerCassacoesDoFormulario(),
+        tabelaGeneroRaca,
+        dadosReferencia
+      },
+      siglaPartidoProprio
+    });
+    renderizarModoReverso(analise);
+  } catch (e) {
+    console.warn("Modo reverso: falha ao calcular.", e);
+    exibirAvisoCascata("Não foi possível calcular o modo reverso: " + (e && e.message ? e.message : "erro desconhecido") + ".");
+  }
+}
+
+// Extraído do listener original de btn-cascata: recorte literal, sem nenhuma
+// mudança de lógica, só transformado de arrow function anônima em função
+// nomeada para poder ser reaproveitado também pelo botão de entrada do modo
+// reverso (btn-litigio), que abre o mesmo overlay da cascata.
+async function prepararEAbrirCascata() {
+  const base = window.Estado ? window.Estado.resultadoOriginal : estadoCascata.ultimaBase;
+  const cenarioMotor = window.Estado ? window.Estado.resultado : estadoCascata.ultimoCenario;
+
+  if (!base || !cenarioMotor) {
+    console.warn("Cascata: Resultados do motor indisponíveis.");
+    return;
+  }
+
+  // Aciona o perito para extrair os deltas e aplicar o voto em dobro
+  let ufSelecionada = "";
+  try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch(e) {}
+  if (!ufSelecionada) {
+    const selUf = document.getElementById("sel-cascata-uf-overlay");
+    ufSelecionada = selUf ? selUf.value.trim() : "";
+  }
+
+  const ano = obterAnoCascata();
+  limparAvisosCascata();
+  const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
+
+  const opts = {
+    cassacoes: lerCassacoesDoFormulario(),
+    tabelaGeneroRaca,
+    dadosReferencia
+  };
+
+  const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada, opts);
+  renderizarAvisosVotoEmDobro(dadosCenarioAdaptado._avisosVotoEmDobro);
+
+  abrirCascata(base, cenarioMotor, dadosReferencia, dadosCenarioAdaptado);
+}
+
 function configurarEventos() {
   const btnFechar = document.getElementById("cascata-fechar");
   if (btnFechar) btnFechar.addEventListener("click", fecharOverlay);
@@ -609,40 +815,15 @@ function configurarEventos() {
     aba.addEventListener("click", () => alternarAba(aba));
   });
 
+  const btnCascataLitigioCalcular = document.getElementById("btn-cascata-litigio-calcular");
+  if (btnCascataLitigioCalcular) btnCascataLitigioCalcular.addEventListener("click", executarModoReverso);
+
+  const btnLitigio = document.getElementById("btn-litigio");
+  if (btnLitigio) btnLitigio.addEventListener("click", () => prepararEAbrirCascata());
+
   const btnCascata = document.getElementById("btn-cascata");
   if (btnCascata) {
-    btnCascata.addEventListener("click", async () => {
-      const base = window.Estado ? window.Estado.resultadoOriginal : estadoCascata.ultimaBase;
-      const cenarioMotor = window.Estado ? window.Estado.resultado : estadoCascata.ultimoCenario;
-
-      if (!base || !cenarioMotor) {
-        console.warn("Cascata: Resultados do motor indisponíveis.");
-        return;
-      }
-
-      // Aciona o perito para extrair os deltas e aplicar o voto em dobro
-      let ufSelecionada = "";
-      try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch(e) {}
-      if (!ufSelecionada) {
-        const selUf = document.getElementById("sel-cascata-uf-overlay");
-        ufSelecionada = selUf ? selUf.value.trim() : "";
-      }
-
-      const ano = obterAnoCascata();
-      limparAvisosCascata();
-      const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
-
-      const opts = {
-        cassacoes: lerCassacoesDoFormulario(),
-        tabelaGeneroRaca,
-        dadosReferencia
-      };
-
-      const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada, opts);
-      renderizarAvisosVotoEmDobro(dadosCenarioAdaptado._avisosVotoEmDobro);
-
-      abrirCascata(base, cenarioMotor, dadosReferencia, dadosCenarioAdaptado);
-    });
+    btnCascata.addEventListener("click", prepararEAbrirCascata);
   }
 
   // Recalcula automaticamente quando o usuario troca a UF dentro do overlay
@@ -675,12 +856,15 @@ function configurarEventos() {
 function observarResultados() {
   const btnApresentacao = document.getElementById("btn-apresentacao");
   const btnCascata = document.getElementById("btn-cascata");
+  const btnLitigio = document.getElementById("btn-litigio");
 
   if (btnApresentacao && btnCascata) {
     btnCascata.disabled = btnApresentacao.disabled;
+    if (btnLitigio) btnLitigio.disabled = btnApresentacao.disabled;
 
     const observer = new MutationObserver(() => {
       btnCascata.disabled = btnApresentacao.disabled;
+      if (btnLitigio) btnLitigio.disabled = btnApresentacao.disabled;
     });
 
     observer.observe(btnApresentacao, { attributes: true, attributeFilter: ["disabled"] });
