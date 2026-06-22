@@ -674,6 +674,7 @@ function renderizarModoReverso(analise) {
 // (cassacoes, tabela de gênero/raça) e chama analisarDecisaoLitigio. Nunca
 // recalcula a cascata por fora — só consome o que o módulo já valida.
 async function executarModoReverso() {
+  limparAvisosCascata();
   const selPartido = document.getElementById("sel-cascata-meu-partido");
   const siglaPartidoProprio = selPartido ? selPartido.value.trim() : "";
 
