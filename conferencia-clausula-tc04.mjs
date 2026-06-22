@@ -235,7 +235,93 @@ chk3("PARTIDO_Y em siglasNaoMapeadas",
 console.log(ok04c ? "\nRESULTADO TC-04c: APROVADO" : "\nRESULTADO TC-04c: FALHOU");
 
 // ---------------------------------------------------------------------------
+// TC-04d: ramo perdaDeVotos === true (Etapa 3b) — os tres desfechos do criterio
+// de votos. Cenario sintetico, patamar 2022 (min. 11 cadeiras em 9 UFs),
+// cassacao na UF "BB".
+//   PARTIDO_A: 11/9 -> 10/8 (falha cadeiras), base votos false  -> cumpriuDepois false
+//              (atalho monotonico), mudou true, dispara domino.
+//   PARTIDO_B: 11/9 -> 10/8 (falha cadeiras), base votos true   -> cumpriuDepois null
+//              (pendente: confirmar exigiria votos absolutos ausentes), sem mudanca/domino.
+//   PARTIDO_C: 13/9 -> 12/9 (cumpre cadeiras), base votos true  -> cumpriuDepois true
+//              (precedencia de cadeiras), sem mudanca.
+// ---------------------------------------------------------------------------
+console.log("\n=== TC-04d: ramo perda de votos (Etapa 3b) — tres desfechos do criterio de votos ===");
+
+const drD = {
+  clausula: dadosReferencia.clausula,
+  clausulaLinhaDeBase2022: {
+    anoEleicao: 2022,
+    mapeamentoSiglaParaEntidade: {},
+    totalVotosPorUF: { AA:1e6, BB:1e6, CC:1e6, DD:1e6, EE:1e6, FF:1e6, GG:1e6, HH:1e6, II:1e6 },
+    cadeirasPorEntidadePorUF: {
+      PARTIDO_A: { AA:2, BB:1, CC:1, DD:1, EE:1, FF:1, GG:1, HH:1, II:2 }, // 11 cad / 9 UFs
+      PARTIDO_B: { AA:2, BB:1, CC:1, DD:1, EE:1, FF:1, GG:1, HH:1, II:2 }, // 11 cad / 9 UFs
+      PARTIDO_C: { AA:3, BB:2, CC:2, DD:1, EE:1, FF:1, GG:1, HH:1, II:1 }  // 13 cad / 9 UFs
+    },
+    statusVotosPorEntidade: {
+      PARTIDO_A: { cumpriuPorVotos: false, pctNacional: 0.5, ufsComPctMinimo: 2 },
+      PARTIDO_B: { cumpriuPorVotos: true,  pctNacional: 9.0, ufsComPctMinimo: 20 },
+      PARTIDO_C: { cumpriuPorVotos: true,  pctNacional: 9.0, ufsComPctMinimo: 20 }
+    }
+  }
+};
+const cenarioD = {
+  circunscricao: "BB",
+  perdaDeVotos: true,
+  deltaCadeirasPorPartido:      { PARTIDO_A: -1, PARTIDO_B: -1, PARTIDO_C: -1 },
+  deltaVotosClausulaPorPartido: { PARTIDO_A: -50000, PARTIDO_B: -50000, PARTIDO_C: -50000 }
+};
+const r04d = calcularClausula(null, null, drD, cenarioD, "cassacao_com_perda_votos");
+const rA = r04d.porEntidade && r04d.porEntidade["PARTIDO_A"];
+const rB = r04d.porEntidade && r04d.porEntidade["PARTIDO_B"];
+const rC = r04d.porEntidade && r04d.porEntidade["PARTIDO_C"];
+
+const show = (nome, e) => e && console.log(`${nome}: cad ${e.criteriosCadeiras.antes.cadeiras}->${e.criteriosCadeiras.depois.cadeiras}`,
+  `| UFs ${e.criteriosCadeiras.antes.ufsComCadeira}->${e.criteriosCadeiras.depois.ufsComCadeira}`,
+  `| cumpriuDepois ${e.cumpriuDepois}`, `| mudou ${e.mudou}`);
+show("PARTIDO_A", rA); show("PARTIDO_B", rB); show("PARTIDO_C", rC);
+console.log("Status no            :", r04d.status);
+console.log("temMudancaNaClausula :", r04d.temMudancaNaClausula, "| mudancas:", JSON.stringify(r04d.mudancas.map(m => m.entidade)));
+
+let ok04d = true;
+const chk4 = (label, cond) => { if (!cond) { console.log("FALHA:", label); ok04d = false; } };
+// PARTIDO_A: monotonico -> false, com domino
+chk4("A presente", !!rA);
+if (rA) {
+  chk4("A cadeiras 11->10", rA.criteriosCadeiras.antes.cadeiras === 11 && rA.criteriosCadeiras.depois.cadeiras === 10);
+  chk4("A cumpriuDepois === false (monotonico)", rA.cumpriuDepois === false);
+  chk4("A mudou === true", rA.mudou === true);
+}
+// PARTIDO_B: pendente -> null, sem mudanca, sem domino
+chk4("B presente", !!rB);
+if (rB) {
+  chk4("B cadeiras 11->10 (falha)", rB.criteriosCadeiras.depois.cadeiras === 10 && rB.criteriosCadeiras.depois.cumpriu === false);
+  chk4("B cumpriuDepois === null (pendente)", rB.cumpriuDepois === null);
+  chk4("B mudou === false", rB.mudou === false);
+  chk4("B criterioVotos.status === parcial_pendente", rB.criterioVotos && rB.criterioVotos.status === "parcial_pendente");
+}
+// PARTIDO_C: precedencia de cadeiras -> true
+chk4("C presente", !!rC);
+if (rC) {
+  chk4("C cadeiras 13->12 (cumpre)", rC.criteriosCadeiras.depois.cadeiras === 12 && rC.criteriosCadeiras.depois.cumpriu === true);
+  chk4("C cumpriuDepois === true (precedencia de cadeiras)", rC.cumpriuDepois === true);
+  chk4("C mudou === false", rC.mudou === false);
+}
+// No: pendente por causa de B; exatamente 1 mudanca (A), com domino
+chk4("status no === parcial_votos_pendentes", r04d.status === "parcial_votos_pendentes");
+chk4("exatamente 1 mudanca", r04d.mudancas.length === 1);
+if (r04d.mudancas.length === 1) {
+  chk4("mudanca e PARTIDO_A", r04d.mudancas[0].entidade === "PARTIDO_A");
+  chk4("mudanca para nao_cumpre", r04d.mudancas[0].para === "nao_cumpre");
+  chk4("A tem domino na mudanca", !!r04d.mudancas[0].domino);
+}
+// B e C nunca entram em mudancas
+chk4("B nao esta em mudancas", !r04d.mudancas.some(m => m.entidade === "PARTIDO_B"));
+chk4("C nao esta em mudancas", !r04d.mudancas.some(m => m.entidade === "PARTIDO_C"));
+console.log(ok04d ? "\nRESULTADO TC-04d: APROVADO" : "\nRESULTADO TC-04d: FALHOU");
+
+// ---------------------------------------------------------------------------
 // Resultado final
 // ---------------------------------------------------------------------------
 console.log("\n=== RESULTADO FINAL TC-04 ===");
-console.log((ok04a && ok04b && ok04c) ? "APROVADO" : "FALHOU - verificar acima");
+console.log((ok04a && ok04b && ok04c && ok04d) ? "APROVADO" : "FALHOU - verificar acima");

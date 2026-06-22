@@ -403,6 +403,24 @@ export function calcularClausula(_base, _cenarioRetotalizado, dadosReferencia, c
     deltaEntidade[entidade] = (deltaEntidade[entidade] || 0) + variacao;
   }
 
+  // Etapa 3b — entidades que perderam votos (delta simples por UF vindo do
+  // adaptador). Inclui no conjunto avaliado tambem entidades que perderam votos
+  // sem mudar cadeira (variacao de cadeira 0), para a clausula nao ignorar uma
+  // perda de votos isolada. A validacao de sigla, adiada de proposito na Etapa 2,
+  // acontece aqui: siglas desconhecidas vao para siglasNaoMapeadas, mesmo padrao.
+  const deltaVotosClausula = (cenario && cenario.deltaVotosClausulaPorPartido) || {};
+  const entidadesComPerdaVotos = new Set();
+  for (const [sigla, variacao] of Object.entries(deltaVotosClausula)) {
+    if (!(variacao < 0)) continue;
+    const entidade = mapeamento[sigla] || sigla;
+    if (!cadeirasPorEntidadePorUFBase[entidade] && !statusVotosPorEntidade[entidade]) {
+      if (!siglasNaoMapeadas.includes(sigla)) siglasNaoMapeadas.push(sigla);
+      continue;
+    }
+    entidadesComPerdaVotos.add(entidade);
+    if (!(entidade in deltaEntidade)) deltaEntidade[entidade] = 0;
+  }
+
   // Avalia o criterio de cadeiras antes e depois da retotalizacao,
   // aplicando a variacao apenas na UF da circunscricao.
   function avaliarCriteriosCadeiras(entidade, variacaoNaUF) {
@@ -445,17 +463,46 @@ export function calcularClausula(_base, _cenarioRetotalizado, dadosReferencia, c
     };
     const critCadeiras = avaliarCriteriosCadeiras(entidade, variacaoNaUF);
 
-    // Criterio de votos: sem perda de votos, mantem o resultado da eleicao de base.
-    // Com perda de votos, marcado como parcial_pendente (recalculo por UF nao implementado).
-    const critVotos = perdaDeVotos
-      ? { status: "parcial_pendente", observacao: "recalculo de votos por UF nao implementado" }
-      : { cumpriu: svBase.cumpriuPorVotos, pctNacional: svBase.pctNacional, ufsComPctMinimo: svBase.ufsComPctMinimo };
-
     const cumpriuAntes = critCadeiras.antes.cumpriu || svBase.cumpriuPorVotos;
-    const cumpriuDepois = perdaDeVotos
-      ? null
-      : (critCadeiras.depois.cumpriu || critVotos.cumpriu);
-    const mudou = !perdaDeVotos && (cumpriuAntes !== cumpriuDepois);
+
+    // Criterio de votos.
+    // - Sem perda de votos: inalterado, mantem o resultado da eleicao de base.
+    // - Com perda de votos (Etapa 3b): o criterio de CADEIRAS acima nao muda; o de
+    //   VOTOS tem dois patamares (percentual nacional e minimo por UF) que exigem o
+    //   numero absoluto de votos por entidade, AUSENTE na referencia. Por isso, sem
+    //   aproximar a partir do pctNacional armazenado:
+    //     entidade que nao perdeu votos -> votos = base (definitivo);
+    //     perdeu votos e ja nao cumpria por votos -> continua nao cumprindo
+    //       (monotonico: remover votos nao faz cruzar o patamar para cima);
+    //     perdeu votos e cumpria por votos -> PENDENTE (nao da para confirmar).
+    let critVotos;
+    let cumpriuDepois;
+    if (!perdaDeVotos) {
+      critVotos = { cumpriu: svBase.cumpriuPorVotos, pctNacional: svBase.pctNacional, ufsComPctMinimo: svBase.ufsComPctMinimo };
+      cumpriuDepois = critCadeiras.depois.cumpriu || critVotos.cumpriu;
+    } else {
+      let votosDepois; // true | false | null (pendente)
+      if (!entidadesComPerdaVotos.has(entidade)) {
+        votosDepois = svBase.cumpriuPorVotos;
+        critVotos = { cumpriu: votosDepois, pctNacional: svBase.pctNacional, ufsComPctMinimo: svBase.ufsComPctMinimo, base: "votos_inalterados" };
+      } else if (svBase.cumpriuPorVotos === false) {
+        votosDepois = false;
+        critVotos = { cumpriu: false, observacao: "ja nao cumpria por votos; remocao de votos mantem abaixo do patamar" };
+      } else {
+        votosDepois = null;
+        critVotos = { status: "parcial_pendente", observacao: "recalculo dos dois patamares de votos exige votos absolutos por entidade, ausentes na referencia" };
+      }
+
+      if (critCadeiras.depois.cumpriu || votosDepois === true) {
+        cumpriuDepois = true;            // cumpre por cadeiras ou por votos (definitivo)
+      } else if (votosDepois === false) {
+        cumpriuDepois = false;           // falha cadeiras e votos: perdeu a clausula
+      } else {
+        cumpriuDepois = null;            // depende de votos nao recuperaveis: pendente
+      }
+    }
+
+    const mudou = cumpriuDepois !== null && cumpriuAntes !== cumpriuDepois;
 
     porEntidade[entidade] = {
       criteriosCadeiras: critCadeiras,
@@ -483,8 +530,13 @@ export function calcularClausula(_base, _cenarioRetotalizado, dadosReferencia, c
     }
   }
 
+  // O no so fica pendente se ALGUMA entidade ficou indefinida (cumpriuDepois null),
+  // ou seja, quando a confirmacao dependeria de votos absolutos ausentes. Resolvido
+  // por cadeiras ou por monotonia, o no e "validado".
+  const temPendencia = Object.values(porEntidade).some((e) => e.cumpriuDepois === null);
+
   const resultado = {
-    status: perdaDeVotos ? "parcial_votos_pendentes" : "validado",
+    status: temPendencia ? "parcial_votos_pendentes" : "validado",
     anoEleicao,
     uf,
     patamarAplicado: "EC 97/2017, inciso " + patamar.incisoEC97,
@@ -523,6 +575,32 @@ export function calcularFundoPartidario(base, cenarioRetotalizado, dadosReferenc
   const fracoesBase = {};
   const deltas = {};
 
+  // Etapa 3a — faixa de 95%: consome o delta de votos PONDERADO nacional vindo do
+  // adaptador (cenario.deltaVotosFEFCPorPartido). A faixa de 95% e proporcional aos
+  // votos entre as entidades elegiveis; uma cassacao com perda de votos move essa
+  // proporcao. So recalcula quando ha delta disponivel; sem ele, mantem o fallback
+  // pendente, sem inventar numero. A faixa de 5% (igualitaria) NAO muda aqui: ela
+  // so se altera se a entidade perde a clausula, dominio tratado em
+  // calcularDominoFundoPartidario a partir de calcularClausula.
+  //
+  // PREMISSA: o conjunto de elegiveis (elegiveisBase) e tratado como CONSTANTE entre
+  // base e cenario. E sob essa premissa que a soma de todos os deltaFatia95 fecha em
+  // zero (redistribuicao sem vazamento). Uma mudanca de elegibilidade causada pela
+  // clausula e responsabilidade do dominio (calcularDominoFundoPartidario), nao deste
+  // ponto.
+  const deltaVotos = (cenario && cenario.deltaVotosFEFCPorPartido) || null;
+  const aplicaDelta =
+    (categoriaClassificada === "cassacao_com_perda_votos" || categoriaClassificada === "anulacao_drap") &&
+    deltaVotos && typeof deltaVotos === "object" && Object.keys(deltaVotos).length > 0;
+
+  // Novo total ponderado entre elegiveis, somando o delta apenas das entidades elegiveis.
+  let totalVotosNovo = totalVotosBase;
+  if (aplicaDelta) {
+    for (const p in deltaVotos) {
+      if (elegiveisBase.includes(p)) totalVotosNovo += deltaVotos[p];
+    }
+  }
+
   for (const p in votosBase) {
     let f5 = 0;
     if (elegiveisBase.includes(p)) {
@@ -535,14 +613,22 @@ export function calcularFundoPartidario(base, cenarioRetotalizado, dadosReferenc
     }
 
     fracoesBase[p] = { fatia5: f5, fatia95: f95 };
-    // O delta real requer a variacao de votos ponderados e a variacao da clausula.
-    // Mantemos zerado nesta etapa para permitir a validacao da base contra o TSE.
-    deltas[p] = { deltaFatia5: 0, deltaFatia95: 0 };
+
+    // deltaFatia95: variacao da fracao proporcional apos o delta de votos.
+    // deltaFatia5 permanece 0 (a faixa igualitaria so muda com mudanca de clausula).
+    let deltaFatia95 = 0;
+    if (aplicaDelta && elegiveisBase.includes(p) && totalVotosNovo > 0) {
+      const f95Novo = (votosBase[p] + (deltaVotos[p] || 0)) / totalVotosNovo;
+      deltaFatia95 = f95Novo - f95;
+    }
+    deltas[p] = { deltaFatia5: 0, deltaFatia95: deltaFatia95 };
   }
 
   let statusNo = "validado";
   if (categoriaClassificada === "cassacao_com_perda_votos" || categoriaClassificada === "anulacao_drap") {
-    statusNo = "parcial_pendente_delta_votos";
+    // Com o delta disponivel, a faixa de 95% passa a ser calculada (validado).
+    // Sem ele, permanece o fallback pendente, exatamente como antes.
+    statusNo = aplicaDelta ? "validado" : "parcial_pendente_delta_votos";
   }
 
   return {

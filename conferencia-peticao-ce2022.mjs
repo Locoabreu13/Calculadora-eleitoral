@@ -120,11 +120,15 @@ tudo &= checa("Frase cita o candidato (HEITOR)", dados.fraseAbertura.toUpperCase
 tudo &= checa("Frase narra transferencia para o PL", dados.fraseAbertura.includes("PL"));
 tudo &= checa("Frase parte da UNIAO", dados.fraseAbertura.includes("UNIÃO"));
 
-// 8. Estados dos nos refletidos com fidelidade (com perda de votos: clausula e fundo pendentes)
+// 8. Estados dos nos refletidos com fidelidade. Heitor: fundo pendente (a faixa
+// de 95% depende do delta de votos, nao fornecido neste caminho); clausula NAO
+// se altera, pois UNIAO segue acima do piso pelo criterio de cadeiras (Etapa 3b:
+// a clausula deixou de sair pendente quando resolve por cadeiras).
 tudo &= checa("FEFC validado", dados.tabela.fefcStatus === "validado");
 tudo &= checa("Tempo de TV validado", dados.tabela.tvStatus === "validado");
 tudo &= checa("Fundo pendente (decisao com perda de votos)", dados.tabela.fundoPendente === true);
-tudo &= checa("Clausula pendente (decisao com perda de votos)", dados.clausula.pendente === true);
+tudo &= checa("Clausula validada sem alteracao (UNIAO acima do piso por cadeiras)",
+  dados.clausula.validada === true && dados.clausula.temMudanca === false);
 
 console.log("\nRESULTADO:", tudo ? "APROVADO" : "REPROVADO");
 process.exit(tudo ? 0 : 1);
