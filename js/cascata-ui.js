@@ -482,6 +482,95 @@ function fecharOverlay() {
   if (app) app.style.display = "";
 }
 
+// Ano da eleicao, mesma fonte de obtencao usada em gerarPecaPeticao.
+function obterAnoCascata() {
+  let fonte = {};
+  try { fonte = (window.ImportTSE && window.ImportTSE.getFonteDados()) || {}; } catch (e) {}
+  const anoSel = document.getElementById("tse-ano");
+  if (anoSel && /^\d{4}$/.test(anoSel.value)) return Number(anoSel.value);
+  const m = String(fonte.arquivo || "").match(/(?:19|20)\d{2}/);
+  return m ? Number(m[0]) : undefined;
+}
+
+// Carrega a tabela de genero/raca por UF (Fase 5), com cache em estadoCascata
+// para nao baixar o mesmo arquivo duas vezes. 404 ou falha de rede nao bloqueia
+// o calculo: registra aviso visivel e retorna null; o adaptador trata ausencia
+// da tabela como comportamento sem voto em dobro.
+async function carregarTabelaGeneroRaca(ano, uf) {
+  if (!ano || !uf) return null;
+  const ufNormalizada = String(uf).toUpperCase().trim();
+  const chave = `${ano}_${ufNormalizada}`;
+
+  if (!estadoCascata.cacheGeneroRaca) estadoCascata.cacheGeneroRaca = {};
+  if (Object.prototype.hasOwnProperty.call(estadoCascata.cacheGeneroRaca, chave)) {
+    return estadoCascata.cacheGeneroRaca[chave];
+  }
+
+  let tabela = null;
+  try {
+    const resp = await fetch(`data/tse/${ano}_${ufNormalizada}_genero-raca.json`);
+    if (resp.ok) {
+      tabela = await resp.json();
+    } else {
+      exibirAvisoCascata(`Tabela de gênero/raça não encontrada para ${ufNormalizada}/${ano} (HTTP ${resp.status}). O voto em dobro ficará pendente para os candidatos afetados.`);
+    }
+  } catch (e) {
+    console.warn("Cascata: falha ao carregar tabela de genero/raca.", e);
+    exibirAvisoCascata(`Não foi possível carregar a tabela de gênero/raça para ${ufNormalizada}/${ano}. O voto em dobro ficará pendente para os candidatos afetados.`);
+  }
+
+  estadoCascata.cacheGeneroRaca[chave] = tabela;
+  return tabela;
+}
+
+function obterContainerAvisosCascata() {
+  let container = document.getElementById("cascata-avisos-voto-dobro");
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "cascata-avisos-voto-dobro";
+    container.setAttribute("role", "alert");
+    container.setAttribute("aria-live", "polite");
+    const conteudo = document.querySelector("#tela-cascata .cascata-content");
+    if (conteudo) conteudo.insertBefore(container, conteudo.firstChild);
+  }
+  return container;
+}
+
+function limparAvisosCascata() {
+  const container = document.getElementById("cascata-avisos-voto-dobro");
+  if (container) container.innerHTML = "";
+}
+
+function exibirAvisoCascata(mensagem) {
+  const container = obterContainerAvisosCascata();
+  const div = document.createElement("div");
+  div.className = "alerta info";
+  div.innerHTML = `<div class="alerta-titulo">⚠ Aviso</div><p>${escaparHtml(mensagem)}</p>`;
+  container.appendChild(div);
+}
+
+// Renderiza os avisos de voto em dobro nao garantido (Fase 5), no mesmo
+// padrao visual dos demais alertas do projeto. Nunca dobra em silencio:
+// se o adaptador nao confirmou o multiplicador, isso fica visivel aqui.
+function renderizarAvisosVotoEmDobro(avisos) {
+  if (!Array.isArray(avisos) || avisos.length === 0) return;
+  const container = obterContainerAvisosCascata();
+  const motivos = {
+    ausente: "candidato não encontrado na tabela de gênero/raça",
+    ambiguo: "registros divergentes para o candidato",
+    sem_tabela: "tabela de gênero/raça não carregada",
+    sigla_nao_mapeada_no_fefc: "sigla não reconhecida na base oficial do FEFC"
+  };
+  for (const av of avisos) {
+    const motivo = motivos[av.motivo] || av.motivo;
+    const div = document.createElement("div");
+    div.className = "alerta info";
+    div.innerHTML = `<div class="alerta-titulo">⚠ Voto em dobro não confirmado</div>` +
+      `<p>${escaparHtml(av.candidato || "(sem nome)")} — ${escaparHtml(av.partido || "")}: ${escaparHtml(motivo)}. Calculado sem o dobro (multiplicador 1).</p>`;
+    container.appendChild(div);
+  }
+}
+
 function configurarEventos() {
   const btnFechar = document.getElementById("cascata-fechar");
   if (btnFechar) btnFechar.addEventListener("click", fecharOverlay);
@@ -522,10 +611,10 @@ function configurarEventos() {
 
   const btnCascata = document.getElementById("btn-cascata");
   if (btnCascata) {
-    btnCascata.addEventListener("click", () => {
+    btnCascata.addEventListener("click", async () => {
       const base = window.Estado ? window.Estado.resultadoOriginal : estadoCascata.ultimaBase;
       const cenarioMotor = window.Estado ? window.Estado.resultado : estadoCascata.ultimoCenario;
-      
+
       if (!base || !cenarioMotor) {
         console.warn("Cascata: Resultados do motor indisponíveis.");
         return;
@@ -538,8 +627,20 @@ function configurarEventos() {
         const selUf = document.getElementById("sel-cascata-uf-overlay");
         ufSelecionada = selUf ? selUf.value.trim() : "";
       }
-      const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada);
-      
+
+      const ano = obterAnoCascata();
+      limparAvisosCascata();
+      const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
+
+      const opts = {
+        cassacoes: lerCassacoesDoFormulario(),
+        tabelaGeneroRaca,
+        dadosReferencia
+      };
+
+      const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada, opts);
+      renderizarAvisosVotoEmDobro(dadosCenarioAdaptado._avisosVotoEmDobro);
+
       abrirCascata(base, cenarioMotor, dadosReferencia, dadosCenarioAdaptado);
     });
   }
@@ -547,12 +648,25 @@ function configurarEventos() {
   // Recalcula automaticamente quando o usuario troca a UF dentro do overlay
   const selUfOverlay = document.getElementById("sel-cascata-uf-overlay");
   if (selUfOverlay) {
-    selUfOverlay.addEventListener("change", () => {
+    selUfOverlay.addEventListener("change", async () => {
       const base = estadoCascata.ultimaBase;
       const cenarioMotor = estadoCascata.ultimoCenario;
       if (!base || !cenarioMotor) return;
       const ufSelecionada = selUfOverlay.value.trim();
-      const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada);
+
+      const ano = obterAnoCascata();
+      limparAvisosCascata();
+      const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
+
+      const opts = {
+        cassacoes: lerCassacoesDoFormulario(),
+        tabelaGeneroRaca,
+        dadosReferencia
+      };
+
+      const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada, opts);
+      renderizarAvisosVotoEmDobro(dadosCenarioAdaptado._avisosVotoEmDobro);
+
       abrirCascata(base, cenarioMotor, dadosReferencia, dadosCenarioAdaptado);
     });
   }
