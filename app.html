@@ -361,7 +361,7 @@
           </div>
           <div class="dash-kpi dash-kpi--green">
             <div class="dash-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg></div>
-            <div><span>v2.0</span><p>Versão operacional</p><b></b></div>
+            <div><span id="dash-metric-tribunal">—</span><p>Tribunal do último cálculo</p><b></b></div>
           </div>
         </div>
 
@@ -1837,6 +1837,8 @@
           if (mUl) { const t = _haDias(arr[0].savedAt); mUl.textContent = (t ? t + ' · ' : '') + 'último cálculo'; }
         }
       }
+      const _t = document.getElementById('dash-metric-tribunal');
+      if (_t) _t.textContent = arr.length ? (arr[0].parametros?.uf || arr[0].parametros?.estado || 'TSE') : '—';
     }
 
     function _dashRenderRecentes() {

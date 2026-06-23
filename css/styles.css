@@ -6715,7 +6715,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: #edf0f5;
+  background: #faf7ee;
   border-radius: 20px 0 0 20px;
 }
 
@@ -6879,7 +6879,7 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   max-width: none;
   min-height: 0;
   padding: 24px 28px 36px;
-  background: #edf0f5;
+  background: #faf7ee;
   overflow-y: auto;
 }
 
@@ -6949,10 +6949,10 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 #tela-dashboard .dash-kpi,
 #tela-dashboard .dash-block,
 #tela-dashboard .dash-quick-item {
-  border: 1px solid #e8ebf0;
+  border: 1px solid #e5dfcf;
   border-radius: 16px;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(19,31,51,.04);
+  box-shadow: 0 2px 12px rgba(19,31,51,.07), 0 1px 0 rgba(255,255,255,.75) inset;
 }
 
 #tela-dashboard .dash-chart-card,
@@ -7125,8 +7125,10 @@ body.resizing-x { cursor: col-resize; user-select: none; }
 #tela-dashboard .dash-kpi span {
   color: #131f33;
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1;
+  font-family: "Newsreader", Georgia, serif;
+  letter-spacing: -0.02em;
 }
 
 #tela-dashboard .dash-kpi p {
