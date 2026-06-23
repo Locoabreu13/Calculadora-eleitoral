@@ -287,103 +287,54 @@
       </header>
 
       <!-- ── INÍCIO ──────────────────────────────────────────────── -->
-      <div class="dash-sec dash-sec-active" id="dsec-home">
+      <div class="dash-sec dash-sec-active dash-sec-hero" id="dsec-home">
 
-        <div class="dash-panel-titlebar">
-          <div>
-            <p class="dash-panel-eyebrow">Justiça Eleitoral · Recálculo de Vagas</p>
-            <h1>Painel</h1>
-          </div>
-          <div class="dash-panel-actions">
-            <div class="dash-credit-pill"><span></span><strong id="dash-creditos-num">—</strong> créditos restantes</div>
-            <button class="dash-btn-novo" id="dash-hero-calc">+ Novo Cálculo</button>
-          </div>
+        <div class="dash-hero-eyebrow">
+          <span class="dash-hero-eyebrow-line"></span>
+          <span class="mono" id="dash-hero-data">Painel</span>
         </div>
 
-        <div class="dash-analytics-grid">
-          <article class="dash-chart-card">
-            <div class="dash-chart-head">
-              <div>
-                <h2>Cálculos realizados</h2>
-                <p>Histórico salvo neste navegador</p>
-              </div>
-              <strong id="dash-metric-estudos">0</strong>
-            </div>
-            <svg class="dash-bars" viewBox="0 0 280 90" preserveAspectRatio="none" aria-hidden="true">
-              <line x1="0" y1="18" x2="280" y2="18"/><line x1="0" y1="42" x2="280" y2="42"/><line x1="0" y1="66" x2="280" y2="66"/>
-              <rect x="2" y="53" width="32" height="29" rx="5"/><rect x="50" y="25" width="32" height="57" rx="5"/><rect x="98" y="61" width="32" height="21" rx="5"/><rect class="hot" x="146" y="15" width="32" height="67" rx="5"/><rect x="194" y="30" width="32" height="52" rx="5"/><rect class="strong" x="242" y="10" width="32" height="72" rx="5"/>
-              <text x="18" y="89">Jan</text><text x="66" y="89">Fev</text><text x="114" y="89">Mar</text><text x="162" y="89">Abr</text><text x="210" y="89">Mai</text><text x="258" y="89">Jun</text>
-            </svg>
-            <div class="dash-card-note dash-card-note--ok">Dados locais atualizados automaticamente</div>
-          </article>
+        <h1 class="dash-hero-heading">
+          <span id="dash-hero-saudacao">Bem-vindo</span>,<br><em id="dash-hero-nome">—</em>.
+        </h1>
 
-          <article class="dash-chart-card">
-            <div class="dash-chart-head">
-              <div>
-                <h2>Créditos disponíveis</h2>
-                <p>Saldo atual da conta</p>
-              </div>
-              <strong id="dash-metric-creditos">—</strong>
-            </div>
-            <svg class="dash-bars dash-bars--blue" viewBox="0 0 280 90" preserveAspectRatio="none" aria-hidden="true">
-              <line x1="0" y1="18" x2="280" y2="18"/><line x1="0" y1="42" x2="280" y2="42"/><line x1="0" y1="66" x2="280" y2="66"/>
-              <rect x="2" y="51" width="32" height="31" rx="5"/><rect x="50" y="42" width="32" height="40" rx="5"/><rect x="98" y="59" width="32" height="23" rx="5"/><rect class="hot" x="146" y="17" width="32" height="65" rx="5"/><rect x="194" y="25" width="32" height="57" rx="5"/><rect class="strong" x="242" y="10" width="32" height="72" rx="5"/>
-              <text x="18" y="89">Jan</text><text x="66" y="89">Fev</text><text x="114" y="89">Mar</text><text x="162" y="89">Abr</text><text x="210" y="89">Mai</text><text x="258" y="89">Jun</text>
-            </svg>
-            <div class="dash-card-note">Consumo por cálculos processados</div>
-          </article>
+        <p class="dash-hero-sub" id="dash-hero-sub">O que deseja fazer hoje?</p>
 
-          <article class="dash-court-card">
-            <h2>Por tribunal</h2>
-            <p>Distribuição dos cálculos recentes</p>
-            <div class="dash-court-list">
-              <div><span><i></i>TRE-SP</span><strong>38%</strong><b style="width:38%"></b></div>
-              <div><span><i></i>TSE</span><strong>22%</strong><b style="width:22%"></b></div>
-              <div><span><i></i>TRE-MG</span><strong>15%</strong><b style="width:15%"></b></div>
-              <div><span><i></i>TRE-RJ</span><strong>12%</strong><b style="width:12%"></b></div>
-            </div>
-            <small>Última atualização · 2026</small>
-          </article>
+        <div class="dash-hero-grid" id="dash-hero-grid"></div>
+
+        <div class="dash-hero-divider">
+          <span class="dash-hero-divider-l"></span>
+          <span class="mono">Ou explore outras seções</span>
+          <span class="dash-hero-divider-r"></span>
         </div>
 
-        <div class="dash-kpi-grid dash-kpi-grid--painel">
-          <div class="dash-kpi dash-kpi--gold">
-            <div class="dash-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8"/><path d="M8 12h5"/></svg></div>
-            <div><span data-dash-metric="estudos">0</span><p>Cálculos realizados</p><b></b></div>
-          </div>
-          <div class="dash-kpi dash-kpi--navy">
-            <div class="dash-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-            <div><span id="dash-metric-ultimo">nenhum ainda</span><p id="dash-metric-ultimo-lbl">último cálculo</p><b></b></div>
-          </div>
-          <div class="dash-kpi dash-kpi--blue">
-            <div class="dash-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg></div>
-            <div><span data-dash-metric="creditos">—</span><p>Créditos restantes</p><b></b></div>
-          </div>
-          <div class="dash-kpi dash-kpi--green">
-            <div class="dash-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg></div>
-            <div><span id="dash-metric-tribunal">—</span><p>Tribunal do último cálculo</p><b></b></div>
-          </div>
-        </div>
+        <div class="dash-hero-shortcuts">
+          <button type="button" class="dash-shortcut" data-sec="estudos">
+            <span class="dash-shortcut-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/></svg></span>
+            <span class="dash-shortcut-body">
+              <span class="dash-shortcut-title">Meus cálculos</span>
+              <span class="dash-shortcut-sub" id="dash-shortcut-estudos-sub">Nenhum cálculo salvo ainda</span>
+            </span>
+            <svg class="dash-shortcut-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
 
-        <div class="dash-home-grid dash-home-grid--painel">
-          <div class="dash-block dash-block--recentes">
-            <div class="dash-block-top">
-              <div>
-                <span class="dash-block-kicker">Histórico</span>
-                <span class="dash-block-title">Cálculos recentes</span>
-              </div>
-              <button class="dash-ver-todos" data-sec="estudos">Ver todos</button>
-            </div>
-            <div class="dash-recentes-table-head">
-              <div>Protocolo</div>
-              <div>Processo</div>
-              <div>Tribunal</div>
-              <div>Situação</div>
-              <div>Data</div>
-              <div></div>
-            </div>
-            <div id="dash-recentes" class="dash-recentes dash-recentes--table"></div>
-          </div>
+          <button type="button" class="dash-shortcut" disabled title="Em breve">
+            <span class="dash-shortcut-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg></span>
+            <span class="dash-shortcut-body">
+              <span class="dash-shortcut-title">Exportações</span>
+              <span class="dash-shortcut-sub">Em breve</span>
+            </span>
+            <svg class="dash-shortcut-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+
+          <button type="button" class="dash-shortcut" disabled title="Em breve">
+            <span class="dash-shortcut-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v6c0 4.5-3 8-8 9-5-1-8-4.5-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg></span>
+            <span class="dash-shortcut-body">
+              <span class="dash-shortcut-title">Casos validados</span>
+              <span class="dash-shortcut-sub">Em breve</span>
+            </span>
+            <svg class="dash-shortcut-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
         </div>
 
       </div>
@@ -396,6 +347,17 @@
         </div>
         <div id="dash-estudos-list" class="dash-estudos-list"></div>
       </div>
+
+      <footer class="dash-footer-strip">
+        <div class="dash-footer-left">
+          <span class="dash-footer-status"><i></i>TSE · dados oficiais</span>
+        </div>
+        <div class="dash-footer-right">
+          <span class="dash-footer-credits-lbl">Créditos</span>
+          <strong id="dash-creditos-num">—</strong>
+          <a href="#" class="dash-footer-buy" onclick="window._mostrarModalPlanos();return false;">Comprar mais →</a>
+        </div>
+      </footer>
 
     </main>
   </div>
@@ -1367,11 +1329,8 @@
           // Atualiza dropdown de perfil
           const pdNum = document.getElementById('perfil-drop-num');
           if (pdNum) pdNum.textContent = n >= 9999 ? '∞' : n;
-          // Métrica + painel de créditos do dashboard
+          // Painel de créditos do dashboard
           const disp = n >= 9999 ? '∞' : n;
-          const mCred = document.getElementById('dash-metric-creditos');
-          if (mCred) mCred.textContent = disp;
-          document.querySelectorAll('[data-dash-metric="creditos"]').forEach(el => { el.textContent = disp; });
           const planNum = document.getElementById('dash-plan-num');
           if (planNum) planNum.textContent = disp;
           const planBar = document.getElementById('dash-plan-bar');
@@ -1732,6 +1691,8 @@
       const nome  = first ? first.charAt(0).toUpperCase() + first.slice(1) : 'Usuário';
 
       document.querySelectorAll('.dash-first-name').forEach(el => el.textContent = nome);
+      const heroNome = document.getElementById('dash-hero-nome');
+      if (heroNome) heroNome.textContent = nome;
       const av = document.getElementById('dash-avatar');
       if (av) av.textContent = nome.charAt(0).toUpperCase();
       const pdAv = document.getElementById('perfil-drop-avatar');
@@ -1742,6 +1703,8 @@
 
       const nomeEl = document.getElementById('dash-saudacao-nome');
       if (nomeEl) nomeEl.textContent = nome;
+      const sauda = document.getElementById('dash-hero-saudacao');
+      if (sauda) sauda.textContent = _saudacaoHora();
 
       document.getElementById('dash-nav').addEventListener('click', function(e) {
         const btn = e.target.closest('[data-sec]');
@@ -1749,7 +1712,6 @@
         _dashGo(btn.dataset.sec);
       });
       const _wire = (id, fn) => { const el = document.getElementById(id); if (el) el.addEventListener('click', fn); };
-      _wire('dash-hero-calc',     dashGoCalc);
       _wire('dash-quick-novo',    dashGoCalc);
       _wire('dash-quick-estudos', () => _dashGo('estudos'));
       _wire('dash-plan-comprar',  () => window._mostrarModalPlanos());
@@ -1757,8 +1719,13 @@
       const veBtn = document.querySelector('.dash-ver-todos');
       if (veBtn) veBtn.addEventListener('click', () => _dashGo('estudos'));
 
-      _dashFillMetrics();
-      _dashRenderRecentes();
+      const shortcutsEl = document.querySelector('.dash-hero-shortcuts');
+      if (shortcutsEl) shortcutsEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-sec]');
+        if (btn && !btn.disabled) _dashGo(btn.dataset.sec);
+      });
+
+      _dashRenderHero();
 
       window.__dashUid = user.uid;
     };
@@ -1796,7 +1763,7 @@
     function voltarDashboard() {
       document.getElementById('tela-auth').style.display = 'none';
       document.getElementById('tela-dashboard').style.display = '';
-      _dashRenderRecentes();
+      _dashRenderHero();
     }
     window.voltarDashboard = voltarDashboard;
 
@@ -1809,64 +1776,76 @@
       if (isNaN(d)) return ''; if (d <= 0) return 'hoje'; if (d === 1) return 'ontem'; return 'há ' + d + ' dias';
     }
 
-    // Fase com mais cadeiras atribuídas no resultado (campos do engine via export.js: qp/sobrasF2/sobrasF3)
-    function _fasePredominante(resultado) {
-      if (!resultado || !Array.isArray(resultado.partidos)) return null;
-      let f1 = 0, f2 = 0, f3 = 0;
-      resultado.partidos.forEach(p => { f1 += (p.qp || 0); f2 += (p.sobrasF2 || 0); f3 += (p.sobrasF3 || 0); });
-      const max = Math.max(f1, f2, f3);
-      if (max <= 0) return null;
-      if (f3 === max) return 'F3';
-      if (f2 === max) return 'F2';
-      return 'F1';
+    function _saudacaoHora() {
+      const h = new Date().getHours();
+      if (h < 12) return 'Bom dia';
+      if (h < 18) return 'Boa tarde';
+      return 'Boa noite';
     }
 
-    function _dashFillMetrics() {
+    function _dashRenderHero() {
       const arr = _dashEstudos();
-      const mE = document.getElementById('dash-metric-estudos');
-      if (mE) mE.textContent = arr.length;
-      document.querySelectorAll('[data-dash-metric="estudos"]').forEach(el => { el.textContent = arr.length; });
-      const mU  = document.getElementById('dash-metric-ultimo');
-      const mUl = document.getElementById('dash-metric-ultimo-lbl');
-      if (mU) {
+
+      const dataEl = document.getElementById('dash-hero-data');
+      if (dataEl) {
+        const agora = new Date();
+        const dia = agora.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+        const hora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        dataEl.textContent = 'Painel · ' + dia.charAt(0).toUpperCase() + dia.slice(1) + ' · ' + hora;
+      }
+
+      const sub = document.getElementById('dash-hero-sub');
+      if (sub) {
+        sub.textContent = arr.length
+          ? 'Você tem ' + arr.length + ' cálculo' + (arr.length > 1 ? 's' : '') + ' salvo' + (arr.length > 1 ? 's' : '') + '. O que deseja fazer hoje?'
+          : 'Você ainda não tem nenhum cálculo salvo. O que deseja fazer hoje?';
+      }
+
+      const grid = document.getElementById('dash-hero-grid');
+      if (grid) {
+        const novoCard = `
+          <button type="button" class="dash-hero-card dash-hero-card--light" onclick="dashGoCalc()">
+            <div class="dash-hero-card-ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            </div>
+            <div>
+              <h3>Iniciar um novo <em>cálculo</em></h3>
+              <p>Eleição, cargo e dados do TSE em poucos passos.</p>
+            </div>
+            <span class="dash-hero-card-cta">Começar agora <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+          </button>`;
+
         if (!arr.length) {
-          mU.textContent = 'nenhum ainda';
-          if (mUl) mUl.textContent = 'último cálculo';
+          grid.classList.add('dash-hero-grid--solo');
+          grid.innerHTML = novoCard;
         } else {
-          mU.textContent = arr[0].parametros?.rotulo || 'Cálculo sem nome';
-          if (mUl) { const t = _haDias(arr[0].savedAt); mUl.textContent = (t ? t + ' · ' : '') + 'último cálculo'; }
+          grid.classList.remove('dash-hero-grid--solo');
+          const ultimo = arr[0];
+          const rotulo = _h(ultimo.parametros?.rotulo || 'Cálculo sem nome');
+          const tribunal = _h(ultimo.parametros?.uf || ultimo.parametros?.estado || 'TSE');
+          const quando = _haDias(ultimo.savedAt);
+          const retomarCard = `
+            <button type="button" class="dash-hero-card dash-hero-card--dark" onclick="dashAbrirEstudo(0)">
+              <div class="dash-hero-card-top">
+                <span class="dash-hero-pill"><i></i>Último cálculo</span>
+                <span class="mono dash-hero-quando">${quando || 'salvo'}</span>
+              </div>
+              <div>
+                <h2>Retomar <em>${rotulo}</em></h2>
+                <p>${tribunal} · ${ultimo.parametros?.vagas || 0} vagas · ${ultimo.parametros?.partidos?.length || 0} partidos</p>
+              </div>
+              <span class="dash-hero-card-cta">Reabrir cálculo <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+            </button>`;
+          grid.innerHTML = retomarCard + novoCard;
         }
       }
-      const _t = document.getElementById('dash-metric-tribunal');
-      if (_t) _t.textContent = arr.length ? (arr[0].parametros?.uf || arr[0].parametros?.estado || 'TSE') : '—';
-    }
 
-    function _dashRenderRecentes() {
-      const arr = _dashEstudos().slice(0, 3);
-      const el = document.getElementById('dash-recentes');
-      if (!el) return;
-      if (!arr.length) {
-        el.innerHTML = '';
-        return;
+      const shortcutSub = document.getElementById('dash-shortcut-estudos-sub');
+      if (shortcutSub) {
+        shortcutSub.textContent = arr.length
+          ? arr.length + ' cálculo' + (arr.length > 1 ? 's' : '') + ' salvo' + (arr.length > 1 ? 's' : '')
+          : 'Nenhum cálculo salvo ainda';
       }
-      el.innerHTML = arr.map((e, i) => {
-        const fase = _fasePredominante(e.resultado);
-        const badge = fase ? `<span class="dash-rec-fase fase-${fase.toLowerCase()}">${fase}</span>` : '<span class="dash-rec-status">Salvo</span>';
-        const data = new Date(e.savedAt || Date.now()).toLocaleDateString('pt-BR');
-        const protocolo = `RJE-${String(new Date(e.savedAt || Date.now()).getFullYear())}-${String(i + 1).padStart(4, '0')}`;
-        const tribunal = e.parametros?.uf || e.parametros?.estado || 'TSE';
-        return `
-        <div class="dash-rec-row" onclick="dashAbrirEstudo(${i})" style="cursor:pointer" title="Abrir cálculo">
-          <div class="dash-rec-protocolo">${protocolo}</div>
-          <div class="dash-rec-processo">
-            <div class="dash-rec-rotulo">${_h(e.parametros?.rotulo || 'Cálculo sem nome')}</div>
-            <div class="dash-rec-meta">${e.parametros?.vagas || 0} vagas · ${e.parametros?.partidos?.length || 0} partidos</div>
-          </div>
-          <div class="dash-rec-tribunal">${_h(tribunal)}</div>
-          <div>${badge}</div>
-          <div class="dash-rec-data">${data}</div>
-        </div>`;
-      }).join('');
     }
 
     function _dashRenderEstudos() {
@@ -1949,8 +1928,7 @@
       arr.splice(i, 1);
       localStorage.setItem('rje_estudos', JSON.stringify(arr));
       _dashRenderEstudos();
-      _dashRenderRecentes();
-      _dashFillMetrics();
+      _dashRenderHero();
       const cntEl = document.getElementById('dash-nav-cnt');
       if (cntEl) cntEl.textContent = arr.length || '';
     };

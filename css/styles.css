@@ -4760,19 +4760,6 @@ button:focus:not(:focus-visible) { outline: none; }
 .dash-main { background: var(--cor-fundo-neutro); }
 .dash-sec  { background: var(--cor-fundo-neutro); }
 
-/* Cards preenchem a tela — seção home em coluna com cards se expandindo */
-#dsec-home {
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 56px); /* desconta topbar */
-}
-.dash-cards-grid {
-  flex: 1;
-}
-.dash-card {
-  min-height: 160px;
-}
-
 /* ══ MODAL CHECKOUT MERCADO PAGO ══════════════════════════════════════════ */
 #mp-modal { display:none; position:fixed; inset:0; z-index:10000; align-items:center; justify-content:center; }
 .mp-modal-overlay { position:absolute; inset:0; background:rgba(12,29,48,.65); backdrop-filter:blur(4px); }
@@ -6883,434 +6870,386 @@ body.resizing-x { cursor: col-resize; user-select: none; }
   overflow-y: auto;
 }
 
-#tela-dashboard .dash-panel-titlebar {
+/* ── Painel · tela inicial (hero), conforme Painel v2.dc.html ───── */
+#tela-dashboard .dash-sec-hero.dash-sec-active {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  padding: 56px 56px 40px;
+}
+
+#tela-dashboard .dash-hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+#tela-dashboard .dash-hero-eyebrow-line {
+  width: 32px;
+  height: 1px;
+  background: #b8853a;
+}
+
+#tela-dashboard .dash-hero-eyebrow .mono {
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #b8853a;
+  font-weight: 600;
+}
+
+#tela-dashboard .dash-hero-heading {
+  margin: 0;
+  font-family: "Newsreader", Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 52px;
+  font-weight: 500;
+  line-height: 1.06;
+  color: #131f33;
+  letter-spacing: -0.02em;
+}
+
+#tela-dashboard .dash-hero-heading em {
+  font-style: italic;
+  color: #8e6420;
+}
+
+#tela-dashboard .dash-hero-sub {
+  margin: 18px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4b5363;
+  max-width: 560px;
+}
+
+#tela-dashboard .dash-hero-grid {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 18px;
+  max-width: 880px;
+}
+
+#tela-dashboard .dash-hero-grid--solo {
+  grid-template-columns: 1fr;
+  max-width: 420px;
+}
+
+#tela-dashboard .dash-hero-card {
+  position: relative;
+  text-align: left;
+  border: 0;
+  border-radius: 18px;
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  cursor: pointer;
+  transition: transform .18s, border-color .18s;
+  font-family: inherit;
+}
+
+#tela-dashboard .dash-hero-card:hover {
+  transform: translateY(-2px);
+}
+
+#tela-dashboard .dash-hero-card--dark {
+  background: linear-gradient(160deg, #131f33, #1a2738);
+  color: #f4efe4;
+  box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 20px 40px -24px rgba(19,31,51,.35);
+}
+
+#tela-dashboard .dash-hero-card--light {
+  background: linear-gradient(180deg, #ffffff, #faf7ee);
+  border: 1px solid #e5dfcf;
+  box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 20px 40px -24px rgba(19,31,51,.12);
+  color: #131f33;
+}
+
+#tela-dashboard .dash-hero-card--light:hover {
+  border-color: rgba(184,133,58,.35);
+}
+
+#tela-dashboard .dash-hero-card-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 22px;
+  gap: 12px;
 }
 
-#tela-dashboard .dash-panel-eyebrow,
-#tela-dashboard .dash-block-kicker {
-  margin: 0 0 4px;
-  color: #b8853a;
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: .20em;
-  text-transform: uppercase;
-}
-
-#tela-dashboard .dash-panel-titlebar h1 {
-  margin: 0;
-  font-family: "Newsreader", Georgia, serif;
-  font-size: 28px;
-  font-weight: 600;
-  color: #131f33;
-  letter-spacing: -0.014em;
-  font-optical-sizing: auto;
-}
-
-#tela-dashboard .dash-panel-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#tela-dashboard .dash-credit-pill {
+#tela-dashboard .dash-hero-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 12px;
-  border: 1px solid rgba(212,166,90,.28);
+  gap: 7px;
+  padding: 4px 10px;
+  background: rgba(184,133,58,.16);
+  border: 1px solid rgba(212,166,90,.36);
   border-radius: 999px;
-  background: rgba(212,166,90,.10);
-  color: #9a6820;
-  font-size: 12px;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
   font-weight: 700;
+  color: #d4a65a;
 }
 
-#tela-dashboard .dash-credit-pill span {
+#tela-dashboard .dash-hero-pill i {
   width: 6px;
   height: 6px;
-  border-radius: 999px;
+  border-radius: 50%;
   background: #d4a65a;
+  box-shadow: 0 0 10px #d4a65a;
+  animation: dash-hero-glow 2.4s ease-in-out infinite;
 }
 
-#tela-dashboard .dash-analytics-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 280px;
-  gap: 18px;
-  margin-bottom: 18px;
+#tela-dashboard .dash-hero-quando {
+  font-size: 11px;
+  color: #7e8dab;
 }
 
-#tela-dashboard .dash-chart-card,
-#tela-dashboard .dash-court-card,
-#tela-dashboard .dash-kpi,
-#tela-dashboard .dash-block,
-#tela-dashboard .dash-quick-item {
-  border: 1px solid #e5dfcf;
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 2px 12px rgba(19,31,51,.07), 0 1px 0 rgba(255,255,255,.75) inset;
-}
-
-#tela-dashboard .dash-chart-card,
-#tela-dashboard .dash-court-card {
-  min-height: 252px;
-  padding: 22px;
-}
-
-#tela-dashboard .dash-chart-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 12px;
-}
-
-#tela-dashboard .dash-chart-head h2,
-#tela-dashboard .dash-court-card h2 {
+#tela-dashboard .dash-hero-card--dark h2 {
   margin: 0;
-  color: #131f33;
-  font-size: 14px;
-  font-weight: 800;
-}
-
-#tela-dashboard .dash-chart-head p,
-#tela-dashboard .dash-court-card p {
-  margin: 2px 0 0;
-  color: #8090aa;
-  font-size: 12px;
-}
-
-#tela-dashboard .dash-chart-head strong {
-  color: #131f33;
   font-family: "Newsreader", Georgia, serif;
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  font-optical-sizing: auto;
+  font-size: 22px;
+  font-weight: 500;
+  color: #faf7ee;
+  letter-spacing: -0.012em;
+  line-height: 1.2;
 }
 
-#tela-dashboard .dash-bars {
-  display: block;
-  width: 100%;
-  height: 90px;
-  margin-top: 8px;
+#tela-dashboard .dash-hero-card--dark h2 em {
+  font-style: italic;
+  color: #d4a65a;
 }
 
-#tela-dashboard .dash-bars line { stroke: #f2f4f8; stroke-width: 1; }
-#tela-dashboard .dash-bars rect { fill: rgba(184,133,58,.20); }
-#tela-dashboard .dash-bars rect.hot { fill: #d4a65a; }
-#tela-dashboard .dash-bars rect.strong { fill: #b8853a; }
-#tela-dashboard .dash-bars--blue rect { fill: rgba(27,43,75,.12); }
-#tela-dashboard .dash-bars--blue rect.hot { fill: rgba(36,84,240,.75); }
-#tela-dashboard .dash-bars--blue rect.strong { fill: #1b2b4b; }
-#tela-dashboard .dash-bars text { fill: #a0aab8; font-size: 9px; text-anchor: middle; }
-
-#tela-dashboard .dash-card-note {
-  margin-top: 10px;
-  color: #8e6420;
-  font-size: 12px;
-  font-weight: 700;
+#tela-dashboard .dash-hero-card--dark p {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #a8afbe;
+  line-height: 1.55;
 }
 
-#tela-dashboard .dash-card-note--ok { color: #1f6a47; }
-
-#tela-dashboard .dash-court-card {
-  display: flex;
-  flex-direction: column;
-}
-
-#tela-dashboard .dash-court-list {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 18px;
-}
-
-#tela-dashboard .dash-court-list div {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 5px 10px;
-}
-
-#tela-dashboard .dash-court-list span,
-#tela-dashboard .dash-court-list strong {
-  color: #4a5468;
-  font-size: 12.5px;
-  font-weight: 800;
-}
-
-#tela-dashboard .dash-court-list i {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  margin-right: 7px;
-  border-radius: 2px;
-  background: #d4a65a;
-}
-
-#tela-dashboard .dash-court-list b {
-  grid-column: 1 / -1;
-  height: 5px;
-  border-radius: 999px;
-  background: linear-gradient(90deg,#d4a65a,#b8853a);
-}
-
-#tela-dashboard .dash-court-card small {
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid #f2f4f8;
-  color: #8090aa;
-  font-size: 11.5px;
-}
-
-#tela-dashboard .dash-kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 18px;
-}
-
-#tela-dashboard .dash-kpi {
-  min-height: 78px;
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  border-radius: 14px;
-}
-
-#tela-dashboard .dash-kpi-icon {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
+#tela-dashboard .dash-hero-card-ico {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: linear-gradient(160deg, #f2d49b, #b8853a);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  font-size: 20px;
-  font-weight: 800;
+  box-shadow: 0 10px 20px -10px rgba(184,133,58,.55);
 }
 
-#tela-dashboard .dash-kpi-icon svg {
+#tela-dashboard .dash-hero-card-ico svg {
   width: 20px;
   height: 20px;
-  stroke-width: 1.7;
+  stroke: #131f33;
+  fill: none;
+  stroke-width: 2;
 }
 
-#tela-dashboard .dash-kpi--gold .dash-kpi-icon {
-  color: #b8853a;
-  background: rgba(212,166,90,.12);
-}
-
-#tela-dashboard .dash-kpi--navy .dash-kpi-icon {
-  color: #1b2b4b;
-  background: rgba(27,43,75,.08);
-}
-
-#tela-dashboard .dash-kpi--blue .dash-kpi-icon {
-  color: #2454f0;
-  background: rgba(36,84,240,.08);
-}
-
-#tela-dashboard .dash-kpi--green .dash-kpi-icon {
-  color: #1f8a5b;
-  background: rgba(31,138,91,.10);
-}
-
-#tela-dashboard .dash-kpi span {
-  color: #131f33;
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 1;
+#tela-dashboard .dash-hero-card--light h3 {
+  margin: 14px 0 0;
   font-family: "Newsreader", Georgia, serif;
-  letter-spacing: -0.02em;
-}
-
-#tela-dashboard .dash-kpi p {
-  margin: 3px 0 0;
-  color: #8090aa;
-  font-size: 11.5px;
+  font-size: 20px;
   font-weight: 500;
+  color: #131f33;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 
-#tela-dashboard .dash-kpi b {
-  display: block;
-  width: 112px;
-  height: 3px;
-  margin-top: 8px;
-  border-radius: 999px;
-  background: #f2f4f8;
-  overflow: hidden;
-  position: relative;
+#tela-dashboard .dash-hero-card--light h3 em {
+  font-style: italic;
+  color: #8e6420;
 }
 
-#tela-dashboard .dash-kpi b::after {
-  content: "";
-  display: block;
-  width: 62%;
-  height: 100%;
-  border-radius: inherit;
-  background: currentColor;
+#tela-dashboard .dash-hero-card--light p {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  color: #6b6356;
+  line-height: 1.5;
 }
 
-#tela-dashboard .dash-kpi--gold b { color: #b8853a; }
-#tela-dashboard .dash-kpi--navy b { color: #1b2b4b; }
-#tela-dashboard .dash-kpi--blue b { color: #2454f0; }
-#tela-dashboard .dash-kpi--green b { color: #1f8a5b; }
+#tela-dashboard .dash-hero-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: auto;
+}
 
-#tela-dashboard .dash-kpi--gold b::after { width: 72%; }
-#tela-dashboard .dash-kpi--navy b::after { width: 58%; }
-#tela-dashboard .dash-kpi--blue b::after { width: 64%; }
-#tela-dashboard .dash-kpi--green b::after { width: 45%; }
+#tela-dashboard .dash-hero-card--dark .dash-hero-card-cta { color: #d4a65a; }
+#tela-dashboard .dash-hero-card--light .dash-hero-card-cta { color: #131f33; }
 
-#tela-dashboard .dash-kpi #dash-metric-ultimo {
-  display: block;
-  max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+#tela-dashboard .dash-hero-card-cta svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+#tela-dashboard .dash-hero-divider {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 880px;
+}
+
+#tela-dashboard .dash-hero-divider-l { width: 22px; height: 1px; background: rgba(19,31,51,.2); }
+#tela-dashboard .dash-hero-divider-r { flex: 1; height: 1px; background: rgba(19,31,51,.1); }
+
+#tela-dashboard .dash-hero-divider .mono {
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #6b6356;
+  font-weight: 600;
   white-space: nowrap;
 }
 
-#tela-dashboard .dash-home-grid--painel {
-  grid-template-columns: 1fr;
-  gap: 0;
+#tela-dashboard .dash-hero-shortcuts {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 880px;
 }
 
-#tela-dashboard .dash-block--recentes {
-  overflow: hidden;
-  padding: 0;
+#tela-dashboard .dash-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: rgba(255,255,255,.45);
+  border: 1px solid rgba(19,31,51,.08);
+  border-radius: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
 }
 
-#tela-dashboard .dash-block-top {
-  padding: 18px 22px 14px;
-  border-bottom: 1px solid #f2f4f8;
+#tela-dashboard .dash-shortcut:not(:disabled):hover {
+  background: rgba(255,255,255,.85);
+  border-color: rgba(184,133,58,.25);
 }
 
-#tela-dashboard .dash-block-top > div {
+#tela-dashboard .dash-shortcut:disabled {
+  cursor: default;
+  opacity: .6;
+}
+
+#tela-dashboard .dash-shortcut-ico {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 10px;
+  background: rgba(184,133,58,.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#tela-dashboard .dash-shortcut-ico svg {
+  width: 17px;
+  height: 17px;
+  stroke: #8e6420;
+  fill: none;
+  stroke-width: 1.8;
+}
+
+#tela-dashboard .dash-shortcut-body {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }
 
-#tela-dashboard .dash-block-title {
-  color: #131f33;
-  font-family: "Newsreader", Georgia, serif;
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.008em;
-  font-optical-sizing: auto;
-  text-transform: none;
+#tela-dashboard .dash-shortcut-title { font-size: 13px; font-weight: 700; color: #131f33; }
+#tela-dashboard .dash-shortcut-sub { font-size: 11px; color: #6b6356; margin-top: 2px; }
+
+#tela-dashboard .dash-shortcut-chevron {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  stroke: #8b8273;
+  fill: none;
+  stroke-width: 1.8;
 }
 
-#tela-dashboard .dash-ver-todos {
-  color: #2454f0;
-  font-size: 12.5px;
-  font-weight: 800;
-}
+@keyframes dash-hero-glow { 0%, 100% { opacity: .55; } 50% { opacity: .95; } }
 
-#tela-dashboard .dash-recentes {
-  padding: 0;
-}
-
-#tela-dashboard .dash-recentes-table-head,
-#tela-dashboard .dash-rec-row {
-  display: grid;
-  grid-template-columns: 100px minmax(260px, 1fr) 110px 110px 90px 32px;
+/* ── Painel · rodapé fixo (status TSE + créditos) ───── */
+#tela-dashboard .dash-footer-strip {
+  flex: none;
+  display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 28px;
+  border-top: 1px solid rgba(19,31,51,.08);
+  background: rgba(244,239,228,.6);
 }
 
-#tela-dashboard .dash-recentes-table-head {
-  padding: 9px 22px;
-  background: #f7f9fc;
-  border-bottom: 1px solid #f2f4f8;
-  color: #8090aa;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
+#tela-dashboard .dash-footer-left,
+#tela-dashboard .dash-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-#tela-dashboard .dash-rec-row {
-  min-height: 66px;
-  padding: 13px 22px;
-  border-bottom: 1px solid #f7f9fc;
-}
-
-#tela-dashboard .dash-rec-row:last-child {
-  border-bottom: 0;
-}
-
-#tela-dashboard .dash-rec-protocolo {
-  color: #131f33;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-#tela-dashboard .dash-rec-processo {
-  min-width: 0;
-}
-
-#tela-dashboard .dash-rec-tribunal {
-  color: #4a5468;
-  font-size: 12.5px;
-  font-weight: 600;
-}
-
-#tela-dashboard .dash-rec-data {
-  color: #6b7588;
-  font-size: 12px;
-}
-
-#tela-dashboard .dash-rec-status,
-#tela-dashboard .dash-rec-fase {
+#tela-dashboard .dash-footer-status {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px 8px;
-  border-radius: 999px;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #6b6356;
+  font-weight: 600;
+}
+
+#tela-dashboard .dash-footer-status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5a8a5e;
+  box-shadow: 0 0 8px rgba(90,138,94,.5);
+}
+
+#tela-dashboard .dash-footer-credits-lbl {
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #6b6356;
+  font-weight: 600;
+}
+
+#tela-dashboard .dash-footer-right strong {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #131f33;
+}
+
+#tela-dashboard .dash-footer-buy {
   font-size: 11.5px;
   font-weight: 700;
-}
-
-#tela-dashboard .dash-rec-status::before,
-#tela-dashboard .dash-rec-fase::before {
-  content: "";
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-#tela-dashboard .dash-rec-status,
-#tela-dashboard .dash-rec-fase.fase-f1,
-#tela-dashboard .dash-rec-fase.fase-f2 {
-  color: #1f6a47;
-  background: #e6f3ec;
-}
-
-#tela-dashboard .dash-rec-fase.fase-f3 {
-  color: #7a5400;
-  background: #fbefd2;
-}
-
-#tela-dashboard .dash-plan {
-  border-radius: 16px;
-  background: #131f33;
+  color: #8e6420;
+  margin-left: 4px;
 }
 
 @media (max-width: 1180px) {
-  #tela-dashboard .dash-analytics-grid,
-  #tela-dashboard .dash-home-grid--painel {
+  #tela-dashboard .dash-hero-grid {
     grid-template-columns: 1fr;
+    max-width: 520px;
   }
 
-  #tela-dashboard .dash-kpi-grid {
-    grid-template-columns: repeat(2, 1fr);
+  #tela-dashboard .dash-hero-shortcuts {
+    grid-template-columns: 1fr;
+    max-width: 520px;
   }
 
   #tela-dashboard .dash-search {
@@ -7325,14 +7264,18 @@ body.resizing-x { cursor: col-resize; user-select: none; }
     display: none;
   }
 
-  #tela-dashboard .dash-panel-titlebar,
-  #tela-dashboard .dash-panel-actions {
-    align-items: flex-start;
-    flex-direction: column;
+  #tela-dashboard .dash-sec-hero.dash-sec-active {
+    padding: 32px 22px 28px;
   }
 
-  #tela-dashboard .dash-kpi-grid {
-    grid-template-columns: 1fr;
+  #tela-dashboard .dash-hero-heading {
+    font-size: 36px;
+  }
+
+  #tela-dashboard .dash-footer-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }
 
