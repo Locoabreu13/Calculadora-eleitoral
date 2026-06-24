@@ -83,11 +83,25 @@ function extrairImpactoFEFC(noFefc, sigla) {
   };
 }
 
-function extrairImpactoTV(noTempoTV, sigla) {
+function extrairImpactoTV(noTempoTV, sigla, dadosReferencia) {
   if (!noTempoTV || noTempoTV.status !== "validado") {
     return { status: (noTempoTV && noTempoTV.status) || "indisponivel" };
   }
-  const chave = buscarChaveNormalizada(noTempoTV.porPartido, sigla);
+  // Tenta busca direta. Para partidos em federacao, porPartido armazena
+  // o resultado sob a sigla da federacao, nao do membro individual.
+  // Percorre federacoesTV2022 para resolver a traducao quando a busca
+  // direta falha, mesmo criterio usado por extrairImpactoClausula.
+  let chave = buscarChaveNormalizada(noTempoTV.porPartido, sigla);
+  if (!chave && dadosReferencia) {
+    const federacoes = dadosReferencia.federacoesTV2022 || {};
+    const alvo = normalizarTexto(sigla);
+    for (const [siglafed, membros] of Object.entries(federacoes)) {
+      if (Array.isArray(membros) && membros.some((m) => normalizarTexto(m) === alvo)) {
+        const chaveFed = buscarChaveNormalizada(noTempoTV.porPartido, siglafed);
+        if (chaveFed) { chave = chaveFed; break; }
+      }
+    }
+  }
   const dados = chave ? noTempoTV.porPartido[chave] : null;
   return {
     status: "validado",
@@ -305,7 +319,7 @@ export function analisarDecisaoLitigio(params) {
 
   const ganhosPartidoProprio = {
     fefc: extrairImpactoFEFC(resultadoCascata.nos.fefc, siglaPartidoProprio),
-    tempoTV: extrairImpactoTV(resultadoCascata.nos.tempoTV, siglaPartidoProprio),
+    tempoTV: extrairImpactoTV(resultadoCascata.nos.tempoTV, siglaPartidoProprio, dadosReferencia),
     clausula: extrairImpactoClausula(resultadoCascata.nos.clausula, siglaPartidoProprio, dadosReferencia)
   };
 
@@ -313,7 +327,7 @@ export function analisarDecisaoLitigio(params) {
   for (const sigla of siglasAdversarias) {
     perdasPorAdversario[sigla] = {
       fefc: extrairImpactoFEFC(resultadoCascata.nos.fefc, sigla),
-      tempoTV: extrairImpactoTV(resultadoCascata.nos.tempoTV, sigla),
+      tempoTV: extrairImpactoTV(resultadoCascata.nos.tempoTV, sigla, dadosReferencia),
       clausula: extrairImpactoClausula(resultadoCascata.nos.clausula, sigla, dadosReferencia)
     };
   }
