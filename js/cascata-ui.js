@@ -726,6 +726,7 @@ async function executarModoReverso() {
   if (btnCalcular) { btnCalcular.disabled = true; btnCalcular.textContent = "Calculando..."; }
   await new Promise(resolve => setTimeout(resolve, 0));
   estadoCascata.grampoSuspenso = true;
+  let sucesso = false;
   try {
     const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
 
@@ -749,12 +750,24 @@ async function executarModoReverso() {
       siglaPartidoProprio
     });
     renderizarModoReverso(analise);
+    sucesso = true;
   } catch (e) {
     console.warn("Modo reverso: falha ao calcular.", e);
     exibirAvisoCascata("Não foi possível calcular o modo reverso: " + (e && e.message ? e.message : "erro desconhecido") + ".");
   } finally {
     estadoCascata.grampoSuspenso = false;
-    if (btnCalcular) { btnCalcular.disabled = false; btnCalcular.textContent = "Calcular retorno do litígio"; }
+    if (btnCalcular) {
+      if (sucesso) {
+        btnCalcular.textContent = "✓ Calculado!";
+        setTimeout(() => {
+          btnCalcular.disabled = false;
+          btnCalcular.textContent = "Calcular retorno do litígio";
+        }, 1800);
+      } else {
+        btnCalcular.disabled = false;
+        btnCalcular.textContent = "Calcular retorno do litígio";
+      }
+    }
   }
 }
 
