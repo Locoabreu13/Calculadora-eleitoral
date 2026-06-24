@@ -700,7 +700,13 @@ async function executarModoReverso() {
   }
 
   let ufSelecionada = "";
-  try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch (e) {}
+  const selUfDom = document.getElementById("tse-uf");
+  if (selUfDom && /^[A-Z]{2}$/.test(selUfDom.value.trim().toUpperCase())) {
+    ufSelecionada = selUfDom.value.trim().toUpperCase();
+  }
+  if (!ufSelecionada) {
+    try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch (e) {}
+  }
   if (!ufSelecionada) {
     ufSelecionada = ((estadoCascata.ultimosDadosCen || {}).circunscricao || "").trim();
   }
@@ -764,7 +770,13 @@ async function prepararEAbrirCascata() {
 
   // Aciona o perito para extrair os deltas e aplicar o voto em dobro
   let ufSelecionada = "";
-  try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch(e) {}
+  const selUfDom = document.getElementById("tse-uf");
+  if (selUfDom && /^[A-Z]{2}$/.test(selUfDom.value.trim().toUpperCase())) {
+    ufSelecionada = selUfDom.value.trim().toUpperCase();
+  }
+  if (!ufSelecionada) {
+    try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch(e) {}
+  }
   if (!ufSelecionada) {
     ufSelecionada = ((estadoCascata.ultimosDadosCen || {}).circunscricao || "").trim();
   }
@@ -1045,7 +1057,12 @@ function gerarPecaPeticao() {
     console.warn("Cascata: falha ao obter a fonte de dados do TSE.", e);
   }
 
-  let uf = String(fonte.uf || "").trim();
+  let uf = "";
+  const selUfDom = document.getElementById("tse-uf");
+  if (selUfDom && /^[A-Z]{2}$/.test(selUfDom.value.trim().toUpperCase())) {
+    uf = selUfDom.value.trim().toUpperCase();
+  }
+  if (!uf) uf = String(fonte.uf || "").trim();
   if (!uf) {
     uf = ((estadoCascata.ultimosDadosCen || {}).circunscricao || "").trim();
   }
