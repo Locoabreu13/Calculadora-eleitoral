@@ -1250,7 +1250,14 @@
       // Salva no dashboard (localStorage)
       if (typeof window._dashSalvarLocal === 'function') {
         window._dashSalvarLocal(estudo);
-        if (typeof _toast === 'function') _toast('✓ Estudo salvo em Meus cálculos');
+        var textoOriginal = btnSalvar.textContent;
+        btnSalvar.textContent = '✓ Salvo!';
+        btnSalvar.disabled = true;
+        setTimeout(function () {
+          btnSalvar.textContent = textoOriginal;
+          btnSalvar.disabled =
+            document.querySelectorAll('#painel-parametros .param-item').length === 0;
+        }, 1800);
       }
     });
   })();
