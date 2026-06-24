@@ -465,13 +465,15 @@ export function abrirCascata(saidaEngineBase, saidaEngineCenario, dadosReferenci
     if (conteudo) conteudo.scrollTop = 0;
   }
 
-  // Auto-detectar UF e configurar visibilidade do seletor
+  // Exibe a UF do cenário (já calculada pelo adaptador) como texto somente leitura.
   const ufContainer = document.getElementById("cascata-uf-container");
-  const selUfOv = document.getElementById("sel-cascata-uf-overlay");
-  let ufAuto = "";
-  try { ufAuto = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch(e) {}
-  if (ufAuto && selUfOv) selUfOv.value = ufAuto;
-  if (ufContainer) ufContainer.style.display = ufAuto ? "none" : "flex";
+  const ufCenario = ((dadosCenario || estadoCascata.ultimosDadosCen || {}).circunscricao || "").trim();
+  if (ufContainer) {
+    ufContainer.innerHTML = ufCenario
+      ? `<label>Estado da eleição</label><strong>${ufCenario}</strong>`
+      : "";
+    ufContainer.style.display = ufCenario ? "flex" : "none";
+  }
 
   if (!estadoCascata.ultimaBase || !estadoCascata.ultimoCenario) {
     console.warn("Cascata: Faltam dados do motor para o cálculo inicial.");
@@ -700,8 +702,7 @@ async function executarModoReverso() {
   let ufSelecionada = "";
   try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch (e) {}
   if (!ufSelecionada) {
-    const selUf = document.getElementById("sel-cascata-uf-overlay");
-    ufSelecionada = selUf ? selUf.value.trim() : "";
+    ufSelecionada = ((estadoCascata.ultimosDadosCen || {}).circunscricao || "").trim();
   }
 
   const ano = obterAnoCascata();
@@ -765,8 +766,7 @@ async function prepararEAbrirCascata() {
   let ufSelecionada = "";
   try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch(e) {}
   if (!ufSelecionada) {
-    const selUf = document.getElementById("sel-cascata-uf-overlay");
-    ufSelecionada = selUf ? selUf.value.trim() : "";
+    ufSelecionada = ((estadoCascata.ultimosDadosCen || {}).circunscricao || "").trim();
   }
 
   const ano = obterAnoCascata();
@@ -834,31 +834,6 @@ function configurarEventos() {
     btnCascata.addEventListener("click", prepararEAbrirCascata);
   }
 
-  // Recalcula automaticamente quando o usuario troca a UF dentro do overlay
-  const selUfOverlay = document.getElementById("sel-cascata-uf-overlay");
-  if (selUfOverlay) {
-    selUfOverlay.addEventListener("change", async () => {
-      const base = estadoCascata.ultimaBase;
-      const cenarioMotor = estadoCascata.ultimoCenario;
-      if (!base || !cenarioMotor) return;
-      const ufSelecionada = selUfOverlay.value.trim();
-
-      const ano = obterAnoCascata();
-      limparAvisosCascata();
-      const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
-
-      const opts = {
-        cassacoes: lerCassacoesDoFormulario(),
-        tabelaGeneroRaca,
-        dadosReferencia
-      };
-
-      const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada, opts);
-      renderizarAvisosVotoEmDobro(dadosCenarioAdaptado._avisosVotoEmDobro);
-
-      abrirCascata(base, cenarioMotor, dadosReferencia, dadosCenarioAdaptado);
-    });
-  }
 }
 
 function observarResultados() {
@@ -1072,8 +1047,7 @@ function gerarPecaPeticao() {
 
   let uf = String(fonte.uf || "").trim();
   if (!uf) {
-    const selUf = document.getElementById("sel-cascata-uf-overlay");
-    uf = selUf ? selUf.value.trim() : "";
+    uf = ((estadoCascata.ultimosDadosCen || {}).circunscricao || "").trim();
   }
 
   // Ano: o seletor tse-ano e a fonte direta; o nome do arquivo serve de reforco.
