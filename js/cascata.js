@@ -263,12 +263,22 @@ export function calcularFEFC(_base, _cenarioRetotalizado, dadosReferencia, cenar
     porPartido[sigla] = { delta2, delta35, delta48, delta15, deltaTotal };
   }
 
-  return {
+  const resultado = {
     status: "validado",
     unidadeCadeira,
     unidadeSenador,
     porPartido
   };
+
+  // Aviso de consistencia: em cenario de perda de votos, o delta35 deveria
+  // ter sido calculado. Se chegou zero para todos os partidos e nao era
+  // cassacao_sem_perda_votos, registra observacao para facilitar depuracao.
+  if (categoria !== "cassacao_sem_perda_votos" && !temDeltaVotos) {
+    resultado._aviso = "delta35_ausente: categoria indica perda de votos mas " +
+      "deltaVotosFEFCPorPartido nao foi fornecido; fatia de 35% calculada como zero";
+  }
+
+  return resultado;
 }
 
 // Calcula o domino do fundo partidario quando uma entidade perde a clausula de desempenho.

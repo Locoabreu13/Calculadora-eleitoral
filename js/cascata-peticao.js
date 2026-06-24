@@ -180,10 +180,11 @@ export function montarDadosPeca({ resultadoCascata, dadosCenario, contexto } = {
   }
 
   // A fatia de 35% (por votos) so se move quando ha delta de votos capturado.
-  // Hoje, em cassacao com perda de votos, esse delta nao e capturado (lacuna do
-  // adaptador, ver achado critico no projeto), entao delta35 fica zero. Este sinal
-  // permite a peca ser transparente: nao apresentar como FEFC integral nem citar o
-  // inciso II (votos) quando o numero correspondente nao foi computado.
+  // Desde a Fase 5 (conferencia-fase5-heitor.mjs, 10/10 verificacoes), o
+  // adaptador entrega deltaVotosFEFCPorPartido e o delta35 e calculado pelo no.
+  // Este sinal permite a peca ser transparente: nao apresentar o FEFC como
+  // integral nem citar o inciso II (votos) quando essa fatia for zero por
+  // ausencia de perda de votos no cenario, nao por lacuna de implementacao.
   let fefcFatia35Moveu = false;
   if (fefc.porPartido) {
     for (const p of Object.values(fefc.porPartido)) {
