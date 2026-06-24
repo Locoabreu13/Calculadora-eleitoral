@@ -1233,12 +1233,18 @@
         catch (e) { console.warn('Salvar Estudo: erro ao calcular', e); }
       }
 
+      var selUfDom = document.getElementById('tse-uf');
+      var ufSalvar = (selUfDom && /^[A-Z]{2}$/.test(selUfDom.value.trim().toUpperCase()))
+        ? selUfDom.value.trim().toUpperCase()
+        : '';
+
       var estudo = {
         sistema:         'Sistema RetotalizaJE',
         versao:          'v2.0',
         dataExportacao:  new Date().toISOString(),
         parametros:      cenario,
-        resultado:       resultado
+        resultado:       resultado,
+        uf:              ufSalvar
       };
 
       // Salva no dashboard (localStorage)
@@ -1890,6 +1896,10 @@
       document.body.appendChild(overlay);
 
       dashGoCalc();
+      if (e.uf && /^[A-Z]{2}$/.test(String(e.uf).trim().toUpperCase())) {
+        var selUfRestaurar = document.getElementById('tse-uf');
+        if (selUfRestaurar) selUfRestaurar.dataset.uf = String(e.uf).trim().toUpperCase();
+      }
       if (window._UI && typeof window._UI.preencherCenario === 'function') {
         window._UI.preencherCenario(e.parametros);
       }

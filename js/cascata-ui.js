@@ -704,6 +704,9 @@ async function executarModoReverso() {
   if (selUfDom && /^[A-Z]{2}$/.test(selUfDom.value.trim().toUpperCase())) {
     ufSelecionada = selUfDom.value.trim().toUpperCase();
   }
+  if (!ufSelecionada && selUfDom && /^[A-Z]{2}$/.test((selUfDom.dataset.uf || "").trim().toUpperCase())) {
+    ufSelecionada = selUfDom.dataset.uf.trim().toUpperCase();
+  }
   if (!ufSelecionada) {
     try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch (e) {}
   }
@@ -773,6 +776,9 @@ async function prepararEAbrirCascata() {
   const selUfDom = document.getElementById("tse-uf");
   if (selUfDom && /^[A-Z]{2}$/.test(selUfDom.value.trim().toUpperCase())) {
     ufSelecionada = selUfDom.value.trim().toUpperCase();
+  }
+  if (!ufSelecionada && selUfDom && /^[A-Z]{2}$/.test((selUfDom.dataset.uf || "").trim().toUpperCase())) {
+    ufSelecionada = selUfDom.dataset.uf.trim().toUpperCase();
   }
   if (!ufSelecionada) {
     try { ufSelecionada = (window.ImportTSE?.getFonteDados()?.uf || "").trim(); } catch(e) {}
@@ -1061,6 +1067,9 @@ function gerarPecaPeticao() {
   const selUfDom = document.getElementById("tse-uf");
   if (selUfDom && /^[A-Z]{2}$/.test(selUfDom.value.trim().toUpperCase())) {
     uf = selUfDom.value.trim().toUpperCase();
+  }
+  if (!uf && selUfDom && /^[A-Z]{2}$/.test((selUfDom.dataset.uf || "").trim().toUpperCase())) {
+    uf = selUfDom.dataset.uf.trim().toUpperCase();
   }
   if (!uf) uf = String(fonte.uf || "").trim();
   if (!uf) {
