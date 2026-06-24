@@ -1176,6 +1176,39 @@
     // runner.js handles Shift+Click on h1 directly via document.querySelector('h1')
   });
 
+  /* ── 4b. Feedback visual de "Calculando..." enquanto aguarda autorização do servidor ── */
+  (function () {
+    var btnCalc = document.getElementById('btn-calcular');
+    if (!btnCalc) return;
+    var textoOriginal = null;
+    var timeoutFallback = null;
+
+    function restaurarBotaoCalcular() {
+      if (textoOriginal === null) return;
+      btnCalc.textContent = textoOriginal;
+      textoOriginal = null;
+      if (timeoutFallback) { clearTimeout(timeoutFallback); timeoutFallback = null; }
+    }
+
+    btnCalc.addEventListener('click', function () {
+      if (textoOriginal !== null) return;
+      textoOriginal = btnCalc.textContent;
+      btnCalc.textContent = 'Calculando...';
+      // Fallback de segurança: se nada mais restaurar o texto (ex: modal de créditos
+      // sem resultado nem erro na tela), volta ao normal sozinho.
+      timeoutFallback = setTimeout(restaurarBotaoCalcular, 8000);
+    });
+
+    var paramEl = document.getElementById('painel-parametros');
+    if (paramEl) {
+      new MutationObserver(restaurarBotaoCalcular).observe(paramEl, { childList: true, subtree: true });
+    }
+    var erroBox = document.getElementById('erros-formulario');
+    if (erroBox) {
+      new MutationObserver(restaurarBotaoCalcular).observe(erroBox, { childList: true, subtree: true });
+    }
+  })();
+
   /* ── 5. Salvar Estudo ──────────────────────────────────────────── */
   (function () {
     var btnSalvar = document.getElementById('btn-salvar-estudo');
