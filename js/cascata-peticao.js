@@ -215,8 +215,13 @@ export function montarDadosPeca({ resultadoCascata, dadosCenario, contexto } = {
     const pFefc = (fefc.porPartido && fefc.porPartido[sigla]) || null;
     const pTv = (tv.porPartido && tv.porPartido[sigla]) || null;
     const fracaoFundo = (fundo.fracoesBase && fundo.fracoesBase[sigla]) || null;
-    const cotaFundo = fracaoFundo
-      ? ((fracaoFundo.fatia5 || 0) + (fracaoFundo.fatia95 || 0)) * valorFundoAnual
+    const deltaFundo = (fundo.deltas && fundo.deltas[sigla]) || null;
+    // Impacto da decisao sobre o Fundo Partidario em reais: variacao de fracao
+    // (deltaFatia5 + deltaFatia95) multiplicada pelo valor anual de referencia.
+    // deltaFatia5 so muda quando a clausula muda (domino); deltaFatia95 muda
+    // quando ha perda de votos e o adaptador entregou deltaVotosFEFCPorPartido.
+    const fundoDeltaReais = deltaFundo
+      ? ((deltaFundo.deltaFatia5 || 0) + (deltaFundo.deltaFatia95 || 0)) * valorFundoAnual
       : null;
 
     linhasTabela.push({
@@ -227,7 +232,7 @@ export function montarDadosPeca({ resultadoCascata, dadosCenario, contexto } = {
       fefcDelta35: pFefc && typeof pFefc.delta35 === "number" ? pFefc.delta35 : null,
       tvDeltaFracao: pTv ? (pTv.deltaFracao || 0) : null,
       tvDeltaSegundos: pTv && typeof pTv.deltaSegundos === "number" ? pTv.deltaSegundos : null,
-      fundoCota: cotaFundo,
+      fundoDeltaReais,
       fundoTemClausula: !!(fracaoFundo && (fracaoFundo.fatia5 || 0) > 0)
     });
   }
@@ -435,7 +440,7 @@ export function renderizarPecaHTML(dados) {
       '<th>Cadeiras</th>' +
       '<th>' + escaparHtml(tab.fefcFatia35Moveu ? "FEFC (48% cadeiras + 35% votos)" : "FEFC (48% das cadeiras)") + '</th>' +
       '<th>Tempo de TV</th>' +
-      '<th>Fundo Partidário (cota anual de referência)</th>' +
+      '<th>Fundo Partidário (variação anual estimada)</th>' +
       '</tr></thead><tbody>';
     for (const l of tab.linhas) {
       const cadTxt = l.deltaCadeira ? (sinal(l.deltaCadeira) + inteiro(l.deltaCadeira)) : "0";
@@ -456,17 +461,24 @@ export function renderizarPecaHTML(dados) {
       }
       const tvCls = (l.tvDeltaFracao || 0) > 0 ? "positivo" : ((l.tvDeltaFracao || 0) < 0 ? "negativo" : "");
       let fundoTxt = "-";
+      let fundoCls = "";
       if (tab.fundoPendente) {
-        fundoTxt = l.fundoCota != null ? reais(l.fundoCota) + " (impacto pendente)" : "Pendente";
-      } else if (l.fundoCota != null) {
-        fundoTxt = reais(l.fundoCota);
+        if (l.fundoDeltaReais != null) {
+          fundoTxt = sinal(l.fundoDeltaReais) + reais(l.fundoDeltaReais) + " (estimativa pendente)";
+          fundoCls = l.fundoDeltaReais > 0 ? "positivo" : (l.fundoDeltaReais < 0 ? "negativo" : "");
+        } else {
+          fundoTxt = "Pendente";
+        }
+      } else if (l.fundoDeltaReais != null) {
+        fundoTxt = sinal(l.fundoDeltaReais) + reais(l.fundoDeltaReais);
+        fundoCls = l.fundoDeltaReais > 0 ? "positivo" : (l.fundoDeltaReais < 0 ? "negativo" : "");
       }
       corpo += '<tr>' +
         '<td class="partido">' + escaparHtml(l.sigla) + '</td>' +
         '<td class="' + cadCls + '">' + cadTxt + '</td>' +
         '<td class="' + fefcCls + '">' + fefcTxt + fefcDetalhe + '</td>' +
         '<td class="' + tvCls + '">' + tvTxt + '</td>' +
-        '<td>' + fundoTxt + '</td>' +
+        '<td class="' + fundoCls + '">' + fundoTxt + '</td>' +
         '</tr>';
     }
     corpo += '</tbody></table>';
@@ -477,7 +489,7 @@ export function renderizarPecaHTML(dados) {
   if (tab.fundoPendente) {
     corpo += '<p class="rodape-bloco">O impacto sobre a faixa de 95% do Fundo Partidário depende da ' +
       'redistribuição de votos por unidade da federação, ainda não calculada nesta decisão com perda de votos. ' +
-      'Os valores da coluna de fundo correspondem à cota anual de referência.</p>';
+      'Os valores da coluna de fundo são estimativas parciais, sujeitas a revisão.</p>';
   }
   corpo += '</section>';
 
