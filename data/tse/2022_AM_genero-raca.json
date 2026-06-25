@@ -1,0 +1,855 @@
+{
+    "meta": {
+        "ano": 2022,
+        "uf": "AM",
+        "cargo": "Deputado Federal",
+        "gerado": "2026-06-25T18:59:11.072Z",
+        "fonte": "consulta_cand_2022_AM.csv",
+        "regraDobro": "EC 111/2021: genero FEMININO ou raca PRETA/PARDA",
+        "totalCandidatos": 173,
+        "totalAmbiguos": 6
+    },
+    "candidatos": {
+        "LUIS HIRAM MORAES NICOLAU|SOLIDARIEDADE": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "DARLAM MELO DOS SANTOS|PROS": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true,
+            "ambiguo": true
+        },
+        "LUCIANO DE FARIAS|PROS": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true,
+            "ambiguo": true
+        },
+        "EDWARD MALTA DE OLIVEIRA|PROS": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "SIRRAME MAQUINE DE SA|PATRIOTA": {
+            "genero": "FEMININO",
+            "raca": "PRETA",
+            "votoEmDobro": true
+        },
+        "GELMA MARIA SANTOS SILVA|PSC": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "JERSON ARANHA DE OLIVEIRA JUNIOR|REDE": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "JEFFERSON PRAIA BEZERRA|REDE": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "VANILDA DE OLIVEIRA GUIMARAES|PL": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "CRISTIANE SOUZA DOS ANJOS|PSD": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ANDREIA MARA ANDRADE PESSOA|PSD": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "FAUSTO VIEIRA DOS SANTOS JUNIOR|UNIAO": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "VANESSA GRAZZIOTIN|PC DO B": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "JOSE ADALBERTO DA SILVA|PV": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "EDJANE RODRIGUES DA SILVA|PT": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "DAVID VALENTE REIS|AVANTE": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "SEVERINO GERMANO DA SILVA|PMN": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "EDMILSON AGUIAR DE SOUZA|PTB": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "NAZILDO DOS REIS OLIVEIRA|PTB": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "MARIO RUBENS MACEDO VIANNA|PDT": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "RENATO MENDONCA DE ALENCAR|DC": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "GIVANCIR DE OLIVEIRA SILVA|PSD": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "JONAS LOPES DA SILVA|PODE": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "NOE MARTINS DA SILVA|PATRIOTA": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "INALDO CRUZ PLACIDO|PATRIOTA": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "EMIDIO NIRO KOHASHI|PSDB": {
+            "genero": "MASCULINO",
+            "raca": "AMARELA",
+            "votoEmDobro": false
+        },
+        "SUELANIA CRISTINA GONZAGA DE FIGUEIREDO|PSDB": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "MARIA ELIZABETH DOS SANTOS OLIVEIRA|MDB": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "PAUDERNEY TOMAZ AVELINO|UNIAO": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "HISSA NAGIB ABRAHAO FILHO|AVANTE": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "ANTONIO CARLOS SANTOS SILVA|PROS": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false,
+            "ambiguo": true
+        },
+        "ESTER LEMOS DOS SANTOS|PMN": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "SILAS CAMARA|REPUBLICANOS": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ANTONIO SIDNEY SILVA DA COSTA|PTB": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ERNANDO FIGUEIRA SANTANA FILHO|PDT": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ALAN KARDECK PEREIRA AMAZONAS|PDT": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "GEORGE GOMES DE OLIVEIRA|REDE": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "RENATO DE SOUZA MARQUES|PROS": {
+            "genero": "MASCULINO",
+            "raca": "INDÍGENA",
+            "votoEmDobro": false,
+            "ambiguo": true
+        },
+        "VANESSA ADRIANA DE OLIVEIRA|PROS": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "LINEUDA FERREIRA DE MELO|AGIR": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "ENILSON DA SILVA MESQUITA|PODE": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ANTONIO REINALDO DA SILVA|PC DO B": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "DEYSE DE SOUZA SALGADO|SOLIDARIEDADE": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "HELIA MARIA MAQUINE CRUZ|DC": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "TIAGO DO VALE FALCAO|PATRIOTA": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "BRUNO FARIAS DA LUZ|REDE": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "JOELE SILVA DA CRUZ|PL": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "MARIA PEREIRA DANTAS|PODE": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ORSINE RUFINO DE OLIVEIRA JUNIOR|PSD": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "RAYMISON MONTEIRO DE SOUZA|CIDADANIA": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "MARILENA MONICA PEREZ SAID|CIDADANIA": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "ISRAEL ALEXANDRE MUNIZ PAULAIN|CIDADANIA": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ELEOMEA MARIA BARROSO VIEIRA|PSDB": {
+            "genero": "FEMININO",
+            "raca": "PRETA",
+            "votoEmDobro": true
+        },
+        "GINA MARIA REIS GONZALEZ|MDB": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ANTONIA SOCORRO DANTAS DA SILVA|MDB": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ELI COSTA DE SOUZA|MDB": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "CESAR AUGUSTO OLIVEIRA DA FONSECA|MDB": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "DIEGO ROBERTO AFONSO|UNIAO": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "LOUISMAR DE MATOS BONATES|UNIAO": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "KATIANE GAMA FEITOZA|AVANTE": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "MARCELO AUGUSTO DA EIRA CORREA|AVANTE": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "JOSE LUIZ VIANA BENEVIDES|PMN": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "MARILENE ALVES DE OLIVEIRA|PMN": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "PETER SCHMIDT|PMN": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "RODRIGO GUEDES OLIVEIRA DE ARAUJO|REPUBLICANOS": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "ADAIL JOSE FIGUEIREDO PINHEIRO|REPUBLICANOS": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "MARIA FLAVIANE CASTRO BRAGA|PTB": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "GELSON DO NASCIMENTO ALBUQUERQUE|PDT": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "JEFFERSON ALVES DE LIMA|DC": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "NEIVA DA SILVA CARDOSO|PROS": {
+            "genero": "FEMININO",
+            "raca": "PRETA",
+            "votoEmDobro": true,
+            "ambiguo": true
+        },
+        "IZABEL SANTAREM BARROSO|PSC": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "JUCELINO VIEIRA DO NASCIMENTO|PSC": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "ADEMIR ROCHA DOS SANTOS|PSC": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "SILVIO JOSE CINTRA MAIA|AGIR": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "RODRIGO DE SA BARBOSA|PL": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "ALFREDO JACAUNA PINHEIRO FILHO|PL": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "MARCIA AUXILIADORA CARDOSO BARANDA|MDB": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "EMILIA FERRAZ DE CARVALHO|UNIAO": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "LEDA MARIA MAIA XAVIER|UNIAO": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "LUIZ DE SOUZA BORGES NETO|PT": {
+            "genero": "MASCULINO",
+            "raca": "PRETA",
+            "votoEmDobro": true
+        },
+        "MARIA FRANCELIZIA DA SILVA|PT": {
+            "genero": "FEMININO",
+            "raca": "PRETA",
+            "votoEmDobro": true
+        },
+        "LISSANDRO BREVAL SANTIAGO|AVANTE": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "LILIANE ARAUJO DE ALMEIDA|AVANTE": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "RAIMUNDA NONATA DE MELO MARTINS|REPUBLICANOS": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "CLEIA FATIMA ASSUNCAO REBELO|SOLIDARIEDADE": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "PEDRINHA LASMAR CRUZ|PDT": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "CHRISTIANI MARIA MENDES BARROS|PDT": {
+            "genero": "FEMININO",
+            "raca": "PRETA",
+            "votoEmDobro": true
+        },
+        "GILVANDRO MOTA DA SILVA|PSD": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "DELCINEI DE OLIVEIRA ALVES|PC DO B": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ADRIANA MOURA DE MENDONCA|PROS": {
+            "genero": "NÃO DIVULGÁVEL",
+            "raca": "NÃO DIVULGÁVEL",
+            "votoEmDobro": false,
+            "ambiguo": true
+        },
+        "HENRIQUE JOSE MENDONCA DE OLIVEIRA|PODE": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "RAQUEL FERNANDES|UNIAO": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "TANIA MARIA MUSSA|PATRIOTA": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "TANIA MARA FERREIRA DA COSTA|PATRIOTA": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "CASTOR SEGUNDO DE MEDEIROS REGALADO REGIS|PSC": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "FATIMA VITORIA DE JESUS SPENER XAVIER|AGIR": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "VANDERLECIA ORTEGA DOS SANTOS|REDE": {
+            "genero": "FEMININO",
+            "raca": "INDÍGENA",
+            "votoEmDobro": true
+        },
+        "JOSE NILMAR ALVES DE OLIVEIRA|PL": {
+            "genero": "MASCULINO",
+            "raca": "PRETA",
+            "votoEmDobro": true
+        },
+        "RAFAEL AMARAL DA COSTA E SILVA|PL": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "ATILA SIDNEY LINS DE ALBUQUERQUE|PSD": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "ALDAMIR DA COSTA SOUZA|PSB": {
+            "genero": "MASCULINO",
+            "raca": "INDÍGENA",
+            "votoEmDobro": false
+        },
+        "NELSON RAIMUNDO DE OLIVEIRA AZEDO|MDB": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "PABLO OLIVA SOUZA|UNIAO": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ROSIMEIRE DA CONCEICAO ANJOS|PV": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "CRISTINA LUCIA FERREIRA PAIVA|AVANTE": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "MARCEL ALEXANDRE DA SILVA|AVANTE": {
+            "genero": "MASCULINO",
+            "raca": "PRETA",
+            "votoEmDobro": true
+        },
+        "KEYLLA MARIA DE OLIVEIRA MARINHO|SOLIDARIEDADE": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ROSENILDO QUEIROZ DA SILVA|SOLIDARIEDADE": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "JOAO FRANCISCO DE MIRANDA SOARES|SOLIDARIEDADE": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "WANESSA SIMOES PACHECO|PDT": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "ISMAEL FRANKLIN GONCALVES|PDT": {
+            "genero": "MASCULINO",
+            "raca": "INDÍGENA",
+            "votoEmDobro": false
+        },
+        "EDSON CARLOS DE DEUS CASTILHO|REPUBLICANOS": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "JOAO BATISTA DA COSTA PAULA|PSC": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "CIRLEY MENDONCA BOTELHO|PSC": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "GILMAR DA SILVA RIBEIRO|AGIR": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "JONIA MUNIZ DA SILVA|AGIR": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "EVALCILENE COSTA DOS SANTOS|PSOL": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "MARIA JOSEFA DE ASSIS ALVES|PL": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "DEBORA CRISTINA PEREIRA MAFRA|PSD": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "FRANCIDALVA DE MORAIS MACHADO|MDB": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "SAULLO VELAME VIANNA|UNIAO": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "CICERO CUSTODIO DA SILVA|PT": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "MARCIO PAIXAO RIBEIRO|AVANTE": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ALEXANDER CHEREM DE MELLO|PMN": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "AUGUSTO CESAR PAULA DE ANDRADE|REPUBLICANOS": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "APPIO DA SILVA TOLENTINO|SOLIDARIEDADE": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "HELADE MAUES GONCALVES|PTB": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ALCIDES CORDOVIL DE ASSIS|PTB": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "CELSO CORSINO DA SILVA|DC": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "CICERO JOSE DE LIMA ALENCAR|DC": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ALUIZIO BARBOSA DE SOUZA|PSC": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "MARIA LUCIA ANTONIA DA SILVA|PROS": {
+            "genero": "FEMININO",
+            "raca": "INDÍGENA",
+            "votoEmDobro": true
+        },
+        "NELSON BRAGA JUNIOR|AGIR": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "DANILSON GAMA DE SOUZA|PSDB": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "DENNYSON RAMOS MOREIRA|PATRIOTA": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "SOSTENES ADIEL PEREIRA BATISTA|PSC": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "MARCOS OLIVEIRA GAZEL|AGIR": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "EDSON DO NASCIMENTO PEREIRA|AGIR": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ANTONIO ERIVELTON FERNANDES DA SILVA|AGIR": {
+            "genero": "MASCULINO",
+            "raca": "INDÍGENA",
+            "votoEmDobro": false
+        },
+        "WELTON YUDI ODA|PSOL": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "JOSE LUIZ DA SILVA VASQUES|PSOL": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ALBERTO BARROS CAVALCANTE NETO|PL": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "ALFREDO PEREIRA DO NASCIMENTO|PL": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "MARCELO RAMOS RODRIGUES|PSD": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "AMOM MANDEL LINS FILHO|CIDADANIA": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "FRANCISCO VIRGILIO MELO DA SILVA|PSDB": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "IEDA SANTOS CARDOSO|PSB": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "VIVIANE PEREIRA DA SILVA LAGO LIMA|MDB": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "ANA CAMPOS GUIMARAES|UNIAO": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "JOSE RICARDO WENDLING|PT": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "PERICLES DE SOUZA ARAUJO|PMN": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "MARIO FERNANDO NOGUEIRA CARDOSO|PMN": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "TATIANE SANTOS DE OLIVEIRA|PMN": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "JOAO CARLOS DOS SANTOS MELLO|REPUBLICANOS": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "PAULO HENRIQUE DA PAIXAO E SILVA JUNIOR|PDT": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "JOAO PAULO ANDRADE DE QUEIROZ|NOVO": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "TEREZA CRISTINY LIMA CAVALCANTE|PCO": {
+            "genero": "FEMININO",
+            "raca": "AMARELA",
+            "votoEmDobro": true
+        },
+        "RAIMUNDO COSTA DE OLIVEIRA|PROS": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "CARLOS CRISTIANO FELIX|PATRIOTA": {
+            "genero": "MASCULINO",
+            "raca": "BRANCA",
+            "votoEmDobro": false
+        },
+        "FABIANA ZAPPIA DE AZEVEDO FROTA ARAGAO|PATRIOTA": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "ELISANGELA DE OLIVEIRA BRUNNO|REDE": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "SIDNEY RICARDO DE OLIVEIRA LEITE|PSD": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "JOSETE COSTA DOS SANTOS|CIDADANIA": {
+            "genero": "FEMININO",
+            "raca": "PRETA",
+            "votoEmDobro": true
+        },
+        "ELISON NUNES DE SOUZA|PROS": {
+            "genero": "MASCULINO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "MARIA MIRTES SALES DE OLIVEIRA|REPUBLICANOS": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        },
+        "NICIA ANDREA MOTA MEDEIROS|REPUBLICANOS": {
+            "genero": "FEMININO",
+            "raca": "BRANCA",
+            "votoEmDobro": true
+        },
+        "CIMARA ALENCAR CAVALCANTE|DC": {
+            "genero": "FEMININO",
+            "raca": "PARDA",
+            "votoEmDobro": true
+        }
+    }
+}
