@@ -745,7 +745,8 @@ async function executarModoReverso() {
       opts: {
         cassacoes: lerCassacoesDoFormulario(),
         tabelaGeneroRaca,
-        dadosReferencia
+        dadosReferencia,
+        cargo: (document.getElementById("tse-cargo") || {}).value || ""
       },
       siglaPartidoProprio
     });
@@ -804,10 +805,12 @@ async function prepararEAbrirCascata() {
   limparAvisosCascata();
   const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
 
+  const cargoSelecionado = (document.getElementById("tse-cargo") || {}).value || "";
   const opts = {
     cassacoes: lerCassacoesDoFormulario(),
     tabelaGeneroRaca,
-    dadosReferencia
+    dadosReferencia,
+    cargo: cargoSelecionado
   };
 
   const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada, opts);

@@ -251,6 +251,11 @@ export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categor
   // sem isso, o comportamento e identico ao anterior (compatibilidade retroativa).
   const cassacoes = Array.isArray(opts.cassacoes) ? opts.cassacoes : null;
   if (cassacoes) {
+    const cargoNormalizado = normalizarTexto(opts.cargo || "");
+    // Votos do candidato cassado so integram FEFC 35% e clausula quando o cargo
+    // for Deputado Federal. Se opts.cargo estiver ausente, assume federal (retrocompatibilidade).
+    const ehDeputadoFederal = !cargoNormalizado || cargoNormalizado === "DEPUTADO FEDERAL";
+    if (ehDeputadoFederal) {
     const tabela = (opts.tabelaGeneroRaca && opts.tabelaGeneroRaca.candidatos) || null;
     const votosNacionais = (opts.dadosReferencia && opts.dadosReferencia.fefc
       && opts.dadosReferencia.fefc.votosPorPartido) || null;
@@ -350,6 +355,7 @@ export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categor
       cenario.deltaVotosClausulaPorPartido[membroResolvido] =
         (cenario.deltaVotosClausulaPorPartido[membroResolvido] || 0) - votosAnular;
     }
+    } // fecha if (ehDeputadoFederal)
   }
 
   if (Object.keys(cenario.deltaVotosFEFCPorPartido).length > 0 ||
