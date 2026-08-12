@@ -83,7 +83,7 @@ export function gerarSintese(resultadoMargem, resultadoCascata) {
       parte1 =
         "A última cadeira, hoje de " + uc.sigla
         + ", está a " + inteiro(pf.votosNecessarios) + " votos de legenda"
-        + " de passar para " + pf.sigla + ".";
+        + " para passar a " + pf.sigla + ".";
     } else if (pf) {
       const motivo = MOTIVO[pf.tipoExclusao]
         || (pf.tipoExclusao ? pf.tipoExclusao.replace(/_/g, " ") : "motivo não identificado");

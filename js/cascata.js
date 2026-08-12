@@ -316,10 +316,10 @@ function calcularDominoFundoPartidario(entidade, dadosReferencia) {
 // ATENCAO — denominador nacional, nao por estado: este calculo usa a tabela tempoTVCamara2022
 // com a totalidade das 507 cadeiras da Camara, sem filtragem por UF. O domino da clausula e um
 // efeito nacional: a entidade perde o acesso ao tempo de TV em todas as UFs (CF/1988, art. 17,
-// par. 3, com regime transitorio do art. 3 da EC 97/2017 — VERIFICAR referencia legal contra
-// o texto oficial antes de usar em peca processual). Nao confundir com calcularTempoTV, que
-// filtra pelo conjunto de partidos concorrentes em cada estado especifico (precisao validada em
-// TC-03b contra o relatorio oficial do TRE-CE).
+// par. 3, com regime transitorio do art. 3, paragrafo unico, da EC 97/2017 — referencia
+// conferida contra o texto oficial). Nao confundir com calcularTempoTV, que filtra pelo
+// conjunto de partidos concorrentes em cada estado especifico (precisao validada em TC-03b
+// contra o relatorio oficial do TRE-CE).
 function calcularDominoTempoTV(entidade, dadosReferencia) {
   const tvRef = dadosReferencia && dadosReferencia.tempoTVCamara2022;
 
