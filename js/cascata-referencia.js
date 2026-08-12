@@ -111,6 +111,56 @@ export const dadosReferencia = {
     "FEDERAÇÃO PSOL REDE": ["PSOL", "REDE"]
   },
 
+  // Portaria TSE 473/2026, publicada no DJE/TSE em 04/08/2026.
+  // Tabela de representatividade dos partidos para calculo da distribuicao
+  // do tempo de propaganda eleitoral gratuita em radio e TV, Eleicoes 2026.
+  // Total 510 (tres deputados desconsiderados por nao atingir o requisito
+  // do inciso II do art. 3 da EC 97/2017). Duas federacoes novas em relacao
+  // ao ciclo de 2022: Federacao Renovacao Solidaria (PRD, Solidariedade) e
+  // Federacao Uniao Progressista (Uniao, PP).
+  // A outra tabela do anexo, "Participacao em Debates Eleitorais" (total
+  // 591, soma de deputados e senadores), e usada para debates, nao para
+  // tempo de TV.
+  // AINDA NAO CONECTADA ao calculo: calcularTempoTV e calcularDominoTempoTV,
+  // em js/cascata.js, seguem fixos em tempoTVCamara2022. Falta 1) ensinar
+  // js/cascata.js a escolher a tabela pelo ano do cenario, e 2) um caso real
+  // de 2026 carregado no sistema para validar contra numero oficial, no
+  // padrao do caso Heitor Freire usado para o ciclo de 2022.
+  tempoTVCamara2026: {
+    totalCamara: 510,
+    // Duracao legal do bloco (art. 47, par. 1o, inciso II, alinea "a" da
+    // Lei 9.504/1997) nao foi alterada por esta portaria; mantido o mesmo
+    // valor de tempoTVCamara2022 ate confirmacao em contrario.
+    totalSegundosBloco: 750,
+    cadeirasPorPartido: {
+      "AVANTE": 7,
+      "FEDERAÇÃO BRASIL DA ESPERANÇA": 81, // PT, PC do B, PV
+      "FEDERAÇÃO PSDB CIDADANIA": 18, // PSDB, Cidadania
+      "FEDERAÇÃO PSOL REDE": 15, // PSOL, Rede
+      "FEDERAÇÃO RENOVAÇÃO SOLIDÁRIA": 12, // PRD, Solidariedade
+      "FEDERAÇÃO UNIÃO PROGRESSISTA": 104, // União, PP
+      "MDB": 41,
+      "PDT": 16,
+      "PL": 98,
+      "PODE": 20,
+      "PSB": 15,
+      "PSD": 42,
+      "REPUBLICANOS": 41
+    }
+  },
+
+  // Federacoes vigentes no ciclo eleitoral de 2026 (Portaria TSE 473/2026),
+  // usadas para traduzir a sigla individual de partido (como aparece nos
+  // arquivos de estado) para a sigla combinada da federacao usada na
+  // tabela tempoTVCamara2026.
+  federacoesTV2026: {
+    "FEDERAÇÃO BRASIL DA ESPERANÇA": ["PT", "PC do B", "PV"],
+    "FEDERAÇÃO PSDB CIDADANIA": ["PSDB", "CIDADANIA"],
+    "FEDERAÇÃO PSOL REDE": ["PSOL", "REDE"],
+    "FEDERAÇÃO RENOVAÇÃO SOLIDÁRIA": ["PRD", "SOLIDARIEDADE"],
+    "FEDERAÇÃO UNIÃO PROGRESSISTA": ["UNIÃO", "PP"]
+  },
+
   // Valor total do Fundo Partidario a ser obtido em dado oficial do TSE ou fonte normativa aplicavel.
   valorTotalFundoPartidario: null,
 
