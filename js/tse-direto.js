@@ -48,11 +48,12 @@
 
   // Apenas anos juridicamente relevantes para retotalização (ADIs 7.228/7.263/7.325)
   const ANOS = [
+    { ano: '2026', label: '2026 — Eleições Gerais',     tipo: 'gerais'     },
     { ano: '2022', label: '2022 — Eleições Gerais',     tipo: 'gerais'     },
     { ano: '2024', label: '2024 — Eleições Municipais', tipo: 'municipais' },
   ];
 
-  // 2022: Federal (todas as UFs), Estadual (todas exceto DF) e Distrital (apenas DF)
+  // 2022 e 2026: Federal (todas as UFs), Estadual (todas exceto DF) e Distrital (apenas DF)
   // 2024: só Vereador (todas as UFs)
   const CARGOS_TIPO = {
     gerais:     ['Deputado Federal', 'Deputado Estadual', 'Deputado Distrital'],

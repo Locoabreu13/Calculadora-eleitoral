@@ -1,0 +1,1026 @@
+{
+    "meta": {
+        "ano": "2026",
+        "uf": "AP",
+        "cargo": "Deputado Estadual",
+        "gerado": "2026-10-08T17:04:06.264Z"
+    },
+    "partidos": [
+        {
+            "sigla": "UNIÃO/PP",
+            "nome": "FEDERAÇÃO UNIÃO PROGRESSISTA",
+            "votosNominais": 96634,
+            "votosLegenda": 2725,
+            "partidos": [
+                "UNIÃO",
+                "PP"
+            ],
+            "candidatos": [
+                {
+                    "nome": "RODOLFO SOUSA FOLHA DO VALE",
+                    "votos": 15863,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "ANA BEATRIZ MOREIRA POMBO",
+                    "votos": 9771,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "JORGE EMANOEL AMANAJAS CARDOSO",
+                    "votos": 8078,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "ANTONIO ROBERTO RODRIGUES GOES DA SILVA",
+                    "votos": 7990,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "JOSELYO DE AGUIAR SOARES",
+                    "votos": 7301,
+                    "partido": "PP"
+                },
+                {
+                    "nome": "MARIA APARECIDA DOS SANTOS SALOMAO",
+                    "votos": 6202,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "REGINALDO DA SILVA RODRIGUES",
+                    "votos": 5516,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "JOAO ALVARO ROCHA RODRIGUES",
+                    "votos": 5350,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "DEUZINETE MATIAS DOS SANTOS",
+                    "votos": 4832,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "OFIRNEY DA CONCEICAO SADALA",
+                    "votos": 4778,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "ANDERSON RICARDO DE ALMEIDA FEIO",
+                    "votos": 4519,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "ELIZABETH PELAES DOS SANTOS",
+                    "votos": 3713,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "ROSELI DE ARAUJO CORREA TEIXEIRA",
+                    "votos": 3477,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "PAULO ALCEU AVILA RAMOS",
+                    "votos": 3393,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "ANGELO VICTOR RODRIGUES DOS SANTOS",
+                    "votos": 2773,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "LUCELIA ARAUJO QUARESMA",
+                    "votos": 2015,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "ELIZETE TRINDADE DA CRUZ",
+                    "votos": 601,
+                    "partido": "UNIÃO"
+                },
+                {
+                    "nome": "SELMA AIRES DE PAULA",
+                    "votos": 462,
+                    "partido": "PP"
+                },
+                {
+                    "nome": "ALBERTO SILVA NEGRAO",
+                    "votos": 0,
+                    "partido": "UNIÃO"
+                }
+            ]
+        },
+        {
+            "sigla": "REPUBLICANOS",
+            "nome": "REPUBLICANOS",
+            "votosNominais": 84754,
+            "votosLegenda": 680,
+            "candidatos": [
+                {
+                    "nome": "HILDEGARD DE AZEVEDO GURGEL",
+                    "votos": 12357,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "KINOVAK MARQUES TOURINHO",
+                    "votos": 9978,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "TELMA ADRIANA NERY PAIVA",
+                    "votos": 8545,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "JAIME DA SILVA PEREZ",
+                    "votos": 8222,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "ARNÓBIO FLEXA NASCIMENTO",
+                    "votos": 8098,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "ALDICLEIA LIRA GOES",
+                    "votos": 7977,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "RAYFRAN MACEDO BARROSO",
+                    "votos": 7301,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "CARLOS EDUARDO PIMENTEL BARBOSA",
+                    "votos": 6107,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "EDUARDO DOS SANTOS TAVARES",
+                    "votos": 2826,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "EDINOELSON PEREIRA DA TRINDADE",
+                    "votos": 2801,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "ODILSON SERRA NUNES",
+                    "votos": 2678,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "ENNIO DANILO DE ALMEIDA CAVALCANTE",
+                    "votos": 1929,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "RENAN DA SILVA ROSAS",
+                    "votos": 1812,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "ANDRE LUIZ DIAS DA COSTA",
+                    "votos": 1048,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "MARCOS PAULO BERTOLO",
+                    "votos": 928,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "DIEGO JOSE MORPHEU FERREIRA MENDES",
+                    "votos": 868,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "JOSE BENEDITO MOREIRA",
+                    "votos": 772,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "KARLA SAMILA GOMES SILVA",
+                    "votos": 193,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "JEOVANA DA CONCEICAO PEREIRA",
+                    "votos": 146,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "DEBORA MARTINS SARMENTO",
+                    "votos": 139,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "ESTEFANE PINHEIRO DOS SANTOS",
+                    "votos": 29,
+                    "partido": "REPUBLICANOS"
+                },
+                {
+                    "nome": "HUGO BARROSO SILVA",
+                    "votos": 0,
+                    "partido": "REPUBLICANOS"
+                }
+            ]
+        },
+        {
+            "sigla": "PDT",
+            "nome": "PARTIDO DEMOCRÁTICO TRABALHISTA",
+            "votosNominais": 51391,
+            "votosLegenda": 1562,
+            "candidatos": [
+                {
+                    "nome": "JOÃO PEDRO BRITO XAVIER GÓES",
+                    "votos": 17559,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "JACK HOUAT HARB",
+                    "votos": 13278,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "ALDILENE MATOS DE SOUZA",
+                    "votos": 6896,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "CARLOS ANTONIO OLIVEIRA SANTOS",
+                    "votos": 6368,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "ROSILEIA DOS SANTOS DE OLIVEIRA PELAES",
+                    "votos": 6174,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "VALDILENE MONTEIRO DA COSTA DIAS",
+                    "votos": 244,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "CRISTINA SANTOS DE OLIVEIRA",
+                    "votos": 205,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "ANTONIO KLEBER DA LUZ DINIZ",
+                    "votos": 139,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "IZAMAR DE SENA CARDOSO",
+                    "votos": 113,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "JIM DAVIS ROCHA DE ALMEIDA",
+                    "votos": 110,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "JOSE CLAUDIO DE SOUZA PELAES",
+                    "votos": 109,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "CLEICY LEÃO MIRANDA",
+                    "votos": 103,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "MARICLEY RIBEIRO DA SILVA",
+                    "votos": 93,
+                    "partido": "PDT"
+                },
+                {
+                    "nome": "LEILA VIANA DO CARMO",
+                    "votos": 0,
+                    "partido": "PDT"
+                }
+            ]
+        },
+        {
+            "sigla": "PSD",
+            "nome": "PARTIDO SOCIAL DEMOCRÁTICO",
+            "votosNominais": 38300,
+            "votosLegenda": 2040,
+            "candidatos": [
+                {
+                    "nome": "FRANCO AURÉLIO BRITO DE SOUZA",
+                    "votos": 5566,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "LORRAN DAMASCENO BARRETO",
+                    "votos": 5460,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "LILIANE ARAÚJO DE CARVALHO ALBUQUERQUE",
+                    "votos": 5004,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "RONILDO DOS SANTOS NOBRE",
+                    "votos": 4534,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "ELAINE RIBEIRO TAVARES DA IGREJA",
+                    "votos": 4478,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "PAULO ROGÉRIO DA COSTA SERRÃO",
+                    "votos": 3500,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "RAFAEL PIMENTEL FLEXA",
+                    "votos": 2713,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "MARIA DO SOCORRO PEREIRA FONSECA",
+                    "votos": 2085,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "CARLA DIANE QUEIROZ DA COSTA",
+                    "votos": 1023,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "JACQUELINE MAGALHÃES AMARAL",
+                    "votos": 892,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "DEOLINDA LUZ DO NASCIMENTO",
+                    "votos": 854,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "MEZAQUE BAIA DE OLIVEIRA",
+                    "votos": 743,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "ARIENZO LIMA GOES",
+                    "votos": 545,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "ADRIANO PEREIRA ALMEIDA",
+                    "votos": 441,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "LUIZ FELIPE MORAES DOS SANTOS",
+                    "votos": 121,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "BRYAN MENDONÇA DE MORAIS",
+                    "votos": 111,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "REGINALDO FERNANDES LOBATO",
+                    "votos": 94,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "SEBASTIAO FILHO DE OLIVEIRA POSSA",
+                    "votos": 58,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "ANTONIO LINDOLFO DE AGUIAR",
+                    "votos": 42,
+                    "partido": "PSD"
+                },
+                {
+                    "nome": "DARIANY SARAIVA GUEDES",
+                    "votos": 36,
+                    "partido": "PSD"
+                }
+            ]
+        },
+        {
+            "sigla": "PSOL/REDE",
+            "nome": "FEDERAÇÃO PSOL REDE",
+            "votosNominais": 38021,
+            "votosLegenda": 476,
+            "partidos": [
+                "PSOL",
+                "REDE"
+            ],
+            "candidatos": [
+                {
+                    "nome": "VICTOR ANDRÉ DE FREITAS AMORAS",
+                    "votos": 9383,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "FABRICIO BEVILACQUA FURLAN",
+                    "votos": 6999,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "DAYSE MARQUES",
+                    "votos": 5543,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "HÉLIO DE SOUZA CASTRO PINTO",
+                    "votos": 3966,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "SIMONE VIDAL DA SILVA",
+                    "votos": 3003,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "ANNE CHRYSTIANE DA SILVA MARQUES",
+                    "votos": 2692,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "FRANCISCO RAFAEL MACIEL SIMÕES",
+                    "votos": 2427,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "JOSÉ ROBERTO AFONSO PANTOJA",
+                    "votos": 1300,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "MARCO ANTÔNIO PELAES COSTA",
+                    "votos": 1046,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "HARIFE NASCIMENTO VIEGAS",
+                    "votos": 585,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "RICARDO MAGNO PALHETA DOS SANTOS",
+                    "votos": 434,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "JOELSON  COSTA DE ALENCAR",
+                    "votos": 205,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "JULIANA QUEILA CARVALHO DOS SANTOS RAMOS",
+                    "votos": 143,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "ANDRELINA BARBOSA DA CUNHA",
+                    "votos": 118,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "FRANCISCO DE ASSIS RODRIGUES DA SILVA",
+                    "votos": 82,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "MARIA LUCIDALVA MENEZES DA SILVA",
+                    "votos": 39,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "MANOEL DO SOCORRO DOS SANTOS LOBATO",
+                    "votos": 35,
+                    "partido": "REDE"
+                },
+                {
+                    "nome": "JOSÉ RIBAMAR SOARES DA SILVA",
+                    "votos": 21,
+                    "partido": "REDE"
+                }
+            ]
+        },
+        {
+            "sigla": "PODE",
+            "nome": "PODEMOS",
+            "votosNominais": 34050,
+            "votosLegenda": 4198,
+            "candidatos": [
+                {
+                    "nome": "ERRINELSON VIEIRA PIMENTEL",
+                    "votos": 10286,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "JOÃO MARCO DY SÁ Y MENDONÇA",
+                    "votos": 8736,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "ELENICE MARIA MARMETT SCHERER",
+                    "votos": 3271,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "CARLOS MURILO PINHEIRO",
+                    "votos": 3023,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "MARIA CRISTINA DO ROSARIO ALMEIDA MENDES",
+                    "votos": 1778,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "BENEDITO DA GAMA MACHADO",
+                    "votos": 900,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "ANGELO DE SOUZA FERREIRA",
+                    "votos": 868,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "SANDRA REGINA MARTINS MACIEL ALCANTARA",
+                    "votos": 740,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "MARIO ANTONIO BIANCHI",
+                    "votos": 637,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "FERNANDA PAULA ALCANTARA DE VEIGA CABRAL",
+                    "votos": 495,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "CLAUDIA DIAS SABINO",
+                    "votos": 383,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "RUANY CAMILA SOARES DA SILVA",
+                    "votos": 351,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "JOSE RIBAMAR COSTA FILHO",
+                    "votos": 346,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "ROGÉRIO SANTOS LIMA",
+                    "votos": 329,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "IVANILDO LUCIANO DA LUZ",
+                    "votos": 325,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "ALAN FIGUEIREDO BARROS",
+                    "votos": 319,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "JUCELINO FERNANDES",
+                    "votos": 243,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "LAENE SILVIA DANTAS FERREIRA",
+                    "votos": 210,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "JORGE MACIEL DOS SANTOS",
+                    "votos": 203,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "CESAR MACEDO DE FARIAS",
+                    "votos": 168,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "SANDRO DOS SANTOS CARVALHO",
+                    "votos": 157,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "VANIA MARIA FONTOURA MOREIRA",
+                    "votos": 155,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "HERISON ALEX DA SILVA DUARTE",
+                    "votos": 89,
+                    "partido": "PODE"
+                },
+                {
+                    "nome": "ISRAEL DOS SANTOS COSTA",
+                    "votos": 38,
+                    "partido": "PODE"
+                }
+            ]
+        },
+        {
+            "sigla": "MDB",
+            "nome": "MOVIMENTO DEMOCRÁTICO BRASILEIRO",
+            "votosNominais": 33270,
+            "votosLegenda": 1852,
+            "candidatos": [
+                {
+                    "nome": "DIOGO WENCESLAU VILHENA SENIOR",
+                    "votos": 10050,
+                    "partido": "MDB"
+                },
+                {
+                    "nome": "AMIRALDO DA SILVA FAVACHO JUNIOR",
+                    "votos": 8005,
+                    "partido": "MDB"
+                },
+                {
+                    "nome": "ANNE CAROLINE MONTEIRO PEREIRA",
+                    "votos": 6092,
+                    "partido": "MDB"
+                },
+                {
+                    "nome": "ARANTHU ADRYANNUS CAVALCANTE RAMOS",
+                    "votos": 3912,
+                    "partido": "MDB"
+                },
+                {
+                    "nome": "SALMON DOS SANTOS SILVA SANTANA",
+                    "votos": 2449,
+                    "partido": "MDB"
+                },
+                {
+                    "nome": "ARACICLEUMA COSTA DOS SANTOS PINHEIRO",
+                    "votos": 1210,
+                    "partido": "MDB"
+                },
+                {
+                    "nome": "AGNALDO BALIEIRO DA GAMA",
+                    "votos": 567,
+                    "partido": "MDB"
+                },
+                {
+                    "nome": "JO PEREIRA FERREIRA",
+                    "votos": 416,
+                    "partido": "MDB"
+                },
+                {
+                    "nome": "HELOIZA HELENA DE OLIVEIRA SILVA",
+                    "votos": 329,
+                    "partido": "MDB"
+                },
+                {
+                    "nome": "OZIEL DOS SANTOS COUTINHO",
+                    "votos": 178,
+                    "partido": "MDB"
+                },
+                {
+                    "nome": "BERENICE GOMES LAZAME",
+                    "votos": 62,
+                    "partido": "MDB"
+                }
+            ]
+        },
+        {
+            "sigla": "PL",
+            "nome": "PARTIDO LIBERAL",
+            "votosNominais": 26695,
+            "votosLegenda": 946,
+            "candidatos": [
+                {
+                    "nome": "ALEX DE ALMEIDA PEREIRA",
+                    "votos": 4805,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "ACHILES EDUARDO PONTES CAMPOS",
+                    "votos": 2635,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "GIANCARLO DARLA PINON NERY",
+                    "votos": 2550,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "ALEXANDRE VERCOSA DE SOUZA",
+                    "votos": 2515,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "JOSE ARANHA NETO",
+                    "votos": 2398,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "JORIELSON BRITO NASCIMENTO",
+                    "votos": 2200,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "EDUARDO HENRIQUE ANDRADE DE SIQUEIRA",
+                    "votos": 2087,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "MADSON MILLOR LIMA RODRIGUES",
+                    "votos": 1934,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "ANNE TÁVORA DE ARAÚJO",
+                    "votos": 868,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "ALDO MAURICIO NASCIMENTO DOS SANTOS",
+                    "votos": 857,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "CARLOS RODRIGO RAMOS EVANGELISTA CARDOSO",
+                    "votos": 827,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "JOSE REINALDO DOS SANTOS PORTILHO",
+                    "votos": 557,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "ADOLPHO EUGENIO DE OLIVEIRA NERY FILHO",
+                    "votos": 515,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "MARIA DE JESUS MENDES",
+                    "votos": 460,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "ANTONIO CIRILO FERNANDES BORGES",
+                    "votos": 398,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "EDI DOS SANTOS SOUZA",
+                    "votos": 289,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "PATRICK DARGAINS MEDRADO",
+                    "votos": 278,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "WANNA RAYRA SILVA DE SOUZA",
+                    "votos": 206,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "FRANCILENE LOBO MARTINS NASCIMENTO",
+                    "votos": 172,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "GIRLENE RODRIGUES BARROSO",
+                    "votos": 82,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "CELINA MACEDO PEREIRA",
+                    "votos": 62,
+                    "partido": "PL"
+                },
+                {
+                    "nome": "WALCIMAR RIBEIRO FONSECA",
+                    "votos": 0,
+                    "partido": "PL"
+                }
+            ]
+        },
+        {
+            "sigla": "PT/PC do B/PV",
+            "nome": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL",
+            "votosNominais": 20315,
+            "votosLegenda": 3626,
+            "partidos": [
+                "PT",
+                "PV",
+                "PCDOB"
+            ],
+            "candidatos": [
+                {
+                    "nome": "ANTÔNIA DO SOCORRO NOGUEIRA DE SOUZA",
+                    "votos": 9253,
+                    "partido": "PT"
+                },
+                {
+                    "nome": "EDNA AUZIER",
+                    "votos": 5299,
+                    "partido": "PV"
+                },
+                {
+                    "nome": "ZENEIDE DA SILVA COSTA",
+                    "votos": 3516,
+                    "partido": "PT"
+                },
+                {
+                    "nome": "EDIVANDRO JOAO VILHENA DE OLIVEIRA",
+                    "votos": 647,
+                    "partido": "PT"
+                },
+                {
+                    "nome": "ALCINETE FERREIRA DOS SANTOS",
+                    "votos": 343,
+                    "partido": "PT"
+                },
+                {
+                    "nome": "MARCOS DE MORAIS",
+                    "votos": 284,
+                    "partido": "PCDOB"
+                },
+                {
+                    "nome": "JOSÉ CARLOS SILVA CARMEZIM",
+                    "votos": 264,
+                    "partido": "PT"
+                },
+                {
+                    "nome": "RAUDISON SENA DOS SANTOS",
+                    "votos": 209,
+                    "partido": "PCDOB"
+                },
+                {
+                    "nome": "CELISA PENNA MELO CAPELARI",
+                    "votos": 199,
+                    "partido": "PT"
+                },
+                {
+                    "nome": "ELINDOMAR SILVA DA SILVA",
+                    "votos": 115,
+                    "partido": "PV"
+                },
+                {
+                    "nome": "JARDEL ELIEZER OLIVEIRA SILVA",
+                    "votos": 72,
+                    "partido": "PT"
+                },
+                {
+                    "nome": "CICERA PEREIRA SILVA ALBUQUERQUE",
+                    "votos": 58,
+                    "partido": "PCDOB"
+                },
+                {
+                    "nome": "MANOEL ARAUJO DO CARMO",
+                    "votos": 53,
+                    "partido": "PT"
+                },
+                {
+                    "nome": "ALESSON TOURINHO CAVALCANTE",
+                    "votos": 3,
+                    "partido": "PV"
+                },
+                {
+                    "nome": "LILIANE CORDEIRO DE ABREU",
+                    "votos": 0,
+                    "partido": "PV"
+                }
+            ]
+        },
+        {
+            "sigla": "NOVO",
+            "nome": "PARTIDO NOVO",
+            "votosNominais": 9049,
+            "votosLegenda": 103,
+            "candidatos": [
+                {
+                    "nome": "WALDEIR GARCIA RIBEIRO",
+                    "votos": 1695,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "HELSON ROBERTO GOMES DE FREITAS",
+                    "votos": 1495,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "KARYNA SANTOS RAMOS",
+                    "votos": 1143,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "VERA LUCIA DOS SANTOS AGUIAR",
+                    "votos": 1090,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "YURI ALESI DA SILVA ARAUJO",
+                    "votos": 862,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "WINNIE KAREN DE FARIAS LIMA PIRES",
+                    "votos": 680,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "SATH FALCONY VAZ LEITE DOS SANTOS",
+                    "votos": 586,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "ADEMAR CLEMENTINO LEITE",
+                    "votos": 567,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "MARCELO DE OLIVEIRA DO NASCIMENTO",
+                    "votos": 339,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "JOSE NATANAEL LIMA DOS ANJOS",
+                    "votos": 101,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "IRISMAR VILHENA PEREIRA",
+                    "votos": 91,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "JOSE AUGUSTO MARCOS CARDOSO JUNIOR",
+                    "votos": 90,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "ALAN DOS SANTOS COSTA",
+                    "votos": 86,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "MARLUCE SILVA DA COSTA",
+                    "votos": 85,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "DULCELINA LOPES MENDES LAUZID",
+                    "votos": 77,
+                    "partido": "NOVO"
+                },
+                {
+                    "nome": "DANIELA FORTUNATO BARBOSA DE LIMA",
+                    "votos": 62,
+                    "partido": "NOVO"
+                }
+            ]
+        },
+        {
+            "sigla": "PCO",
+            "nome": "PARTIDO DA CAUSA OPERÁRIA",
+            "votosNominais": 22,
+            "votosLegenda": 22,
+            "candidatos": [
+                {
+                    "nome": "ELIANA BRANDAO MONTEIRO",
+                    "votos": 15,
+                    "partido": "PCO"
+                },
+                {
+                    "nome": "CLAUDIO JORGE SILVA COSTA",
+                    "votos": 7,
+                    "partido": "PCO"
+                }
+            ]
+        }
+    ]
+}
