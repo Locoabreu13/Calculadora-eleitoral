@@ -258,6 +258,7 @@ function calcular(cenario) {
 
   const barreira80 = qe * 0.8; // 80% do QE
   const piso20 = qe * 0.2;     // 20% do QE
+  const piso10 = qe * 0.1;     // 10% do QE — art. 108 CE
 
   // 4. Fase 1 — Quocientes Partidários
   const estado = partidos.map(p => {
@@ -268,25 +269,40 @@ function calcular(cenario) {
       votosValidos: vv,
       cadeiras: qp,
       qp,
+      qpCalculado: qp,
       sobrasF2: 0,
       sobrasF3: 0,
       eleitos: [],
     };
   });
 
-  const totalQPs = estado.reduce((s, p) => s + p.qp, 0);
-  let sobrasTotais = cenario.vagas - totalQPs;
-
   // Rastreamento de eleitos
   const jáEleitos = new Set();
 
-  // Convocar candidatos para as vagas da Fase 1
+  // Convocar candidatos para as vagas da Fase 1 — art. 108 CE: só é eleito
+  // por QP quem tiver votação nominal >= 10% do QE. Vaga de QP sem candidato
+  // apto não é preenchida aqui e passa para as sobras (art. 109 CE).
+  // Sem lista de candidatos, presume-se que há candidatos aptos.
   for (const p of estado) {
-    for (let i = 0; i < p.qp; i++) {
-      const c = convocarCandidatoQualquer(p, jáEleitos);
+    const temLista = p.candidatos && p.candidatos.length > 0;
+    for (let i = 0; i < p.qpCalculado; i++) {
+      const c = temLista ? convocarCandidato(p, piso10, jáEleitos) : null;
       if (c) p.eleitos.push(c);
     }
+    if (temLista && p.eleitos.length < p.qpCalculado) {
+      const naoPreenchidas = p.qpCalculado - p.eleitos.length;
+      p.qp = p.eleitos.length;
+      p.cadeiras = p.qp;
+      alertas.push(
+        `ART. 108 CE: ${p.sigla} obteve ${p.qpCalculado} quociente(s) partidário(s), mas só ` +
+        `${p.qp} candidato(s) com votação nominal ≥ 10% do QE (${Math.ceil(piso10)} votos). ` +
+        `${naoPreenchidas} vaga(s) passa(m) para a distribuição das sobras (art. 109 CE).`
+      );
+    }
   }
+
+  const totalQPs = estado.reduce((s, p) => s + p.qp, 0);
+  let sobrasTotais = cenario.vagas - totalQPs;
 
   // Verificar se algum partido atingiu o QE (para edge case art. 111)
   const algumAtingiu = estado.some(p => p.votosValidos >= qe && qe > 0);
@@ -470,6 +486,7 @@ function calcular(cenario) {
       votos: p.votosValidos,
       percentualQE,
       qp: p.qp,
+      qpCalculado: p.qpCalculado,
       sobrasF2: p.sobrasF2,
       sobrasF3: p.sobrasF3,
       total: p.cadeiras,
