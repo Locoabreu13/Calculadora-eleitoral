@@ -99,6 +99,16 @@ function parteInteira(dividendo, divisor) {
 }
 
 /**
+ * Quociente Eleitoral — art. 106 CE: votos válidos ÷ vagas, "desprezada a
+ * fração se igual ou inferior a meio, equivalente a um, se superior".
+ */
+function quocienteEleitoral(votosValidos, vagas) {
+  const q = Math.floor(votosValidos / vagas);
+  const resto = votosValidos - q * vagas;
+  return resto * 2 > vagas ? q + 1 : q;
+}
+
+/**
  * Normaliza sigla/nome para comparação case-insensitive sem acento.
  */
 function normalizarSigla(s) {
@@ -250,7 +260,7 @@ function calcular(cenario) {
   const votosValidos_ = partidos.reduce((s, p) => s + votosValidos(p), 0);
 
   // 3. Quociente Eleitoral — art. 106 CE
-  const qe = parteInteira(votosValidos_, cenario.vagas);
+  const qe = quocienteEleitoral(votosValidos_, cenario.vagas);
 
   if (qe === 0) {
     alertas.push('ATENÇÃO: Quociente Eleitoral calculado como 0. Verifique o número de votos e vagas.');

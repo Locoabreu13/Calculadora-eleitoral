@@ -21,7 +21,7 @@ Não é programador. Trabalha com direito eleitoral. Usa a calculadora para fund
 ## O que está validado e não pode regredir
 
 ### CE 2022 — Deputado Federal (`data/tse/2022_CE_federal.json`)
-- 22 vagas, 28 partidos, 5.083.860 votos válidos, QE = 231.084
+- 22 vagas, 28 partidos, 5.083.860 votos válidos, QE = 231.085 (art. 106: 231.084,545 → arredonda)
 - Candidatos populados (todos os 28 partidos)
 - Caso validado: cassação individual Heitor Freire (UNIAO, 48.888 votos nominais, modalidade `anular apenas nominais sem reatribuicao`) → PL 5→6, UNIAO 4→3
 

@@ -187,10 +187,10 @@
   // Precisão aritmética — intDiv sem arredondamento
   function tc04() {
     const t = tc('TC-04',
-      'Precisão aritmética — intDiv sem arredondamento de ponto flutuante',
-      'Total=1.000.001, vagas=55. QE deve ser floor(1000001/55)=18181 (não 18181,836). ' +
-      'A(999.999 votos): QP=intDiv(999999,18181)=55 — preenche todas as vagas em F1. ' +
-      '⚠ A spec original esperava QP=54, mas 18181×55=999.955 < 999.999 → QP correto é 55.');
+      'Precisão aritmética — QE com arredondamento do art. 106 CE',
+      'Total=1.000.001, vagas=55. 1000001/55 = 18181,836: fração > 0,5 → QE = 18182 (art. 106 CE). ' +
+      'A(999.999 votos): QP=intDiv(999999,18182)=54 — 54 vagas em F1 e a 55ª por sobra (F2). ' +
+      'Coincide com a spec original (QP=54).');
 
     // 55 candidatos para A, decrescentes, para cobrir as 55 vagas de F1
     const candsA = Array.from({ length: 56 }, (_, i) => ({
@@ -210,18 +210,14 @@
     const A = r.partidos.find(p => p.sigla === 'A');
     const total = r.partidos.reduce((s, p) => s + p.total, 0);
 
-    assertEquals(t, r.qe,   18181, 'QE = intDiv(1000001, 55) = 18181 (sem arredondamento)');
-    assertEquals(t, A.qp,      55, 'QP(A) = intDiv(999999, 18181) = 55 (A preenche tudo em F1)');
-    assertEquals(t, r.sobras,   0, 'Sobras = 0 (55 QPs = 55 vagas, F2/F3 não executam)');
+    assertEquals(t, r.qe,   18182, 'QE = 1000001/55 = 18181,836 → 18182 (art. 106: fração > 0,5 vale um)');
+    assertEquals(t, A.qp,      54, 'QP(A) = intDiv(999999, 18182) = 54');
+    assertEquals(t, r.sobras,   1, 'Sobras = 1 (54 QPs para 55 vagas)');
+    assertEquals(t, A.sobrasF2, 1, 'A leva a sobra na F2');
     assertEquals(t, total,     55, 'Total = 55 vagas preenchidas');
 
-    // Verificar que QE não foi calculado com float não truncado
-    assertTrue(t, r.qe === Math.floor(1000001 / 55),
-      'QE coincide com Math.floor(1000001/55) — intDiv funciona corretamente',
-      r.qe, Math.floor(1000001 / 55));
-
-    nota(t, '⚠ A spec original esperava QP=54. O valor correto é 55: ' +
-            'intDiv(999999, 18181) = 55 pois 18181×55=999.955 < 999.999.');
+    nota(t, 'Até 08/10/2026 o engine truncava o QE (18181, QP=55). Com o art. 106 literal ' +
+            'o QE é 18182 e o QP volta a 54, como previa a spec original.');
 
     return t;
   }

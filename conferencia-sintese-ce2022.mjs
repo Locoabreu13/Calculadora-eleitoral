@@ -4,8 +4,8 @@
 //
 // Cenário: base CE 2022, 22 vagas.
 // Margem: UNIÃO é a última cadeira (fase 2, rodada 6); REPUBLICANOS é o
-// primeiro fora com 5.704 votos de legenda necessários.
-// Cenário sintético: REPUBLICANOS recebe +5.704 votos de legenda e toma a
+// primeiro fora com 5.705 votos de legenda necessários.
+// Cenário sintético: REPUBLICANOS recebe +5.705 votos de legenda e toma a
 // cadeira da UNIÃO. A frase deve descrever essa virada e seus efeitos.
 //
 // Execução: node conferencia-sintese-ce2022.mjs
@@ -70,7 +70,7 @@ let tudo = true;
 tudo &= checa("Margem status ok",              margem.status === "ok");
 tudo &= checa("Titular da última cadeira: UNIÃO",   margem.ultimaCadeira.sigla === "UNIÃO");
 tudo &= checa("Primeiro fora: REPUBLICANOS",    pf && pf.sigla === "REPUBLICANOS");
-tudo &= checa("votosNecessarios = 5.704",       pf && pf.votosNecessarios === 5704);
+tudo &= checa("votosNecessarios = 5.705",       pf && pf.votosNecessarios === 5705);
 
 // Virada confirmada
 const sSintPf  = saidaSintetica.partidos.find(p => p.sigla === pf.sigla);
@@ -105,7 +105,7 @@ tudo &= checa("Cláusula: sem mudança",  !resultadoCascata.nos.clausula.temMuda
 tudo &= checa("Frase contém 'UNIÃO'",            frase.includes("UNIÃO"));
 tudo &= checa("Frase contém 'REPUBLICANOS'",     frase.includes("REPUBLICANOS"));
 tudo &= checa("Frase contém 'votos de legenda'", frase.includes("votos de legenda"));
-tudo &= checa("Frase contém '5.704'",            frase.includes("5.704"));
+tudo &= checa("Frase contém '5.705'",            frase.includes("5.705"));
 tudo &= checa("Frase contém 'FEFC'",             frase.includes("FEFC"));
 tudo &= checa("Frase contém '0,18'",             frase.includes("0,18"));
 tudo &= checa("Frase contém 'tempo de TV'",      frase.includes("tempo de TV"));

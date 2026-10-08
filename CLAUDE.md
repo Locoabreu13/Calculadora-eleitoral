@@ -12,8 +12,8 @@ Não é programador. Trabalha com direito eleitoral. Usa a calculadora para fund
 ## REGRAS ABSOLUTAS
 
 1. **NUNCA edite `js/engine.js` sem autorização expressa do usuário.** É o motor jurídico validado.
-   Única alteração autorizada até hoje: art. 108 CE na Fase 1 (commit 83663d7, 08/10/2026), aprovada
-   após conferência contra os eleitos oficiais do TSE.
+   Alterações autorizadas até hoje (08/10/2026): art. 108 CE na Fase 1 (commit 83663d7) e
+   arredondamento do QE pelo art. 106 CE, aprovadas após conferência contra os eleitos oficiais do TSE.
 2. **NUNCA edite sem aprovação.** Mostre o diff primeiro, espere "pode fazer" ou equivalente.
 3. **Diagnóstico antes de teoria.** Rode comandos reais e mostre a saída antes de propor solução.
 4. **NUNCA use `node scripts/processar-tse.js 2022 todas federal`** sem aprovação explícita — esse comando sobrescreve todos os JSONs inclusive os validados (CE e AP). Sempre rodar estado por estado.
@@ -23,7 +23,7 @@ Não é programador. Trabalha com direito eleitoral. Usa a calculadora para fund
 ## O que está validado e não pode regredir
 
 ### CE 2022 — Deputado Federal (`data/tse/2022_CE_federal.json`)
-- 22 vagas, 28 partidos, 5.083.860 votos válidos, QE = 231.084
+- 22 vagas, 28 partidos, 5.083.860 votos válidos, QE = 231.085 (art. 106: 231.084,545 → arredonda)
 - Candidatos populados (todos os 28 partidos)
 - Caso validado: cassação individual Heitor Freire (UNIAO, 48.888 votos nominais, modalidade `anular apenas nominais sem reatribuicao`) → PL 5→6, UNIAO 4→3
 

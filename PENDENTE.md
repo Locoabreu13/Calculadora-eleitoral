@@ -62,15 +62,17 @@ regerar estado por estado e repetir a conferência contra os eleitos oficiais.
 `clausulaLinhaDeBase2026` é preliminar (calculada). Pela base atual: PSOL/REDE não cumpre (8 UFs ≥ 1,5%,
 6 UFs com cadeira) e o NOVO cumpre no limite (exatamente 9 UFs). Conferir quando o TSE publicar a portaria.
 
-### 4. Arredondamento do QE (art. 106 CE) — aguarda decisão do usuário
-O engine despreza sempre a fração do QE; o art. 106 manda arredondar para cima quando > 0,5.
-Mudaria o QE do CE 2022 de 231.084 para 231.085 e a margem do caso Heitor de 5.704 para 5.705
-(quebra `conferencia-sintese-ce2022.mjs`). Aguarda o usuário confirmar o QE oficial do CE 2022 no TRE-CE.
+### 4. Arredondamento do QE (art. 106 CE) — ✅ resolvido em 08/10/2026
+O engine passou a seguir o texto literal do art. 106 (fração > 0,5 vale um), por decisão do usuário.
+O TRE-CE não divulga o QE; em 108 circunscrições reais (2022/2026) truncar ou arredondar nunca
+mudou nenhum eleito. Efeitos: QE CE 2022 231.084 → 231.085; margem do caso Heitor 5.704 → 5.705.
 
 ### 5. Pequenos ajustes conhecidos
 - Dica da coluna QP em `js/ui.js` ("votos ÷ QE = qp") fica inexata quando o art. 108 reduz o QP
   (ex.: PSOL/REDE SP 2026: 9 calculados, 6 preenchidos). `ui.js` é protegido: só com autorização.
 - `conferencia-tempotv-pontaaponta.mjs` está quebrada desde antes (importa `montarCenarioCascata`, que não existe).
+- Testes do navegador (`js/runner.js`, Shift+Click no título): TC-01 e TC-03 falham desde antes desta
+  sessão só porque procuram a palavra "Gatilho" nos alertas, que o engine não usa (a distribuição está certa).
 - `conferencia-clausula-base.mjs` regrava `clausula-linhaDeBase2022.json` ao rodar; restaurar com
   `git checkout -- clausula-linhaDeBase2022.json` (com o art. 108, PR muda PSD 6→7, PODE 2→1).
 - Dados do TSE 2026: MA "FABIO HERNIQUE DIAS DE MACEDO" (erro de digitação do TSE no arquivo de votação)
