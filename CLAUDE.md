@@ -11,7 +11,9 @@ Não é programador. Trabalha com direito eleitoral. Usa a calculadora para fund
 
 ## REGRAS ABSOLUTAS
 
-1. **NUNCA edite `js/engine.js`.** É o motor jurídico validado. Qualquer alteração é proibida.
+1. **NUNCA edite `js/engine.js` sem autorização expressa do usuário.** É o motor jurídico validado.
+   Única alteração autorizada até hoje: art. 108 CE na Fase 1 (commit 83663d7, 08/10/2026), aprovada
+   após conferência contra os eleitos oficiais do TSE.
 2. **NUNCA edite sem aprovação.** Mostre o diff primeiro, espere "pode fazer" ou equivalente.
 3. **Diagnóstico antes de teoria.** Rode comandos reais e mostre a saída antes de propor solução.
 4. **NUNCA use `node scripts/processar-tse.js 2022 todas federal`** sem aprovação explícita — esse comando sobrescreve todos os JSONs inclusive os validados (CE e AP). Sempre rodar estado por estado.
@@ -32,9 +34,19 @@ Não é programador. Trabalha com direito eleitoral. Usa a calculadora para fund
 - Fase 3 ativa; resultado bate com Resolução 620/2025 do TRE-AP (F2: PDT 2, PL 1, MDB 1; F3: PP, REPUBLICANOS, FE Brasil, PSOL/REDE)
 
 ### 25 demais estados — Deputado Federal 2022
-- Todos os 27 arquivos `data/tse/2022_UF_federal.json` existem e foram validados
-- Votos por partido + federações fundidas por `SG_FEDERACAO`; **sem candidatos** (apenas CE e AP têm)
+- Todos os 27 arquivos `data/tse/2022_UF_federal.json` existem e foram validados, todos com candidatos
+- Votos por partido + federações fundidas por `SG_FEDERACAO` — **exceto o CE**, cujo arquivo validado
+  (antigo) traz PT, PC do B, PV, PSOL, REDE, PSDB e CIDADANIA separados. Não mexer sem decisão do usuário.
 - Integridade verificada: QE em faixa 36 mil–333 mil, sem siglas duplicadas, 3 federações nacionais presentes
+
+### 2026 — Eleições gerais (base TSE de 08/10/2026, preliminar)
+- `data/tse/2026_UF_{federal,estadual,genero-raca}.json` (27/26/27) e `2026_DF_distrital.json`, com candidatos
+- Conferência engine × eleitos oficiais do TSE: **513/513 federal, 1.059/1.059 estadual/distrital**
+- 5 federações: `PT/PC do B/PV`, `PSOL/REDE`, `PSDB/CIDADANIA`, `UNIÃO/PP`, `PRD/SOLIDARIEDADE`.
+  Em 2026 o TSE escreve o PC do B como `PCDOB`.
+- Vagas 2026 iguais às de 2022 (conferido com `consulta_vagas_2026`)
+- Caso de referência: anulação Ney Santos (CLAUDINEI ALVES DOS SANTOS, REPUBLICANOS, SP, 118.566 votos),
+  modalidade `nominal_legenda` → vaga fica no REPUBLICANOS e vai para MARCO ANTONIO SCARASATI VINHOLI
 
 ---
 
@@ -77,6 +89,13 @@ O `js/tse-direto.js` usa chave `v3:ano:uf:cargo:gerado` no IndexedDB. Quando o J
 
 ---
 
+## Cascata por ano
+`dadosReferenciaParaAno(ano)` (`js/cascata-referencia.js`) escolhe as referências: 2022 devolve o objeto
+de sempre; 2026 usa TV da Portaria 473/2026, cláusula 2026 (inciso III, preliminar), elegíveis ao Fundo
+Partidário 2026 e votos ponderados 2026 no FEFC, com os **valores do FEFC 2026 como referência**
+(decisão do usuário, 08/10/2026). Na modalidade `nominal_legenda` os votos ficam no partido: FEFC/FP
+descontam só o acréscimo do voto em dobro e a cláusula não registra perda (premissa exibida na tela e na peça).
+
 ## Federações (como funcionam)
 O `scripts/processar-tse.js` agrupa votos por `SG_FEDERACAO` quando o partido pertence a uma federação (coluna `SG_FEDERACAO != '#NULO#'`). A sigla resultante é a da federação (ex: `PT/PC do B/PV`), não do partido individual. O campo `partidos` lista os membros. Isso está implementado e validado para todos os 27 estados.
 
@@ -93,7 +112,23 @@ node scripts/processar-tse.js 2022 DF distrital
 node scripts/processar-tse.js 2022 todas federal
 ```
 
-O script baixa o ZIP do CDN do TSE (~25 MB para 2022 federal), extrai o CSV da UF solicitada e salva o JSON em `data/tse/`. Processa apenas votos por partido — candidatos requerem etapa separada.
+O script baixa o ZIP do CDN do TSE (~25 MB para 2022 federal), extrai o CSV da UF solicitada e salva o JSON em `data/tse/`. Processa apenas votos por partido — candidatos requerem etapa separada:
+
+```bash
+node scripts/processar-tse.js 2026 SP federal          # votos por partido
+echo s | node scripts/adicionar-candidatos.js 2026 SP federal   # candidatos (trava: soma exata)
+node scripts/gerar-genero-raca.mjs 2026 SP federal      # gênero/raça (SÓ federal: o arquivo não tem cargo no nome)
+```
+
+Os mesmos scripts JS servem para `estadual` e `distrital` (reproduzem idênticos os JSONs 2022 feitos
+pelos antigos scripts Python, que ficaram obsoletos).
+
+**Armadilha do cache:** os scripts reutilizam para sempre o ZIP em `cache/`. Quando o TSE publicar uma
+base nova, apagar o ZIP do ano em `cache/` antes de regerar. Nunca gerar a partir de arquivo do TSE
+publicado só com cabeçalho (o script agora recusa gravar JSON sem votos).
+
+**O TSE muda formatos entre eleições** (ex.: "sem federação" era `#NULO#` em 2022 e virou `#NULO` em
+2026). Sempre conferir o resultado contra os eleitos oficiais (`DS_SIT_TOT_TURNO`) antes de usar.
 
 ---
 

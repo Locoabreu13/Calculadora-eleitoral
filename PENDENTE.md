@@ -26,6 +26,13 @@ ao banco (não só leitura de código):
 
 ---
 
+### 2026 — Eleições gerais
+**Status:** ✅ Federal (27), estadual (26), distrital (DF) e gênero/raça (27) gerados com a base do TSE
+de 08/10/2026 e conferidos contra os eleitos oficiais (513/513 e 1.059/1.059). Cascata 2026 ligada.
+Commits b8fc1f0, 83663d7, cd8e740, 4083c1b (locais, **não publicados**).
+
+---
+
 ## Fases do roteiro de diferenciação (ver histórico de commits para detalhe)
 
 Registrado aqui porque documentos anteriores (`PENDENTE.md` e a memória do projeto) chegaram a
@@ -44,16 +51,33 @@ rodando as conferências reais:
 
 ## Pendências reais
 
-### 1. Tempo de TV 2026 — calibragem, passo 2
-Em 2026-08-12, a Portaria TSE nº 473/2026 (tabela de representatividade para TV/rádio das
-Eleições 2026, 510 cadeiras) foi adicionada como dado de referência em
-`js/cascata-referencia.js` (`tempoTVCamara2026`, `federacoesTV2026`). Ainda **não conectada**
-ao cálculo — `calcularTempoTV` e `calcularDominoTempoTV`, em `js/cascata.js`, seguem fixos na
-tabela de 2022. Falta: 1) ensinar o código a escolher a tabela pelo ano do cenário; 2) um caso
-eleitoral real de 2026 carregado no sistema para validar contra número oficial. Hoje
-`data/tse/` só tem 2022 e 2024 — não iniciar antes de haver dado de 2026 para testar.
+### 1. Publicar 2026 no site
+Os 4 commits de 2026 estão só no computador local. Publicar (push) quando o usuário decidir.
 
-### 2. Tradução de sigla de federação entre FEFC (2026) e Tempo de TV
+### 2. Regerar 2026 com a base definitiva do TSE
+A base usada é de 08/10/2026 (preliminar). Quando o TSE atualizar: apagar os ZIPs 2026 de `cache/`,
+regerar estado por estado e repetir a conferência contra os eleitos oficiais.
+
+### 3. Cláusula de desempenho 2026 — conferir com a lista oficial
+`clausulaLinhaDeBase2026` é preliminar (calculada). Pela base atual: PSOL/REDE não cumpre (8 UFs ≥ 1,5%,
+6 UFs com cadeira) e o NOVO cumpre no limite (exatamente 9 UFs). Conferir quando o TSE publicar a portaria.
+
+### 4. Arredondamento do QE (art. 106 CE) — aguarda decisão do usuário
+O engine despreza sempre a fração do QE; o art. 106 manda arredondar para cima quando > 0,5.
+Mudaria o QE do CE 2022 de 231.084 para 231.085 e a margem do caso Heitor de 5.704 para 5.705
+(quebra `conferencia-sintese-ce2022.mjs`). Aguarda o usuário confirmar o QE oficial do CE 2022 no TRE-CE.
+
+### 5. Pequenos ajustes conhecidos
+- Dica da coluna QP em `js/ui.js` ("votos ÷ QE = qp") fica inexata quando o art. 108 reduz o QP
+  (ex.: PSOL/REDE SP 2026: 9 calculados, 6 preenchidos). `ui.js` é protegido: só com autorização.
+- `conferencia-tempotv-pontaaponta.mjs` está quebrada desde antes (importa `montarCenarioCascata`, que não existe).
+- `conferencia-clausula-base.mjs` regrava `clausula-linhaDeBase2022.json` ao rodar; restaurar com
+  `git checkout -- clausula-linhaDeBase2022.json` (com o art. 108, PR muda PSD 6→7, PODE 2→1).
+- Dados do TSE 2026: MA "FABIO HERNIQUE DIAS DE MACEDO" (erro de digitação do TSE no arquivo de votação)
+  não casa com a tabela de gênero/raça; AL "IVON BERTO TIBURCIO DE LIMA" (PRD) tem raça ambígua.
+- Caminho de federação no adaptador ainda sem caso real testado (ex.: candidato do `PCDOB`).
+
+### 6. Tradução de sigla de federação entre FEFC (2026) e Tempo de TV
 Só necessária quando um caso real mover cadeira de partido que esteja em federação e as duas
 tabelas (FEFC e Tempo de TV) nomearem a federação de formas diferentes. Não iniciar sem caso
 concreto.
@@ -67,4 +91,4 @@ concreto.
   (`gerarSintese`), mantendo a conferência `conferencia-sintese-ce2022.mjs` aprovada.
 
 ---
-*Última atualização: 2026-08-12*
+*Última atualização: 2026-10-08*
