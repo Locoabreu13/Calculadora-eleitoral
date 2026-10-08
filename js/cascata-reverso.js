@@ -23,7 +23,7 @@
 // isso este módulo gera duas frases independentes: uma sobre a fragilidade da
 // vaga (fato autônomo) e outra sobre o impacto da cassação cogitada.
 
-import { calcularCascata } from "./cascata.js";
+import { calcularCascata, referenciaDoAno } from "./cascata.js";
 import { gerarCenarioCascata, normalizarTexto } from "./cascata-adaptador.js";
 import { calcularMargemUltimaCadeira } from "./cascata-margem.js";
 
@@ -61,7 +61,7 @@ function buscarChaveNormalizada(mapa, sigla) {
 // Siglas fora de federação não têm entrada no mapa e permanecem como estão,
 // mesmo fallback usado em calcularClausula (js/cascata.js).
 function resolverEntidadeClausula(sigla, dadosReferencia) {
-  const linhaDeBase = dadosReferencia && dadosReferencia.clausulaLinhaDeBase2022;
+  const linhaDeBase = referenciaDoAno(dadosReferencia, "clausulaLinhaDeBase");
   const mapeamento = (linhaDeBase && linhaDeBase.mapeamentoSiglaParaEntidade) || {};
   const chave = buscarChaveNormalizada(mapeamento, sigla);
   return chave ? mapeamento[chave] : sigla;
@@ -93,7 +93,7 @@ function extrairImpactoTV(noTempoTV, sigla, dadosReferencia) {
   // direta falha, mesmo criterio usado por extrairImpactoClausula.
   let chave = buscarChaveNormalizada(noTempoTV.porPartido, sigla);
   if (!chave && dadosReferencia) {
-    const federacoes = dadosReferencia.federacoesTV2022 || {};
+    const federacoes = referenciaDoAno(dadosReferencia, "federacoesTV") || {};
     const alvo = normalizarTexto(sigla);
     for (const [siglafed, membros] of Object.entries(federacoes)) {
       if (Array.isArray(membros) && membros.some((m) => normalizarTexto(m) === alvo)) {

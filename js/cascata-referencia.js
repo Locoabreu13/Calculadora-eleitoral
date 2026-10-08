@@ -615,6 +615,432 @@ export const dadosReferencia = {
   }
 },
 
+  // Linha de base da clausula de desempenho para casos da eleicao de 2026
+  // (EC 97/2017, art. 3, par. unico, inciso III). Mesmo formato e mesmo metodo
+  // de clausulaLinhaDeBase2022, gerada dos 27 data/tse/2026_UF_federal.json
+  // (513/513 eleitos conferidos com o TSE). PRELIMINAR: o TSE ainda nao publicou
+  // a lista oficial de 2026; substituir/conferir quando sair.
+  clausulaLinhaDeBase2026: {
+    "fonte": "Resultado TSE 2026 (base de 08/10/2026, preliminar) processado de data/tse/2026_UF_federal.json; soma cadeiras = 513",
+    "anoEleicao": 2026,
+    "preliminar": true,
+    "mapeamentoSiglaParaEntidade": {
+      "PP": "UNIÃO/PP",
+      "UNIÃO": "UNIÃO/PP",
+      "UNIÃO/PP": "UNIÃO/PP",
+      "PCDOB": "PT/PC do B/PV",
+      "PV": "PT/PC do B/PV",
+      "PT": "PT/PC do B/PV",
+      "PT/PC do B/PV": "PT/PC do B/PV",
+      "PC do B": "PT/PC do B/PV",
+      "CIDADANIA": "PSDB/CIDADANIA",
+      "PSDB": "PSDB/CIDADANIA",
+      "PSDB/CIDADANIA": "PSDB/CIDADANIA",
+      "PRD": "PRD/SOLIDARIEDADE",
+      "SOLIDARIEDADE": "PRD/SOLIDARIEDADE",
+      "PRD/SOLIDARIEDADE": "PRD/SOLIDARIEDADE",
+      "PSOL": "PSOL/REDE",
+      "REDE": "PSOL/REDE",
+      "PSOL/REDE": "PSOL/REDE"
+    },
+    "totalVotosPorUF": {
+      "AC": 462485,
+      "AL": 1798341,
+      "AM": 2119252,
+      "AP": 459680,
+      "BA": 8281816,
+      "CE": 5521642,
+      "DF": 1659057,
+      "ES": 2134985,
+      "GO": 3607744,
+      "MA": 3970967,
+      "MG": 11380151,
+      "MS": 1420762,
+      "MT": 1901719,
+      "PA": 4832237,
+      "PB": 2399949,
+      "PE": 5264503,
+      "PI": 2109063,
+      "PR": 6217229,
+      "RJ": 8743753,
+      "RN": 1967700,
+      "RO": 932939,
+      "RR": 318821,
+      "RS": 6081271,
+      "SC": 4231498,
+      "SE": 1283700,
+      "SP": 23674188,
+      "TO": 902567
+    },
+    "cadeirasPorEntidadePorUF": {
+      "UNIÃO/PP": {
+        "AC": 4,
+        "AL": 4,
+        "AM": 2,
+        "AP": 3,
+        "BA": 8,
+        "CE": 3,
+        "ES": 3,
+        "GO": 4,
+        "MA": 3,
+        "MG": 6,
+        "MS": 2,
+        "MT": 2,
+        "PA": 1,
+        "PB": 3,
+        "PE": 4,
+        "PI": 1,
+        "PR": 6,
+        "RJ": 6,
+        "RN": 2,
+        "RO": 2,
+        "RR": 2,
+        "RS": 5,
+        "SC": 1,
+        "SE": 3,
+        "SP": 5,
+        "TO": 2
+      },
+      "MDB": {
+        "AC": 1,
+        "AL": 2,
+        "AM": 2,
+        "BA": 1,
+        "CE": 2,
+        "DF": 1,
+        "GO": 2,
+        "MA": 5,
+        "MG": 1,
+        "PA": 6,
+        "PE": 1,
+        "PI": 2,
+        "PR": 1,
+        "RJ": 1,
+        "RS": 3,
+        "SC": 1,
+        "SP": 4
+      },
+      "REPUBLICANOS": {
+        "AC": 1,
+        "AM": 1,
+        "BA": 3,
+        "CE": 1,
+        "DF": 1,
+        "ES": 1,
+        "GO": 1,
+        "MA": 1,
+        "MG": 3,
+        "MS": 2,
+        "MT": 1,
+        "PB": 3,
+        "PE": 2,
+        "PI": 1,
+        "PR": 2,
+        "RJ": 1,
+        "RR": 3,
+        "RS": 2,
+        "SC": 1,
+        "SE": 1,
+        "SP": 6,
+        "TO": 3
+      },
+      "PL": {
+        "AC": 1,
+        "AM": 2,
+        "AP": 1,
+        "BA": 4,
+        "CE": 4,
+        "DF": 3,
+        "ES": 2,
+        "GO": 4,
+        "MA": 4,
+        "MG": 21,
+        "MS": 3,
+        "MT": 3,
+        "PA": 3,
+        "PB": 2,
+        "PE": 2,
+        "PR": 5,
+        "RJ": 15,
+        "RN": 3,
+        "RO": 3,
+        "RR": 1,
+        "RS": 8,
+        "SC": 7,
+        "SP": 19,
+        "TO": 1
+      },
+      "PT/PC do B/PV": {
+        "AC": 1,
+        "AP": 1,
+        "BA": 10,
+        "CE": 3,
+        "DF": 2,
+        "ES": 2,
+        "GO": 2,
+        "MA": 2,
+        "MG": 13,
+        "MS": 1,
+        "MT": 1,
+        "PA": 2,
+        "PB": 2,
+        "PE": 4,
+        "PI": 4,
+        "PR": 6,
+        "RJ": 8,
+        "RN": 3,
+        "RS": 6,
+        "SC": 3,
+        "SE": 1,
+        "SP": 11
+      },
+      "PSD": {
+        "AL": 2,
+        "AM": 1,
+        "BA": 6,
+        "CE": 3,
+        "GO": 2,
+        "MG": 2,
+        "PA": 2,
+        "PB": 1,
+        "PE": 2,
+        "PI": 2,
+        "PR": 4,
+        "RJ": 4,
+        "RO": 1,
+        "RS": 2,
+        "SC": 1,
+        "SE": 2,
+        "SP": 6
+      },
+      "PSDB/CIDADANIA": {
+        "AL": 1,
+        "BA": 2,
+        "MA": 1,
+        "MG": 1,
+        "RJ": 4,
+        "SP": 1,
+        "TO": 1
+      },
+      "PDT": {
+        "AP": 2,
+        "BA": 1,
+        "MA": 1,
+        "RJ": 1,
+        "RS": 1
+      },
+      "PODE": {
+        "AP": 1,
+        "ES": 1,
+        "GO": 1,
+        "MG": 1,
+        "MT": 1,
+        "PA": 2,
+        "PB": 1,
+        "PE": 3,
+        "PR": 2,
+        "RO": 2,
+        "RR": 2,
+        "RS": 2,
+        "SC": 1,
+        "SP": 6,
+        "TO": 1
+      },
+      "AVANTE": {
+        "BA": 3,
+        "MG": 1,
+        "PE": 1
+      },
+      "PSB": {
+        "BA": 1,
+        "CE": 4,
+        "ES": 1,
+        "MG": 1,
+        "PA": 1,
+        "PE": 4,
+        "SE": 1,
+        "SP": 2
+      },
+      "PRD/SOLIDARIEDADE": {
+        "CE": 2,
+        "GO": 1,
+        "MA": 1,
+        "MG": 1,
+        "RJ": 1,
+        "SP": 1
+      },
+      "PSOL/REDE": {
+        "DF": 1,
+        "MG": 2,
+        "PE": 1,
+        "RJ": 4,
+        "RS": 1,
+        "SP": 6
+      },
+      "NOVO": {
+        "PE": 1,
+        "PR": 4,
+        "RJ": 1,
+        "RS": 1,
+        "SC": 1,
+        "SP": 2
+      },
+      "MISSÃO": {
+        "SP": 1
+      }
+    },
+    "statusVotosPorEntidade": {
+      "UNIÃO/PP": {
+        "cumpriuPorVotos": true,
+        "pctNacional": 13.6086,
+        "ufsComPctMinimo": 27
+      },
+      "MDB": {
+        "cumpriuPorVotos": true,
+        "pctNacional": 6.941,
+        "ufsComPctMinimo": 20
+      },
+      "REPUBLICANOS": {
+        "cumpriuPorVotos": true,
+        "pctNacional": 6.9598,
+        "ufsComPctMinimo": 24
+      },
+      "PL": {
+        "cumpriuPorVotos": true,
+        "pctNacional": 22.7175,
+        "ufsComPctMinimo": 27
+      },
+      "PT/PC do B/PV": {
+        "cumpriuPorVotos": true,
+        "pctNacional": 15.3239,
+        "ufsComPctMinimo": 27
+      },
+      "PSDB/CIDADANIA": {
+        "cumpriuPorVotos": true,
+        "pctNacional": 2.7544,
+        "ufsComPctMinimo": 14
+      },
+      "PDT": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 1.6436,
+        "ufsComPctMinimo": 8
+      },
+      "PRD/SOLIDARIEDADE": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 1.8648,
+        "ufsComPctMinimo": 7
+      },
+      "NOVO": {
+        "cumpriuPorVotos": true,
+        "pctNacional": 2.5637,
+        "ufsComPctMinimo": 9
+      },
+      "AVANTE": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 1.5904,
+        "ufsComPctMinimo": 6
+      },
+      "PODE": {
+        "cumpriuPorVotos": true,
+        "pctNacional": 5.179,
+        "ufsComPctMinimo": 16
+      },
+      "PSOL/REDE": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 4.8903,
+        "ufsComPctMinimo": 8
+      },
+      "PSB": {
+        "cumpriuPorVotos": true,
+        "pctNacional": 4.4052,
+        "ufsComPctMinimo": 13
+      },
+      "DEMOCRATA": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 0.0239,
+        "ufsComPctMinimo": 0
+      },
+      "PSD": {
+        "cumpriuPorVotos": true,
+        "pctNacional": 8.2613,
+        "ufsComPctMinimo": 20
+      },
+      "MISSÃO": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 1.0763,
+        "ufsComPctMinimo": 1
+      },
+      "DC": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 0.1006,
+        "ufsComPctMinimo": 0
+      },
+      "UP": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 0.04,
+        "ufsComPctMinimo": 0
+      },
+      "MOBILIZA": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 0.0301,
+        "ufsComPctMinimo": 0
+      },
+      "PSTU": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 0.0164,
+        "ufsComPctMinimo": 0
+      },
+      "PCO": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 0.0027,
+        "ufsComPctMinimo": 0
+      },
+      "AGIR": {
+        "cumpriuPorVotos": false,
+        "pctNacional": 0.0063,
+        "ufsComPctMinimo": 0
+      }
+    }
+  },
+
+  // FEFC, fatia de 35%: votos nacionais ponderados (voto em dobro, EC 111/2021)
+  // por partido na eleicao de 2026, mesmo metodo de fefc.votosPorPartido
+  // (conferencia-fefc-35-final.mjs, reproduzido 29/29 para 2022).
+  fefcVotosPorPartido2026: {
+    "AGIR": 11666,
+    "AVANTE": 2880296,
+    "CIDADANIA": 412918,
+    "DC": 166388,
+    "DEMOCRATA": 39782,
+    "MDB": 10869921,
+    "MISSÃO": 1526367,
+    "MOBILIZA": 52856,
+    "NOVO": 3716106,
+    "PCDOB": 2119541,
+    "PCO": 4156,
+    "PDT": 2518074,
+    "PL": 32781560,
+    "PODE": 8186715,
+    "PP": 10448047,
+    "PRD": 1750812,
+    "PSB": 7692147,
+    "PSD": 12717617,
+    "PSDB": 3807096,
+    "PSOL": 9700168,
+    "PSTU": 27600,
+    "PT": 22045106,
+    "PV": 2001177,
+    "REDE": 316732,
+    "REPUBLICANOS": 11584802,
+    "SOLIDARIEDADE": 1315132,
+    "UNIÃO": 12052145,
+    "UP": 76327
+  },
+
+  // Fundo Partidario, faixa de 5%: partidos das entidades que cumprem a
+  // clausula 2026 pela linha de base acima (preliminar).
+  fundoPartidarioElegiveis2026: ["PP", "UNIÃO", "MDB", "REPUBLICANOS", "PL", "PCDOB", "PV", "PT", "CIDADANIA", "PSDB", "NOVO", "PODE", "PSB", "PSD"],
+
   clausula: {
     fonteLegal: "EC 97/2017, art. 3, paragrafo unico; art. 17, paragrafo 3, da CF/1988",
     observacao: "O patamar que governa o acesso numa legislatura e o da eleicao geral anterior. A legislatura seguinte as eleicoes de 2022 vai ate fevereiro de 2027; ate la vale o patamar de 2022 (inciso II). Os criterios sao alternativos: votos OU cadeiras. Ambos exigem espalhamento em ufsMinimas estados.",
@@ -679,3 +1105,26 @@ export const dadosReferencia = {
     tempoTV: "20_julho"
   }
 };
+
+// Monta as referencias da cascata para o ano da eleicao do caso.
+// 2022 (e qualquer ano sem dados proprios): devolve o MESMO objeto de sempre,
+// sem nenhuma alteracao. 2026: tempo de TV pela Portaria 473/2026, clausula e
+// fundo partidario pela linha de base 2026, e FEFC com os VALORES do FEFC 2026
+// como referencia (o montante do proximo ciclo ainda nao foi fixado), mas com
+// a base de votos ponderados do resultado de 2026.
+export function dadosReferenciaParaAno(ano) {
+  if (Number(ano) !== 2026) return dadosReferencia;
+  return {
+    ...dadosReferencia,
+    anoBase: 2026,
+    fefc: {
+      ...dadosReferencia.fefc,
+      votosPorPartido: dadosReferencia.fefcVotosPorPartido2026,
+      avisoReferencia: "Valores do FEFC 2026 usados como referência; o montante do próximo ciclo ainda não foi fixado. Base de votos: resultado de 2026 (preliminar)."
+    },
+    fundoPartidario: {
+      ...dadosReferencia.fundoPartidario,
+      entidadesElegiveis5Pct: dadosReferencia.fundoPartidarioElegiveis2026
+    }
+  };
+}

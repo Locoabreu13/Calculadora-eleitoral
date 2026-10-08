@@ -253,6 +253,7 @@ export function montarDadosPeca({ resultadoCascata, dadosCenario, contexto } = {
   // cenario.cassacoes. Quando presentes, a peca exibe ressalva propria, antes
   // do fundamento legal.
   const avisosVotoEmDobro = Array.isArray(cen._avisosVotoEmDobro) ? cen._avisosVotoEmDobro : [];
+  const premissas = Array.isArray(cen._premissas) ? cen._premissas : [];
 
   const cabecalho = {
     cargo: ctx.cargo || "Deputado Federal",
@@ -301,6 +302,7 @@ export function montarDadosPeca({ resultadoCascata, dadosCenario, contexto } = {
     somas: { somaFefc, somaTvFracao },
     fundamentoLegal: montarFundamentoLegal(fefcFatia35Moveu),
     avisosVotoEmDobro,
+    premissas,
     rodape: "Esta peça é uma simulação técnica independente, de caráter auxiliar. " +
       "Os valores aqui apresentados não constituem a totalização oficial da Justiça Eleitoral " +
       "e não substituem os atos e cálculos oficiais do Tribunal competente."
@@ -570,6 +572,9 @@ export function renderizarPecaHTML(dados) {
   // Fundamento legal
   corpo += '<section class="bloco">';
   corpo += '<h2>' + (avisos.length > 0 ? "4" : "3") + '. Fundamento legal</h2>';
+  for (const premissa of (Array.isArray(d.premissas) ? d.premissas : [])) {
+    corpo += '<p class="nota-status"><strong>Premissa adotada:</strong> ' + escaparHtml(premissa) + '</p>';
+  }
   corpo += '<table class="legal"><tbody>';
   for (const f of (d.fundamentoLegal || [])) {
     corpo += '<tr><td class="tema">' + escaparHtml(f.tema) + '</td><td>' + escaparHtml(f.dispositivo) + '</td></tr>';

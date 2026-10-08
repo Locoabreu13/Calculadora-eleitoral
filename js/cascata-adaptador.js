@@ -181,7 +181,9 @@ export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categor
     deltaVotosClausulaPorPartido: {},
     // Avisos de voto em dobro nao garantido (ambiguo, ausente ou sem tabela).
     // A cascata e a peca exibem esses avisos; nunca se dobra em silencio.
-    _avisosVotoEmDobro: []
+    _avisosVotoEmDobro: [],
+    // Premissas juridicas adotadas no calculo, exibidas na tela e na peca.
+    _premissas: []
   };
 
   const partidosBase = listaPartidos(saidaEngineBase);
@@ -320,13 +322,41 @@ export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categor
         });
       }
 
+      // Reatribuicao a legenda (modalidade nominal_legenda): os votos continuam
+      // com o partido, como votos de legenda. Premissa adotada (decisao do
+      // usuario em 08/10/2026): o total do partido nao muda, entao a clausula
+      // nao registra perda; no FEFC e no Fundo Partidario sai apenas o
+      // acrescimo do voto em dobro (EC 111/2021, art. 2), que so vale para
+      // voto dado a candidato.
+      const ehReatribuicaoLegenda = modalidade === "nominal_legenda";
+
       // FEFC (fatia de 35%) e Fundo Partidario (faixa de 95%): delta PONDERADO
       // (com voto em dobro), base NACIONAL. Cassacao REMOVE votos, entao o delta
       // e NEGATIVO na chave do partido cassado.
       // Caso Heitor: votosAnular 48888 * multiplicador 2 = 97776 -> -97776 em "UNIÃO".
-      const deltaPonderado = votosAnular * multiplicador;
+      // Reatribuicao a legenda: so o acrescimo do dobro, votosAnular * (multiplicador - 1).
+      const deltaPonderado = ehReatribuicaoLegenda
+        ? votosAnular * (multiplicador - 1)
+        : votosAnular * multiplicador;
       const chaveNacional = indiceNacional[normalizarTexto(membroResolvido)] || null;
-      if (chaveNacional) {
+
+      if (ehReatribuicaoLegenda) {
+        const fmt = (n) => Number(n).toLocaleString("pt-BR");
+        const efeito = multiplicador === 2
+          ? "deixa de valer apenas a contagem em dobro desses votos (EC 111/2021, art. 2º), por não estarem mais vinculados à candidatura: redução de " + fmt(deltaPonderado) + " votos ponderados."
+          : statusDobro === "ok"
+            ? "não há efeito, porque o candidato não tinha contagem em dobro (EC 111/2021, art. 2º)."
+            : "a contagem em dobro não pôde ser confirmada (ver aviso); calculado sem efeito.";
+        cenario._premissas.push(
+          "Reatribuição à legenda — " + nomeCass + " (" + partidoCass + "): os " + fmt(votosAnular) +
+          " votos permanecem com o partido como votos de legenda, sem perda de votos para a cláusula de desempenho. " +
+          "No FEFC e no Fundo Partidário, " + efeito
+        );
+      }
+
+      if (deltaPonderado === 0) {
+        // Reatribuicao a legenda sem voto em dobro: nada a descontar.
+      } else if (chaveNacional) {
         cenario.deltaVotosFEFCPorPartido[chaveNacional] =
           (cenario.deltaVotosFEFCPorPartido[chaveNacional] || 0) - deltaPonderado;
       } else if (votosNacionais) {
@@ -352,8 +382,10 @@ export function gerarCenarioCascata(saidaEngineBase, saidaEngineCenario, categor
       // (Etapa 3), que ja possui o mecanismo de _siglasNaoMapeadas para sinalizar
       // siglas desconhecidas com o mesmo padrao de aviso. Ate la, este campo pode
       // conter siglas ainda nao verificadas.
-      cenario.deltaVotosClausulaPorPartido[membroResolvido] =
-        (cenario.deltaVotosClausulaPorPartido[membroResolvido] || 0) - votosAnular;
+      if (!ehReatribuicaoLegenda) {
+        cenario.deltaVotosClausulaPorPartido[membroResolvido] =
+          (cenario.deltaVotosClausulaPorPartido[membroResolvido] || 0) - votosAnular;
+      }
     }
     } // fecha if (ehDeputadoFederal)
   }

@@ -1,5 +1,5 @@
 import { calcularCascata } from "./cascata.js";
-import { dadosReferencia } from "./cascata-referencia.js";
+import { dadosReferenciaParaAno } from "./cascata-referencia.js";
 import { gerarCenarioCascata } from "./cascata-adaptador.js";
 import { montarDadosPeca, abrirPecaParaImpressao } from "./cascata-peticao.js";
 import { analisarDecisaoLitigio } from "./cascata-reverso.js";
@@ -203,6 +203,9 @@ function renderizarCascata(resultado) {
     }
     html += `</div>
       <div class="cascata-note"><div><strong>Cálculo proporcional:</strong> a fração de cadeiras do FEFC é redistribuída conforme a mudança de cadeiras na Câmara, preservando a base oficial de referência.</div></div>`;
+    if (nos.fefc.avisoReferencia) {
+      html += `<div class="cascata-note"><div><strong>Referência:</strong> ${escaparHtml(nos.fefc.avisoReferencia)}</div></div>`;
+    }
     divFefc.innerHTML = html;
   }
 
@@ -604,6 +607,19 @@ function renderizarAvisosVotoEmDobro(avisos) {
   }
 }
 
+// Renderiza as premissas juridicas adotadas pelo adaptador (ex.: reatribuicao
+// a legenda), para que o criterio do calculo fique visivel.
+function renderizarPremissas(premissas) {
+  if (!Array.isArray(premissas) || premissas.length === 0) return;
+  const container = obterContainerAvisosCascata();
+  for (const texto of premissas) {
+    const div = document.createElement("div");
+    div.className = "alerta info";
+    div.innerHTML = `<div class="alerta-titulo">ℹ Premissa adotada no cálculo</div><p>${escaparHtml(texto)}</p>`;
+    container.appendChild(div);
+  }
+}
+
 // Descreve o status da cláusula de uma sigla para uma linha da tabela do modo
 // reverso, no mesmo padrão textual do painel da cláusula direta.
 function descreverClausulaLinha(clausula) {
@@ -715,6 +731,7 @@ async function executarModoReverso() {
   }
 
   const ano = obterAnoCascata();
+  const dadosReferencia = dadosReferenciaParaAno(ano);
   const cenarioOriginalBase = estadoCascata.ultimoCenarioOriginalBase || null;
   const calcularFn = window.ElectoralEngine && window.ElectoralEngine.calcular;
   if (typeof calcularFn !== "function") {
@@ -802,6 +819,7 @@ async function prepararEAbrirCascata() {
   }
 
   const ano = obterAnoCascata();
+  const dadosReferencia = dadosReferenciaParaAno(ano);
   limparAvisosCascata();
   const tabelaGeneroRaca = await carregarTabelaGeneroRaca(ano, ufSelecionada);
 
@@ -815,6 +833,7 @@ async function prepararEAbrirCascata() {
 
   const dadosCenarioAdaptado = gerarCenarioCascata(base, cenarioMotor, "cassacao_com_perda_votos", ufSelecionada, opts);
   renderizarAvisosVotoEmDobro(dadosCenarioAdaptado._avisosVotoEmDobro);
+  renderizarPremissas(dadosCenarioAdaptado._premissas);
 
   abrirCascata(base, cenarioMotor, dadosReferencia, dadosCenarioAdaptado);
 }

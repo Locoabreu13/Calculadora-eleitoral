@@ -41,6 +41,13 @@ export function classificarCenario(cenario) {
   return "indefinido";
 }
 
+// Ano das tabelas de referencia (tempo de TV e clausula). Sem anoBase, 2022,
+// exatamente como antes. dadosReferenciaParaAno(2026) define anoBase = 2026.
+export function referenciaDoAno(dadosReferencia, prefixo) {
+  const ano = (dadosReferencia && dadosReferencia.anoBase) || 2022;
+  return dadosReferencia ? dadosReferencia[prefixo + ano] : undefined;
+}
+
 function criarResultadoPendente() {
   return {
     status: "pendente_validacao",
@@ -76,7 +83,7 @@ function repartirFracao(fotoCadeiras) {
 }
 
 export function calcularTempoTV(base, _cenarioRetotalizado, dadosReferencia, cenario, _categoria) {
-  const referencia = dadosReferencia && dadosReferencia.tempoTVCamara2022;
+  const referencia = referenciaDoAno(dadosReferencia, "tempoTVCamara");
   const fotoBase = referencia && referencia.cadeirasPorPartido;
 
   if (!fotoBase || typeof fotoBase !== "object") {
@@ -121,7 +128,15 @@ export function calcularTempoTV(base, _cenarioRetotalizado, dadosReferencia, cen
     );
   })();
 
-  const federacoes = (dadosReferencia && dadosReferencia.federacoesTV2022) || {};
+  const federacoes = referenciaDoAno(dadosReferencia, "federacoesTV") || {};
+
+  // Siglas do estado decompostas: a federacao pode vir agrupada no arquivo do
+  // estado (ex.: "UNIÃO/PP"), entao cada parte tambem conta como concorrente.
+  const partesEstado = siglasEstado
+    ? new Set([...siglasEstado].flatMap((s) => s.split("/").map((x) => x.trim())))
+    : null;
+  const semEspaco = (s) => String(s).replace(/\s+/g, "").toUpperCase();
+  const partesEstadoCompactas = partesEstado ? new Set([...partesEstado].map(semEspaco)) : null;
 
   function partidoConcorreuNoEstado(siglaNacional) {
     if (!siglasEstado) return true;
@@ -129,7 +144,9 @@ export function calcularTempoTV(base, _cenarioRetotalizado, dadosReferencia, cen
     if (siglasEstado.has(siglaUpper)) return true;
     const membros = federacoes[siglaNacional];
     if (Array.isArray(membros)) {
-      return membros.some((m) => siglasEstado.has(String(m).trim().toUpperCase()));
+      return membros.some((m) =>
+        siglasEstado.has(String(m).trim().toUpperCase()) ||
+        partesEstadoCompactas.has(semEspaco(m)));
     }
     return false;
   }
@@ -182,7 +199,7 @@ export function calcularTempoTV(base, _cenarioRetotalizado, dadosReferencia, cen
 
   const resultado = {
     status: "validado",
-    base: "tempoTVCamara2022",
+    base: "tempoTVCamara" + ((dadosReferencia && dadosReferencia.anoBase) || 2022),
     porPartido
   };
 
@@ -265,6 +282,7 @@ export function calcularFEFC(_base, _cenarioRetotalizado, dadosReferencia, cenar
 
   const resultado = {
     status: "validado",
+    ...(fefc.avisoReferencia ? { avisoReferencia: fefc.avisoReferencia } : {}),
     unidadeCadeira,
     unidadeSenador,
     porPartido
@@ -321,16 +339,16 @@ function calcularDominoFundoPartidario(entidade, dadosReferencia) {
 // conjunto de partidos concorrentes em cada estado especifico (precisao validada em TC-03b
 // contra o relatorio oficial do TRE-CE).
 function calcularDominoTempoTV(entidade, dadosReferencia) {
-  const tvRef = dadosReferencia && dadosReferencia.tempoTVCamara2022;
+  const tvRef = referenciaDoAno(dadosReferencia, "tempoTVCamara");
 
   if (!tvRef || !tvRef.cadeirasPorPartido) {
     return { status: "sem_dados_referencia" };
   }
 
   const tvCadeiras = tvRef.cadeirasPorPartido;
-  const mapeamento = (dadosReferencia.clausulaLinhaDeBase2022 &&
-    dadosReferencia.clausulaLinhaDeBase2022.mapeamentoSiglaParaEntidade) || {};
-  const federacoesTV = dadosReferencia.federacoesTV2022 || {};
+  const linhaDeBaseRef = referenciaDoAno(dadosReferencia, "clausulaLinhaDeBase");
+  const mapeamento = (linhaDeBaseRef && linhaDeBaseRef.mapeamentoSiglaParaEntidade) || {};
+  const federacoesTV = referenciaDoAno(dadosReferencia, "federacoesTV") || {};
 
   // Mapear o nome de clausula para a chave da tabela de TV.
   // Entidades individuais batem diretamente. Federacoes de clausula (ex.: "FE Brasil (PT/PC do B/PV)")
@@ -372,7 +390,7 @@ function calcularDominoTempoTV(entidade, dadosReferencia) {
 }
 
 export function calcularClausula(_base, _cenarioRetotalizado, dadosReferencia, cenario, _categoria) {
-  const linhaDeBase = dadosReferencia && dadosReferencia.clausulaLinhaDeBase2022;
+  const linhaDeBase = referenciaDoAno(dadosReferencia, "clausulaLinhaDeBase");
   const clausulaMeta = dadosReferencia && dadosReferencia.clausula;
 
   if (!linhaDeBase || !clausulaMeta) {
