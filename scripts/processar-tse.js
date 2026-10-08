@@ -198,10 +198,11 @@ function parsearCSVdeUF(texto, uf) {
     const nom = parseInt(cols[cNom] || '0', 10) || 0;
     const leg = parseInt(cols[cLeg] || '0', 10) || 0;
 
-    // Agrupa por federação quando o partido pertence a uma (SG_FEDERACAO != '#NULO#')
+    // Agrupa por federação quando o partido pertence a uma. O TSE marca "sem
+    // federação" como '#NULO#' em 2022 e '#NULO' em 2026 — aceitar as duas.
     const sgFed = cSgFed >= 0 ? (cols[cSgFed] || '').trim() : '';
     const nmFed = cNmFed >= 0 ? (cols[cNmFed] || '').trim() : '';
-    const emFed = sgFed && sgFed !== '#NULO#' && sgFed !== '-1';
+    const emFed = sgFed && !sgFed.startsWith('#NULO') && sgFed !== '-1';
     const chave = emFed ? sgFed : sigla;
     const nomeEntidade = emFed ? nmFed : nome;
 
@@ -242,6 +243,15 @@ function salvarJSON(ano, uf, cargo, por_cargo) {
 
   const partidos = Object.values(dados.estado)
     .sort((a, b) => (b.votosNominais + b.votosLegenda) - (a.votosNominais + a.votosLegenda));
+
+  // Proteção: o TSE às vezes publica o arquivo antes da apuração, só com o
+  // cabeçalho (ex.: votacao_partido_munzona_2026.zip em 04/10/2026). Nunca
+  // gravar um JSON zerado — ele poderia sobrescrever um arquivo bom.
+  const totalVotos = partidos.reduce((s, p) => s + p.votosNominais + p.votosLegenda, 0);
+  if (partidos.length === 0 || totalVotos === 0) {
+    console.warn(`    ⚠  ${uf} ${ano} ${cargo}: arquivo do TSE sem votos — NADA foi gravado.`);
+    return null;
+  }
 
   const json = { meta: { ano, uf, cargo, gerado: new Date().toISOString() }, partidos };
 
