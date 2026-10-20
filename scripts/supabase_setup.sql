@@ -53,3 +53,13 @@ ALTER TABLE candidatos_2024  ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "leitura publica municipios"  ON municipios_2024  FOR SELECT USING (true);
 CREATE POLICY "leitura publica partidos"    ON partidos_2024    FOR SELECT USING (true);
 CREATE POLICY "leitura publica candidatos"  ON candidatos_2024  FOR SELECT USING (true);
+
+-- ── Permissões de acesso pela API (exigência do Supabase desde 30/10/2026) ──
+-- Tabelas criadas a partir de 30/10/2026 não ficam mais acessíveis automaticamente.
+-- Sem estas linhas, a calculadora recebe "permission denied" ao buscar os dados.
+-- (As tabelas já criadas antes dessa data não precisam disso: mantêm o acesso que já tinham.)
+-- anon         = a calculadora no navegador (só leitura)
+-- service_role = o script carregar_supabase.py, que grava os dados
+GRANT SELECT ON municipios_2024, partidos_2024, candidatos_2024 TO anon;
+GRANT SELECT, INSERT, UPDATE, DELETE ON municipios_2024, partidos_2024, candidatos_2024 TO service_role;
+GRANT USAGE, SELECT ON SEQUENCE candidatos_2024_id_seq TO service_role;
