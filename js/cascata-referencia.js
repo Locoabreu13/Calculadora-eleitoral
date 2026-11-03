@@ -621,7 +621,7 @@ export const dadosReferencia = {
   // (513/513 eleitos conferidos com o TSE). PRELIMINAR: o TSE ainda nao publicou
   // a lista oficial de 2026; substituir/conferir quando sair.
   clausulaLinhaDeBase2026: {
-    "fonte": "Resultado TSE 2026 (base de 08/10/2026, preliminar) processado de data/tse/2026_UF_federal.json; soma cadeiras = 513",
+    "fonte": "Resultado TSE 2026 (base de 03/11/2026, preliminar; votos federais iguais aos de 08/10) processado de data/tse/2026_UF_federal.json; soma cadeiras = 513",
     "anoEleicao": 2026,
     "preliminar": true,
     "mapeamentoSiglaParaEntidade": {
@@ -1006,11 +1006,13 @@ export const dadosReferencia = {
   // FEFC, fatia de 35%: votos nacionais ponderados (voto em dobro, EC 111/2021)
   // por partido na eleicao de 2026, mesmo metodo de fefc.votosPorPartido
   // (conferencia-fefc-35-final.mjs, reproduzido 29/29 para 2022).
+  // Base TSE de 03/11/2026 (DC +156 em relacao a 08/10 por correcao de raca
+  // de dois candidatos em SP no cadastro do TSE).
   fefcVotosPorPartido2026: {
     "AGIR": 11666,
     "AVANTE": 2880296,
     "CIDADANIA": 412918,
-    "DC": 166388,
+    "DC": 166544,
     "DEMOCRATA": 39782,
     "MDB": 10869921,
     "MISSÃO": 1526367,

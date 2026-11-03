@@ -39,7 +39,7 @@ Não é programador. Trabalha com direito eleitoral. Usa a calculadora para fund
   (antigo) traz PT, PC do B, PV, PSOL, REDE, PSDB e CIDADANIA separados. Não mexer sem decisão do usuário.
 - Integridade verificada: QE em faixa 36 mil–333 mil, sem siglas duplicadas, 3 federações nacionais presentes
 
-### 2026 — Eleições gerais (base TSE de 08/10/2026, preliminar)
+### 2026 — Eleições gerais (base TSE de 03/11/2026, após o 2º turno)
 - `data/tse/2026_UF_{federal,estadual,genero-raca}.json` (27/26/27) e `2026_DF_distrital.json`, com candidatos
 - Conferência engine × eleitos oficiais do TSE: **513/513 federal, 1.059/1.059 estadual/distrital**
 - 5 federações: `PT/PC do B/PV`, `PSOL/REDE`, `PSDB/CIDADANIA`, `UNIÃO/PP`, `PRD/SOLIDARIEDADE`.

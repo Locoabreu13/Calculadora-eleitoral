@@ -3,7 +3,7 @@
         "ano": "2026",
         "uf": "MS",
         "cargo": "Deputado Estadual",
-        "gerado": "2026-10-08T17:04:22.064Z"
+        "gerado": "2026-11-03T16:17:57.030Z"
     },
     "partidos": [
         {
@@ -142,8 +142,8 @@
         {
             "sigla": "UNIÃO/PP",
             "nome": "FEDERAÇÃO UNIÃO PROGRESSISTA",
-            "votosNominais": 226271,
-            "votosLegenda": 7437,
+            "votosNominais": 209387,
+            "votosLegenda": 24321,
             "partidos": [
                 "PP",
                 "UNIÃO"
@@ -173,11 +173,6 @@
                     "nome": "MARCELO FERREIRA MIRANDA",
                     "votos": 23112,
                     "partido": "PP"
-                },
-                {
-                    "nome": "JERSON DOMINGOS",
-                    "votos": 16884,
-                    "partido": "UNIÃO"
                 },
                 {
                     "nome": "DIONE MARLY GANDOLFO HASHIOKA",
@@ -263,6 +258,11 @@
                     "nome": "JAMILSON LOPES NAME",
                     "votos": 0,
                     "partido": "PP"
+                },
+                {
+                    "nome": "JERSON DOMINGOS",
+                    "votos": 0,
+                    "partido": "UNIÃO"
                 }
             ]
         },
@@ -400,8 +400,8 @@
             "votosNominais": 190443,
             "votosLegenda": 4408,
             "partidos": [
-                "PSDB",
-                "CIDADANIA"
+                "CIDADANIA",
+                "PSDB"
             ],
             "candidatos": [
                 {
@@ -1072,8 +1072,8 @@
             "votosNominais": 2904,
             "votosLegenda": 892,
             "partidos": [
-                "SOLIDARIEDADE",
-                "PRD"
+                "PRD",
+                "SOLIDARIEDADE"
             ],
             "candidatos": [
                 {
@@ -1159,8 +1159,8 @@
             "votosNominais": 1515,
             "votosLegenda": 993,
             "partidos": [
-                "REDE",
-                "PSOL"
+                "PSOL",
+                "REDE"
             ],
             "candidatos": [
                 {

@@ -3,7 +3,7 @@
         "ano": "2026",
         "uf": "RJ",
         "cargo": "Deputado Estadual",
-        "gerado": "2026-10-08T17:04:29.194Z"
+        "gerado": "2026-11-03T16:18:14.706Z"
     },
     "partidos": [
         {
@@ -330,8 +330,8 @@
             "votosNominais": 955310,
             "votosLegenda": 130407,
             "partidos": [
-                "PT",
                 "PV",
+                "PT",
                 "PCDOB"
             ],
             "candidatos": [
@@ -606,12 +606,12 @@
                     "partido": "PT"
                 },
                 {
-                    "nome": "RENATO DA COSTA MACHADO",
+                    "nome": "PAULO ROBERTO MUSTRANGI DE OLIVEIRA",
                     "votos": 0,
                     "partido": "PT"
                 },
                 {
-                    "nome": "PAULO ROBERTO MUSTRANGI DE OLIVEIRA",
+                    "nome": "RENATO DA COSTA MACHADO",
                     "votos": 0,
                     "partido": "PT"
                 },
@@ -1246,14 +1246,14 @@
                     "partido": "PP"
                 },
                 {
-                    "nome": "TAMIRIS GUIMARAES PEIXOTO",
-                    "votos": 244,
-                    "partido": "UNIÃO"
-                },
-                {
                     "nome": "EDSON TEIXEIRA DOS SANTOS",
                     "votos": 244,
                     "partido": "PP"
+                },
+                {
+                    "nome": "TAMIRIS GUIMARAES PEIXOTO",
+                    "votos": 244,
+                    "partido": "UNIÃO"
                 },
                 {
                     "nome": "EDGLACY CERQUEIRA FERREIRA",
@@ -1281,12 +1281,12 @@
                     "partido": "PP"
                 },
                 {
-                    "nome": "PAULO CESAR MELO DE SA",
+                    "nome": "TATIANA OLIVEIRA DE CASTRO",
                     "votos": 0,
                     "partido": "UNIÃO"
                 },
                 {
-                    "nome": "TATIANA OLIVEIRA DE CASTRO",
+                    "nome": "PAULO CESAR MELO DE SA",
                     "votos": 0,
                     "partido": "UNIÃO"
                 }
@@ -1298,8 +1298,8 @@
             "votosNominais": 540380,
             "votosLegenda": 28028,
             "partidos": [
-                "REDE",
-                "PSOL"
+                "PSOL",
+                "REDE"
             ],
             "candidatos": [
                 {
@@ -1487,7 +1487,7 @@
         {
             "sigla": "REPUBLICANOS",
             "nome": "REPUBLICANOS",
-            "votosNominais": 307842,
+            "votosNominais": 307787,
             "votosLegenda": 16695,
             "candidatos": [
                 {
@@ -1706,12 +1706,12 @@
                     "partido": "REPUBLICANOS"
                 },
                 {
-                    "nome": "DANIEL RAMOS DA SILVA",
+                    "nome": "CLEIDE DUARTE",
                     "votos": 210,
                     "partido": "REPUBLICANOS"
                 },
                 {
-                    "nome": "CLEIDE DUARTE",
+                    "nome": "DANIEL RAMOS DA SILVA",
                     "votos": 210,
                     "partido": "REPUBLICANOS"
                 },
@@ -1756,12 +1756,12 @@
                     "partido": "REPUBLICANOS"
                 },
                 {
-                    "nome": "JANAINA RIBEIRO GONÇALVES",
+                    "nome": "RONALD ALVES ROBERTO",
                     "votos": 133,
                     "partido": "REPUBLICANOS"
                 },
                 {
-                    "nome": "RONALD ALVES ROBERTO",
+                    "nome": "JANAINA RIBEIRO GONÇALVES",
                     "votos": 133,
                     "partido": "REPUBLICANOS"
                 },
@@ -1801,11 +1801,6 @@
                     "partido": "REPUBLICANOS"
                 },
                 {
-                    "nome": "VITOR STEFAN GAYOSO",
-                    "votos": 44,
-                    "partido": "REPUBLICANOS"
-                },
-                {
                     "nome": "CLEITON SILVA DE ASSIS",
                     "votos": 38,
                     "partido": "REPUBLICANOS"
@@ -1813,11 +1808,6 @@
                 {
                     "nome": "MARCIA COELHO DE PAIVA",
                     "votos": 31,
-                    "partido": "REPUBLICANOS"
-                },
-                {
-                    "nome": "THAIANNE BARBOSA DE MORAES CAVALCANTE",
-                    "votos": 11,
                     "partido": "REPUBLICANOS"
                 }
             ]
@@ -1828,8 +1818,8 @@
             "votosNominais": 310787,
             "votosLegenda": 12957,
             "partidos": [
-                "PRD",
-                "SOLIDARIEDADE"
+                "SOLIDARIEDADE",
+                "PRD"
             ],
             "candidatos": [
                 {
@@ -2173,17 +2163,17 @@
                     "partido": "PRD"
                 },
                 {
+                    "nome": "ROOSEVELT BARRETO BARCELOS",
+                    "votos": 0,
+                    "partido": "PRD"
+                },
+                {
                     "nome": "FLÁVIA GOMES TOMÁZ DOS SANTOS",
                     "votos": 0,
                     "partido": "PRD"
                 },
                 {
                     "nome": "VAGNER MATEUS DOS SANTOS",
-                    "votos": 0,
-                    "partido": "PRD"
-                },
-                {
-                    "nome": "ROOSEVELT BARRETO BARCELOS",
                     "votos": 0,
                     "partido": "PRD"
                 }
@@ -2755,11 +2745,6 @@
                 },
                 {
                     "nome": "RENATO ROSA XAVIER",
-                    "votos": 0,
-                    "partido": "MDB"
-                },
-                {
-                    "nome": "FERNANDO NASCIMENTO FERREIRA",
                     "votos": 0,
                     "partido": "MDB"
                 }
@@ -3399,12 +3384,12 @@
                     "partido": "CIDADANIA"
                 },
                 {
-                    "nome": "ROSILENE ETIENE MENDONCA",
+                    "nome": "SANDRA LUCIA ALEIXO DA SILVA",
                     "votos": 126,
                     "partido": "PSDB"
                 },
                 {
-                    "nome": "SANDRA LUCIA ALEIXO DA SILVA",
+                    "nome": "ROSILENE ETIENE MENDONCA",
                     "votos": 126,
                     "partido": "PSDB"
                 },
@@ -3454,17 +3439,17 @@
                     "partido": "PSDB"
                 },
                 {
-                    "nome": "LUIZ ANTONIO MARTINS",
-                    "votos": 0,
-                    "partido": "PSDB"
-                },
-                {
                     "nome": "VANDRO LOPES GONCALVES",
                     "votos": 0,
                     "partido": "PSDB"
                 },
                 {
                     "nome": "DIEGO JOSÉ ALBA TABOADA",
+                    "votos": 0,
+                    "partido": "PSDB"
+                },
+                {
+                    "nome": "LUIZ ANTONIO MARTINS",
                     "votos": 0,
                     "partido": "PSDB"
                 }
@@ -3817,12 +3802,12 @@
                     "partido": "NOVO"
                 },
                 {
-                    "nome": "WELINGTON FRANCO DA SILVA",
+                    "nome": "LETICIA SÁ REIS DE CALAZANS PEREIRA",
                     "votos": 0,
                     "partido": "NOVO"
                 },
                 {
-                    "nome": "LETICIA SÁ REIS DE CALAZANS PEREIRA",
+                    "nome": "WELINGTON FRANCO DA SILVA",
                     "votos": 0,
                     "partido": "NOVO"
                 }
@@ -4065,12 +4050,12 @@
                     "partido": "AGIR"
                 },
                 {
-                    "nome": "ELIEL DOS SANTOS CEZARIO",
+                    "nome": "LUIZ GUSTAVO GOMES MARTINS",
                     "votos": 290,
                     "partido": "AGIR"
                 },
                 {
-                    "nome": "LUIZ GUSTAVO GOMES MARTINS",
+                    "nome": "ELIEL DOS SANTOS CEZARIO",
                     "votos": 290,
                     "partido": "AGIR"
                 },
@@ -4184,7 +4169,7 @@
         {
             "sigla": "AVANTE",
             "nome": "AVANTE",
-            "votosNominais": 115446,
+            "votosNominais": 115417,
             "votosLegenda": 4715,
             "candidatos": [
                 {
@@ -4303,12 +4288,12 @@
                     "partido": "AVANTE"
                 },
                 {
-                    "nome": "ALDAIR CÉSAR DA SILVA",
+                    "nome": "IANDRA DA SILVA",
                     "votos": 548,
                     "partido": "AVANTE"
                 },
                 {
-                    "nome": "IANDRA DA SILVA",
+                    "nome": "ALDAIR CÉSAR DA SILVA",
                     "votos": 548,
                     "partido": "AVANTE"
                 },
@@ -4483,11 +4468,6 @@
                     "partido": "AVANTE"
                 },
                 {
-                    "nome": "EMILIA MARIA DE SOUZA",
-                    "votos": 29,
-                    "partido": "AVANTE"
-                },
-                {
                     "nome": "ADRIELLE BÓR SANTANA",
                     "votos": 22,
                     "partido": "AVANTE"
@@ -4503,22 +4483,22 @@
                     "partido": "AVANTE"
                 },
                 {
-                    "nome": "IRANILDO CAMPOS",
-                    "votos": 0,
-                    "partido": "AVANTE"
-                },
-                {
-                    "nome": "MARCELO DE OLIVEIRA",
-                    "votos": 0,
-                    "partido": "AVANTE"
-                },
-                {
                     "nome": "CARLOS AUGUSTO ALVES DA SILVA",
                     "votos": 0,
                     "partido": "AVANTE"
                 },
                 {
+                    "nome": "IRANILDO CAMPOS",
+                    "votos": 0,
+                    "partido": "AVANTE"
+                },
+                {
                     "nome": "CRISTIANO SANTOS HERMOGENES",
+                    "votos": 0,
+                    "partido": "AVANTE"
+                },
+                {
+                    "nome": "MARCELO DE OLIVEIRA",
                     "votos": 0,
                     "partido": "AVANTE"
                 }
@@ -4791,12 +4771,12 @@
                     "partido": "DC"
                 },
                 {
-                    "nome": "VALERIA NASCIMENTO PINTO",
+                    "nome": "JANAINA MUSSALEM DIAS BARBOSA",
                     "votos": 126,
                     "partido": "DC"
                 },
                 {
-                    "nome": "JANAINA MUSSALEM DIAS BARBOSA",
+                    "nome": "VALERIA NASCIMENTO PINTO",
                     "votos": 126,
                     "partido": "DC"
                 },
@@ -5340,12 +5320,12 @@
                     "partido": "MOBILIZA"
                 },
                 {
-                    "nome": "EVELYN MILEYDE DA SILVA BOMFIM",
+                    "nome": "JOEL MACHADO DOS SANTOS",
                     "votos": 223,
                     "partido": "MOBILIZA"
                 },
                 {
-                    "nome": "JOEL MACHADO DOS SANTOS",
+                    "nome": "EVELYN MILEYDE DA SILVA BOMFIM",
                     "votos": 223,
                     "partido": "MOBILIZA"
                 },
@@ -5578,12 +5558,12 @@
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "HÉLIO CUNHA FILHO",
+                    "nome": "DARIL NOGUEIRA BARBOSA",
                     "votos": 274,
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "DARIL NOGUEIRA BARBOSA",
+                    "nome": "HÉLIO CUNHA FILHO",
                     "votos": 274,
                     "partido": "DEMOCRATA"
                 },
@@ -5593,12 +5573,12 @@
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "DISRAELI ULRICH DE OLIVEIRA",
+                    "nome": "MARCELO GOMES DE SOUZA",
                     "votos": 251,
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "MARCELO GOMES DE SOUZA",
+                    "nome": "DISRAELI ULRICH DE OLIVEIRA",
                     "votos": 251,
                     "partido": "DEMOCRATA"
                 },
@@ -5663,12 +5643,12 @@
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "ELIANE DA SILVA MARCELINO",
+                    "nome": "WALTER DA SILVA TORRES",
                     "votos": 135,
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "WALTER DA SILVA TORRES",
+                    "nome": "ELIANE DA SILVA MARCELINO",
                     "votos": 135,
                     "partido": "DEMOCRATA"
                 },
@@ -5748,12 +5728,12 @@
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "ELIONE HERCULANO DE CASTRO",
+                    "nome": "FLOR AMÉRICA HUANGAL BAZAN",
                     "votos": 28,
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "FLOR AMÉRICA HUANGAL BAZAN",
+                    "nome": "ELIONE HERCULANO DE CASTRO",
                     "votos": 28,
                     "partido": "DEMOCRATA"
                 },
@@ -5788,27 +5768,12 @@
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "CLAUDIO GOMES DE MORAES",
-                    "votos": 0,
-                    "partido": "DEMOCRATA"
-                },
-                {
-                    "nome": "RICARDO MATICERA ARAUJO CHAMORRO",
-                    "votos": 0,
-                    "partido": "DEMOCRATA"
-                },
-                {
-                    "nome": "PATRICIA DA SILVA TAVARES",
-                    "votos": 0,
-                    "partido": "DEMOCRATA"
-                },
-                {
                     "nome": "CARLOS ALEXANDRE DOS SANTOS FERRAO",
                     "votos": 0,
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "SILAS DE MENDONCA CHAVES",
+                    "nome": "CLAUDIO GOMES DE MORAES",
                     "votos": 0,
                     "partido": "DEMOCRATA"
                 },
@@ -5818,7 +5783,22 @@
                     "partido": "DEMOCRATA"
                 },
                 {
+                    "nome": "PATRICIA DA SILVA TAVARES",
+                    "votos": 0,
+                    "partido": "DEMOCRATA"
+                },
+                {
+                    "nome": "SILAS DE MENDONCA CHAVES",
+                    "votos": 0,
+                    "partido": "DEMOCRATA"
+                },
+                {
                     "nome": "ISRAEL FRANCISCO MENDONÇA",
+                    "votos": 0,
+                    "partido": "DEMOCRATA"
+                },
+                {
+                    "nome": "RICARDO MATICERA ARAUJO CHAMORRO",
                     "votos": 0,
                     "partido": "DEMOCRATA"
                 }

@@ -28,8 +28,8 @@ ao banco (não só leitura de código):
 
 ### 2026 — Eleições gerais
 **Status:** ✅ Federal (27), estadual (26), distrital (DF) e gênero/raça (27) gerados com a base do TSE
-de 08/10/2026 e conferidos contra os eleitos oficiais (513/513 e 1.059/1.059). Cascata 2026 ligada.
-Commits b8fc1f0, 83663d7, cd8e740, 4083c1b (locais, **não publicados**).
+de 03/11/2026 (após o 2º turno) e conferidos contra os eleitos oficiais (513/513 e 1.059/1.059). Cascata 2026 ligada.
+Publicado no site em 08/10/2026 (commits b8fc1f0 a ce23506); base atualizada em 03/11/2026.
 
 ---
 
@@ -51,12 +51,16 @@ rodando as conferências reais:
 
 ## Pendências reais
 
-### 1. Publicar 2026 no site
-Os 4 commits de 2026 estão só no computador local. Publicar (push) quando o usuário decidir.
+### 1. Publicar 2026 no site — ✅ feito em 08/10/2026
 
-### 2. Regerar 2026 com a base definitiva do TSE
-A base usada é de 08/10/2026 (preliminar). Quando o TSE atualizar: apagar os ZIPs 2026 de `cache/`,
-regerar estado por estado e repetir a conferência contra os eleitos oficiais.
+### 2. Regerar 2026 quando o TSE atualizar a base
+Base atual: 03/11/2026 (após o 2º turno). Em relação a 08/10 nenhum eleito mudou; mudaram só:
+MS estadual (16.884 votos de JERSON DOMINGOS/UNIÃO passaram a legenda), RJ e RN estadual (votos
+anulados de 4 candidatos, −100 no total), raça de candidatos federais em MA e SP (DC: +156 votos
+ponderados no FEFC). Mantida a tabela de gênero/raça de PA de 08/10: o TSE corrigiu o espaço duplo
+do nome de WELYSON ALLEN MARTINS RECHENE só no cadastro, não no arquivo de votos.
+Próxima atualização: trocar os ZIPs 2026 em `cache/`, regerar numa cópia, comparar ignorando ordem
+e data, e trazer só os arquivos que mudaram; repetir a conferência contra os eleitos oficiais.
 
 ### 3. Cláusula de desempenho 2026 — conferir com a lista oficial
 `clausulaLinhaDeBase2026` é preliminar (calculada). Pela base atual: PSOL/REDE não cumpre (8 UFs ≥ 1,5%,

@@ -3,7 +3,7 @@
         "ano": "2026",
         "uf": "MG",
         "cargo": "Deputado Estadual",
-        "gerado": "2026-10-08T17:04:13.876Z"
+        "gerado": "2026-11-03T16:17:47.115Z"
     },
     "partidos": [
         {
@@ -866,8 +866,8 @@
             "votosNominais": 1059072,
             "votosLegenda": 89857,
             "partidos": [
-                "PP",
-                "UNIÃO"
+                "UNIÃO",
+                "PP"
             ],
             "candidatos": [
                 {
@@ -1116,14 +1116,14 @@
                     "partido": "PP"
                 },
                 {
-                    "nome": "HENRIQUE TEIXEIRA MAIA",
-                    "votos": 267,
-                    "partido": "UNIÃO"
-                },
-                {
                     "nome": "CLAUDINEY BARBOSA",
                     "votos": 267,
                     "partido": "PP"
+                },
+                {
+                    "nome": "HENRIQUE TEIXEIRA MAIA",
+                    "votos": 267,
+                    "partido": "UNIÃO"
                 },
                 {
                     "nome": "RENATA CASSIA FERREIRA DOS SANTOS",
@@ -1161,14 +1161,14 @@
                     "partido": "PP"
                 },
                 {
-                    "nome": "GISLENE DE MOURA",
-                    "votos": 197,
-                    "partido": "UNIÃO"
-                },
-                {
                     "nome": "ÉDIO VIEIRA DE SOUZA",
                     "votos": 197,
                     "partido": "PP"
+                },
+                {
+                    "nome": "GISLENE DE MOURA",
+                    "votos": 197,
+                    "partido": "UNIÃO"
                 },
                 {
                     "nome": "MIGUEL ARCANJO DIAS CORREA",
@@ -1616,12 +1616,12 @@
                     "partido": "SOLIDARIEDADE"
                 },
                 {
-                    "nome": "EDUARDA FERREIRA LIMA",
+                    "nome": "WILLIAM RAIMUNDO DOS SANTOS",
                     "votos": 272,
                     "partido": "PRD"
                 },
                 {
-                    "nome": "WILLIAM RAIMUNDO DOS SANTOS",
+                    "nome": "EDUARDA FERREIRA LIMA",
                     "votos": 272,
                     "partido": "PRD"
                 },
@@ -1703,8 +1703,8 @@
             "votosNominais": 383255,
             "votosLegenda": 40317,
             "partidos": [
-                "CIDADANIA",
-                "PSDB"
+                "PSDB",
+                "CIDADANIA"
             ],
             "candidatos": [
                 {
@@ -2551,12 +2551,12 @@
                     "partido": "NOVO"
                 },
                 {
-                    "nome": "TATIANE FERREIRA DA PIEDADE",
+                    "nome": "BRISA ALMEIDA DE SANTANA",
                     "votos": 507,
                     "partido": "NOVO"
                 },
                 {
-                    "nome": "BRISA ALMEIDA DE SANTANA",
+                    "nome": "TATIANE FERREIRA DA PIEDADE",
                     "votos": 507,
                     "partido": "NOVO"
                 },
@@ -2596,12 +2596,12 @@
                     "partido": "NOVO"
                 },
                 {
-                    "nome": "RODRIGO SANTOS MASSET LACOMBE",
+                    "nome": "SIRLEI ALVES DE SOUZA",
                     "votos": 296,
                     "partido": "NOVO"
                 },
                 {
-                    "nome": "SIRLEI ALVES DE SOUZA",
+                    "nome": "RODRIGO SANTOS MASSET LACOMBE",
                     "votos": 296,
                     "partido": "NOVO"
                 },
@@ -3039,12 +3039,12 @@
                     "partido": "AVANTE"
                 },
                 {
-                    "nome": "EDVANIA DE LIMA FRANCA",
+                    "nome": "CLÉRIA LÚCIA DE SOUZA SALOMÉ",
                     "votos": 72,
                     "partido": "AVANTE"
                 },
                 {
-                    "nome": "CLÉRIA LÚCIA DE SOUZA SALOMÉ",
+                    "nome": "EDVANIA DE LIMA FRANCA",
                     "votos": 72,
                     "partido": "AVANTE"
                 },
@@ -3555,12 +3555,12 @@
                     "partido": "PDT"
                 },
                 {
-                    "nome": "PEDRO WILSON ROCHA",
+                    "nome": "AILTON MURUBIXABA LEITE",
                     "votos": 412,
                     "partido": "PDT"
                 },
                 {
-                    "nome": "AILTON MURUBIXABA LEITE",
+                    "nome": "PEDRO WILSON ROCHA",
                     "votos": 412,
                     "partido": "PDT"
                 },
@@ -3953,12 +3953,12 @@
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "PAULA RAPHAELA SALES RODRIGUES",
+                    "nome": "JESSICA MAXIMO DA SILVA",
                     "votos": 14,
                     "partido": "DEMOCRATA"
                 },
                 {
-                    "nome": "JESSICA MAXIMO DA SILVA",
+                    "nome": "PAULA RAPHAELA SALES RODRIGUES",
                     "votos": 14,
                     "partido": "DEMOCRATA"
                 },
@@ -4141,12 +4141,12 @@
                     "partido": "MDB"
                 },
                 {
-                    "nome": "LOURENE ALVES FERREIRA",
+                    "nome": "MARIA APARECIDA MARTINS",
                     "votos": 133,
                     "partido": "MDB"
                 },
                 {
-                    "nome": "MARIA APARECIDA MARTINS",
+                    "nome": "LOURENE ALVES FERREIRA",
                     "votos": 133,
                     "partido": "MDB"
                 },
@@ -4730,12 +4730,12 @@
                     "partido": "MOBILIZA"
                 },
                 {
-                    "nome": "ROVILSON DE ASSIS PIMENTEL",
+                    "nome": "ITAMAR SILVA",
                     "votos": 78,
                     "partido": "MOBILIZA"
                 },
                 {
-                    "nome": "ITAMAR SILVA",
+                    "nome": "ROVILSON DE ASSIS PIMENTEL",
                     "votos": 78,
                     "partido": "MOBILIZA"
                 },
@@ -4831,11 +4831,6 @@
                 },
                 {
                     "nome": "ELIEDI SOARES DE SOUZA",
-                    "votos": 0,
-                    "partido": "MOBILIZA"
-                },
-                {
-                    "nome": "MARIA DA GLORIA DOS SANTOS CHAVES",
                     "votos": 0,
                     "partido": "MOBILIZA"
                 }
